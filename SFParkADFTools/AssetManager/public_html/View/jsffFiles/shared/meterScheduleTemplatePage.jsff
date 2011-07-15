@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="meterScheduleTemplatePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="meterScheduleTemplatePGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{meterScheduleTemplateBean.parentBreadCrumbPageTitle}"
+                                actionListener="#{meterScheduleTemplateBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{meterScheduleTemplateBean.breadCrumbPageTitle}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:outputText id="noteOT" inlineStyle="font-size: 14px;"
+                   value="#{assetManagerBundle.info_select_schedule_template}"/>
+    <af:panelGroupLayout id="meterScheduleTemplateButtonPanel"
+                         layout="horizontal" halign="right"
+                         inlineStyle="width: 600px;">
+      <f:facet name="separator">
+        <af:spacer id="meterScheduleTemplateButtonPanelSpacer" width="10"/>
+      </f:facet>
+      <af:commandButton id="cancelButton" immediate="true"
+                        inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                        text="#{buttonBundle.button_cancel}"
+                        actionListener="#{meterScheduleTemplateBean.cancelButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:table id="TETable" var="row" varStatus="rowStatus" width="550"
+              inlineStyle="height: 310px;" contentDelivery="immediate"
+              rowSelection="single" rowBandingInterval="1"
+              columnSelection="none" disableColumnReordering="true"
+              columnStretching="last"
+              emptyText="#{assetManagerBundle.info_empty_meter_schedule_template_list}"
+              summary="Meter Schedule Template List"
+              value="#{meterScheduleTemplateBean.schedTemplates}"
+              binding="#{meterScheduleTemplateBean.schedTemplateTable}"
+              selectionListener="#{meterScheduleTemplateBean.tableRowSelectionHandler}">
+      <af:column id="TETableColColorRuleApplied" rowHeader="unstyled"
+                 align="center" width="250px" sortable="false"
+                 headerText="#{columnBundle.column_color_rule_applied}">
+        <af:outputText id="TETableRowColorRuleApplied"
+                       value="#{row.displayColorRuleApplied}"/>
+      </af:column>
+      <af:column id="TETableColAddlDesc" align="center" width="110px"
+                 sortable="false" headerText="#{columnBundle.column_addl_desc}">
+        <af:outputText id="TETableRowAddlDesc"
+                       value="#{row.displayAltAddlDesc}"/>
+      </af:column>
+      <af:column id="TETableColDaysApplied" align="center" width="120px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_days_applied}">
+        <af:outputText id="TETableRowDaysApplied"
+                       value="#{row.displayDaysAppliedTxt}"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="bulkMeterSpaceManagementPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="bulkMeterSpaceManagementPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{assetManagerBundle.string_parking_space_bulk_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:panelGroupLayout id="pageButtonPanel" layout="horizontal" halign="right"
+                         inlineStyle="width: 800px;">
+      <f:facet name="separator">
+        <af:spacer id="pageButtonPanelSpacer" width="15"/>
+      </f:facet>
+      <af:outputText id="inlineMessage" noWrap="true"
+                     value="#{bulkMeterSpaceManagementBean.inlineMessageText}"
+                     styleClass="#{bulkMeterSpaceManagementBean.inlineMessageClass}"
+                     partialTriggers="validateAndSaveButton"/>
+      <af:commandButton id="validateAndSaveButton" blocking="true"
+                        inlineStyle="width: 150px; font-weight: bold;"
+                        text="#{buttonBundle.button_validate_and_save}"
+                        actionListener="#{bulkMeterSpaceManagementBean.saveButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="parkingSpaceInventoryPanel" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="parkingSpaceInventoryPanelSpacer" width="10"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsPSIFormPanel">
+        <af:selectBooleanCheckbox id="sensorStatusSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableSensorStatusSBCB}"
+                                  label="#{labelBundle.label_update_sensor_status}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedSensorFlag}"
+                                  autoSubmit="true"/>
+        <af:selectOneChoice id="sensorStatusSOC"
+                            disabled="#{bulkMeterSpaceManagementBean.disableSensorStatusSOC}"
+                            label="#{labelBundle.label_sensor_status}"
+                            value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.sensorFlag}"
+                            partialTriggers="sensorStatusSBCB activeMeterStatusSOC">
+          <f:selectItems id="sensorStatusSOCSI"
+                         value="#{bulkMeterSpaceManagementBean.listSensorStatus}"/>
+        </af:selectOneChoice>
+        <af:spacer id="sensorStatusSpacer" height="10"/>
+        <af:selectBooleanCheckbox id="capColorSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableCapColorSBCB}"
+                                  label="#{labelBundle.label_update_cap_color}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedCapColor}"
+                                  autoSubmit="true"/>
+        <af:selectOneChoice id="capColorSOC"
+                            disabled="#{bulkMeterSpaceManagementBean.disableCapColorSOC}"
+                            label="#{labelBundle.label_cap_color}"
+                            value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.capColor}"
+                            partialTriggers="capColorSBCB activeMeterStatusSOC">
+          <f:selectItems id="capColorSOCSI"
+                         value="#{bulkMeterSpaceManagementBean.listCapColorSOC}"/>
+        </af:selectOneChoice>
+        <af:spacer id="capColorSpacer" height="10"/>
+        <!--
+        <af:selectBooleanCheckbox id="oldRateAreaSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableOldRateAreaSBCB}"
+                                  label="#{labelBundle.label_update_old_rate_area}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedOldRateArea}"
+                                  autoSubmit="true"
+                                  partialTriggers="activeMeterStatusSOC"/>
+        <af:selectOneChoice id="oldRateAreaSOC"
+                            disabled="#{bulkMeterSpaceManagementBean.disableOldRateAreaSOC}"
+                            label="#{labelBundle.label_old_rate_area}"
+                            value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.oldRateArea}"
+                            partialTriggers="oldRateAreaSBCB activeMeterStatusSOC">
+          <f:selectItems id="oldRateAreaSOCSI"
+                         value="#{bulkMeterSpaceManagementBean.listOldRateArea}"/>
+        </af:selectOneChoice>
+        <af:spacer id="oldRateAreaSpacer" height="10"/>
+        -->
+        <af:selectBooleanCheckbox id="pcoBeatSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disablePCOBeatSBCB}"
+                                  label="#{labelBundle.label_update_pco_beat}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedPCOBeat}"
+                                  autoSubmit="true"/>
+        <af:inputText id="pcoBeatIT" maximumLength="7" columns="10"
+                      disabled="#{bulkMeterSpaceManagementBean.disablePCOBeatIT}"
+                      label="#{labelBundle.label_pco_beat}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.PCOBeat}"
+                      partialTriggers="pcoBeatSBCB activeMeterStatusSOC"/>
+        <af:spacer id="pcoBeatSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:selectBooleanCheckbox id="activeMeterStatusSBCB"
+                                  label="#{labelBundle.label_update_active_meter_status}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedActiveMeterFlag}"
+                                  autoSubmit="true"/>
+        <af:selectOneChoice id="activeMeterStatusSOC"
+                            disabled="#{!bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedActiveMeterFlag}"
+                            label="#{labelBundle.label_active_meter_status}"
+                            value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.activeMeterFlag}"
+                            autoSubmit="true"
+                            valueChangeListener="#{bulkMeterSpaceManagementBean.activeMeterStatusValueChangeHandler}"
+                            partialTriggers="activeMeterStatusSBCB">
+          <f:selectItems id="activeMeterStatusSOCSI"
+                         value="#{bulkMeterSpaceManagementBean.listActiveMeterStatus}"/>
+        </af:selectOneChoice>
+        <af:spacer id="activeMeterStatusSpacer" height="10"/>
+        <af:selectBooleanCheckbox id="meterDetailsSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableMeterDetailsSBCB}"
+                                  label="#{labelBundle.label_update_meter_model}"
+                                  value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.toBeUpdatedMeterDetails}"
+                                  autoSubmit="true"
+                                  partialTriggers="activeMeterStatusSOC"/>
+        <af:commandButton id="meterDetailsButton"
+                          disabled="#{bulkMeterSpaceManagementBean.disableMeterDetailsButton}"
+                          inlineStyle="width: 150px;"
+                          text="#{buttonBundle.button_change_meter_model}"
+                          actionListener="#{bulkMeterSpaceManagementBean.editButtonHandler}"
+                          immediate="true"
+                          partialTriggers="meterDetailsSBCB activeMeterStatusSOC"/>
+        <af:inputText id="meterVendorIT" readOnly="true"
+                      label="#{labelBundle.label_meter_vendor}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.meterDetails.meterVendor}"
+                      binding="#{bulkMeterSpaceManagementBean.meterVendorIT}"/>
+        <af:inputText id="meterModelIT" readOnly="true"
+                      label="#{labelBundle.label_meter_model}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.meterDetails.meterModel}"
+                      binding="#{bulkMeterSpaceManagementBean.meterModelIT}"/>
+        <af:inputText id="smartMeterIT" readOnly="true"
+                      label="#{labelBundle.label_smart_meter}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.meterDetails.displaySmartMeterFlag}"
+                      binding="#{bulkMeterSpaceManagementBean.smartMeterIT}"/>
+        <af:inputText id="meterTypeIT" readOnly="true"
+                      label="#{labelBundle.label_meter_type}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.meterDetails.displayMeterType}"
+                      binding="#{bulkMeterSpaceManagementBean.meterTypeIT}"/>
+        <af:inputText id="msPayStationIDIT" maximumLength="9" columns="10"
+                      required="true"
+                      disabled="#{bulkMeterSpaceManagementBean.disableMSPayStationIDIT}"
+                      label="#{labelBundle.label_ms_pay_station_id}"
+                      value="#{bulkMeterSpaceManagementBean.currentParkingSpaceInventoryBulkDTO.MSPayStationID}"
+                      binding="#{bulkMeterSpaceManagementBean.msPayStationIDIT}"
+                      partialTriggers="meterDetailsSBCB activeMeterStatusSOC">
+          <af:validateRegExp pattern="#{globalBean.postIDPattern}"
+                             messageDetailNoMatch="#{assetManagerBundle.info_ms_pay_station_id_validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+    <af:spacer id="psiANDschedSpacer" height="10"/>
+    <af:panelGroupLayout id="meterSchedPanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="meterSchedPanelSpacer" height="10"/>
+      </f:facet>
+      <af:panelFormLayout id="MOSFormPanel">
+        <af:selectBooleanCheckbox id="deleteAllOPSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllOPSBCB}"
+                                  text="#{assetManagerBundle.string_delete_all_op_schedules}"
+                                  value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllOPSchedules}"
+                                  partialTriggers="MSTable"/>
+        <af:selectBooleanCheckbox id="deleteAllALTSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllALTSBCB}"
+                                  text="#{assetManagerBundle.string_delete_all_alt_schedules}"
+                                  value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllALTSchedules}"
+                                  partialTriggers="MSTable"/>
+        <af:selectBooleanCheckbox id="deleteAllTOWSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllTOWSBCB}"
+                                  text="#{assetManagerBundle.string_delete_all_tow_schedules}"
+                                  value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllTOWSchedules}"
+                                  partialTriggers="MSTable"/>
+      </af:panelFormLayout>
+      <af:toolbar id="meterSchedToolbar">
+        <af:group id="meterSchedToolbarAddAndDelete">
+          <af:commandToolbarButton id="addSchedButton"
+                                   inlineStyle="width: 130px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_schedule}">
+            <f:facet name="popup">
+              <af:menu id="addSchedButtonMenu">
+                <af:commandMenuItem id="addOPSched" text="OP Schedule"
+                                    actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addALTSched" text="ALT Schedule"
+                                    actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addTOWSched" text="TOW Schedule"
+                                    actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="meterSchedToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="deleteOPSchedButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_delete_schedule}"
+                            binding="#{bulkMeterSpaceManagementBean.deleteSchedButton}"
+                            actionListener="#{bulkMeterSpaceManagementBean.deleteButtonHandler}"/>
+        </af:group>
+        <!-- TODO remove
+        <af:group id="meterSchedToolbarSelectAndUnselect">
+          <af:commandButton id="selectAllOPSchedButton"
+                            inlineStyle="width: 130px;"
+                            text="#{buttonBundle.button_select_all_schedules}"
+                            binding="#{bulkMeterSpaceManagementBean.selectAllSchedButton}"
+                            actionListener="#{bulkMeterSpaceManagementBean.selectAllButtonHandler}"/>
+          <af:spacer id="meterSchedToolbarSelectAndUnselectSpacer" width="5"/>
+          <af:commandButton id="unselectAllOPSchedButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_unselect_all}"
+                            binding="#{bulkMeterSpaceManagementBean.unselectAllSchedButton}"
+                            actionListener="#{bulkMeterSpaceManagementBean.unselectAllButtonHandler}"/>
+        </af:group>
+        -->
+      </af:toolbar>
+      <af:table id="MSTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate" rowSelection="multiple"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{assetManagerBundle.info_empty_meter_schedule_list}"
+                summary="Meter Schedule List"
+                value="#{bulkMeterSpaceManagementBean.meterSchedules}"
+                binding="#{bulkMeterSpaceManagementBean.meterScheduleTable}"
+                selectionListener="#{bulkMeterSpaceManagementBean.tableRowSelectionHandler}">
+        <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false" sortProperty="scheduleType"
+                   headerText="#{columnBundle.column_schedule_type}">
+          <af:outputText id="MSTableRowSchedType" value="#{row.scheduleType}"/>
+        </af:column>
+        <af:column id="MSTableColSchedPriority" align="center" width="80px"
+                   showRequired="true" sortable="false"
+                   sortProperty="schedulePriority"
+                   headerText="#{columnBundle.column_schedule_priority}">
+          <af:inputText id="MSTableRowSchedPriority" required="true"
+                        simple="true" columns="3"
+                        value="#{row.schedulePriority}">
+            <af:validateLongRange minimum="1" maximum="99"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="MSTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="MSTableRowEffFromDate" required="true" simple="true"
+                        columns="10"
+                        minValue="#{row.minimumEffectiveFromDateForBulk}"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="MSTableRowEffToDate" required="true" simple="true"
+                        columns="10"
+                        minValue="#{bulkMeterSpaceManagementBean.minimumEffectiveToDate}"
+                        value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColColorApplied" align="center" width="220px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_color_rule_applied}">
+          <af:selectOneChoice id="MSTableRowColorAppliedSOC" simple="true"
+                              rendered="#{row.editableColorRuleApplied}"
+                              value="#{row.colorRuleApplied}">
+            <f:selectItems id="MSTableRowColorAppliedSOCSI"
+                           value="#{bulkMeterSpaceManagementBean.listCapColorSOC}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowColorAppliedOT"
+                         rendered="#{!row.editableColorRuleApplied}"
+                         value="#{row.colorRuleApplied}"/>
+        </af:column>
+        <af:column id="MSTableColAddlDesc" align="center" width="110px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_addl_desc}">
+          <af:outputText id="MSTableRowAddlDesc"
+                         value="#{row.alternateAddlDesc}"/>
+        </af:column>
+        <af:column id="MSTableColFromTime" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:selectOneChoice id="MSTableRowFromTimeSOC" simple="true"
+                              rendered="#{row.editableFromTime}"
+                              value="#{row.fromTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowFromTimeSI"
+                           value="#{bulkMeterSpaceManagementBean.listFromTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowFromTimeOT"
+                         rendered="#{!row.editableFromTime}"
+                         value="#{row.fromTime}"/>
+        </af:column>
+        <af:column id="MSTableColToTime" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:selectOneChoice id="MSTableRowToTimeSOC" simple="true"
+                              rendered="#{row.editableToTime}"
+                              value="#{row.toTime}" contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowToTimeSI"
+                           value="#{bulkMeterSpaceManagementBean.listToTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowToTimeOT"
+                         rendered="#{!row.editableToTime}"
+                         value="#{row.toTime}"/>
+        </af:column>
+        <af:column id="MSTableColDaysApplied" align="center" width="120px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_days_applied}">
+          <af:selectManyChoice id="MSTableRowDaysAppliedSMC" simple="true"
+                               required="true"
+                               rendered="#{row.editableDaysApplied}"
+                               value="#{row.weekDaysApplied}">
+            <f:selectItems id="MSTableRowDaysAppliedSMCSI"
+                           value="#{bulkMeterSpaceManagementBean.listWeekDaysApplied}"/>
+          </af:selectManyChoice>
+          <af:outputText id="MSTableRowDaysAppliedOT"
+                         rendered="#{!row.editableDaysApplied}"
+                         value="#{row.daysApplied}"/>
+        </af:column>
+        <af:column id="MSTableColTimeLimit" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_limit}">
+          <af:inputText id="MSTableRowTimeLimit" required="true" simple="true"
+                        columns="4" rendered="#{row.editableTimeLimit}"
+                        value="#{row.timeLimit}">
+            <af:validateLongRange minimum="0"/>
+          </af:inputText>
+          <af:outputText id="MSTableRowTimeLimitOT"
+                         rendered="#{!row.editableTimeLimit}"
+                         value="#{row.timeLimit}"/>
+        </af:column>
+        <af:column id="MSTableColPrepaymentTime" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_prepayment_time}">
+          <af:inputText id="MSTableRowPrepaymentTime" required="true"
+                        simple="true" columns="5"
+                        rendered="#{row.editablePrePaymentTime}"
+                        value="#{row.prePaymentTime}">
+            <af:validateRegExp pattern="#{globalBean.fromTimePattern}"/>
+          </af:inputText>
+          <af:outputText id="MSTableRowPrepaymentTimeOT"
+                         rendered="#{!row.editablePrePaymentTime}"
+                         value="#{row.prePaymentTime}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="meterModelsPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="meterModelsPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{meterModelsBean.parentBreadCrumbPageTitle}"
+                                actionListener="#{meterModelsBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{assetManagerBundle.string_choose_meter_model}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="meterModelsButtonPanel" layout="horizontal"
+                         halign="right" inlineStyle="width: 600px;">
+      <f:facet name="separator">
+        <af:spacer id="meterModelsButtonPanelSpacer" width="10"/>
+      </f:facet>
+      <af:commandButton id="cancelButton" immediate="true"
+                        inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                        text="#{buttonBundle.button_cancel}"
+                        actionListener="#{meterModelsBean.cancelButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:table id="MMTable" var="row" varStatus="rowStatus" width="500"
+              inlineStyle="height: 200px;" contentDelivery="immediate"
+              rowSelection="single" rowBandingInterval="1"
+              columnSelection="none" disableColumnReordering="true"
+              columnStretching="last"
+              emptyText="#{assetManagerBundle.info_empty_meter_models_list}"
+              summary="Meter Models List" value="#{meterModelsBean.meterModels}"
+              binding="#{meterModelsBean.meterModelsTable}"
+              selectionListener="#{meterModelsBean.tableRowSelectionHandler}">
+      <af:column id="MMTableColMeterVendor" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_meter_vendor}">
+        <af:outputText id="MMTableRowMeterVendor" value="#{row.meterVendor}"/>
+      </af:column>
+      <af:column id="MMTableColMeterModel" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_meter_model}">
+        <af:outputText id="MMTableRowMeterModel" value="#{row.meterModel}"/>
+      </af:column>
+      <af:column id="MMTableColMeterType" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_meter_type}">
+        <af:outputText id="MMTableRowMeterType"
+                       value="#{row.displayMeterType}"/>
+      </af:column>
+      <af:column id="MMTableColSmartMeter" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_smart_meter}">
+        <af:outputText id="MMTableRowSmartMeter"
+                       value="#{row.displaySmartMeterFlag}"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>

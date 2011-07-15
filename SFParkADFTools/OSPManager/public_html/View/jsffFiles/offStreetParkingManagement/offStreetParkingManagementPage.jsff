@@ -1,0 +1,661 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="offStreetParkingManagementPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="offStreetParkingManagementPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"
+                   value="#{ospManagerBundle.string_osp_management}"/>
+    <af:panelGroupLayout id="pageButtonPanel" layout="horizontal" halign="right"
+                         inlineStyle="width: 800px;">
+      <f:facet name="separator">
+        <af:spacer id="pageButtonPanelSpacer" width="15"/>
+      </f:facet>
+      <af:outputText id="inlineMessage" noWrap="true"
+                     value="#{offStreetParkingManagementBean.inlineMessageText}"
+                     styleClass="#{offStreetParkingManagementBean.inlineMessageClass}"
+                     partialTriggers="validateAndSaveButton"/>
+      <af:commandButton id="validateAndSaveButton" blocking="true"
+                        inlineStyle="width: 150px; font-weight: bold;"
+                        text="#{buttonBundle.button_validate_and_save}"
+                        actionListener="#{offStreetParkingManagementBean.saveButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="ospInventoryPanel" layout="horizontal" valign="top"
+                         partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="ospInventoryPanelSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsOSPIFormPanel">
+        <af:inputText id="ospIDIT" readOnly="true"
+                      label="#{labelBundle.label_osp_id}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.OSPID}"/>
+        <af:spacer id="ospIDSpacer" height="10"/>
+        <af:selectOneChoice id="facilityTypeSOC"
+                            label="#{labelBundle.label_facility_type}"
+                            value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.facilityType}">
+          <f:selectItems id="facilityTypeSOCSI"
+                         value="#{offStreetParkingManagementBean.listFacilityType}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice id="ownerSOC" label="#{labelBundle.label_owner}"
+                            value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.owner}">
+          <f:selectItems id="ownerSOCSI"
+                         value="#{offStreetParkingManagementBean.listOwner}"/>
+        </af:selectOneChoice>
+        <af:spacer id="ownerSpacer" height="10"/>
+        <af:selectBooleanCheckbox id="sensoredCB"
+                                  label="#{labelBundle.label_sensored}"
+                                  value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.sensored}"/>
+        <af:selectOneChoice id="dataFeedFlagSOC"
+                            label="#{labelBundle.label_data_feed_flag}"
+                            value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.dataFeedFlag}">
+          <f:selectItems id="dataFeedFlagSOCSI"
+                         value="#{offStreetParkingManagementBean.listDataFeedFlag}"/>
+        </af:selectOneChoice>
+        <af:spacer id="dataFeedSpacer" height="10"/>
+        <af:inputText id="vehicleEntryIT" columns="6"
+                      disabled="#{offStreetParkingManagementBean.disableVehicleEntryIT}"
+                      label="#{labelBundle.label_vehicle_entry_lanes}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.numberOfVehicleEntryLanes}">
+          <af:validateLongRange minimum="0"/>
+        </af:inputText>
+        <af:inputText id="vehicleExitIT" columns="6"
+                      disabled="#{offStreetParkingManagementBean.disableVehicleExitIT}"
+                      label="#{labelBundle.label_vehicle_exit_lanes}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.numberOfVehicleExitLanes}">
+          <af:validateLongRange minimum="0"/>
+        </af:inputText>
+        <af:inputText id="motorcycleEntryIT" columns="6"
+                      disabled="#{offStreetParkingManagementBean.disableMotorcycleEntryIT}"
+                      label="#{labelBundle.label_motorcycle_entry_lanes}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.numberOfMotorcycleEntryLanes}">
+          <af:validateLongRange minimum="0"/>
+        </af:inputText>
+        <af:inputText id="motorcycleExitIT" columns="6"
+                      disabled="#{offStreetParkingManagementBean.disableMotorcycleExitIT}"
+                      label="#{labelBundle.label_motorcycle_exit_lanes}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.numberOfMotorcycleExitLanes}">
+          <af:validateLongRange minimum="0"/>
+        </af:inputText>
+        <af:spacer id="motorcycleExitSpacer" height="10"/>
+        <af:inputText id="activationFeeIT" columns="7"
+                      disabled="#{offStreetParkingManagementBean.disableActivationFeeIT}"
+                      label="#{labelBundle.label_activation_fee}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.activationFee}">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="cardReplaceFeeIT" columns="7"
+                      disabled="#{offStreetParkingManagementBean.disableCardReplaceFeeIT}"
+                      label="#{labelBundle.label_card_replacement_fee}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.cardReplacementFee}">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="lateFeeIT" columns="7"
+                      disabled="#{offStreetParkingManagementBean.disableLateFeeIT}"
+                      label="#{labelBundle.label_late_fee}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.lateFee}">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="reopenFeeIT" columns="7"
+                      disabled="#{offStreetParkingManagementBean.disableReopenFeeIT}"
+                      label="#{labelBundle.label_reopen_fee}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.reopeningGarageFee}">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="noKeyValetFeeIT" columns="7"
+                      disabled="#{offStreetParkingManagementBean.disableNoKeyValetFeeIT}"
+                      label="#{labelBundle.label_no_key_valet_fee}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.valetServiceWithoutKeyFee}">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:spacer id="noKeyValetFeeSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centerOSPIFormPanel"
+                          styleClass="centerPanelFormLayout">
+        <af:inputText id="facilityNameIT" maximumLength="30"
+                      label="#{labelBundle.label_facility_name}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.facilityName}"/>
+        <af:inputText id="streetAddressIT" maximumLength="30"
+                      label="#{labelBundle.label_street_address}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.streetAddress}"/>
+        <af:inputText id="locationIT" maximumLength="40"
+                      label="#{labelBundle.label_location}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.location}"/>
+        <af:inputText id="phoneIT" maximumLength="15"
+                      disabled="#{offStreetParkingManagementBean.disablePhoneIT}"
+                      label="#{labelBundle.label_phone}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.phone}">
+          <af:validateRegExp pattern="#{globalBean.USPhoneNumberPattern}"
+                             hint="#{commonBundle.info_us_phone_number}"
+                             messageDetailNoMatch="#{commonBundle.info_us_phone_number}"/>
+        </af:inputText>
+        <af:inputText id="websiteIT" maximumLength="50"
+                      disabled="#{offStreetParkingManagementBean.disableWebsiteIT}"
+                      label="#{labelBundle.label_website}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.webSite}">
+          <af:validateRegExp pattern="#{globalBean.websiteURLPattern}"
+                             hint="#{commonBundle.info_website_url}"
+                             messageDetailNoMatch="#{commonBundle.info_website_url}"/>
+        </af:inputText>
+        <af:spacer id="websiteITSpacer" height="10"/>
+        <af:selectManyChoice id="servicesSMC"
+                             disabled="#{offStreetParkingManagementBean.disableServicesSMC}"
+                             label="#{labelBundle.label_services}"
+                             value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.services}">
+          <f:selectItems id="servicesSMCSI"
+                         value="#{offStreetParkingManagementBean.listServices}"/>
+        </af:selectManyChoice>
+        <af:spacer id="servicesSMCSpacer" height="10"/>
+        <af:inputText id="capacityIT" columns="6"
+                      label="#{labelBundle.label_capacity}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.capacity}">
+          <af:validateLongRange minimum="1"/>
+        </af:inputText>
+        <af:inputText id="systemIT"
+                      disabled="#{offStreetParkingManagementBean.disableSystemIT}"
+                      label="#{labelBundle.label_system}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.systemName}"/>
+        <af:spacer id="systemSpacer" height="10"/>
+        <af:selectBooleanCheckbox id="highVolDisCB"
+                                  label="#{labelBundle.label_high_volume_discount}"
+                                  value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.highVolumeDiscountOffered}"/>
+        <af:selectBooleanCheckbox id="splEvtRateCB"
+                                  label="#{labelBundle.label_special_event_rates}"
+                                  value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.participatesSpecialEventPricing}"/>
+        <af:spacer id="splEvtRateCBSpacer" height="10"/>
+        <af:inputText id="validationPgmIT" maximumLength="100" rows="5"
+                      label="#{labelBundle.label_validation_program}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.validationProgram}"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsOSPIFormPanel">
+        <af:inputText id="blockfaceIDIT" readOnly="true"
+                      label="#{labelBundle.label_blockface_id}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.blockfaceID}"/>
+        <af:inputText id="pmDistrictIDIT" readOnly="true"
+                      label="#{labelBundle.label_pm_district_id}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.PMDistrictID}"/>
+        <af:inputText id="areaTypeIT" readOnly="true"
+                      label="#{labelBundle.label_area_type}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.areaType}"/>
+        <af:inputText id="cnnIDIT" readOnly="true"
+                      label="#{labelBundle.label_cnn_id}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.CNNID}"/>
+        <af:spacer id="cnnIDSpacer" height="10"/>
+        <af:inputText id="longitudeIT" readOnly="true"
+                      label="#{labelBundle.label_main_entrance_longitude}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.mainEntranceLongitude}"/>
+        <af:inputText id="latitudeIT" readOnly="true"
+                      label="#{labelBundle.label_main_entrance_latitude}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.mainEntranceLatitude}"/>
+        <af:spacer id="latLongSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.createdDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.lastUpdatedDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.lastUpdatedProgram}"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+    <af:spacer id="ospiANDgarageRatesSpacer" height="15"/>
+    <af:panelGroupLayout id="garageRatesPanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{offStreetParkingManagementBean.renderGarageRatesPanel}">
+      <f:facet name="separator">
+        <af:spacer id="garageRatesPanelSpacer" height="10"/>
+      </f:facet>
+      <af:toolbar id="garageRatesToolbar">
+        <af:group id="garageRatesToolbarAddAndDelete">
+          <af:commandToolbarButton id="addActiveGarageRatesButton"
+                                   inlineStyle="width: 140px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_garage_rate}">
+            <f:facet name="popup">
+              <af:menu id="addActiveGarageRatesButtonMenu">
+                <af:commandMenuItem id="addActiveGarageRates1"
+                                    text="#{buttonBundle.button_add_garage_rate_1}"
+                                    actionListener="#{offStreetParkingManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addActiveGarageRates2"
+                                    text="#{buttonBundle.button_add_garage_rate_2}"
+                                    actionListener="#{offStreetParkingManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addActiveGarageRates3"
+                                    text="#{buttonBundle.button_add_garage_rate_3}"
+                                    actionListener="#{offStreetParkingManagementBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="garageRatesToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="deleteActiveGarageRatesButton" disabled="true"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_delete_garate_rate}"
+                            binding="#{offStreetParkingManagementBean.deleteActiveGarageRatesButton}"
+                            actionListener="#{offStreetParkingManagementBean.deleteButtonHandler}"/>
+        </af:group>
+        <af:group id="garageRatesToolbarSelectAndUnselect">
+          <af:commandButton id="selectAllActiveGarageRatesButton"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_select_all}"
+                            binding="#{offStreetParkingManagementBean.selectAllActiveGarageRatesButton}"
+                            actionListener="#{offStreetParkingManagementBean.selectAllButtonHandler}"/>
+          <af:spacer id="garageRatesToolbarSelectAndUnselectSpacer" width="5"/>
+          <af:commandButton id="unselectAllActiveGarageRatesButton"
+                            disabled="true" inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_unselect_all}"
+                            binding="#{offStreetParkingManagementBean.unselectAllActiveGarageRatesButton}"
+                            actionListener="#{offStreetParkingManagementBean.unselectAllButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:showDetail id="historicalRatesSD" disclosed="false"
+                     disclosedText="#{ospManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{ospManagerBundle.string_show_historic_data}">
+        <af:table id="HGRTabl" var="row" varStatus="rowStatus"
+                  styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                  contentDelivery="immediate" rowSelection="none"
+                  rowBandingInterval="0" columnSelection="none"
+                  disableColumnReordering="true" columnStretching="last"
+                  emptyText="#{ospManagerBundle.info_empty_historic_list}"
+                  summary="Garage Rate List"
+                  value="#{offStreetParkingManagementBean.historicGarageRates}"
+                  binding="#{offStreetParkingManagementBean.historicGarageRatesTable}">
+          <af:column id="HGRTableColDispGrp" rowHeader="unstyled" align="center"
+                     width="100px" sortable="false" sortProperty="displayGroup"
+                     headerText="#{columnBundle.column_display_group}">
+            <af:outputText id="HGRTableRowDispGrp"
+                           value="#{row.displayGroup.displayGroupText}"/>
+          </af:column>
+          <af:column id="HGRTableColDispSeq" align="center" width="60px"
+                     sortable="false" sortProperty="displaySequence"
+                     headerText="#{columnBundle.column_display_sequence}">
+            <af:outputText id="HGRTableRowDispSeq"
+                           value="#{row.displaySequence}"/>
+          </af:column>
+          <af:column id="HGRTableColEffFromDate" align="center" width="100px"
+                     sortable="false" sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:outputText id="HGRTableRowEffFromDate"
+                           value="#{row.effectiveFromDate}"/>
+          </af:column>
+          <af:column id="HGRTableColEffToDate" align="center" width="100px"
+                     sortable="false" sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:outputText id="HGRTableRowEffToDate"
+                           value="#{row.effectiveToDate}">
+              <af:convertDateTime type="date"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="HGRTableColRateDesc" align="center" width="120px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_rate_desc}">
+            <af:outputText id="HGRTableRowRateDesc"
+                           value="#{row.rateDescription}"/>
+          </af:column>
+          <af:column id="HGRTableColFromTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:outputText id="HGRTableRowFromTime"
+                           value="#{row.timeBand.fromTime}"/>
+          </af:column>
+          <af:column id="HGRTableColToTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:outputText id="HGRTableRowToTime"
+                           value="#{row.timeBand.toTime}"/>
+          </af:column>
+          <af:column id="HGRTableColRate" align="center" width="80px"
+                     sortable="false" headerText="#{columnBundle.column_rate}">
+            <af:outputText id="HGRTableRowRate" value="#{row.rate}">
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="HGRTableColRateQ" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_rate_qualifier}">
+            <af:outputText id="HGRTableRowRateQ" value="#{row.rateQualifier}"/>
+          </af:column>
+          <af:column id="HGRTableColMaxAmt" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_max_amount}">
+            <af:outputText id="HGRTableRowMaxAmt" value="#{row.maximumAmount}">
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="HGRTableColRateR" align="center" width="110px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_rate_restrictions}">
+            <af:outputText id="HGRTableRowRateR"
+                           value="#{row.rateRestrictions}"/>
+          </af:column>
+          <af:column id="HGRTableColDispCode" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_display_code}">
+            <af:outputText id="HGRTableRowDispCode" value="#{row.displayCode}"/>
+          </af:column>
+          <af:column id="HGRTableColRateChg" align="center" sortable="false"
+                     headerText="#{columnBundle.column_rate_change_ref}">
+            <af:outputText id="HGRTableRowRateChg"
+                           value="#{row.rateChangeReference}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:table id="GRTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate" rowSelection="multiple"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{ospManagerBundle.info_empty_garage_rate_list}"
+                summary="Garage Rate List"
+                value="#{offStreetParkingManagementBean.activeGarageRates}"
+                binding="#{offStreetParkingManagementBean.activeGarageRatesTable}"
+                selectionListener="#{offStreetParkingManagementBean.tableRowSelectionHandler}">
+        <af:column id="GRTableColOverride" rowHeader="unstyled" align="center"
+                   width="60px" sortable="false"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="GRTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="GRTableColDispGrp" align="center" width="100px"
+                   sortable="false" sortProperty="displayGroup"
+                   headerText="#{columnBundle.column_display_group}">
+          <af:outputText id="GRTableRowDispGrp"
+                         value="#{row.displayGroup.displayGroupText}"/>
+        </af:column>
+        <af:column id="GRTableColDispSeq" align="center" width="60px"
+                   showRequired="true" sortable="false"
+                   sortProperty="displaySequence"
+                   headerText="#{columnBundle.column_display_sequence}">
+          <af:inputText id="GRTableRowDispSeq" required="true" simple="true"
+                        columns="3" value="#{row.displaySequence}">
+            <af:validateLongRange minimum="1" maximum="99"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="GRTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="GRTableRowEffFromDate" required="true" simple="true"
+                        columns="10" value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="GRTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="GRTableRowEffToDate" required="true" simple="true"
+                        columns="10" value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="GRTableColRateDesc" align="center" width="120px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_rate_desc}">
+          <af:inputText id="GRTableRowRateDesc" maximumLength="30" simple="true"
+                        value="#{row.rateDescription}"/>
+        </af:column>
+        <af:column id="GRTableColTimeBand" align="center" width="160px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_band}">
+          <af:selectOneChoice id="GRTableRowTimeBand"
+                              readOnly="#{!row.editableTimeBand}" simple="true"
+                              value="#{row.timeBand}">
+            <f:selectItems id="GRTableRowTimeBandSI"
+                           value="#{offStreetParkingManagementBean.listTimeBand}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="GRTableColRate" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_rate}">
+          <af:inputText id="GRTableRowRate" simple="true" columns="6"
+                        value="#{row.rate}">
+            <af:validateDoubleRange minimum="0"/>
+            <af:convertNumber type="currency" locale="en-US"
+                              maxFractionDigits="2"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="GRTableColRateQ" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_rate_qualifier}">
+          <af:selectOneChoice id="GRTableRowRateQ"
+                              readOnly="#{!row.editableRateQualifier}"
+                              simple="true" value="#{row.rateQualifier}">
+            <f:selectItems id="GRTableRowRateQSI"
+                           value="#{offStreetParkingManagementBean.listRateQualifier}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="GRTableColMaxAmt" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_max_amount}">
+          <af:inputText id="GRTableRowMaxAmt" columns="4"
+                        readOnly="#{!row.editableMaximumAmount}" simple="true"
+                        value="#{row.maximumAmount}">
+            <af:validateRegExp pattern="#{globalBean.maxAmountPattern}"
+                               hint="#{commonBundle.info_max_amount}"
+                               messageDetailNoMatch="#{commonBundle.info_max_amount}"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="GRTableColRateR" align="center" width="110px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_rate_restrictions}">
+          <af:inputText id="GRTableRowRateR" maximumLength="100"
+                        readOnly="#{!row.editableRateRestrictions}"
+                        simple="true" value="#{row.rateRestrictions}"/>
+        </af:column>
+        <af:column id="GRTableColDispCode" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_display_code}">
+          <af:selectOneChoice id="GRTableRowDispCode" simple="true"
+                              value="#{row.displayCode}">
+            <f:selectItems id="GRTableRowDispCodeSI"
+                           value="#{offStreetParkingManagementBean.listDisplayCode}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="GRTableColRateChg" align="center" sortable="false"
+                   headerText="#{columnBundle.column_rate_change_ref}">
+          <af:inputText id="GRTableRowRateChg" maximumLength="10" simple="true"
+                        value="#{row.rateChangeReference}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+    <af:spacer id="garageRatesANDgarageOPHoursSpacer" height="15"/>
+    <af:panelGroupLayout id="garageOPHoursPanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{offStreetParkingManagementBean.renderGarageOPHoursPanel}">
+      <f:facet name="separator">
+        <af:spacer id="garageOPHoursPanelSpacer" height="10"/>
+      </f:facet>
+      <af:toolbar id="garageOPHoursToolbar">
+        <af:group id="garageOPHoursToolbarAddAndDelete">
+          <af:commandButton id="addActiveGarageOPHoursButton"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_add_garage_op_hours}"
+                            actionListener="#{offStreetParkingManagementBean.addButtonHandler}"/>
+          <af:spacer id="garageOPHoursToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="deleteActiveGarageOPHoursButton" disabled="true"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_delete_garage_op_hours}"
+                            binding="#{offStreetParkingManagementBean.deleteActiveGarageOPHoursButton}"
+                            actionListener="#{offStreetParkingManagementBean.deleteButtonHandler}"/>
+        </af:group>
+        <af:group id="garageOPHoursToolbarSelectAndUnselect">
+          <af:commandButton id="selectAllActiveGarageOPHoursButton"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_select_all}"
+                            binding="#{offStreetParkingManagementBean.selectAllActiveGarageOPHoursButton}"
+                            actionListener="#{offStreetParkingManagementBean.selectAllButtonHandler}"/>
+          <af:spacer id="garageOPHoursToolbarSelectAndUnselectSpacer"
+                     width="5"/>
+          <af:commandButton id="unselectAllActiveGarageOPHoursButton"
+                            disabled="true" inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_unselect_all}"
+                            binding="#{offStreetParkingManagementBean.unselectAllActiveGarageOPHoursButton}"
+                            actionListener="#{offStreetParkingManagementBean.unselectAllButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:showDetail id="historicOPHoursSD" disclosed="false"
+                     disclosedText="#{ospManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{ospManagerBundle.string_show_historic_data}">
+        <af:table id="HGOHTbl" var="row" varStatus="rowStatus" width="800px"
+                  inlineStyle="height: 200px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{ospManagerBundle.info_empty_historic_list}"
+                  summary="Historic Garage OP Hours List"
+                  value="#{offStreetParkingManagementBean.historicGarageOPHours}"
+                  binding="#{offStreetParkingManagementBean.historicGarageOPHoursTable}">
+          <af:column id="HGOHTableColSchedSeq" rowHeader="unstyled"
+                     align="center" width="100px" sortable="false"
+                     sortProperty="scheduleSequence"
+                     headerText="#{columnBundle.column_schedule_sequence}">
+            <af:outputText id="HGOHTableRowSchedSeq"
+                           value="#{row.scheduleSequence}"/>
+          </af:column>
+          <af:column id="HGOHTableColEffFromDate" align="center" width="110px"
+                     sortable="false" sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:outputText id="HGOHTableRowEffFromDate"
+                           value="#{row.effectiveFromDate}"/>
+          </af:column>
+          <af:column id="HGOHTableColEffToDate" align="center" width="110px"
+                     sortable="false" sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:outputText id="HGOHTableRowEffToDate"
+                           value="#{row.effectiveToDate}"/>
+          </af:column>
+          <af:column id="HGOHTableColFromDay" align="center" width="100px"
+                     sortable="false" sortProperty="fromDay"
+                     headerText="#{columnBundle.column_from_day}">
+            <af:outputText id="HGOHTableRowFromDay" value="#{row.fromDay}"/>
+          </af:column>
+          <af:column id="HGOHTableColToDay" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_day}">
+            <af:outputText id="HGOHTableRowToDay" value="#{row.toDay}"/>
+          </af:column>
+          <af:column id="HGOHTableColFromTime" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:outputText id="HGOHTableRowFromTime" value="#{row.fromTime}"/>
+          </af:column>
+          <af:column id="HGOHTableColToTime" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:outputText id="HGOHTableRowToTime" value="#{row.toTime}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:table id="GOHTabl" var="row" varStatus="rowStatus" width="850px"
+                inlineStyle="height: 200px;" contentDelivery="immediate"
+                rowSelection="multiple" rowBandingInterval="0"
+                columnSelection="none" disableColumnReordering="true"
+                columnStretching="last"
+                emptyText="#{ospManagerBundle.info_empty_garage_op_hours_list}"
+                summary="Garage OP Hours List"
+                value="#{offStreetParkingManagementBean.activeGarageOPHours}"
+                binding="#{offStreetParkingManagementBean.activeGarageOPHoursTable}"
+                selectionListener="#{offStreetParkingManagementBean.tableRowSelectionHandler}">
+        <af:column id="GOHTableColOverride" rowHeader="unstyled" align="center"
+                   width="60px" sortable="false"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="GOHTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="GOHTableColSchedSeq" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="scheduleSequence"
+                   headerText="#{columnBundle.column_schedule_sequence}">
+          <af:inputText id="GOHTableRowSchedSeq" required="true" simple="true"
+                        columns="3" value="#{row.scheduleSequence}">
+            <af:validateLongRange minimum="1" maximum="99"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="GOHTableColEffFromDate" align="center" width="110px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="GOHTableRowEffFromDate" required="true"
+                        simple="true" columns="10"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="GOHTableColEffToDate" align="center" width="110px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="GOHTableRowEffToDate" required="true" simple="true"
+                        columns="10" value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="GOHTableColFromDay" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   headerText="#{columnBundle.column_from_day}">
+          <af:selectOneChoice id="GOHTableRowFromDay" required="true"
+                              simple="true" value="#{row.fromDay}">
+            <f:selectItems id="GOHTableRowFromDaySI"
+                           value="#{offStreetParkingManagementBean.listFromDay}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="GOHTableColToDay" align="center" width="100px"
+                   sortable="false" headerText="#{columnBundle.column_to_day}">
+          <af:selectOneChoice id="GOHTableRowToDay" simple="true"
+                              value="#{row.toDay}">
+            <f:selectItems id="GOHTableRowToDaySI"
+                           value="#{offStreetParkingManagementBean.listToDay}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="GOHTableColFromTime" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:inputText id="GOHTableRowFromTime" simple="true" columns="5"
+                        value="#{row.fromTime}">
+            <af:validateRegExp pattern="#{globalBean.fromTimePattern}"
+                               hint="#{commonBundle.info_from_time}"
+                               messageDetailNoMatch="#{commonBundle.info_from_time}"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="GOHTableColToTime" align="center" width="100px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:inputText id="GOHTableRowToTime" simple="true" columns="5"
+                        value="#{row.toTime}">
+            <af:validateRegExp pattern="#{globalBean.toTimePattern}"
+                               hint="#{commonBundle.info_to_time}"
+                               messageDetailNoMatch="#{commonBundle.info_to_time}"/>
+          </af:inputText>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

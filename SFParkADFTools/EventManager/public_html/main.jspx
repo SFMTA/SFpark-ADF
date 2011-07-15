@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:output omit-xml-declaration="true" doctype-root-element="HTML"
+              doctype-system="http://www.w3.org/TR/html4/loose.dtd"
+              doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"/>
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <af:document id="d1" title="#{applicationBundle.string_application_name}">
+      <!--
+      <f:facet name="metaContainer">
+        <af:group id="metaGroup">
+          <af:resource type="css" source="/Resources/Styles/common.css"/>
+          < ! - -
+          <h:outputText id="link1" escape="false"
+                          value='&lt;link rel="icon" type="image/x-icon" href="/#{globalBean.productContextRootString}/Resources/Images/favicon.ico"/>'/>
+          <h:outputText id="link2" escape="false"
+                          value='&lt;link rel="shortcut icon" type="image/x-icon" href="/#{globalBean.productContextRootString}/Resources/Images/favicon.ico"/>'/>
+          - - >
+        </af:group>
+      </f:facet>
+      -->
+      <af:form id="f1">
+        <af:panelStretchLayout id="mainPanelStretchLayout" topHeight="51px"
+                               bottomHeight="32px">
+          <!--
+          <f:facet name="top">
+            <f:subview id="subViewHeader">
+              <jsp:include page="/View/jsffFiles/common/header.jsff"
+                           flush="true"/>
+            </f:subview>
+          </f:facet>
+          -->
+          <f:facet name="center">
+            <f:subview id="subView_content">
+              <jsp:include page="/View/jsffFiles/content.jsff" flush="true"/>
+            </f:subview>
+          </f:facet>
+          <!--
+          <f:facet name="bottom">
+            <f:subview id="subView_footer">
+              <jsp:include page="/View/jsffFiles/common/footer.jsff"
+                           flush="true"/>
+            </f:subview>
+          </f:facet>
+          -->
+        </af:panelStretchLayout>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

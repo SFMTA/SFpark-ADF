@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="EventCalendarPropertiesPGL" layout="vertical">
+    <af:spacer id="FirstSpacer" height="15"/>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{applicationBundle.string_event_calendars}"
+                                actionListener="#{eventCalendarPropertiesBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{eventCalendarPropertiesBean.breadCrumbPageTitle}"/>
+    </af:breadCrumbs>
+    <af:spacer id="Spacer1" height="10"/>
+    <af:separator id="Separator"/>
+    <af:spacer id="Spacer2" height="10"/>
+    <af:panelGroupLayout id="eventCalendarPropertiesButtonPanel"
+                         layout="horizontal" halign="right"
+                         inlineStyle="width: 700px;">
+      <f:facet name="separator">
+        <af:spacer id="eventCalendarPropertiesButtonPanelSpacer" width="10"/>
+      </f:facet>
+      <af:outputText id="inlineMessage" noWrap="true"
+                     styleClass="#{eventCalendarPropertiesBean.inlineMessageClass}"
+                     value="#{eventCalendarPropertiesBean.inlineMessageText}"
+                     partialTriggers="saveButton"/>
+      <af:commandButton id="saveButton"
+                        inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                        text="#{applicationBundle.button_save}"
+                        actionListener="#{eventCalendarPropertiesBean.saveButtonHandler}"/>
+      <af:commandButton id="cancelButton" immediate="true"
+                        inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                        text="#{applicationBundle.button_cancel}"
+                        actionListener="#{eventCalendarPropertiesBean.cancelButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:inputText id="currentCalendarNameIT" required="true" maximumLength="20"
+                  rendered="#{eventCalendarPropertiesBean.renderCurrentCalendarNameIT}"
+                  label="#{applicationBundle.label_calendar_name}"
+                  value="#{eventCalendarPropertiesBean.currentCalendarName}"
+                  autoSubmit="true"
+                  valueChangeListener="#{eventCalendarPropertiesBean.anyValueChangeHandler}"/>
+    <af:spacer id="Spacer3" height="10"/>
+    <af:panelGroupLayout id="eventCalendarDateListButtonPanel"
+                         layout="horizontal">
+      <f:facet name="separator">
+        <af:spacer id="eventCalendarDateListButtonPanelSpacer" width="10"/>
+      </f:facet>
+      <af:commandButton id="addEventDateButton"
+                        text="#{applicationBundle.button_add_date}"
+                        actionListener="#{eventCalendarPropertiesBean.addButtonHandler}"/>
+      <af:commandButton id="deleteEventDateButton"
+                        text="#{applicationBundle.button_delete_date}"
+                        binding="#{eventCalendarPropertiesBean.deleteEventDateButton}"
+                        actionListener="#{eventCalendarPropertiesBean.deleteButtonHandler}"
+                        disabled="true"/>
+      <af:commandButton id="undoDeleteEventDateButton"
+                        text="#{applicationBundle.button_undo_delete_date}"
+                        binding="#{eventCalendarPropertiesBean.undoDeleteEventDateButton}"
+                        actionListener="#{eventCalendarPropertiesBean.editButtonHandler}"
+                        disabled="true"/>
+    </af:panelGroupLayout>
+    <af:spacer id="Spacer4" height="10"/>
+    <af:table id="EDTable" var="row" varStatus="rowStatus" width="300"
+              inlineStyle="height: 200px;" contentDelivery="immediate"
+              rowSelection="single" rowBandingInterval="0"
+              disableColumnReordering="true" columnSelection="none"
+              columnStretching="last"
+              emptyText="#{applicationBundle.info_empty_event_date_list}"
+              summary="Event Date List"
+              value="#{eventCalendarPropertiesBean.eventCalendarDateDAOs}"
+              binding="#{eventCalendarPropertiesBean.eventDateTable}"
+              selectionListener="#{eventCalendarPropertiesBean.tableRowSelectionHandler}">
+      <af:column id="EDTableColStatus" rowHeader="unstyled" width="100px"
+                 align="center" sortable="false"
+                 headerText="#{applicationBundle.column_status}">
+        <af:selectOneChoice id="EDTableRowStatus" simple="true" readOnly="true"
+                            value="#{row.dateType}">
+          <f:selectItems id="EDTableRowStatusSI"
+                         value="#{eventCalendarPropertiesBean.dateTypeList}"/>
+        </af:selectOneChoice>
+      </af:column>
+      <af:column id="EDTableColDate" align="center" sortable="true"
+                 sortProperty="date"
+                 headerText="#{applicationBundle.column_dates}">
+        <af:outputText id="EDTableRowDate" value="#{row.date}"/>
+      </af:column>
+    </af:table>
+    <af:spacer id="LastSpacer" height="15"/>
+  </af:panelGroupLayout>
+</jsp:root>

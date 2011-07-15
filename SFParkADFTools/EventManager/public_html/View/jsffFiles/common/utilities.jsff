@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="utilities">
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- DIALOGS -->
+    <af:popup id="popupUI" binding="#{dialogBean.dialogPopup}"
+              contentDelivery="lazyUncached">
+      <af:dialog id="dialogUI" modal="true" type="none" contentWidth="330"
+                 closeIconVisible="false" title="#{dialogBean.dialogTitle}">
+        <af:panelGroupLayout id="dialogUIPGL1" layout="horizontal">
+          <f:facet name="separator">
+            <af:spacer id="dialogUIPGL1Spacer" width="10"/>
+          </f:facet>
+          <af:icon id="iconUI" name="#{dialogBean.dialogIconName}"/>
+          <af:outputText id="outputTextUI" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 300px;">#{dialogBean.dialogText}&lt;/div>'/>
+        </af:panelGroupLayout>
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="dialogUIPGL2" layout="horizontal"
+                               halign="right">
+            <f:facet name="separator">
+              <af:spacer id="dialogUIPGL2Spacer" width="10"/>
+            </f:facet>
+            <af:commandButton id="dialogOKButton" partialSubmit="true"
+                              inlineStyle="width: 80px;"
+                              text="#{applicationBundle.button_ok}"
+                              binding="#{dialogBean.dialogOKButton}"/>
+            <af:commandButton id="dialogCancelButton" partialSubmit="true"
+                              inlineStyle="width: 80px;"
+                              text="#{applicationBundle.button_cancel}"
+                              binding="#{dialogBean.dialogCancelButton}"/>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>
+<!--
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+    < ! - - FILE UPLOAD - - >
+    <af:popup id="uploadFilePopup" contentDelivery="lazyUncached"
+              binding="#{uploadFileBean.uploadFilePopup}">
+      <af:dialog id="uploadFileDialog" modal="true" type="none"
+                 closeIconVisible="true" title="#{uploadFileBean.dialogTitle}">
+        <af:inputFile id="uploadFile" required="true"
+                      label="#{uploadFileBean.inputFileLabel}"
+                      value="#{uploadFileBean.uploadedFile}"/>
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="uploadFilePGL" layout="horizontal"
+                               halign="right">
+            <f:facet name="separator">
+              <af:spacer id="uploadFilePGL_spacer" width="10"/>
+            </f:facet>
+            <af:commandButton id="CB3" partialSubmit="true"
+                              text="#{buttonBundle.button_upload}"
+                              inlineStyle="width: 80px;"
+                              action="#{uploadFileBean.__uploadButtonClickAction}"/>
+            <af:commandButton id="CB4" partialSubmit="true" immediate="true"
+                              text="#{buttonBundle.button_cancel}"
+                              inlineStyle="width: 80px;"
+                              action="#{uploadFileBean.__cancelButtonClickAction}"/>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+    < ! - - +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ - - >
+  </af:panelGroupLayout>
+</jsp:root>
+
+-->

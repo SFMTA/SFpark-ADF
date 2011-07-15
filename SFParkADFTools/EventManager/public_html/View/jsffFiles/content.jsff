@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelStretchLayout id="contentPanelStretchLayout" startWidth="200px"
+                         topHeight="0px">
+    <f:facet name="top">
+      <f:subview id="subView_subHeading">
+        <jsp:include page="/View/jsffFiles/common/utilities.jsff" flush="true"/>
+      </f:subview>
+    </f:facet>
+    <!--
+    <f:facet name="start">
+      <f:subview id="subView_navigation">
+        <jsp:include page="/View/jsffFiles/navigation.jsff" flush="true"/>
+      </f:subview>
+    </f:facet>
+    -->
+    <f:facet name="center">
+      <af:panelGroupLayout id="contentPanelGroupLayout" layout="scroll"
+                           styleClass="AFStretchWidth"
+                           inlineStyle="padding-left: 15px; padding-right: 15px;">
+        <af:region id="cRegion" binding="#{navigationBean.contentRichRegion}"
+                   value="#{navigationBean.contentRegionModel}"/>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

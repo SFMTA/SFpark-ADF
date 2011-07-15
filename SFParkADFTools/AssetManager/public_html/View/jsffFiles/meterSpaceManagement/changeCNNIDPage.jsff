@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="changeCNNIDPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="changeCNNIDPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{changeCNNIDBean.parentBreadCrumbPageTitle}"
+                                actionListener="#{changeCNNIDBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{assetManagerBundle.string_choose_cnn_id}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="changeCNNIDButtonPanel" layout="horizontal"
+                         halign="right" inlineStyle="width: 600px;">
+      <f:facet name="separator">
+        <af:spacer id="changeCNNIDButtonPanelSpacer" width="10"/>
+      </f:facet>
+      <af:commandButton id="cancelButton" immediate="true"
+                        inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                        text="#{buttonBundle.button_cancel}"
+                        actionListener="#{changeCNNIDBean.cancelButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:inputText id="streetNumberIT" readOnly="true"
+                  label="#{labelBundle.label_cnn_street_number}"
+                  value="#{changeCNNIDBean.streetNumber}"/>
+    <af:panelGroupLayout id="distancePanel" layout="horizontal">
+      <af:inputText id="distanceIT" maximumLength="3" columns="5"
+                    required="true" label="#{labelBundle.label_cnn_distance}"
+                    value="#{changeCNNIDBean.cnnDistance}">
+        <af:validateLongRange minimum="1" maximum="999"/>
+      </af:inputText>
+      <af:spacer id="distanceITSpacer" width="10"/>
+      <af:commandButton id="refreshTable" inlineStyle="width: 100px;"
+                        text="#{buttonBundle.button_refresh_table}"
+                        actionListener="#{changeCNNIDBean.saveButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:table id="CNTable" var="row" varStatus="rowStatus" width="600"
+              inlineStyle="height: 200px;" contentDelivery="immediate"
+              rowSelection="single" rowBandingInterval="1"
+              columnSelection="none" disableColumnReordering="true"
+              columnStretching="last"
+              emptyText="#{assetManagerBundle.info_empty_cnn_id_list}"
+              summary="CNN ID List" value="#{changeCNNIDBean.CNNIDList}"
+              binding="#{changeCNNIDBean.cnnIDTable}"
+              selectionListener="#{changeCNNIDBean.tableRowSelectionHandler}">
+      <af:column id="CNTableColCNNID" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_cnn_id}">
+        <af:outputText id="CNTableRowCNNID" value="#{row.CNNID}"/>
+      </af:column>
+      <af:column id="CNTableColStreetName" align="center" width="150px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_street_name}">
+        <af:outputText id="CNTableRowStreetName" value="#{row.streetName}"/>
+      </af:column>
+      <af:column id="CNTableColDistance" align="center" width="100px"
+                 sortable="false" headerText="#{columnBundle.column_distance}">
+        <af:outputText id="CNTableRowDistance" value="#{row.distance}"/>
+      </af:column>
+      <af:column id="CNTableColOddAddress" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_odd_address}">
+        <af:outputText id="CNTableRowOddAddress" value="#{row.oddAddress}"/>
+      </af:column>
+      <af:column id="CNTableColEvenAddress" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_even_address}">
+        <af:outputText id="CNTableRowEvenAddress" value="#{row.evenAddress}"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>
