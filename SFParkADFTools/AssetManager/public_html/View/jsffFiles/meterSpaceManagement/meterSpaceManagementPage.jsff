@@ -321,14 +321,16 @@
                             inlineStyle="width: 150px;"
                             text="#{buttonBundle.button_delete_parking_space}"
                             actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
-                            partialTriggers="undeleteParkingSpaceButton" shortDesc="Use caution before performing the operation."/>
+                            partialTriggers="undeleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_delete_parking_space}"/>
           <af:commandButton id="undeleteParkingSpaceButton"
                             rendered="#{meterSpaceManagementBean.renderButtons}"
                             visible="#{meterSpaceManagementBean.visibleUndeleteParkingSpaceButton}"
                             inlineStyle="width: 150px;"
                             text="#{buttonBundle.button_undelete_parking_space}"
                             actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
-                            partialTriggers="deleteParkingSpaceButton" shortDesc="Make sure to undelete the operating and rate schedules manually."/>
+                            partialTriggers="deleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_undelete_parking_space}"/>
         </af:panelLabelAndMessage>
       </af:panelFormLayout>
     </af:panelGroupLayout>

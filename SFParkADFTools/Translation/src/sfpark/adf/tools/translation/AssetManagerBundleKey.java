@@ -45,6 +45,9 @@ public enum AssetManagerBundleKey {
 
     info_select_schedule_template,
 
+    info_delete_parking_space,
+    info_undelete_parking_space,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
