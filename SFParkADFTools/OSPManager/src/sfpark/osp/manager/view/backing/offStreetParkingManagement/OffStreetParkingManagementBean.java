@@ -32,9 +32,10 @@ import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
-import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 import sfpark.adf.tools.utilities.ui.DayUI;
+
+import sfpark.adf.tools.utilities.ui.TimeUI;
 
 import sfpark.osp.manager.application.key.PageFlowScopeKey;
 import sfpark.osp.manager.view.backing.BaseBean;
@@ -295,6 +296,14 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
 
     public List<SelectItem> getListToDay() {
         return DayUI.TO_DAY_LIST;
+    }
+    
+    public List<SelectItem> getListFromTime() {
+        return TimeUI.FROM_TIME_LIST;
+    }
+
+    public List<SelectItem> getListToTime() {
+        return TimeUI.TO_TIME_LIST;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -860,8 +869,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
      * Validity Tests:
      * ==============
      *    1. All TO dates should occur after FROM dates
-     *    2. All TO times should occur after FROM times
-     *    3. No two rows should be exactly similar
+     *    2. No two rows should be exactly similar
      *
      * @param garageOPHours
      * @return
@@ -882,18 +890,6 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
                 setInlineMessageText("OP Hours Table: TO date should be after FROM date in row " +
                                      (i + 1));
                 return false;
-            }
-
-            // For each row, TO time should be after FROM time
-            int fromTime =
-                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(iDTO.getFromTime()));
-            int toTime =
-                Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(iDTO.getToTime()));
-            if (fromTime >= toTime) {
-                setInlineMessageText("OP Hours Table: TO time should be after FROM time in row " +
-                                     (i + 1));
-                return false;
-
             }
 
             // No two rows should be similar

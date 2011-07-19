@@ -639,21 +639,19 @@
         <af:column id="GOHTableColFromTime" align="center" width="100px"
                    sortable="false"
                    headerText="#{columnBundle.column_from_time}">
-          <af:inputText id="GOHTableRowFromTime" simple="true" columns="5"
-                        value="#{row.fromTime}">
-            <af:validateRegExp pattern="#{globalBean.fromTimePattern}"
-                               hint="#{commonBundle.info_from_time}"
-                               messageDetailNoMatch="#{commonBundle.info_from_time}"/>
-          </af:inputText>
+          <af:selectOneChoice id="GOHTableRowFromTimeSOC" simple="true"
+                              value="#{row.fromTime}">
+            <f:selectItems id="GOHTableRowFromTimeSOCSI"
+                           value="#{offStreetParkingManagementBean.listFromTime}"/>
+          </af:selectOneChoice>
         </af:column>
         <af:column id="GOHTableColToTime" align="center" width="100px"
                    sortable="false" headerText="#{columnBundle.column_to_time}">
-          <af:inputText id="GOHTableRowToTime" simple="true" columns="5"
-                        value="#{row.toTime}">
-            <af:validateRegExp pattern="#{globalBean.toTimePattern}"
-                               hint="#{commonBundle.info_to_time}"
-                               messageDetailNoMatch="#{commonBundle.info_to_time}"/>
-          </af:inputText>
+          <af:selectOneChoice id="GOHTableRowToTimeSOC" simple="true"
+                              value="#{row.toTime}">
+            <f:selectItems id="GOHTableRowToTimeSOCSI"
+                           value="#{offStreetParkingManagementBean.listToTime}"/>
+          </af:selectOneChoice>
         </af:column>
       </af:table>
     </af:panelGroupLayout>
