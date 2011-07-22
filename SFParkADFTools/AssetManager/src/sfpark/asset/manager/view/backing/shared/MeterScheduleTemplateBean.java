@@ -15,12 +15,12 @@ import sfpark.adf.tools.model.data.dO.meterSchedValidations.MeterSchedValidation
 
 import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
-import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryBulkDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 
 import sfpark.adf.tools.model.data.helper.MeterScheduleType;
 
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
+import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterScheduleValidationsProvider;
 
@@ -134,12 +134,12 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
             // ++++++++++++++++++++++++++++++++++
             // Retrieve the best possible colour option
 
-            ParkingSpaceInventoryBulkDTO currentParkingSpaceInventoryBulkDTO =
-                (ParkingSpaceInventoryBulkDTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey());
+            ParkingSpaceInventoryBulkTO currentParkingSpaceInventoryBulkTO =
+                (ParkingSpaceInventoryBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey());
 
             String capColor =
-                (currentParkingSpaceInventoryBulkDTO.isToBeUpdatedCapColor()) ?
-                currentParkingSpaceInventoryBulkDTO.getCapColor() : null;
+                (currentParkingSpaceInventoryBulkTO.isToBeUpdatedCapColor()) ?
+                currentParkingSpaceInventoryBulkTO.getCapColor() : null;
 
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++

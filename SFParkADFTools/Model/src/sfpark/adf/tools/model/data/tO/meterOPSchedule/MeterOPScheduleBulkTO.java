@@ -33,6 +33,12 @@ public class MeterOPScheduleBulkTO extends BaseTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR EASE
 
+    public void setAllBoolean(boolean value) {
+        setDeleteAllOPSchedules(value);
+        setDeleteAllALTSchedules(value);
+        setDeleteAllTOWSchedules(value);
+    }
+
     public void setProperBoolean(MeterScheduleType scheduleType) {
         if (scheduleType.isScheduleOP()) {
             setDeleteAllOPSchedules(true);

@@ -1,12 +1,16 @@
 package sfpark.adf.tools.model.data.dto.parkingSpaceInventory;
 
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.meterModels.MeterModelsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 
+@Deprecated
 public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
     public ParkingSpaceInventoryBulkDTO() {
         super();
@@ -18,10 +22,18 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
         ParkingSpaceInventoryDTO.SENSOR_FLAG;
     public static final String ACTIVE_METER_FLAG =
         ParkingSpaceInventoryDTO.ACTIVE_METER_FLAG;
+    public static final String REASON_CODE =
+        ParkingSpaceInventoryDTO.REASON_CODE;
     public static final String CAP_COLOR = ParkingSpaceInventoryDTO.CAP_COLOR;
-    public static final String PCO_BEAT = ParkingSpaceInventoryDTO.PCO_BEAT;
-    public static final String OLD_RATE_AREA =
-        ParkingSpaceInventoryDTO.OLD_RATE_AREA;
+
+    public static final String LEGISLATION_REF =
+        ParkingSpaceInventoryDTO.LEGISLATION_REF;
+    public static final String LEGISLATION_DT =
+        ParkingSpaceInventoryDTO.LEGISLATION_DT;
+    public static final String WORK_ORDER =
+        ParkingSpaceInventoryDTO.WORK_ORDER;
+    public static final String COMMENTS = ParkingSpaceInventoryDTO.COMMENTS;
+
     public static final String SMART_METER_FLAG =
         ParkingSpaceInventoryDTO.SMART_METER_FLAG;
     public static final String METER_TYPE =
@@ -49,16 +61,25 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
             AttributeListForUpdate.add(ACTIVE_METER_FLAG);
         }
 
+        if (this.isToBeUpdatedReasonCode()) {
+            AttributeListForUpdate.add(REASON_CODE);
+        }
+
         if (this.isToBeUpdatedCapColor()) {
             AttributeListForUpdate.add(CAP_COLOR);
         }
 
-        if (this.isToBeUpdatedPCOBeat()) {
-            AttributeListForUpdate.add(PCO_BEAT);
+        if (this.isToBeUpdatedLegislation()) {
+            AttributeListForUpdate.add(LEGISLATION_REF);
+            AttributeListForUpdate.add(LEGISLATION_DT);
         }
 
-        if (this.isToBeUpdatedOldRateArea()) {
-            AttributeListForUpdate.add(OLD_RATE_AREA);
+        if (this.isToBeUpdatedWorkOrder()) {
+            AttributeListForUpdate.add(WORK_ORDER);
+        }
+
+        if (this.isToBeUpdatedComments()) {
+            AttributeListForUpdate.add(COMMENTS);
         }
 
         if (this.isToBeUpdatedMeterDetails()) {
@@ -85,14 +106,22 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
              ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedSensorFlag())) &&
             (ObjectUtil.getNullSafe(this.isToBeUpdatedActiveMeterFlag()) ==
              ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedActiveMeterFlag())) &&
+            (ObjectUtil.getNullSafe(this.isToBeUpdatedReasonCode()) ==
+             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedReasonCode())) &&
             (ObjectUtil.getNullSafe(this.isToBeUpdatedCapColor()) ==
              ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedCapColor())) &&
-            (ObjectUtil.getNullSafe(this.isToBeUpdatedPCOBeat()) ==
-             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedPCOBeat())) &&
-            (ObjectUtil.getNullSafe(this.isToBeUpdatedOldRateArea()) ==
-             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedOldRateArea())) &&
-            (ObjectUtil.getNullSafe(this.isToBeUpdatedMeterDetails()) ==
-             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedMeterDetails()))) {
+            (ObjectUtil.getNullSafe
+
+            (this.isToBeUpdatedLegislation()) ==
+            ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedLegislation())) &&
+            (ObjectUtil.getNullSafe(this.isToBeUpdatedWorkOrder()) ==
+             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedWorkOrder())) &&
+            (ObjectUtil.getNullSafe(this.isToBeUpdatedComments()) ==
+             ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedComments())) &&
+            (ObjectUtil.
+
+            getNullSafe(this.isToBeUpdatedMeterDetails()) ==
+            ObjectUtil.getNullSafe(originalDTO.isToBeUpdatedMeterDetails()))) {
 
             return true;
         }
@@ -104,6 +133,10 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // DISPLAY PURPOSES ONLY
+
+    public boolean isUnmetered() {
+        return StringUtil.areEqual(getActiveMeterFlag(), "U");
+    }
 
     public void setDisplayMeterDetails(MeterModelsDO meterModelsDO) {
 
@@ -129,14 +162,21 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
     private boolean ToBeUpdatedActiveMeterFlag;
     private String ActiveMeterFlag;
 
+    private boolean ToBeUpdatedReasonCode;
+    private String ReasonCode;
+
     private boolean ToBeUpdatedCapColor;
     private String CapColor;
 
-    private boolean ToBeUpdatedPCOBeat;
-    private String PCOBeat;
+    private boolean ToBeUpdatedLegislation;
+    private String LegislationReference;
+    private Date LegislationDate;
 
-    private boolean ToBeUpdatedOldRateArea;
-    private String OldRateArea;
+    private boolean ToBeUpdatedWorkOrder;
+    private String WorkOrder;
+
+    private boolean ToBeUpdatedComments;
+    private String Comments;
 
     private boolean ToBeUpdatedMeterDetails;
     private MeterModelsDO MeterDetails;
@@ -182,6 +222,22 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
         return ActiveMeterFlag;
     }
 
+    public void setToBeUpdatedReasonCode(boolean ToBeUpdatedReasonCode) {
+        this.ToBeUpdatedReasonCode = ToBeUpdatedReasonCode;
+    }
+
+    public boolean isToBeUpdatedReasonCode() {
+        return ToBeUpdatedReasonCode;
+    }
+
+    public void setReasonCode(String ReasonCode) {
+        this.ReasonCode = ReasonCode;
+    }
+
+    public String getReasonCode() {
+        return ReasonCode;
+    }
+
     public void setToBeUpdatedCapColor(boolean ToBeUpdatedCapColor) {
         this.ToBeUpdatedCapColor = ToBeUpdatedCapColor;
     }
@@ -198,36 +254,60 @@ public class ParkingSpaceInventoryBulkDTO extends BaseDTO {
         return CapColor;
     }
 
-    public void setToBeUpdatedPCOBeat(boolean ToBeUpdatedPCOBeat) {
-        this.ToBeUpdatedPCOBeat = ToBeUpdatedPCOBeat;
+    public void setToBeUpdatedLegislation(boolean ToBeUpdatedLegislation) {
+        this.ToBeUpdatedLegislation = ToBeUpdatedLegislation;
     }
 
-    public boolean isToBeUpdatedPCOBeat() {
-        return ToBeUpdatedPCOBeat;
+    public boolean isToBeUpdatedLegislation() {
+        return ToBeUpdatedLegislation;
     }
 
-    public void setPCOBeat(String PCOBeat) {
-        this.PCOBeat = PCOBeat;
+    public void setLegislationReference(String LegislationReference) {
+        this.LegislationReference = LegislationReference;
     }
 
-    public String getPCOBeat() {
-        return PCOBeat;
+    public String getLegislationReference() {
+        return LegislationReference;
     }
 
-    public void setToBeUpdatedOldRateArea(boolean ToBeUpdatedOldRateArea) {
-        this.ToBeUpdatedOldRateArea = ToBeUpdatedOldRateArea;
+    public void setLegislationDate(Date LegislationDate) {
+        this.LegislationDate = LegislationDate;
     }
 
-    public boolean isToBeUpdatedOldRateArea() {
-        return ToBeUpdatedOldRateArea;
+    public Date getLegislationDate() {
+        return LegislationDate;
     }
 
-    public void setOldRateArea(String OldRateArea) {
-        this.OldRateArea = OldRateArea;
+    public void setToBeUpdatedWorkOrder(boolean ToBeUpdatedWorkOrder) {
+        this.ToBeUpdatedWorkOrder = ToBeUpdatedWorkOrder;
     }
 
-    public String getOldRateArea() {
-        return OldRateArea;
+    public boolean isToBeUpdatedWorkOrder() {
+        return ToBeUpdatedWorkOrder;
+    }
+
+    public void setWorkOrder(String WorkOrder) {
+        this.WorkOrder = WorkOrder;
+    }
+
+    public String getWorkOrder() {
+        return WorkOrder;
+    }
+
+    public void setToBeUpdatedComments(boolean ToBeUpdatedComments) {
+        this.ToBeUpdatedComments = ToBeUpdatedComments;
+    }
+
+    public boolean isToBeUpdatedComments() {
+        return ToBeUpdatedComments;
+    }
+
+    public void setComments(String Comments) {
+        this.Comments = Comments;
+    }
+
+    public String getComments() {
+        return Comments;
     }
 
     public void setToBeUpdatedMeterDetails(boolean ToBeUpdatedMeterDetails) {

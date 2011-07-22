@@ -139,8 +139,6 @@ public class AllowedValuesProvider {
         private static final long TIME_TO_UPDATE =
             TimeToUpdate.FOUR_HOURS.getTimeInMillis();
 
-        public static final String GREY = "Grey";
-
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -91,6 +91,11 @@ public final class ADFUIDisplayUtil {
                                            true);
     }
 
+    public static List<SelectItem> getActiveMeterFlagBulkDisplayList() {
+        return getAllowedValuesDisplayList(DataRepositoryUtil.getActiveMeterFlagBulkList(),
+                                           true);
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -189,6 +194,7 @@ public final class ADFUIDisplayUtil {
         List<SelectItem> displayList = new ArrayList<SelectItem>();
 
         for (AllowedValuesDTO allowedValue : allowedValuesList) {
+
             StringBuffer label =
                 new StringBuffer(allowedValue.getColumnValue());
 
@@ -199,6 +205,7 @@ public final class ADFUIDisplayUtil {
 
             displayList.add(new SelectItem(allowedValue.getColumnValue(),
                                            label.toString()));
+
         }
 
         return displayList;

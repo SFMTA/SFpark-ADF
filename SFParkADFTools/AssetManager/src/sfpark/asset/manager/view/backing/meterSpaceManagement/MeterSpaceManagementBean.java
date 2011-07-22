@@ -1336,7 +1336,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                     (iDTO.getSchedulePriority() ==
                      jDTO.getSchedulePriority()) &&
                     SQLDateUtil.areEqual(iDTO.getEffectiveFromDate(),
-                                         jDTO.getEffectiveToDate())) {
+                                         jDTO.getEffectiveFromDate())) {
 
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_invalid_unique_constraints,
                                                                               uiTableName,

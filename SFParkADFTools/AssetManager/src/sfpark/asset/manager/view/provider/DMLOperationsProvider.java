@@ -17,6 +17,8 @@ import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInvento
 import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
 import sfpark.adf.tools.model.data.helper.MeterRateType;
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
+import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
+import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.helper.dO.PCOBeatsDOStatus;
 import sfpark.adf.tools.model.helper.dO.RateAreasDOStatus;
@@ -235,24 +237,21 @@ public final class DMLOperationsProvider {
         return DTO;
     }
 
-    public ParkingSpaceInventoryBulkDTO getNewParkingSpaceInventoryBulkDTO() {
-        LOGGER.entering(CLASSNAME, "getNewParkingSpaceInventoryBulkDTO");
+    public ParkingSpaceInventoryBulkTO getNewParkingSpaceInventoryBulkTO() {
+        LOGGER.entering(CLASSNAME, "getNewParkingSpaceInventoryBulkTO");
 
-        ParkingSpaceInventoryBulkDTO DTO = new ParkingSpaceInventoryBulkDTO();
+        ParkingSpaceInventoryBulkTO TO = new ParkingSpaceInventoryBulkTO();
 
-        DTO.setSensorFlag(DataRepositoryUtil.getSensorFlagDefaultValue());
-        DTO.setActiveMeterFlag(DataRepositoryUtil.getActiveMeterFlagDefaultValue());
-        DTO.setCapColor(DataRepositoryUtil.getCapColorDefaultValue());
+        TO.setSensorFlag(DataRepositoryUtil.getSensorFlagDefaultValue());
+        TO.setCapColor(DataRepositoryUtil.getCapColorDefaultValue());
 
-        DTO.setPCOBeat("-");
-        DTO.setOldRateArea("-");
+        TO.setActiveMeterFlag(DataRepositoryUtil.getActiveMeterFlagBulkDefaultValue());
+        TO.setReasonCode(DataRepositoryUtil.getReasonCodeDefaultValue());
+        TO.setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
 
-        DTO.setMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
-        DTO.setMSPayStationID("-");
+        LOGGER.exiting(CLASSNAME, "getNewParkingSpaceInventoryBulkTO");
 
-        LOGGER.exiting(CLASSNAME, "getNewParkingSpaceInventoryBulkDTO");
-
-        return DTO;
+        return TO;
     }
 
     public MeterOPScheduleBulkTO getNewMeterOPScheduleBulkTO() {
@@ -265,6 +264,19 @@ public final class DMLOperationsProvider {
         TO.setDeleteAllTOWSchedules(false);
 
         LOGGER.exiting(CLASSNAME, "getNewMeterOPScheduleBulkTO");
+
+        return TO;
+    }
+
+    public MeterRateScheduleBulkTO getNewMeterRateScheduleBulkTO() {
+        LOGGER.entering(CLASSNAME, "getNewMeterRateScheduleBulkTO");
+
+        MeterRateScheduleBulkTO TO = new MeterRateScheduleBulkTO();
+
+        TO.setDeleteAllBaseRates(false);
+        TO.setDeleteAllHourlyRates(false);
+
+        LOGGER.exiting(CLASSNAME, "getNewMeterRateScheduleBulkTO");
 
         return TO;
     }
@@ -577,11 +589,20 @@ public final class DMLOperationsProvider {
         return performOperation(tableRecords);
     }
 
+    public OperationStatus editBulkParkingSpace(ParkingSpaceInventoryBulkTO parkingSpaceInventoryBulkTO,
+                                                MeterOPScheduleBulkTO meterOPScheduleBulkTO,
+                                                List<MeterOPScheduleDTO> meterSchedules,
+                                                MeterRateScheduleBulkTO meterRateScheduleBulkTO,
+                                                List<MeterRateScheduleDTO> meterRates) {
+        return null; // TODO This is faulty
+    }
+
     /**
      * Applies the necessary business logic for the Bulk Edit Mode of Parking Space.
      *
      * This method returns NULL when no changes are made to the original data
      *
+     * @deprecated
      * @param parkingSpaceInventoryBulkDTO
      * @param meterOPScheduleBulkTO
      * @param meterSchedules
@@ -612,8 +633,9 @@ public final class DMLOperationsProvider {
         // ++++++++++++++++++++++++++++++++++
         // Parking Space
 
+        // TODO
         ParkingSpaceInventoryBulkDTO originalParkingSpaceInventoryBulkDTO =
-            getNewParkingSpaceInventoryBulkDTO();
+            new ParkingSpaceInventoryBulkDTO();
 
         if (!parkingSpaceInventoryBulkDTO.isSameAs(originalParkingSpaceInventoryBulkDTO)) {
 

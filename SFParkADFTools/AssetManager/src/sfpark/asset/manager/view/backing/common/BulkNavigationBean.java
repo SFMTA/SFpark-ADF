@@ -111,14 +111,17 @@ public class BulkNavigationBean extends BaseBean {
         String ADFCtrlFromURL =
             getRequestParameterValue(RequestParameter.ADF_CTRL_STATE.getKey());
 
-        if (
-            // HTTP Method is GET
+        if ( // HTTP Method is GET
             httpMethod.equalsIgnoreCase("GET") &&
 
             // It is a new Faces Context Control State
             !StringUtil.areEqual(ADFCtrlCurrent, ADFCtrlFromURL)) {
 
-            // A new request has been received. So start all processes from scratch
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // NEW Request encountered
+            // Start all processes from scratch
 
             // Clear all cache
             clearAllCache();
@@ -126,17 +129,38 @@ public class BulkNavigationBean extends BaseBean {
             // Set the ADF Control Value
             setCurrentADFControl(ADFCtrlFromURL);
 
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // Retrieve the parameters
+
             String parkingSpaceGroupID =
                 getRequestParameterValue(ParameterKey.PARKING_SPACE_GROUP_ID.getKey());
 
-            if (StringUtil.isDigitsONLY(parkingSpaceGroupID)) {
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                ParkingSpaceGroupsDOStatus parkingSpaceGroupStatus =
-                    ParkingSpaceGroupsProvider.INSTANCE.checkForParkingSpaceGroupID(parkingSpaceGroupID);
+            if ( // VALID Parameters
+                StringUtil.isDigitsONLY(parkingSpaceGroupID)) {
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
 
-                if (parkingSpaceGroupStatus.existsDO()) {
+                if ( // Can EDIT
+                    LoggedInUserUtil.canEditBulkParkingSpace()) {
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    ParkingSpaceGroupsDOStatus parkingSpaceGroupStatus =
+                        ParkingSpaceGroupsProvider.INSTANCE.checkForParkingSpaceGroupID(parkingSpaceGroupID);
 
-                    if (!LoggedInUserUtil.canReadOnlyParkingSpace()) {
+                    if ( // Parking Space Group EXISTS
+                        parkingSpaceGroupStatus.existsDO()) {
+                        // ++++++++++++++++++++++++++++++++++
+                        // ++++++++++++++++++++++++++++++++++
+                        // ++++++++++++++++++++++++++++++++++
+
                         setCurrentPageMode(NavigationMode.EDIT);
                         setCurrentPageType(NavigationType.BULK);
 
@@ -146,24 +170,33 @@ public class BulkNavigationBean extends BaseBean {
                                              NavigationFlow.BulkEditParkingSpace.name());
 
                     } else {
-                        LOGGER.warning("Insufficient Privileges");
+                        // ++++++++++++++++++++++++++++++++++
+                        // ++++++++++++++++++++++++++++++++++
+                        // ++++++++++++++++++++++++++++++++++
+                        LOGGER.warning("Parking space does not exist");
                         setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_insufficient_privileges));
+                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_exists_parking_space_group,
+                                                                                   parkingSpaceGroupID));
                         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                              NavigationFlow.ERROR.name());
                     }
 
                 } else {
-                    LOGGER.warning("Parking space group does not exist");
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    LOGGER.warning("Insuffient Privileges: User without WRITE access.");
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_exists_parking_space_group,
-                                                                               parkingSpaceGroupID));
+                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_insufficient_privileges));
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.ERROR.name());
                 }
 
             } else {
-                LOGGER.debug("Invalid Parameters");
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                LOGGER.warning("Invalid Parameters");
                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
                                       TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_asset_manager_bulk_parameters,
                                                                            parkingSpaceGroupID));
@@ -171,9 +204,12 @@ public class BulkNavigationBean extends BaseBean {
                                      NavigationFlow.ERROR.name());
             }
 
-        } else if (
-            // Http Method is POST
+        } else if ( // HTTP Method is POST
             httpMethod.equalsIgnoreCase("POST")) {
+
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
 
             setCurrentADFControl(ADFCtrlFromURL);
         }

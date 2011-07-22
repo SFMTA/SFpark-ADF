@@ -39,6 +39,7 @@ public enum ErrorBundleKey {
 
     error_not_work_postid_and_mspaystationid,
     error_bulk_not_work_postid_and_mspaystationid,
+    error_bulk_invalid_mspaystationid,
 
     error_off_street_needs_osp_id,
 
@@ -56,6 +57,8 @@ public enum ErrorBundleKey {
     error_meter_rate_time_to_before_from,
 
     error_meter_schedule_op_invalid_cap_color,
+
+    error_bulk_meter_schedule_op_invalid_cap_color,
 
     error_meter_schedule_invalid_unique_constraints,
     error_meter_rate_invalid_unique_constraints,

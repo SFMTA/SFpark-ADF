@@ -34,6 +34,10 @@ public final class LoggedInUserUtil {
         return hasReadOnlyAccess();
     }
 
+    public static boolean canEditBulkParkingSpace() {
+        return hasWriteAccess();
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

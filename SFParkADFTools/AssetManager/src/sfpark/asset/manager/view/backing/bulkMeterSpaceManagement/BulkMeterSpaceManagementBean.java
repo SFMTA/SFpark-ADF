@@ -16,17 +16,21 @@ import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 import org.apache.myfaces.trinidad.model.RowKeySet;
 
-import org.apache.myfaces.trinidad.model.RowKeySetImpl;
-
 import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
-import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryBulkDTO;
+import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 
+import sfpark.adf.tools.model.data.helper.MeterRateType;
 import sfpark.adf.tools.model.data.helper.MeterScheduleType;
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
+import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
+import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 import sfpark.adf.tools.model.exception.ExceptionType;
-import sfpark.adf.tools.model.provider.MeterModelsProvider;
+import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.status.OperationStatus;
+import sfpark.adf.tools.translation.CommonBundleKey;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -55,10 +59,12 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
     private RichInputText msPayStationIDIT;
 
     private RichCommandButton deleteSchedButton;
-    private RichCommandButton selectAllSchedButton;
-    private RichCommandButton unselectAllSchedButton;
 
     private RichTable meterScheduleTable;
+
+    private RichCommandButton deleteRateButton;
+
+    private RichTable meterRateTable;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -78,34 +84,37 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
     }
 
     public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_TO.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DTO INFORMATION
+    // ALL TO and DTO INFORMATION
 
-    public ParkingSpaceInventoryBulkDTO getCurrentParkingSpaceInventoryBulkDTO() {
-        ParkingSpaceInventoryBulkDTO DTO =
-            (ParkingSpaceInventoryBulkDTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey());
+    public ParkingSpaceInventoryBulkTO getParkingSpaceInventoryBulkTO() {
+        ParkingSpaceInventoryBulkTO TO =
+            (ParkingSpaceInventoryBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey());
 
-        if (DTO == null) {
+        if (TO == null) {
 
             ParkingSpaceGroupsDO parkingSpaceGroupsDO =
                 (ParkingSpaceGroupsDO)getPageFlowScopeValue(PageFlowScopeKey.PARKING_SPACE_GROUPS_DO.getKey());
 
-            DTO =
-DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
+            TO =
+ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkTO();
 
-            DTO.setParkingSpaceIDList(parkingSpaceGroupsDO.getParkingSpaceIDList());
+            TO.setParkingSpaceIDList(parkingSpaceGroupsDO.getParkingSpaceIDList());
 
-            setPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey(),
-                                  DTO);
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey(),
+                                  TO);
         }
-        return DTO;
+
+        return TO;
     }
 
     public MeterOPScheduleBulkTO getMeterOPScheduleBulkTO() {
@@ -136,145 +145,114 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         return meterScheduleDTOs;
     }
 
-    /*
+    public MeterRateScheduleBulkTO getMeterRateScheduleBulkTO() {
+        MeterRateScheduleBulkTO TO =
+            (MeterRateScheduleBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_TO.getKey());
+
+        if (TO == null) {
+            TO =
+ DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleBulkTO();
+
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_TO.getKey(),
+                                  TO);
+        }
+
+        return TO;
+    }
+
+    public List<MeterRateScheduleDTO> getMeterRates() {
+
+        List<MeterRateScheduleDTO> meterRateDTOs =
+            (List<MeterRateScheduleDTO>)getPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey());
+
+        if (meterRateDTOs == null) {
+            meterRateDTOs = new ArrayList<MeterRateScheduleDTO>();
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey(),
+                                  meterRateDTOs);
+        }
+
+        return meterRateDTOs;
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // VALIDATORS
-
-    public void postIDValidator(FacesContext facesContext,
-                                UIComponent uiComponent, Object object) {
-
-        String postIDRegex = RegularExpression.POST_ID_REGEX.getRegEx();
-        if (getCurrentPageMode().isAddMode()) {
-            postIDRegex = RegularExpression.POST_ID_REGEX.getRegEx();
-        } else if (getCurrentPageMode().isEditMode()) {
-            postIDRegex =
-                    (getCurrentParkingSpaceInventoryDTO().getOnOffStreetType().contains("ON")) ?
-                    "([0-9]{3})" : "([0-9]{5})";
-        }
-
-        String enteredPostID = (String)object;
-        if (!enteredPostID.matches(postIDRegex)) {
-            FacesMessage facesMessage =
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Post ID Error",
-                                 "Should follow a specific format");
-            facesContext.addMessage(uiComponent.getClientId(facesContext),
-                                    facesMessage);
-            ((RichInputText)uiComponent).setValid(false);
-        }
-    }
-     */
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DISABLE INFORMATION
 
-    public boolean isDisableSensorStatusSBCB() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D");
+    public boolean isDisableActiveMeterStatusSBCB() {
+        boolean disabled = getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
 
-    public boolean isDisableSensorStatusSOC() {
+    public boolean isDisableActiveMeterStatusSOC() {
         boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedSensorFlag();
-
-        return disabled;
-    }
-
-    public boolean isDisableCapColorSBCB() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D");
-
-        return disabled;
-    }
-
-    public boolean isDisableCapColorSOC() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedCapColor();
-
-        return disabled;
-    }
-
-    public boolean isDisableOldRateAreaSBCB() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("U") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D");
-
-        return disabled;
-    }
-
-    public boolean isDisableOldRateAreaSOC() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("U") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedOldRateArea();
-
-        return disabled;
-    }
-
-    public boolean isDisablePCOBeatSBCB() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D");
-
-        return disabled;
-    }
-
-    public boolean isDisablePCOBeatIT() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedPCOBeat();
+            getParkingSpaceInventoryBulkTO().isUnmetered() || !getParkingSpaceInventoryBulkTO().isToBeUpdatedActiveMeterFlag();
 
         return disabled;
     }
 
     public boolean isDisableMeterDetailsSBCB() {
-        boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("U") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D");
+        boolean disabled = getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
 
     public boolean isDisableMeterDetailsButton() {
         boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("U") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedMeterDetails();
+            getParkingSpaceInventoryBulkTO().isUnmetered() || !getParkingSpaceInventoryBulkTO().isToBeUpdatedMeterDetails();
 
         return disabled;
     }
 
     public boolean isDisableMSPayStationIDIT() {
         boolean disabled =
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("U") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getActiveMeterFlag().contains("D") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getMeterDetails().getMeterType().contains("SS") ||
-            getCurrentParkingSpaceInventoryBulkDTO().getMeterDetails().getMeterType().contains("-") ||
-            !getCurrentParkingSpaceInventoryBulkDTO().isToBeUpdatedMeterDetails();
+            getParkingSpaceInventoryBulkTO().isUnmetered() || !getParkingSpaceInventoryBulkTO().isToBeUpdatedMeterDetails() ||
+            getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().contains("SS") ||
+            getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().contains("-");
 
         return disabled;
     }
 
     public boolean isDisableDeleteAllOPSBCB() {
-        boolean disabled = disableComponent(MeterScheduleType.OP);
+        boolean disabled =
+            disableMeterScheduleComponent(MeterScheduleType.OP) ||
+            getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
 
     public boolean isDisableDeleteAllALTSBCB() {
-        boolean disabled = disableComponent(MeterScheduleType.ALT);
+        boolean disabled =
+            disableMeterScheduleComponent(MeterScheduleType.ALT) ||
+            getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
 
     public boolean isDisableDeleteAllTOWSBCB() {
-        boolean disabled = disableComponent(MeterScheduleType.TOW);
+        boolean disabled =
+            disableMeterScheduleComponent(MeterScheduleType.TOW) ||
+            getParkingSpaceInventoryBulkTO().isUnmetered();
+
+        return disabled;
+    }
+
+    public boolean isDisableDeleteAllBaseRatesSBCB() {
+        boolean disabled =
+            disableMeterRateComponent(MeterRateType.B) || getParkingSpaceInventoryBulkTO().isUnmetered();
+
+        return disabled;
+    }
+
+    public boolean isDisableDeleteAllHourlyRatesSBCB() {
+        boolean disabled =
+            disableMeterRateComponent(MeterRateType.H) || getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
@@ -293,7 +271,15 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
     }
 
     public List<SelectItem> getListActiveMeterStatus() {
-        return ADFUIDisplayUtil.getActiveMeterFlagDisplayList();
+        return ADFUIDisplayUtil.getActiveMeterFlagBulkDisplayList();
+    }
+
+    public List<SelectItem> getListReasonCode() {
+        return ADFUIDisplayUtil.getReasonCodeDisplayList();
+    }
+
+    public List<SelectItem> getListColorRuleAppliedSOC() {
+        return ADFUIDisplayUtil.getColorRuleAppliedDisplayList();
     }
 
     public List<SelectItem> getListFromTime() {
@@ -308,58 +294,101 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         return DayUI.DAYS_APPLIED_LIST;
     }
 
+    public List<SelectItem> getListTimeLimit() {
+        return ADFUIDisplayUtil.TIME_LIMIT_LIST;
+    }
+
+    public List<SelectItem> getListPrePaymentTime() {
+        return ADFUIDisplayUtil.PREPAYMENT_TIME_LIST;
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // VALUE CHANGE HANDLERS
-
-    public void activeMeterStatusValueChangeHandler(ValueChangeEvent event) {
-
-        String oldValue = (String)event.getOldValue();
-        String newValue = (String)event.getNewValue();
-
-        // If moving from Unmetered to Anything, then set the values
-        if (oldValue.contains("U")) {
-            getCurrentParkingSpaceInventoryBulkDTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
-        }
-
-        // If moving from Anything to Unmetered, then reset the values
-        if (newValue.contains("U")) {
-            getCurrentParkingSpaceInventoryBulkDTO().setDisplayMeterDetails(MeterModelsProvider.INSTANCE.getNullMeterModelsDO());
-
-            getCurrentParkingSpaceInventoryBulkDTO().setToBeUpdatedOldRateArea(false);
-            getCurrentParkingSpaceInventoryBulkDTO().setToBeUpdatedMeterDetails(false);
-        }
-
-        updateAllMeterDetails();
-    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void addButtonHandler(ActionEvent event) {
+
         String ID = event.getComponent().getId();
 
-        MeterScheduleType scheduleType = MeterScheduleType.OP;
-        if (ID.contains("ALT")) {
-            scheduleType = MeterScheduleType.ALT;
-        } else if (ID.contains("TOW")) {
-            scheduleType = MeterScheduleType.TOW;
-        } else {
-            scheduleType = MeterScheduleType.OP;
+        if (ID.contains("Sched")) {
+            MeterScheduleType scheduleType = MeterScheduleType.OP;
+            if (ID.contains("ALT")) {
+                scheduleType = MeterScheduleType.ALT;
+            } else if (ID.contains("TOW")) {
+                scheduleType = MeterScheduleType.TOW;
+            } else {
+                scheduleType = MeterScheduleType.OP;
+            }
+
+            setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey(),
+                                  scheduleType);
+
+            List<MeterOPScheduleDTO> meterSchedules =
+                (List<MeterOPScheduleDTO>)getMeterScheduleTable().getValue();
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey(),
+                                  meterSchedules);
+
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.MeterScheduleTemplatePage.name());
+
+        } else if (ID.contains("Rate")) {
+            MeterRateType rateType = MeterRateType.B;
+            if (ID.contains("Hourly")) {
+                rateType = MeterRateType.H;
+            } else {
+                rateType = MeterRateType.B;
+            }
+
+            List<MeterRateScheduleDTO> meterRateScheduleDTOs =
+                (List<MeterRateScheduleDTO>)getMeterRateTable().getValue();
+
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // Set the checkboxes properly
+
+            getMeterRateScheduleBulkTO().setProperBoolean(rateType);
+
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // Retrieve the next effective from date
+
+            java.sql.Date nextEffectiveFromDate =
+                MeterRateScheduleProvider.INSTANCE.getNextEffectiveFromDate(getParkingSpaceInventoryBulkTO().getParkingSpaceIDList(),
+                                                                            rateType);
+
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // ++++++++++++++++++++++++++++++++++
+            // Perform the addition
+
+            MeterRateScheduleDTO meterRateScheduleDTO =
+                DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleDTO(rateType,
+                                                                          null,
+                                                                          getNextPriorityInt(meterRateScheduleDTOs,
+                                                                                             rateType),
+                                                                          nextEffectiveFromDate,
+                                                                          null);
+
+            meterRateScheduleDTOs.add(0, meterRateScheduleDTO);
+
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey(),
+                                  meterRateScheduleDTOs);
+
+            getMeterRateTable().getSelectedRowKeys().clear();
+            resetAllMeterRateTableButtons();
+            getMeterRateTable().setValue(null);
+            // getMeterRateTable().setValue(meterRateScheduleDTOs);
+
+            addPartialTarget(getMeterRateTable());
+
         }
-
-        setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey(),
-                              scheduleType);
-
-        List<MeterOPScheduleDTO> meterSchedules =
-            (List<MeterOPScheduleDTO>)getMeterScheduleTable().getValue();
-        setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_SCHEDULE_LIST.getKey(),
-                              meterSchedules);
-
-        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.MeterScheduleTemplatePage.name());
     }
 
     public void editButtonHandler(ActionEvent event) {
@@ -369,87 +398,125 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                              NavigationFlow.MeterModelsPage.name());
+
     }
 
     public void deleteButtonHandler(ActionEvent event) {
-        RichTable table = getMeterScheduleTable();
-        RowKeySet rowKeySet = table.getSelectedRowKeys();
-        int selectedNumOfRows = rowKeySet.getSize();
 
-        if (selectedNumOfRows > 0) {
+        String ID = event.getComponent().getId();
 
-            List<MeterOPScheduleDTO> tempList =
-                new ArrayList<MeterOPScheduleDTO>();
+        if (ID.contains("Sched")) {
 
-            for (Object rowKey : rowKeySet) {
-                table.setRowKey(rowKey);
+            RichTable table = getMeterScheduleTable();
+            RowKeySet rowKeySet = table.getSelectedRowKeys();
+            int selectedNumOfRows = rowKeySet.getSize();
 
-                MeterOPScheduleDTO dto =
-                    (MeterOPScheduleDTO)table.getRowData();
+            if (selectedNumOfRows > 0) {
 
-                if (dto != null) {
-                    tempList.add(dto);
+                List<MeterOPScheduleDTO> tempList =
+                    new ArrayList<MeterOPScheduleDTO>();
+
+                for (Object rowKey : rowKeySet) {
+                    table.setRowKey(rowKey);
+
+                    MeterOPScheduleDTO dto =
+                        (MeterOPScheduleDTO)table.getRowData();
+
+                    if (dto != null) {
+                        tempList.add(dto);
+                    }
                 }
+
+                List<MeterOPScheduleDTO> meterSchedules =
+                    (List<MeterOPScheduleDTO>)table.getValue();
+
+                meterSchedules.removeAll(tempList);
+
+                setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey(),
+                                      meterSchedules);
+
+                table.getSelectedRowKeys().clear();
+                resetAllMeterScheduleTableButtons();
+                table.setValue(null);
+                addPartialTarget(table);
             }
 
-            List<MeterOPScheduleDTO> meterSchedules =
-                (List<MeterOPScheduleDTO>)table.getValue();
+        } else if (ID.contains("Rate")) {
 
-            meterSchedules.removeAll(tempList);
+            RichTable table = getMeterRateTable();
+            RowKeySet rowKeySet = table.getSelectedRowKeys();
+            int selectedNumOfRows = rowKeySet.getSize();
 
-            setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_SCHEDULE_LIST.getKey(),
-                                  meterSchedules);
+            if (selectedNumOfRows > 0) {
 
-            table.getSelectedRowKeys().clear();
-            resetAllMeterScheduleTableButtons();
-            table.setValue(null);
-            addPartialTarget(table);
+                List<MeterRateScheduleDTO> tempList =
+                    new ArrayList<MeterRateScheduleDTO>();
+
+                for (Object rowKey : rowKeySet) {
+                    table.setRowKey(rowKey);
+
+                    MeterRateScheduleDTO dto =
+                        (MeterRateScheduleDTO)table.getRowData();
+
+                    if (dto != null) {
+                        tempList.add(dto);
+                    }
+                }
+
+                List<MeterRateScheduleDTO> meterRates =
+                    (List<MeterRateScheduleDTO>)table.getValue();
+
+                meterRates.removeAll(tempList);
+
+                setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey(),
+                                      meterRates);
+
+                table.getSelectedRowKeys().clear();
+                resetAllMeterRateTableButtons();
+                table.setValue(null);
+                addPartialTarget(table);
+            }
 
         }
+
     }
 
     public void selectAllButtonHandler(ActionEvent event) {
-        RichTable table = getMeterScheduleTable();
-
-        int rowCount = table.getRowCount();
-
-        if (rowCount > 0) {
-            RowKeySet rowKeySet = new RowKeySetImpl();
-
-            for (int i = 0; i < rowCount; i++) {
-
-                table.setRowIndex(i);
-                Object key = table.getRowKey();
-                rowKeySet.add(key);
-            }
-
-            table.setSelectedRowKeys(rowKeySet);
-            addPartialTarget(table);
-
-            setAllMeterScheduleTableButtons();
-        }
+        // Do nothing
     }
 
     public void unselectAllButtonHandler(ActionEvent event) {
-        getMeterScheduleTable().getSelectedRowKeys().clear();
-        addPartialTarget(getMeterScheduleTable());
-        resetAllMeterScheduleTableButtons();
+        // Do nothing
     }
 
     public void tableRowSelectionHandler(SelectionEvent event) {
-        RichTable table = getMeterScheduleTable();
 
-        int selectedNumOfRows = table.getSelectedRowKeys().getSize();
+        String ID = event.getComponent().getId();
 
-        if (selectedNumOfRows > 0) {
-            setAllMeterScheduleTableButtons();
+        if (ID.contains("MSTable")) {
+            RichTable table = getMeterScheduleTable();
 
-            getSelectAllSchedButton().setDisabled((selectedNumOfRows ==
-                                                   table.getRowCount()));
+            int selectedNumOfRows = table.getSelectedRowKeys().getSize();
 
-        } else {
-            resetAllMeterScheduleTableButtons();
+            if (selectedNumOfRows > 0) {
+                setAllMeterScheduleTableButtons();
+            } else {
+                resetAllMeterScheduleTableButtons();
+            }
+
+        } else if (ID.contains("MRTable")) {
+            RichTable table = getMeterRateTable();
+
+            int selectedNumOfRows = table.getSelectedRowKeys().getSize();
+
+            if (selectedNumOfRows > 0) {
+                setAllMeterRateTableButtons();
+            } else {
+                resetAllMeterRateTableButtons();
+            }
+
         }
+
     }
 
     /**
@@ -457,27 +524,30 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
      *
      * Common Validity Tests:
      * =====================
-     *    1. Check for Meter Schedule validations
+     *    1. Check for MS Pay Station ID
+     *    2. Check for Meter Schedule validations
+     *    3. Check for Meter Rate validations
      *
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
         boolean allValid = true;
 
-        ParkingSpaceInventoryBulkDTO bulkDTO =
-            getCurrentParkingSpaceInventoryBulkDTO();
+        ParkingSpaceInventoryBulkTO parkingSpaceInventoryBulkTO =
+            getParkingSpaceInventoryBulkTO();
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            if (bulkDTO.isToBeUpdatedMeterDetails() &&
-                bulkDTO.getMeterDetails().getMeterType().contains("MS")) {
-                if (StringUtil.areEqual(bulkDTO.getMSPayStationID(),
+            if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
+                parkingSpaceInventoryBulkTO.getMeterDetails().getMeterType().contains("MS")) {
+                if (StringUtil.areEqual(parkingSpaceInventoryBulkTO.getMSPayStationID(),
                                         "000-00000")) {
 
-                    setInlineMessageText("Invalid MS Pay Station ID");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_invalid_mspaystationid));
+
                     allValid = false;
                 }
             }
@@ -492,11 +562,22 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getMeterScheduleTable().getValue();
 
-
-            allValid = areValidMeterSchedules(meterSchedules, bulkDTO);
+            allValid =
+                    areValidMeterSchedules(meterSchedules, parkingSpaceInventoryBulkTO,
+                                           "Current");
         }
 
         // System.out.println("After Meter OP Schedule = " + allValid);
+
+        if (allValid) {
+            // System.out.println("Under edit mode, test for Meter Rates as well");
+            List<MeterRateScheduleDTO> meterRates =
+                (List<MeterRateScheduleDTO>)getMeterRateTable().getValue();
+
+            allValid = areValidMeterRates(meterRates, "Current");
+        }
+
+        // System.out.println("After Meter Rate Schedule = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -515,29 +596,40 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         if (allValid) {
             // System.out.println("All entries are Valid. Proceed");
 
-            ParkingSpaceInventoryBulkDTO currentDTO =
-                getCurrentParkingSpaceInventoryBulkDTO();
+            ParkingSpaceInventoryBulkTO currentParkingSpaceInventoryBulkTO =
+                getParkingSpaceInventoryBulkTO();
+
+            MeterOPScheduleBulkTO currentMeterOPScheduleBulkTO =
+                getMeterOPScheduleBulkTO();
             List<MeterOPScheduleDTO> currentMeterSchedules =
                 (List<MeterOPScheduleDTO>)getMeterScheduleTable().getValue();
-            MeterOPScheduleBulkTO currentTO = getMeterOPScheduleBulkTO();
+
+            MeterRateScheduleBulkTO currentMeterRateScheduleBulkTO =
+                getMeterRateScheduleBulkTO();
+            List<MeterRateScheduleDTO> currentMeterRates =
+                (List<MeterRateScheduleDTO>)getMeterRateTable().getValue();
 
             OperationStatus operationStatus =
-                DMLOperationsProvider.INSTANCE.editBulkParkingSpace(currentDTO,
-                                                                    currentTO,
-                                                                    currentMeterSchedules);
+                DMLOperationsProvider.INSTANCE.editBulkParkingSpace(currentParkingSpaceInventoryBulkTO,
+                                                                    currentMeterOPScheduleBulkTO,
+                                                                    currentMeterSchedules,
+                                                                    currentMeterRateScheduleBulkTO,
+                                                                    currentMeterRates);
 
             if (operationStatus == null) {
-                setInlineMessageText("There were no changes. So nothing was saved.");
+                // System.out.println("There were no changes. So nothing was saved");
+                setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
                 setInlineMessageClass("");
 
             } else {
                 if (operationStatus.getType().isSuccess()) {
                     // System.out.println("EDIT operation was successful");
-                    setInlineMessageText("Successfully saved all the details.");
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                     setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
 
                     clearPageFlowScopeCache();
                     getMeterScheduleTable().setValue(null);
+                    getMeterRateTable().setValue(null);
 
                 } else {
                     // System.out.println("EDIT operation failed");
@@ -547,22 +639,33 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
                     case UNIQUE_CONTRAINT:
                         errorMessage =
-                                "Failed due to invalid Meter Schedules during archiving.";
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_unique_constraint);
                         break;
 
                     case METER_OP_SCHEDULE_INSERT:
                         errorMessage =
-                                "Failed due to invalid new Meter Schedules. Try removing.";
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_insert);
+                        break;
+
+                    case METER_RATE_SCHEDULE_INSERT:
+                        errorMessage =
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_insert);
                         break;
 
                     case METER_OP_SCHEDULE_UPDATE:
                         errorMessage =
-                                "Failed due to invalid existing Meter Schedules.";
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_update);
                         break;
+
+                    case METER_RATE_SCHEDULE_UPDATE:
+                        errorMessage =
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_update);
+                        break;
+
 
                     case PARKING_SPACE_INVENTORY_BULK_UPDATE:
                         errorMessage =
-                                "Failed due to invalid Parking Space details.";
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_inventory_update);
                         break;
 
                     case GENERAL:
@@ -572,7 +675,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
                     default:
                         errorMessage =
-                                "Failed to save details due to unknown reasons.";
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
                         break;
 
                     }
@@ -588,9 +691,14 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
         }
 
-        getMeterScheduleTable().getSelectedRowKeys().clear();
         resetAllMeterScheduleTableButtons();
+        resetAllMeterRateTableButtons();
+
+        getMeterScheduleTable().getSelectedRowKeys().clear();
         addPartialTarget(getMeterScheduleTable());
+
+        getMeterRateTable().getSelectedRowKeys().clear();
+        addPartialTarget(getMeterRateTable());
 
     }
 
@@ -600,6 +708,56 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
+    }
+
+    /**
+     * Unmeters/Remeter the Parking Space by setting the appropriate values
+     *
+     * Unmeter Parking Space:
+     * ====================
+     *    1. Set ACTIVE_METER_FLAG = "U"
+     *    3. Update Meter Model as per "U"
+     *    4. End-Date Meter Schedules
+     *    5. End-Date Meter Rates
+     *
+     * Remeter Parking Space:
+     * =====================
+     *    1. Set ACTIVE_METER_FLAG = "M"
+     *
+     *
+     * @param event
+     */
+    public void unmeterRemeterParkingSpaceButtonHandler(ActionEvent event) {
+
+        String ID = event.getComponent().getId();
+
+        if (ID.equals("unmeterParkingSpaceButton")) {
+
+            getParkingSpaceInventoryBulkTO().setToBeUpdatedActiveMeterFlag(true);
+            getParkingSpaceInventoryBulkTO().setActiveMeterFlag("U");
+
+            getParkingSpaceInventoryBulkTO().setToBeUpdatedMeterDetails(true);
+            getParkingSpaceInventoryBulkTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
+
+            getMeterOPScheduleBulkTO().setAllBoolean(true);
+            endDateAllSchedules();
+
+            getMeterRateScheduleBulkTO().setAllBoolean(true);
+            endDateAllRates();
+
+        } else {
+
+            getParkingSpaceInventoryBulkTO().setToBeUpdatedActiveMeterFlag(false);
+            getParkingSpaceInventoryBulkTO().setActiveMeterFlag(DataRepositoryUtil.getActiveMeterFlagBulkDefaultValue());
+
+            getParkingSpaceInventoryBulkTO().setToBeUpdatedMeterDetails(false);
+            getParkingSpaceInventoryBulkTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
+
+            getMeterOPScheduleBulkTO().setAllBoolean(false);
+
+            getMeterRateScheduleBulkTO().setAllBoolean(false);
+
+        }
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -618,16 +776,18 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
      *    4. No two schedules should be exactly similar
      *
      * @param meterSchedules
+     * @param bulkTO
+     * @param uiTableName
      * @return
      */
     private boolean areValidMeterSchedules(List<MeterOPScheduleDTO> meterSchedules,
-                                           ParkingSpaceInventoryBulkDTO bulkDTO) {
+                                           ParkingSpaceInventoryBulkTO bulkTO,
+                                           String uiTableName) {
 
         if (meterSchedules == null || meterSchedules.isEmpty()) {
             // Nothing to validate
             return true;
         }
-
 
         for (int i = 0; i < meterSchedules.size(); i++) {
 
@@ -635,8 +795,11 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
             // For each row, To date should be after From date
             if (iDTO.getEffectiveToDate().before(iDTO.getEffectiveFromDate())) {
-                setInlineMessageText("TO date should be after FROM date in row " +
-                                     (i + 1));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_date_to_before_from,
+                                                                          uiTableName,
+                                                                          (i +
+                                                                           1)));
+
                 return false;
             }
 
@@ -662,14 +825,21 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
                     // Continue
 
                 } else {
-                    setInlineMessageText("TO time can be zero only under certain conditions in row " +
-                                         (i + 1));
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_time_to_zero,
+                                                                              uiTableName,
+                                                                              (i +
+                                                                               1)));
+
                     return false;
 
                 }
+
             } else if (fromTime >= toTime) {
-                setInlineMessageText("TO time should be after FROM time in row " +
-                                     (i + 1));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_time_to_before_from,
+                                                                          uiTableName,
+                                                                          (i +
+                                                                           1)));
+
                 return false;
 
             }
@@ -681,20 +851,24 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
             //       ---Else
             //          ---COLOR_RULE_APPLIED should be NULL
             if (iDTO.getScheduleType().isScheduleOP()) {
-                if (bulkDTO.isToBeUpdatedCapColor()) {
+                if (bulkTO.isToBeUpdatedCapColor()) {
                     if (!StringUtil.areEqual(iDTO.getColorRuleApplied(),
-                                             bulkDTO.getCapColor())) {
+                                             bulkTO.getCapColor())) {
 
-                        setInlineMessageText("OP Schedule should have same Cap Color. Delete row " +
-                                             (i + 1));
+                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_op_invalid_cap_color,
+                                                                                  uiTableName,
+                                                                                  (i +
+                                                                                   1)));
 
                         return false;
                     }
                 } else {
                     if (StringUtil.isNotBlank(iDTO.getColorRuleApplied())) {
 
-                        setInlineMessageText("OP Schedule should not have a Color Rule Applied as Cap Color is not being updated. Delete row " +
-                                             (i + 1));
+                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_schedule_op_invalid_cap_color,
+                                                                                  uiTableName,
+                                                                                  (i +
+                                                                                   1)));
 
                         return false;
                     }
@@ -709,11 +883,15 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
                     (iDTO.getSchedulePriority() ==
                      jDTO.getSchedulePriority()) &&
                     SQLDateUtil.areEqual(iDTO.getEffectiveFromDate(),
-                                         jDTO.getEffectiveToDate())) {
+                                         jDTO.getEffectiveFromDate())) {
 
-                    setInlineMessageText("Rows " + (i + 1) + " and " +
-                                         (j + 1) +
-                                         " have same unique constraint values");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_schedule_invalid_unique_constraints,
+                                                                              uiTableName,
+                                                                              (i +
+                                                                               1),
+                                                                              (j +
+                                                                               1)));
+
                     return false;
                 }
             }
@@ -723,7 +901,157 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         return true;
     }
 
-    private boolean disableComponent(MeterScheduleType scheduleType) {
+    /**
+     * Validates the Meter Rate Table and returns true if all entries are valid
+     *
+     * Validity Tests:
+     * ==============
+     *    1. All TO dates should occur after FROM dates
+     *    2. All TO times should occur after FROM times
+     *    3. No two schedules should be exactly similar
+     *
+     * @param meterRates
+     * @param uiTableName
+     * @return
+     */
+    private boolean areValidMeterRates(List<MeterRateScheduleDTO> meterRates,
+                                       String uiTableName) {
+
+        if (meterRates == null || meterRates.isEmpty()) {
+            // Nothing to validate
+            return true;
+        }
+
+        for (int i = 0; i < meterRates.size(); i++) {
+            MeterRateScheduleDTO iDTO = meterRates.get(i);
+
+            // For each row, To date should be after From date
+            if (iDTO.getEffectiveToDate().before(iDTO.getEffectiveFromDate())) {
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_rate_date_to_before_from,
+                                                                          uiTableName,
+                                                                          (i +
+                                                                           1)));
+                return false;
+            }
+
+            // For each row,
+            //    ---TO_TIME can NOT be zero
+            //    ---TO_TIME should be AFTER FROM_TIME
+            //
+            // Exception:
+            //    ---If
+            //         ---FROM_TIME = 0
+            //         ---RATE_TYPE = B
+            //       Then, TO_TIME should be zero
+            int fromTime =
+                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(iDTO.getFromTime()));
+            int toTime =
+                Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(iDTO.getToTime()));
+
+            if (toTime == 0) {
+                if (fromTime == 0 && iDTO.getRateType().isRateTypeB()) {
+                    // Valid
+                    // Continue
+
+                } else {
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_rate_time_to_zero,
+                                                                              uiTableName,
+                                                                              (i +
+                                                                               1)));
+                    return false;
+                }
+            } else if (fromTime >= toTime) {
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_rate_time_to_before_from,
+                                                                          uiTableName,
+                                                                          (i +
+                                                                           1)));
+                return false;
+            }
+
+            // No two rows should be similar
+            for (int j = i + 1; j < meterRates.size(); j++) {
+                MeterRateScheduleDTO jDTO = meterRates.get(j);
+
+                if (iDTO.getRateType().equals(jDTO.getRateType()) &&
+                    (iDTO.getSchedulePriority() ==
+                     jDTO.getSchedulePriority()) &&
+                    SQLDateUtil.areEqual(iDTO.getEffectiveFromDate(),
+                                         jDTO.getEffectiveFromDate())) {
+
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_meter_rate_invalid_unique_constraints,
+                                                                              uiTableName,
+                                                                              (i +
+                                                                               1),
+                                                                              (j +
+                                                                               1)));
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void endDateAllSchedules() {
+        RichTable table = getMeterScheduleTable();
+
+        removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey());
+
+        table.getSelectedRowKeys().clear();
+        resetAllMeterScheduleTableButtons();
+        table.setValue(null);
+        addPartialTarget(table);
+    }
+
+    private void endDateAllRates() {
+        RichTable table = getMeterRateTable();
+
+        removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey());
+
+        table.getSelectedRowKeys().clear();
+        resetAllMeterRateTableButtons();
+        table.setValue(null);
+        addPartialTarget(table);
+    }
+
+    private int getNextPriorityInt(List<MeterRateScheduleDTO> meterRateScheduleDTOs,
+                                   MeterRateType rateType) {
+
+        int nextPriority = 0;
+
+        if (meterRateScheduleDTOs != null &&
+            !meterRateScheduleDTOs.isEmpty()) {
+            for (MeterRateScheduleDTO DTO : meterRateScheduleDTOs) {
+                if (DTO.getRateType().equals(rateType)) {
+                    if (DTO.getSchedulePriority() > nextPriority) {
+                        nextPriority = DTO.getSchedulePriority();
+                    }
+                }
+            }
+        }
+
+        return (nextPriority + 1);
+    }
+
+    /*
+    private void preserveTableData() {
+        // TODO: Figure out the best way
+
+        List<MeterOPScheduleDTO> meterSchedules =
+            (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
+        setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_SCHEDULE_LIST.getKey(),
+                              meterSchedules);
+
+        List<MeterRateScheduleDTO> meterRates =
+            (List<MeterRateScheduleDTO>)getActiveMeterRateTable().getValue();
+        setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_RATE_LIST.getKey(),
+                              meterRates);
+
+    }
+
+     */
+
+    private boolean disableMeterScheduleComponent(MeterScheduleType scheduleType) {
 
         RichTable table = getMeterScheduleTable();
 
@@ -754,6 +1082,37 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         return false;
     }
 
+    private boolean disableMeterRateComponent(MeterRateType rateType) {
+
+        RichTable table = getMeterRateTable();
+
+        if (table == null) {
+            // Not yet initialised, so nothing to check
+            return false;
+        }
+
+        List<MeterRateScheduleDTO> meterRates =
+            (List<MeterRateScheduleDTO>)table.getValue();
+
+        return containsRateType(meterRates, rateType);
+    }
+
+    private boolean containsRateType(List<MeterRateScheduleDTO> meterRates,
+                                     MeterRateType rateType) {
+
+        if (meterRates == null || meterRates.isEmpty()) {
+            return false;
+        }
+
+        for (MeterRateScheduleDTO DTO : meterRates) {
+            if (DTO.getRateType().equals(rateType)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void setAllMeterScheduleTableButtons() {
         updateAllMeterScheduleTableButtons(false);
     }
@@ -769,14 +1128,21 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
             addPartialTarget(getDeleteSchedButton());
         }
 
-        if (getSelectAllSchedButton() != null) {
-            getSelectAllSchedButton().setDisabled(!disable);
-            addPartialTarget(getSelectAllSchedButton());
-        }
+    }
 
-        if (getUnselectAllSchedButton() != null) {
-            getUnselectAllSchedButton().setDisabled(disable);
-            addPartialTarget(getUnselectAllSchedButton());
+    private void setAllMeterRateTableButtons() {
+        updateAllMeterRateTableButtons(false);
+    }
+
+    private void resetAllMeterRateTableButtons() {
+        updateAllMeterRateTableButtons(true);
+    }
+
+    private void updateAllMeterRateTableButtons(boolean disable) {
+
+        if (getDeleteRateButton() != null) {
+            getDeleteRateButton().setDisabled(disable);
+            addPartialTarget(getDeleteRateButton());
         }
     }
 
@@ -828,22 +1194,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
         return deleteSchedButton;
     }
 
-    public void setSelectAllSchedButton(RichCommandButton selectAllSchedButton) {
-        this.selectAllSchedButton = selectAllSchedButton;
-    }
-
-    public RichCommandButton getSelectAllSchedButton() {
-        return selectAllSchedButton;
-    }
-
-    public void setUnselectAllSchedButton(RichCommandButton unselectAllSchedButton) {
-        this.unselectAllSchedButton = unselectAllSchedButton;
-    }
-
-    public RichCommandButton getUnselectAllSchedButton() {
-        return unselectAllSchedButton;
-    }
-
     public void setMeterScheduleTable(RichTable meterScheduleTable) {
         this.meterScheduleTable = meterScheduleTable;
     }
@@ -890,5 +1240,21 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryBulkDTO();
 
     public RichInputText getMsPayStationIDIT() {
         return msPayStationIDIT;
+    }
+
+    public void setMeterRateTable(RichTable meterRateTable) {
+        this.meterRateTable = meterRateTable;
+    }
+
+    public RichTable getMeterRateTable() {
+        return meterRateTable;
+    }
+
+    public void setDeleteRateButton(RichCommandButton deleteRateButton) {
+        this.deleteRateButton = deleteRateButton;
+    }
+
+    public RichCommandButton getDeleteRateButton() {
+        return deleteRateButton;
     }
 }

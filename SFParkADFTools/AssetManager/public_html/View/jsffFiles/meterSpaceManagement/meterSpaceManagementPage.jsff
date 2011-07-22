@@ -765,6 +765,7 @@
           <af:column id="HMRTableColRate" align="center" width="80px"
                      sortable="false" headerText="#{columnBundle.column_rate}">
             <af:inputText id="HMRTableRowRate" simple="true" required="true"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
                           columns="6" value="#{row.rate}">
               <af:validateDoubleRange minimum="0"/>
               <af:convertNumber type="currency" locale="en-US"
@@ -775,6 +776,7 @@
                      headerText="#{columnBundle.column_rate_change_ref}">
             <af:inputText id="HMRTableRowRateChgRef" maximumLength="10"
                           simple="true" columns="11"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
                           value="#{row.rateChangeReference}"/>
           </af:column>
           <af:column id="HMRTableColPSGroupID" align="center" width="100px"
@@ -910,6 +912,7 @@
         <af:column id="MRTableColRate" align="center" width="80px"
                    sortable="false" headerText="#{columnBundle.column_rate}">
           <af:inputText id="MRTableRowRate" simple="true" required="true"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
                         columns="6" value="#{row.rate}">
             <af:validateDoubleRange minimum="0"/>
             <af:convertNumber type="currency" locale="en-US"
@@ -920,6 +923,7 @@
                    headerText="#{columnBundle.column_rate_change_ref}">
           <af:inputText id="MRTableRowRateChgRef" maximumLength="10"
                         simple="true" columns="11"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
                         value="#{row.rateChangeReference}"/>
         </af:column>
         <af:column id="MRTableColPSGroupID" align="center" width="100px"

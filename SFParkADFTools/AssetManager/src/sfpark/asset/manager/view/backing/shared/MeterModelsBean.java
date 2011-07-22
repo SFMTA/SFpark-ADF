@@ -11,8 +11,9 @@ import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 import sfpark.adf.tools.model.data.dO.meterModels.MeterModelsDO;
 
-import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryBulkDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
+
+import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 
 import sfpark.asset.manager.application.key.PageFlowScopeKey;
 import sfpark.asset.manager.application.key.SessionScopeKey;
@@ -74,13 +75,13 @@ public class MeterModelsBean extends BaseBean implements PropertiesBeanInterface
                                   parkingSpaceInventoryDTO);
 
         } else if (getCurrentPageType().isBulk()) {
-            ParkingSpaceInventoryBulkDTO parkingSpaceInventoryBulkDTO =
-                (ParkingSpaceInventoryBulkDTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey());
+            ParkingSpaceInventoryBulkTO parkingSpaceInventoryBulkTO =
+                (ParkingSpaceInventoryBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey());
 
-            parkingSpaceInventoryBulkDTO.setDisplayMeterDetails(meterModelsDO);
+            parkingSpaceInventoryBulkTO.setDisplayMeterDetails(meterModelsDO);
 
-            setPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_DTO.getKey(),
-                                  parkingSpaceInventoryBulkDTO);
+            setPageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey(),
+                                  parkingSpaceInventoryBulkTO);
 
         }
 

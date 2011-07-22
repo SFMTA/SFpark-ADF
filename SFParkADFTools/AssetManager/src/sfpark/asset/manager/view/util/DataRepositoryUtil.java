@@ -116,15 +116,7 @@ public final class DataRepositoryUtil {
     }
 
     public static String getJurisdictionDefaultValue() {
-
-        int size = getJurisdictionList().size();
-
-        if (size <= 0) {
-            // Should not happen
-            return "SFMTA";
-        }
-
-        return getJurisdictionList().get(size - 1).getColumnValue();
+        return getDefaultValue(getJurisdictionList(), "SFMTA");
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -150,15 +142,7 @@ public final class DataRepositoryUtil {
     }
 
     public static String getSensorFlagDefaultValue() {
-
-        int size = getSensorFlagList().size();
-
-        if (size <= 0) {
-            // Should not happen
-            return "N";
-        }
-
-        return getSensorFlagList().get(0).getColumnValue();
+        return getDefaultValue(getSensorFlagList(), "N");
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -168,7 +152,7 @@ public final class DataRepositoryUtil {
 
     private static long TimeOfLastActiveMeterFlagRetrieve = -1;
     private static List<AllowedValuesDTO> activeMeterFlagList = null;
-
+    
     protected static synchronized List<AllowedValuesDTO> getActiveMeterFlagList() {
 
         if (activeMeterFlagList == null ||
@@ -183,16 +167,26 @@ public final class DataRepositoryUtil {
         return activeMeterFlagList;
     }
 
-    public static String getActiveMeterFlagDefaultValue() {
+    protected static List<AllowedValuesDTO> getActiveMeterFlagBulkList() {
+        
+        List<AllowedValuesDTO> list = getActiveMeterFlagList();
 
-        int size = getActiveMeterFlagList().size();
-
-        if (size <= 0) {
-            // Should not happen
-            return "U";
+        for (AllowedValuesDTO allowedValue : list) {
+            if (StringUtil.areEqual(allowedValue.getColumnValue(), "U")) {
+                list.remove(allowedValue);
+                break;
+            }
         }
+        
+        return list;
+    }
 
-        return getActiveMeterFlagList().get(size - 1).getColumnValue();
+    public static String getActiveMeterFlagDefaultValue() {
+        return getDefaultValue(getActiveMeterFlagList(), "U");
+    }
+
+    public static String getActiveMeterFlagBulkDefaultValue() {
+        return getDefaultValue(getActiveMeterFlagBulkList(), "M");
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -218,15 +212,7 @@ public final class DataRepositoryUtil {
     }
 
     public static String getReasonCodeDefaultValue() {
-
-        int size = getReasonCodeList().size();
-
-        if (size <= 0) {
-            // Should not happen
-            return "-";
-        }
-
-        return getReasonCodeList().get(0).getColumnValue();
+        return getDefaultValue(getReasonCodeList(), "-");
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -239,8 +225,8 @@ public final class DataRepositoryUtil {
     }
 
     public static String getCapColorDefaultValue() {
-
-        return AllowedValuesProvider.Color.GREY;
+        return getDefaultValue(AllowedValuesProvider.Color.getCapColorList(),
+                               "Grey");
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -253,16 +239,25 @@ public final class DataRepositoryUtil {
     }
 
     public static String getColorRuleAppliedDefaultValue() {
+        return getDefaultValue(AllowedValuesProvider.Color.getColorRuleAppliedList(),
+                               "Yellow");
+    }
 
-        int size =
-            AllowedValuesProvider.Color.getColorRuleAppliedList().size();
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
 
-        if (size <= 0) {
-            // Should not happen
-            return AllowedValuesProvider.Color.GREY;
+    private static String getDefaultValue(List<AllowedValuesDTO> allowedValues,
+                                          String value) {
+
+        for (AllowedValuesDTO allowedValue : allowedValues) {
+            if (StringUtil.areEqual(allowedValue.getColumnValue(), value)) {
+                return allowedValue.getColumnValue();
+            }
         }
 
-        return AllowedValuesProvider.Color.getColorRuleAppliedList().get(size -
-                                                                         1).getColumnValue();
+        return allowedValues.get(0).getColumnValue();
     }
+
 }

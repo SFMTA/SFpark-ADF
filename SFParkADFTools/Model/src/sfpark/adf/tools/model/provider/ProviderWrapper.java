@@ -19,7 +19,6 @@ import sfpark.adf.tools.model.data.dto.garageRates.GarageRatesDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
-import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryBulkDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.exception.*;
 import sfpark.adf.tools.model.helper.TableRecord;
@@ -237,11 +236,6 @@ public final class ProviderWrapper {
                                                                          (EventCalendarNameDTO)DTO,
                                                                          lastUpdatedUser,
                                                                          lastUpdatedProgram);
-        } else if (DTO instanceof ParkingSpaceInventoryBulkDTO) {
-            return ParkingSpaceInventoryBulkProvider.INSTANCE.prepareUpdateStatement(connection,
-                                                                                     (ParkingSpaceInventoryBulkDTO)DTO,
-                                                                                     lastUpdatedUser,
-                                                                                     lastUpdatedProgram);
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
             return ParkingSpaceInventoryProvider.INSTANCE.prepareUpdateStatement(connection,
                                                                                  (ParkingSpaceInventoryDTO)DTO,
@@ -273,8 +267,6 @@ public final class ProviderWrapper {
             return new GarageRatesUpdateException();
         } else if (DTO instanceof EventCalendarNameDTO) {
             return new EventCalendarUpdateException();
-        } else if (DTO instanceof ParkingSpaceInventoryBulkDTO) {
-            return new ParkingSpaceInventoryBulkUpdateException();
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
             return new ParkingSpaceInventoryUpdateException();
         } else if (DTO instanceof MeterOPScheduleDTO) {

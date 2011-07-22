@@ -57,6 +57,9 @@ public enum AssetManagerBundleKey {
     string_delete_all_alt_schedules,
     string_delete_all_tow_schedules,
 
+    string_delete_all_base_rates,
+    string_delete_all_hourly_rates,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
