@@ -9,7 +9,6 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
-import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
@@ -51,12 +50,6 @@ import sfpark.asset.manager.view.util.DataRepositoryUtil;
 public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanInterface,
                                                                       ListBeanInterface,
                                                                       PropertiesBeanInterface {
-
-    private RichInputText meterVendorIT;
-    private RichInputText meterModelIT;
-    private RichInputText smartMeterIT;
-    private RichInputText meterTypeIT;
-    private RichInputText msPayStationIDIT;
 
     private RichCommandButton deleteSchedButton;
 
@@ -213,46 +206,8 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
     public boolean isDisableMSPayStationIDIT() {
         boolean disabled =
             getParkingSpaceInventoryBulkTO().isUnmetered() || !getParkingSpaceInventoryBulkTO().isToBeUpdatedMeterDetails() ||
-            getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().contains("SS") ||
+            !getParkingSpaceInventoryBulkTO().getMeterDetails().isMeterMultiSpace() ||
             getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().contains("-");
-
-        return disabled;
-    }
-
-    public boolean isDisableDeleteAllOPSBCB() {
-        boolean disabled =
-            disableMeterScheduleComponent(MeterScheduleType.OP) ||
-            getParkingSpaceInventoryBulkTO().isUnmetered();
-
-        return disabled;
-    }
-
-    public boolean isDisableDeleteAllALTSBCB() {
-        boolean disabled =
-            disableMeterScheduleComponent(MeterScheduleType.ALT) ||
-            getParkingSpaceInventoryBulkTO().isUnmetered();
-
-        return disabled;
-    }
-
-    public boolean isDisableDeleteAllTOWSBCB() {
-        boolean disabled =
-            disableMeterScheduleComponent(MeterScheduleType.TOW) ||
-            getParkingSpaceInventoryBulkTO().isUnmetered();
-
-        return disabled;
-    }
-
-    public boolean isDisableDeleteAllBaseRatesSBCB() {
-        boolean disabled =
-            disableMeterRateComponent(MeterRateType.B) || getParkingSpaceInventoryBulkTO().isUnmetered();
-
-        return disabled;
-    }
-
-    public boolean isDisableDeleteAllHourlyRatesSBCB() {
-        boolean disabled =
-            disableMeterRateComponent(MeterRateType.H) || getParkingSpaceInventoryBulkTO().isUnmetered();
 
         return disabled;
     }
@@ -352,7 +307,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
             // ++++++++++++++++++++++++++++++++++
             // Set the checkboxes properly
 
-            getMeterRateScheduleBulkTO().setProperBoolean(rateType);
+            getMeterRateScheduleBulkTO().setProperBoolean(rateType, true);
 
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++
@@ -435,6 +390,13 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
                 setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey(),
                                       meterSchedules);
 
+                for (MeterScheduleType scheduleType :
+                     MeterScheduleType.values()) {
+                    getMeterOPScheduleBulkTO().setProperBoolean(scheduleType,
+                                                                this.containsScheduleType(meterSchedules,
+                                                                                          scheduleType));
+                }
+
                 table.getSelectedRowKeys().clear();
                 resetAllMeterScheduleTableButtons();
                 table.setValue(null);
@@ -470,6 +432,12 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
 
                 setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey(),
                                       meterRates);
+
+                for (MeterRateType rateType : MeterRateType.values()) {
+                    getMeterRateScheduleBulkTO().setProperBoolean(rateType,
+                                                                  containsRateType(meterRates,
+                                                                                   rateType));
+                }
 
                 table.getSelectedRowKeys().clear();
                 resetAllMeterRateTableButtons();
@@ -524,7 +492,8 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
      *
      * Common Validity Tests:
      * =====================
-     *    1. Check for MS Pay Station ID
+     *    1. Check for Cap Color
+     *       ---Black/Brown are NOT allowed
      *    2. Check for Meter Schedule validations
      *    3. Check for Meter Rate validations
      *
@@ -541,15 +510,12 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
-                parkingSpaceInventoryBulkTO.getMeterDetails().getMeterType().contains("MS")) {
-                if (StringUtil.areEqual(parkingSpaceInventoryBulkTO.getMSPayStationID(),
-                                        "000-00000")) {
+            if (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor() &&
+                parkingSpaceInventoryBulkTO.isInvalidCapColor()) {
+                
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_to_cap_color));
 
-                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_invalid_mspaystationid));
-
-                    allValid = false;
-                }
+                allValid = false;
             }
         }
 
@@ -1051,21 +1017,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
 
      */
 
-    private boolean disableMeterScheduleComponent(MeterScheduleType scheduleType) {
-
-        RichTable table = getMeterScheduleTable();
-
-        if (table == null) {
-            // Not yet initialised, so nothing to check
-            return false;
-        }
-
-        List<MeterOPScheduleDTO> meterSchedules =
-            (List<MeterOPScheduleDTO>)table.getValue();
-
-        return containsScheduleType(meterSchedules, scheduleType);
-    }
-
     private boolean containsScheduleType(List<MeterOPScheduleDTO> meterSchedules,
                                          MeterScheduleType scheduleType) {
 
@@ -1080,21 +1031,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
         }
 
         return false;
-    }
-
-    private boolean disableMeterRateComponent(MeterRateType rateType) {
-
-        RichTable table = getMeterRateTable();
-
-        if (table == null) {
-            // Not yet initialised, so nothing to check
-            return false;
-        }
-
-        List<MeterRateScheduleDTO> meterRates =
-            (List<MeterRateScheduleDTO>)table.getValue();
-
-        return containsRateType(meterRates, rateType);
     }
 
     private boolean containsRateType(List<MeterRateScheduleDTO> meterRates,
@@ -1146,14 +1082,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
         }
     }
 
-    private void updateAllMeterDetails() {
-        addPartialTarget(getMeterVendorIT());
-        addPartialTarget(getMeterModelIT());
-        addPartialTarget(getMeterTypeIT());
-        addPartialTarget(getSmartMeterIT());
-        addPartialTarget(getMsPayStationIDIT());
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1200,46 +1128,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
 
     public RichTable getMeterScheduleTable() {
         return meterScheduleTable;
-    }
-
-    public void setMeterVendorIT(RichInputText meterVendorIT) {
-        this.meterVendorIT = meterVendorIT;
-    }
-
-    public RichInputText getMeterVendorIT() {
-        return meterVendorIT;
-    }
-
-    public void setMeterModelIT(RichInputText meterModelIT) {
-        this.meterModelIT = meterModelIT;
-    }
-
-    public RichInputText getMeterModelIT() {
-        return meterModelIT;
-    }
-
-    public void setSmartMeterIT(RichInputText smartMeterIT) {
-        this.smartMeterIT = smartMeterIT;
-    }
-
-    public RichInputText getSmartMeterIT() {
-        return smartMeterIT;
-    }
-
-    public void setMeterTypeIT(RichInputText meterTypeIT) {
-        this.meterTypeIT = meterTypeIT;
-    }
-
-    public RichInputText getMeterTypeIT() {
-        return meterTypeIT;
-    }
-
-    public void setMsPayStationIDIT(RichInputText msPayStationIDIT) {
-        this.msPayStationIDIT = msPayStationIDIT;
-    }
-
-    public RichInputText getMsPayStationIDIT() {
-        return msPayStationIDIT;
     }
 
     public void setMeterRateTable(RichTable meterRateTable) {

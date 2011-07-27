@@ -31,21 +31,63 @@ public class MeterOPScheduleBulkTO extends BaseTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PURELY FOR DISPLAY PURPOSE
+
+    private boolean DisableDeleteAllOPSchedules;
+    private boolean DisableDeleteAllALTSchedules;
+    private boolean DisableDeleteAllTOWSchedules;
+
+    public void setDisableDeleteAllOPSchedules(boolean DisableDeleteAllOPSchedules) {
+        this.DisableDeleteAllOPSchedules = DisableDeleteAllOPSchedules;
+    }
+
+    public boolean isDisableDeleteAllOPSchedules() {
+        return DisableDeleteAllOPSchedules;
+    }
+
+    public void setDisableDeleteAllALTSchedules(boolean DisableDeleteAllALTSchedules) {
+        this.DisableDeleteAllALTSchedules = DisableDeleteAllALTSchedules;
+    }
+
+    public boolean isDisableDeleteAllALTSchedules() {
+        return DisableDeleteAllALTSchedules;
+    }
+
+    public void setDisableDeleteAllTOWSchedules(boolean DisableDeleteAllTOWSchedules) {
+        this.DisableDeleteAllTOWSchedules = DisableDeleteAllTOWSchedules;
+    }
+
+    public boolean isDisableDeleteAllTOWSchedules() {
+        return DisableDeleteAllTOWSchedules;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR EASE
 
     public void setAllBoolean(boolean value) {
         setDeleteAllOPSchedules(value);
+        setDisableDeleteAllOPSchedules(value);
+
         setDeleteAllALTSchedules(value);
+        setDisableDeleteAllALTSchedules(value);
+
         setDeleteAllTOWSchedules(value);
+        setDisableDeleteAllTOWSchedules(value);
     }
 
-    public void setProperBoolean(MeterScheduleType scheduleType) {
+    public void setProperBoolean(MeterScheduleType scheduleType,
+                                 boolean value) {
         if (scheduleType.isScheduleOP()) {
-            setDeleteAllOPSchedules(true);
+            setDeleteAllOPSchedules(value);
+            setDisableDeleteAllOPSchedules(value);
         } else if (scheduleType.isScheduleALT()) {
-            setDeleteAllALTSchedules(true);
+            setDeleteAllALTSchedules(value);
+            setDisableDeleteAllALTSchedules(value);
         } else if (scheduleType.isScheduleTOW()) {
-            setDeleteAllTOWSchedules(true);
+            setDeleteAllTOWSchedules(value);
+            setDisableDeleteAllTOWSchedules(value);
         }
     }
 

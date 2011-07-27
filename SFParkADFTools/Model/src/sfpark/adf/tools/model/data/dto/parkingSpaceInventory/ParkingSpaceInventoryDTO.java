@@ -21,6 +21,42 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
         super();
     }
 
+    private ParkingSpaceInventoryDTO(ParkingSpaceInventoryDTO DTO) {
+        super(DTO);
+
+        this.setParkingSpaceID(DTO.getParkingSpaceID());
+        this.setPostID(DTO.getPostID());
+        this.setMSPayStationID(DTO.getMSPayStationID());
+        this.setMSSpaceNum(DTO.getMSSpaceNum());
+        this.setSensorFlag(DTO.getSensorFlag());
+        this.setOnOffStreetType(DTO.getOnOffStreetType());
+        this.setOSPID(DTO.getOSPID());
+        this.setJurisdiction(DTO.getJurisdiction());
+        this.setPMDistrictID(DTO.getPMDistrictID());
+        this.setBlockfaceID(DTO.getBlockfaceID());
+        this.setActiveMeterFlag(DTO.getActiveMeterFlag());
+        this.setReasonCode(DTO.getReasonCode());
+
+        this.setMeterDetails(DTO.getMeterDetails());
+
+        this.setCapColor(DTO.getCapColor());
+        this.setPCOBeat(DTO.getPCOBeat());
+        this.setOldRateArea(DTO.getOldRateArea());
+        this.setStreetID(DTO.getStreetID());
+        this.setStreetName(DTO.getStreetName());
+        this.setStreetNum(DTO.getStreetNum());
+        this.setParityDigitPosition(DTO.getParityDigitPosition());
+        this.setCNNID(DTO.getCNNID());
+        this.setOrientation(DTO.getOrientation());
+        this.setLongitude(DTO.getLongitude());
+        this.setLatitude(DTO.getLatitude());
+        this.setLegislationReference(DTO.getLegislationReference());
+        this.setLegislationDate(DTO.getLegislationDate());
+        this.setWorkOrder(DTO.getWorkOrder());
+        this.setComments(DTO.getComments());
+
+    }
+
     private ParkingSpaceInventoryDTO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
@@ -155,6 +191,15 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
         return new ParkingSpaceInventoryDTO(resultSet);
     }
 
+    public static ParkingSpaceInventoryDTO copy(ParkingSpaceInventoryDTO DTO) {
+
+        if (DTO == null) {
+            return null;
+        }
+
+        return new ParkingSpaceInventoryDTO(DTO);
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -254,7 +299,7 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
 
         setMeterDetails(meterModelsDO);
 
-        if (meterModelsDO.getMeterType().contains("MS")) {
+        if (meterModelsDO.isMeterMultiSpace()) {
             setMSPayStationID(getPostID());
             setMSSpaceNum(1);
         } else {

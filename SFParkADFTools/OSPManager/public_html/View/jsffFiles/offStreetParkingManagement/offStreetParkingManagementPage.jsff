@@ -480,7 +480,7 @@
         </af:column>
         <af:column id="GRTableColRateChg" align="center" sortable="false"
                    headerText="#{columnBundle.column_rate_change_ref}">
-          <af:inputText id="GRTableRowRateChg" maximumLength="10" simple="true"
+          <af:inputText id="GRTableRowRateChg" maximumLength="20" simple="true"
                         value="#{row.rateChangeReference}"/>
         </af:column>
       </af:table>

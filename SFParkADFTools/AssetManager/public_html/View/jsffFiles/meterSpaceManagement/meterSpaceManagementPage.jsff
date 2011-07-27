@@ -774,8 +774,8 @@
           </af:column>
           <af:column id="HMRTableColRateChgRef" align="center" sortable="false"
                      headerText="#{columnBundle.column_rate_change_ref}">
-            <af:inputText id="HMRTableRowRateChgRef" maximumLength="10"
-                          simple="true" columns="11"
+            <af:inputText id="HMRTableRowRateChgRef" maximumLength="20"
+                          simple="true" columns="21"
                           readOnly="#{meterSpaceManagementBean.readOnly}"
                           value="#{row.rateChangeReference}"/>
           </af:column>
@@ -921,8 +921,8 @@
         </af:column>
         <af:column id="MRTableColRateChgRef" align="center" sortable="false"
                    headerText="#{columnBundle.column_rate_change_ref}">
-          <af:inputText id="MRTableRowRateChgRef" maximumLength="10"
-                        simple="true" columns="11"
+          <af:inputText id="MRTableRowRateChgRef" maximumLength="20"
+                        simple="true" columns="21"
                         readOnly="#{meterSpaceManagementBean.readOnly}"
                         value="#{row.rateChangeReference}"/>
         </af:column>

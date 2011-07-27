@@ -39,7 +39,6 @@ public enum ErrorBundleKey {
 
     error_not_work_postid_and_mspaystationid,
     error_bulk_not_work_postid_and_mspaystationid,
-    error_bulk_invalid_mspaystationid,
 
     error_off_street_needs_osp_id,
 
@@ -62,6 +61,13 @@ public enum ErrorBundleKey {
 
     error_meter_schedule_invalid_unique_constraints,
     error_meter_rate_invalid_unique_constraints,
+
+    error_bulk_meter_invalid_to_cap_color,
+    error_bulk_meter_invalid_from_cap_color,
+
+    error_bulk_meter_invalid_from_active_meter_status,
+
+    error_bulk_could_not_load_parking_spaces,
 
     error_parking_space_exception_unique_constraint,
     error_parking_space_exception_schedule_insert,

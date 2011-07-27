@@ -112,7 +112,7 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
             MeterOPScheduleBulkTO meterOPScheduleBulkTO =
                 (MeterOPScheduleBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey());
 
-            meterOPScheduleBulkTO.setProperBoolean(meterSchedValidationsDO.getScheduleType());
+            meterOPScheduleBulkTO.setProperBoolean(meterSchedValidationsDO.getScheduleType(), true);
 
             setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey(),
                                   meterOPScheduleBulkTO);

@@ -12,7 +12,6 @@ import sfpark.adf.tools.model.data.dO.blockface.BlockfaceDO;
 import sfpark.adf.tools.model.data.dO.meterSchedValidations.MeterSchedValidationsDO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
-import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryBulkDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
 import sfpark.adf.tools.model.data.helper.MeterRateType;
@@ -222,7 +221,9 @@ public final class DMLOperationsProvider {
         DTO.setPSGroupID("0");
         DTO.setEventID("0");
 
-        DTO.setBlockID(CommonUtils.extractBlockIDFromBlockfaceID(blockfaceID));
+        if (StringUtil.isNotBlank(blockfaceID)) {
+            DTO.setBlockID(CommonUtils.extractBlockIDFromBlockfaceID(blockfaceID));
+        }
 
         if (rateType.isRateTypeH()) {
             DTO.setEditableDaysApplied(true);
@@ -241,6 +242,8 @@ public final class DMLOperationsProvider {
         LOGGER.entering(CLASSNAME, "getNewParkingSpaceInventoryBulkTO");
 
         ParkingSpaceInventoryBulkTO TO = new ParkingSpaceInventoryBulkTO();
+        
+        TO.setAllBoolean(false);
 
         TO.setSensorFlag(DataRepositoryUtil.getSensorFlagDefaultValue());
         TO.setCapColor(DataRepositoryUtil.getCapColorDefaultValue());
@@ -259,9 +262,7 @@ public final class DMLOperationsProvider {
 
         MeterOPScheduleBulkTO TO = new MeterOPScheduleBulkTO();
 
-        TO.setDeleteAllOPSchedules(false);
-        TO.setDeleteAllALTSchedules(false);
-        TO.setDeleteAllTOWSchedules(false);
+        TO.setAllBoolean(false);
 
         LOGGER.exiting(CLASSNAME, "getNewMeterOPScheduleBulkTO");
 
@@ -273,58 +274,11 @@ public final class DMLOperationsProvider {
 
         MeterRateScheduleBulkTO TO = new MeterRateScheduleBulkTO();
 
-        TO.setDeleteAllBaseRates(false);
-        TO.setDeleteAllHourlyRates(false);
+        TO.setAllBoolean(false);
 
         LOGGER.exiting(CLASSNAME, "getNewMeterRateScheduleBulkTO");
 
         return TO;
-    }
-
-    public String getOldRateArea(ParkingSpaceInventoryDTO DTO) {
-
-        String activeMeterStatusFlag = DTO.getActiveMeterFlag();
-        String capColor = DTO.getCapColor();
-        String longitude = DTO.getLongitude();
-        String latitude = DTO.getLatitude();
-
-        if (StringUtil.areEqual(activeMeterStatusFlag, "U")) {
-            return "-";
-        }
-
-        if (StringUtil.areEqual(capColor, "Brown")) {
-            return "Tour Bus";
-        }
-
-        RateAreasDOStatus rateAreasDOStatus =
-            RateAreasProvider.INSTANCE.checkForRateArea(longitude, latitude);
-
-        if (!rateAreasDOStatus.existsDO()) {
-            LOGGER.warning("Retrieved Old Rate Area was null. Should not have happened. Returning -.");
-            return "-";
-        }
-
-        if (StringUtil.areEqual(capColor, "Black")) {
-            return rateAreasDOStatus.getDO().getMCName();
-        }
-
-        return rateAreasDOStatus.getDO().getAreaName();
-    }
-
-    public String getPCOBeat(ParkingSpaceInventoryDTO DTO) {
-
-        String longitude = DTO.getLongitude();
-        String latitude = DTO.getLatitude();
-
-        PCOBeatsDOStatus pcoBeatsDOStatus =
-            PCOBeatsProvider.INSTANCE.checkForPCOBeat(longitude, latitude);
-
-        if (!pcoBeatsDOStatus.existsDO()) {
-            LOGGER.warning("Retrieved PCO Beat was null. Should not have happened. Returning -.");
-            return "-";
-        }
-
-        return pcoBeatsDOStatus.getDO().getBeatName();
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -589,28 +543,54 @@ public final class DMLOperationsProvider {
         return performOperation(tableRecords);
     }
 
+    /**
+     * Applies the necessary business logic for the Bulk Edit Mode of Parking Space
+     *
+     * Common Validity Tests:
+     * =====================
+     *    1. Check for Cap Color
+     *       ---Changing from Black/Brown is NOT allowed
+     *    2. Check for Active Meter Status
+     *       ---Changing from U to anything other than U is NOT allowed
+     *    3. Check for MS Pay Station ID
+     *       ---Combination of Post ID and MS Pay Station ID should work
+     *
+     * Common Steps:
+     * ============
+     *    1. Sensor Flag to be updated
+     *       ---Set Sensor Flag
+     *    2. Active Meter Flag to be updated
+     *       ---Set Active Meter Flag
+     *    3. Reason Code to be updated
+     *       ---Set Reason Code
+     *    4. Cap Color to be updated
+     *       ---Set Cap Color
+     *    5. Legislation to be updated
+     *       ---Set Legislation Reference
+     *       ---Set Legislation Date
+     *    6. Work Order to be updated
+     *       ---Set Work Order
+     *    7. Comments to be updated
+     *       ---Set Comments
+     *    8. Meter Details to be updated
+     *       ---Set Meter Details
+     *       ---Set MS PayStation ID accordingly
+     *    9. Retrieve OLD_RATE_AREA
+     *   10. Retrieve PCO_BEAT
+     *
+     * @param parkingSpaceInventoryBulkTO
+     * @param meterOPScheduleBulkTO
+     * @param meterSchedules
+     * @param meterRateScheduleBulkTO
+     * @param meterRates
+     * @return
+     */
     public OperationStatus editBulkParkingSpace(ParkingSpaceInventoryBulkTO parkingSpaceInventoryBulkTO,
                                                 MeterOPScheduleBulkTO meterOPScheduleBulkTO,
                                                 List<MeterOPScheduleDTO> meterSchedules,
                                                 MeterRateScheduleBulkTO meterRateScheduleBulkTO,
                                                 List<MeterRateScheduleDTO> meterRates) {
-        return null; // TODO This is faulty
-    }
 
-    /**
-     * Applies the necessary business logic for the Bulk Edit Mode of Parking Space.
-     *
-     * This method returns NULL when no changes are made to the original data
-     *
-     * @deprecated
-     * @param parkingSpaceInventoryBulkDTO
-     * @param meterOPScheduleBulkTO
-     * @param meterSchedules
-     * @return
-     */
-    public OperationStatus editBulkParkingSpace(ParkingSpaceInventoryBulkDTO parkingSpaceInventoryBulkDTO,
-                                                MeterOPScheduleBulkTO meterOPScheduleBulkTO,
-                                                List<MeterOPScheduleDTO> meterSchedules) {
         LOGGER.entering(CLASSNAME, "editBulkParkingSpace");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
@@ -620,12 +600,12 @@ public final class DMLOperationsProvider {
         // ++++++++++++++++++++++++++++++++++
         // Retrieving Parking Spaces
 
-        List<ParkingSpaceInventoryDTO> originalParkingSpaceInventoryDTOs =
-            ParkingSpaceInventoryProvider.INSTANCE.getParkingSpaceInventoryDTOs(parkingSpaceInventoryBulkDTO.getParkingSpaceIDList());
+        List<ParkingSpaceInventoryDTO> parkingSpaceInventoryDTOs =
+            ParkingSpaceInventoryProvider.INSTANCE.getParkingSpaceInventoryDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
-        if (originalParkingSpaceInventoryDTOs.isEmpty()) {
+        if (parkingSpaceInventoryDTOs.isEmpty()) {
             return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                       new Exception("Could not load Parking Spaces"));
+                                       new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_could_not_load_parking_spaces)));
         }
 
         // ++++++++++++++++++++++++++++++++++
@@ -633,42 +613,114 @@ public final class DMLOperationsProvider {
         // ++++++++++++++++++++++++++++++++++
         // Parking Space
 
-        // TODO
-        ParkingSpaceInventoryBulkDTO originalParkingSpaceInventoryBulkDTO =
-            new ParkingSpaceInventoryBulkDTO();
+        if (!parkingSpaceInventoryBulkTO.isSameAs(new ParkingSpaceInventoryBulkTO())) {
 
-        if (!parkingSpaceInventoryBulkDTO.isSameAs(originalParkingSpaceInventoryBulkDTO)) {
+            // For each Parking Space
+            for (ParkingSpaceInventoryDTO DTO : parkingSpaceInventoryDTOs) {
 
-            if (parkingSpaceInventoryBulkDTO.isToBeUpdatedMeterDetails()) {
-                // When Meter Details are being updated, then check for Multi Space
+                ParkingSpaceInventoryDTO parkingSpaceInventoryDTO =
+                    ParkingSpaceInventoryDTO.copy(DTO);
 
-                if (parkingSpaceInventoryBulkDTO.getMeterDetails().getMeterType().contains("MS")) {
-                    // Check to see if POST_ID and MS_PAY_STATION_ID work
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // Validate Parking Space values
 
-                    for (ParkingSpaceInventoryDTO originalParkingSpaceInventoryDTO :
-                         originalParkingSpaceInventoryDTOs) {
-                        if (!CommonUtils.willPostIDAndPayStationIDWork(originalParkingSpaceInventoryDTO.getPostID(),
-                                                                       parkingSpaceInventoryBulkDTO.getMSPayStationID(),
-                                                                       originalParkingSpaceInventoryDTO.getOnOffStreetType())) {
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor() &&
+                    parkingSpaceInventoryBulkTO.isInvalidCapColor(parkingSpaceInventoryDTO.getCapColor())) {
 
-                            LOGGER.debug("Combination does NOT work");
-                            return new OperationStatus(OperationStatus.Type.UPDATE_FAILURE,
-                                                       new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_work_postid_and_mspaystationid)));
-                        }
-                    }
+                    LOGGER.debug("CAP_COLOR can NOT be changed");
+                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
+                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_cap_color)));
 
                 }
 
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedActiveMeterFlag() &&
+                    parkingSpaceInventoryDTO.isUnmetered() &&
+                    !parkingSpaceInventoryBulkTO.isUnmetered()) {
+
+                    LOGGER.debug("ACTIVE_METER_FLAG can NOT be changed");
+                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
+                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_active_meter_status)));
+
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
+                    parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace() &&
+                    !CommonUtils.willPostIDAndPayStationIDWork(parkingSpaceInventoryDTO.getPostID(),
+                                                               parkingSpaceInventoryBulkTO.getMSPayStationID(),
+                                                               parkingSpaceInventoryDTO.getOnOffStreetType())) {
+
+                    LOGGER.debug("Combination of POST_ID and MS_PAYSTATION_ID does NOT work");
+                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
+                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_work_postid_and_mspaystationid)));
+
+                }
+
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // Update Parking Space Values
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedSensorFlag()) {
+                    parkingSpaceInventoryDTO.setSensorFlag(parkingSpaceInventoryBulkTO.getSensorFlag());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedActiveMeterFlag()) {
+                    parkingSpaceInventoryDTO.setActiveMeterFlag(parkingSpaceInventoryBulkTO.getActiveMeterFlag());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedReasonCode()) {
+                    parkingSpaceInventoryDTO.setReasonCode(parkingSpaceInventoryBulkTO.getReasonCode());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor()) {
+                    parkingSpaceInventoryDTO.setCapColor(parkingSpaceInventoryBulkTO.getCapColor());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedLegislation()) {
+                    parkingSpaceInventoryDTO.setLegislationReference(parkingSpaceInventoryBulkTO.getLegislationReference());
+                    parkingSpaceInventoryDTO.setLegislationDate(parkingSpaceInventoryBulkTO.getLegislationDate());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedWorkOrder()) {
+                    parkingSpaceInventoryDTO.setWorkOrder(parkingSpaceInventoryBulkTO.getWorkOrder());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedComments()) {
+                    parkingSpaceInventoryDTO.setComments(parkingSpaceInventoryBulkTO.getComments());
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails()) {
+                    parkingSpaceInventoryDTO.setMeterDetails(parkingSpaceInventoryBulkTO.getMeterDetails());
+
+                    if (parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace()) {
+                        parkingSpaceInventoryDTO.setMSPayStationID(parkingSpaceInventoryBulkTO.getMSPayStationID());
+                    }
+                }
+
+                String oldRateArea = getOldRateArea(parkingSpaceInventoryDTO);
+                parkingSpaceInventoryDTO.setOldRateArea(oldRateArea);
+
+                String pcoBeat = getPCOBeat(parkingSpaceInventoryDTO);
+                parkingSpaceInventoryDTO.setPCOBeat(pcoBeat);
+
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // Append it to the records list
+
+                tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                 parkingSpaceInventoryDTO));
+
             }
 
-            tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
-                                             parkingSpaceInventoryBulkDTO));
         }
 
         // ++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++
-        // Meter Schedules
+        // Retrieve Meter Schedules
 
         List<MeterOPScheduleDTO> deleteMeterSchedules =
             new ArrayList<MeterOPScheduleDTO>();
@@ -681,7 +733,7 @@ public final class DMLOperationsProvider {
         if (meterOPScheduleBulkTO.isDeleteAllOPSchedules()) {
             // All previous meter OP schedules should be deleted
             List<MeterOPScheduleDTO> originalMeterOPSchedules =
-                MeterOPScheduleProvider.INSTANCE.getMeterOPScheduleDTOs(parkingSpaceInventoryBulkDTO.getParkingSpaceIDList());
+                MeterOPScheduleProvider.INSTANCE.getMeterOPScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
             deleteMeterSchedules.addAll(originalMeterOPSchedules);
         }
@@ -694,7 +746,7 @@ public final class DMLOperationsProvider {
         if (meterOPScheduleBulkTO.isDeleteAllALTSchedules()) {
             // All previous meter ALT schedules should be deleted
             List<MeterOPScheduleDTO> originalMeterALTSchedules =
-                MeterOPScheduleProvider.INSTANCE.getMeterALTScheduleDTOs(parkingSpaceInventoryBulkDTO.getParkingSpaceIDList());
+                MeterOPScheduleProvider.INSTANCE.getMeterALTScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
             deleteMeterSchedules.addAll(originalMeterALTSchedules);
         }
@@ -707,7 +759,7 @@ public final class DMLOperationsProvider {
         if (meterOPScheduleBulkTO.isDeleteAllTOWSchedules()) {
             // All previous meter TOW schedules should be deleted
             List<MeterOPScheduleDTO> originalMeterTOWSchedules =
-                MeterOPScheduleProvider.INSTANCE.getMeterTOWScheduleDTOs(parkingSpaceInventoryBulkDTO.getParkingSpaceIDList());
+                MeterOPScheduleProvider.INSTANCE.getMeterTOWScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
             deleteMeterSchedules.addAll(originalMeterTOWSchedules);
         }
@@ -715,45 +767,131 @@ public final class DMLOperationsProvider {
         // ++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++
-        // Meter Schedules
+        // Update Meter Schedules
 
-        // DELETE old meter schedules
         for (MeterOPScheduleDTO deleteMeterSchedule : deleteMeterSchedules) {
 
-            java.sql.Date newToDate =
-                EffectiveDateCalculator.getBulkEffectiveToDateWhenDeleting(deleteMeterSchedule.getEffectiveFromDate(),
-                                                                           deleteMeterSchedule.getEffectiveToDate());
+            Date newToDate =
+                EffectiveDateCalculator.getEffectiveToDateWhenDeleting(deleteMeterSchedule.getEffectiveFromDate(),
+                                                                       deleteMeterSchedule.getEffectiveToDate());
 
             deleteMeterSchedule.setEffectiveToDate(newToDate);
             tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                              deleteMeterSchedule));
         }
 
-        // ADD current meter schedules to all Parking Spaces
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Insert New Meter Schedules (if any)
+
         if (meterSchedules != null && !meterSchedules.isEmpty()) {
 
-            for (ParkingSpaceInventoryDTO originalParkingSpaceInventoryDTO :
-                 originalParkingSpaceInventoryDTOs) {
+            for (ParkingSpaceInventoryDTO parkingSpaceInventoryDTO :
+                 parkingSpaceInventoryDTOs) {
 
                 for (MeterOPScheduleDTO meterSchedule : meterSchedules) {
 
-                    MeterOPScheduleDTO DTO =
+                    MeterOPScheduleDTO meterOPScheduleDTO =
                         MeterOPScheduleDTO.copy(meterSchedule);
 
-                    DTO.setParkingSpaceID(originalParkingSpaceInventoryDTO.getParkingSpaceID());
+                    meterOPScheduleDTO.setParkingSpaceID(parkingSpaceInventoryDTO.getParkingSpaceID());
 
-                    if (DTO.getScheduleType().isScheduleOP()) {
-                        if (parkingSpaceInventoryBulkDTO.isToBeUpdatedCapColor()) {
-                            DTO.setColorRuleApplied(parkingSpaceInventoryBulkDTO.getCapColor());
-                        } else {
-                            DTO.setColorRuleApplied(originalParkingSpaceInventoryDTO.getCapColor());
-                        }
+                    if (meterOPScheduleDTO.getScheduleType().isScheduleOP()) {
+
+                        String colorRuleApplied =
+                            (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor()) ?
+                            parkingSpaceInventoryBulkTO.getCapColor() :
+                            parkingSpaceInventoryDTO.getCapColor();
+
+                        meterOPScheduleDTO.setColorRuleApplied(colorRuleApplied);
+
                     }
 
                     tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
-                                                     DTO));
+                                                     meterOPScheduleDTO));
+
                 }
+
             }
+            
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Retrieve Meter Rates
+
+        List<MeterRateScheduleDTO> deleteMeterRates =
+            new ArrayList<MeterRateScheduleDTO>();
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Meter Base Rates
+
+        if (meterRateScheduleBulkTO.isDeleteAllBaseRates()) {
+            // All previous meter base rates should be deleted
+            List<MeterRateScheduleDTO> originalMeterBaseRates =
+                MeterRateScheduleProvider.INSTANCE.getMeterBRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
+
+            deleteMeterRates.addAll(originalMeterBaseRates);
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Meter Hourly Rates
+
+        if (meterRateScheduleBulkTO.isDeleteAllHourlyRates()) {
+            // All previous meter hourly rates should be deleted
+            List<MeterRateScheduleDTO> originalMeterHourlyRates =
+                MeterRateScheduleProvider.INSTANCE.getMeterHRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
+
+            deleteMeterRates.addAll(originalMeterHourlyRates);
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Update Meter Rates
+
+        for (MeterRateScheduleDTO deleteMeterRate : deleteMeterRates) {
+            Date newToDate =
+                EffectiveDateCalculator.getEffectiveToDateWhenDeleting(deleteMeterRate.getEffectiveFromDate(),
+                                                                       deleteMeterRate.getEffectiveToDate());
+
+            deleteMeterRate.setEffectiveToDate(newToDate);
+            tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                             deleteMeterRate));
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Insert New Meter Rates (if any)
+
+        if (meterRates != null && !meterRates.isEmpty()) {
+
+            for (ParkingSpaceInventoryDTO parkingSpaceInventoryDTO :
+                 parkingSpaceInventoryDTOs) {
+
+                for (MeterRateScheduleDTO meterRate : meterRates) {
+
+                    MeterRateScheduleDTO meterRateScheduleDTO =
+                        MeterRateScheduleDTO.copy(meterRate);
+
+                    meterRateScheduleDTO.setParkingSpaceID(parkingSpaceInventoryDTO.getParkingSpaceID());
+
+                    meterRateScheduleDTO.setBlockID(CommonUtils.extractBlockIDFromBlockfaceID(parkingSpaceInventoryDTO.getBlockfaceID()));
+
+                    tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
+                                                     meterRateScheduleDTO));
+
+                }
+
+            }
+
         }
 
         LOGGER.exiting(CLASSNAME, "editBulkParkingSpace");
@@ -765,6 +903,77 @@ public final class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
+
+    /**
+     * Retrieves the OLD_RATE_AREA
+     *    ---ACTIVE_METER_FLAG
+     *       ---If U, then -
+     *    ---CAP_COLOR
+     *       ---If Brown, then Tour Bus
+     *       ---If Black, then MCName
+     *    ---LONGITUDE
+     *    ---LATITUDE
+     *
+     *
+     * @param DTO
+     * @return
+     */
+    public String getOldRateArea(ParkingSpaceInventoryDTO DTO) {
+
+        String activeMeterStatusFlag = DTO.getActiveMeterFlag();
+        String capColor = DTO.getCapColor();
+        String longitude = DTO.getLongitude();
+        String latitude = DTO.getLatitude();
+
+        if (StringUtil.areEqual(activeMeterStatusFlag, "U")) {
+            return "-";
+        }
+
+        if (StringUtil.areEqual(capColor, "Brown")) {
+            return "Tour Bus";
+        }
+
+        RateAreasDOStatus rateAreasDOStatus =
+            RateAreasProvider.INSTANCE.checkForRateArea(longitude, latitude);
+
+        if (!rateAreasDOStatus.existsDO()) {
+            LOGGER.warning("Retrieved Old Rate Area was null. Should not have happened. Returning -.");
+            return "-";
+        }
+
+        if (StringUtil.areEqual(capColor, "Black")) {
+            return rateAreasDOStatus.getDO().getMCName();
+        }
+
+        return rateAreasDOStatus.getDO().getAreaName();
+    }
+
+    /**
+     * Retrieves PCO Beat based on the latitude and longitude
+     *
+     * @param DTO
+     * @return
+     */
+    public String getPCOBeat(ParkingSpaceInventoryDTO DTO) {
+
+        String longitude = DTO.getLongitude();
+        String latitude = DTO.getLatitude();
+
+        PCOBeatsDOStatus pcoBeatsDOStatus =
+            PCOBeatsProvider.INSTANCE.checkForPCOBeat(longitude, latitude);
+
+        if (!pcoBeatsDOStatus.existsDO()) {
+            LOGGER.warning("Retrieved PCO Beat was null. Should not have happened. Returning -.");
+            return "-";
+        }
+
+        return pcoBeatsDOStatus.getDO().getBeatName();
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PRIVATE METHODS
 
     private OperationStatus performOperation(List<TableRecord> tableRecords) {
         OperationStatus operationStatus = null;

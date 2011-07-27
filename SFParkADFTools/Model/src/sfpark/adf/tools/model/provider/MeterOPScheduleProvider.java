@@ -123,17 +123,14 @@ public class MeterOPScheduleProvider {
                 SQLDateUtil.getNextDateFor(maxDate));
     }
 
-    @Deprecated
     public List<MeterOPScheduleDTO> getMeterOPScheduleDTOs(List<String> parkingSpaceIDs) {
         return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.OP);
     }
 
-    @Deprecated
     public List<MeterOPScheduleDTO> getMeterTOWScheduleDTOs(List<String> parkingSpaceIDs) {
         return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.TOW);
     }
 
-    @Deprecated
     public List<MeterOPScheduleDTO> getMeterALTScheduleDTOs(List<String> parkingSpaceIDs) {
         return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.ALT);
     }

@@ -13,23 +13,6 @@ public final class EffectiveDateCalculator {
         super();
     }
 
-    @Deprecated
-    public static Date getBulkEffectiveToDateWhenDeleting(Date deleteDTOFromDate,
-                                                          Date deleteDTOToDate) {
-
-        Date newToDate = SQLDateUtil.getYesterdaysDate();
-
-        if (newToDate.after(deleteDTOToDate)) {
-            newToDate = deleteDTOToDate;
-        }
-
-        if (newToDate.before(deleteDTOFromDate)) {
-            newToDate = deleteDTOFromDate;
-        }
-
-        return newToDate;
-    }
-
     public static Date getEffectiveToDateWhenDeleting(Date deleteDTOFromDate,
                                                       Date deleteDTOToDate) {
         Date newToDate = SQLDateUtil.getYesterdaysDate();

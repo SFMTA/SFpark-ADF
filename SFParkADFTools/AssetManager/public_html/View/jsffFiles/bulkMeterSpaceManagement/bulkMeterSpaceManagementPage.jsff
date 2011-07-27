@@ -123,26 +123,21 @@
                           partialTriggers="meterDetailsSBCB unmeterParkingSpaceButton remeterParkingSpaceButton"/>
         <af:inputText id="meterVendorIT" readOnly="true"
                       label="#{labelBundle.label_meter_vendor}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterVendor}"
-                      binding="#{bulkMeterSpaceManagementBean.meterVendorIT}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterVendor}"/>
         <af:inputText id="meterModelIT" readOnly="true"
                       label="#{labelBundle.label_meter_model}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterModel}"
-                      binding="#{bulkMeterSpaceManagementBean.meterModelIT}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterModel}"/>
         <af:inputText id="smartMeterIT" readOnly="true"
                       label="#{labelBundle.label_smart_meter}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displaySmartMeterFlag}"
-                      binding="#{bulkMeterSpaceManagementBean.smartMeterIT}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displaySmartMeterFlag}"/>
         <af:inputText id="meterTypeIT" readOnly="true"
                       label="#{labelBundle.label_meter_type}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displayMeterType}"
-                      binding="#{bulkMeterSpaceManagementBean.meterTypeIT}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displayMeterType}"/>
         <af:inputText id="msPayStationIDIT" maximumLength="9" columns="10"
                       required="true"
                       disabled="#{bulkMeterSpaceManagementBean.disableMSPayStationIDIT}"
                       label="#{labelBundle.label_ms_pay_station_id}"
                       value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.MSPayStationID}"
-                      binding="#{bulkMeterSpaceManagementBean.msPayStationIDIT}"
                       partialTriggers="meterDetailsSBCB unmeterParkingSpaceButton remeterParkingSpaceButton">
           <af:validateRegExp pattern="#{globalBean.postIDPattern}"
                              messageDetailNoMatch="#{assetManagerBundle.info_ms_pay_station_id_validator}"/>
@@ -200,20 +195,20 @@
                      value="#{assetManagerBundle.string_meter_operating_schedules}"/>
       <af:panelFormLayout id="MOSFormPanel">
         <af:selectBooleanCheckbox id="deleteAllOPSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllOPSBCB}"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.disableDeleteAllOPSchedules}"
                                   text="#{assetManagerBundle.string_delete_all_op_schedules}"
                                   value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllOPSchedules}"
-                                  partialTriggers="MSTable"/>
+                                  partialTriggers="MSTable addOPSched addALTSched addTOWSched"/>
         <af:selectBooleanCheckbox id="deleteAllALTSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllALTSBCB}"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.disableDeleteAllALTSchedules}"
                                   text="#{assetManagerBundle.string_delete_all_alt_schedules}"
                                   value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllALTSchedules}"
-                                  partialTriggers="MSTable"/>
+                                  partialTriggers="MSTable addOPSched addALTSched addTOWSched"/>
         <af:selectBooleanCheckbox id="deleteAllTOWSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllTOWSBCB}"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.disableDeleteAllTOWSchedules}"
                                   text="#{assetManagerBundle.string_delete_all_tow_schedules}"
                                   value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllTOWSchedules}"
-                                  partialTriggers="MSTable"/>
+                                  partialTriggers="MSTable addOPSched addALTSched addTOWSched"/>
       </af:panelFormLayout>
       <af:toolbar id="meterSchedToolbar">
         <af:group id="meterSchedToolbarAddAndDelete">
@@ -379,15 +374,15 @@
                      value="#{assetManagerBundle.string_meter_rate_schedules}"/>
       <af:panelFormLayout id="MRSFormPanel">
         <af:selectBooleanCheckbox id="deleteAllBaseRatesSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllBaseRatesSBCB}"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.disableDeleteAllBaseRates}"
                                   text="#{assetManagerBundle.string_delete_all_base_rates}"
                                   value="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.deleteAllBaseRates}"
-                                  partialTriggers="MRTable"/>
+                                  partialTriggers="MRTable addBaseRate addHourlyRate"/>
         <af:selectBooleanCheckbox id="deleteAllHourlyRatesSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.disableDeleteAllHourlyRatesSBCB}"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.disableDeleteAllHourlyRates}"
                                   text="#{assetManagerBundle.string_delete_all_hourly_rates}"
                                   value="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.deleteAllHourlyRates}"
-                                  partialTriggers="MRTable"/>
+                                  partialTriggers="MRTable addBaseRate addHourlyRate"/>
       </af:panelFormLayout>
       <af:toolbar id="meterRateToolbar">
         <af:group id="meterRateToolbarAddAndDelete">
@@ -502,8 +497,8 @@
         </af:column>
         <af:column id="MRTableColRateChgRef" align="center" sortable="false"
                    headerText="#{columnBundle.column_rate_change_ref}">
-          <af:inputText id="MRTableRowRateChgRef" maximumLength="10"
-                        simple="true" columns="11"
+          <af:inputText id="MRTableRowRateChgRef" maximumLength="20"
+                        simple="true" columns="21"
                         value="#{row.rateChangeReference}"/>
         </af:column>
         <af:column id="MRTableColPSGroupID" align="center" width="100px"

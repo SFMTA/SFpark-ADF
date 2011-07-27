@@ -23,19 +23,19 @@ public final class LoggedInUserUtil {
         DeveloperMode.DEPLOYED_ON_SERVER;
 
     public static boolean canAddParkingSpace() {
-        return hasWriteAccess();
+        return hasMetersAccess();
     }
 
     public static boolean canEditOrReadOnlyParkingSpace() {
-        return (hasWriteAccess() || hasReadOnlyAccess());
+        return (hasMetersAccess() || hasMetersReadOnlyAccess());
     }
 
     public static boolean canReadOnlyParkingSpace() {
-        return hasReadOnlyAccess();
+        return hasMetersReadOnlyAccess();
     }
 
     public static boolean canEditBulkParkingSpace() {
-        return hasWriteAccess();
+        return (hasMetersAccess() || hasGaragesAccess());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,7 +43,7 @@ public final class LoggedInUserUtil {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
-    private static boolean hasWriteAccess() {
+    private static boolean hasMetersAccess() {
         if (USE_SECURITY_MODEL) {
 
             if (isUserInGroup(SecurityGroup.METERS_READ_ONLY)) {
@@ -57,8 +57,24 @@ public final class LoggedInUserUtil {
         return true;
     }
 
-    private static boolean hasReadOnlyAccess() {
-        return isUserInGroup(SecurityGroup.METERS_READ_ONLY);
+    private static boolean hasMetersReadOnlyAccess() {
+        if (USE_SECURITY_MODEL) {
+
+            return isUserInGroup(SecurityGroup.METERS_READ_ONLY);
+
+        }
+
+        return true;
+    }
+
+    private static boolean hasGaragesAccess() {
+        if (USE_SECURITY_MODEL) {
+
+            return isUserInGroup(SecurityGroup.GARAGES);
+
+        }
+
+        return true;
     }
 
     private static boolean isUserInGroup(SecurityGroup securityGroup) {

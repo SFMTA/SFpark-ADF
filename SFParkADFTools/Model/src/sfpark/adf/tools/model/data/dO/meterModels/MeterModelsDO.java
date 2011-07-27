@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.BaseDO;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class MeterModelsDO extends BaseDO {
     public MeterModelsDO() {
@@ -54,13 +55,17 @@ public class MeterModelsDO extends BaseDO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
+    public boolean isMeterMultiSpace() {
+        return StringUtil.areEqual(getMeterType(), "MS");
+    }
+
     public String getDisplayMeterType() {
 
         String meterType = getMeterType();
 
-        if (meterType.contains("SS")) {
+        if (StringUtil.areEqual(meterType, "SS")) {
             return "Single Space";
-        } else if (meterType.contains("MS")) {
+        } else if (StringUtil.areEqual(meterType, "MS")) {
             return "Multi Space";
         }
 
@@ -69,9 +74,7 @@ public class MeterModelsDO extends BaseDO {
 
     public String getDisplaySmartMeterFlag() {
 
-        String smartMeterFlag = getSmartMeterFlag();
-
-        if (smartMeterFlag.contains("Y")) {
+        if (StringUtil.areEqual(getSmartMeterFlag(), "Y")) {
             return "Yes";
         }
 

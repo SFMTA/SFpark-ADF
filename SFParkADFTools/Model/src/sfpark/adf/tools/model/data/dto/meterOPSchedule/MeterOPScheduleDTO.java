@@ -234,10 +234,6 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
     private static final List<String> specificALTStrings =
         Arrays.asList("As Posted");
 
-    public static List<String> getSpecificALTStrings() {
-        return specificALTStrings;
-    }
-
     private boolean Override;
     private List<String> WeekDaysApplied;
     private boolean EditableColorRuleApplied;
