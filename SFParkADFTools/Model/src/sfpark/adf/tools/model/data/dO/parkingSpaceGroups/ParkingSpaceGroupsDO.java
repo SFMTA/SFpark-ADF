@@ -6,26 +6,16 @@ import java.util.List;
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class ParkingSpaceGroupsDO extends BaseDO {
-    public ParkingSpaceGroupsDO() {
-        super();
-    }
 
-    public ParkingSpaceGroupsDO(String ParkingSpaceGroupID,
+    public ParkingSpaceGroupsDO(ParkingSpaceGroupsDO.GROUP_TYPE GroupType,
+                                String IdentifyingGroupID,
                                 List<String> ParkingSpaceIDList) {
         super();
-        
-        this.ParkingSpaceGroupID = ParkingSpaceGroupID;
+
+        this.GroupType = GroupType;
+        this.IdentifyingGroupID = IdentifyingGroupID;
         this.ParkingSpaceIDList = ParkingSpaceIDList;
     }
-
-    /*
-    private ParkingSpaceGroupsDO(ResultSet resultSet) throws SQLException {
-        super(resultSet);
-
-        this.setParkingSpaceGroupID(resultSet.getString(PS_GROUP_ID));
-        this.setParkingSpaceID(resultSet.getString(PARKING_SPACE_ID));
-    }
-    */
 
     public static final String PS_GROUP_ID = "PS_GROUP_ID";
     public static final String PARKING_SPACE_ID = "PARKING_SPACE_ID";
@@ -41,30 +31,24 @@ public class ParkingSpaceGroupsDO extends BaseDO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    /*
-    public static ParkingSpaceGroupsDO extract(ResultSet resultSet) throws SQLException {
-
-        if (resultSet == null) {
-            return null;
-        }
-
-        return new ParkingSpaceGroupsDO(resultSet);
-    }
-    */
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    private String ParkingSpaceGroupID;
+    private GROUP_TYPE GroupType;
+    private String IdentifyingGroupID;
     private List<String> ParkingSpaceIDList;
 
-    public void setParkingSpaceGroupID(String ParkingSpaceGroupID) {
-        this.ParkingSpaceGroupID = ParkingSpaceGroupID;
+    public void setGroupType(ParkingSpaceGroupsDO.GROUP_TYPE GroupType) {
+        this.GroupType = GroupType;
     }
 
-    public String getParkingSpaceGroupID() {
-        return ParkingSpaceGroupID;
+    public ParkingSpaceGroupsDO.GROUP_TYPE getGroupType() {
+        return GroupType;
+    }
+
+    public void setIdentifyingGroupID(String IdentifyingGroupID) {
+        this.IdentifyingGroupID = IdentifyingGroupID;
+    }
+
+    public String getIdentifyingGroupID() {
+        return IdentifyingGroupID;
     }
 
     public void setParkingSpaceIDList(List<String> ParkingSpaceIDList) {
@@ -73,5 +57,14 @@ public class ParkingSpaceGroupsDO extends BaseDO {
 
     public List<String> getParkingSpaceIDList() {
         return ParkingSpaceIDList;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public enum GROUP_TYPE {
+        PARKING_SPACE_GROUP,
+        OSP_ID_GROUP;
     }
 }

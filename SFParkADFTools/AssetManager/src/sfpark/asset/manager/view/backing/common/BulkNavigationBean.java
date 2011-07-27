@@ -13,6 +13,7 @@ import sfpark.adf.tools.helper.Logger;
 
 import sfpark.adf.tools.model.helper.dO.ParkingSpaceGroupsDOStatus;
 import sfpark.adf.tools.model.provider.ParkingSpaceGroupsProvider;
+import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.RequestParameter;
@@ -137,12 +138,16 @@ public class BulkNavigationBean extends BaseBean {
             String parkingSpaceGroupID =
                 getRequestParameterValue(ParameterKey.PARKING_SPACE_GROUP_ID.getKey());
 
+            String ospID =
+                getRequestParameterValue(ParameterKey.OSP_ID.getKey());
+
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
             if ( // VALID Parameters
-                StringUtil.isDigitsONLY(parkingSpaceGroupID)) {
+                StringUtil.isDigitsONLY(parkingSpaceGroupID) ^
+                StringUtil.isDigitsONLY(ospID)) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
@@ -152,8 +157,15 @@ public class BulkNavigationBean extends BaseBean {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
-                    ParkingSpaceGroupsDOStatus parkingSpaceGroupStatus =
-                        ParkingSpaceGroupsProvider.INSTANCE.checkForParkingSpaceGroupID(parkingSpaceGroupID);
+                    ParkingSpaceGroupsDOStatus parkingSpaceGroupStatus;
+
+                    if (StringUtil.isDigitsONLY(parkingSpaceGroupID)) {
+                        parkingSpaceGroupStatus =
+                                ParkingSpaceGroupsProvider.INSTANCE.checkForParkingSpaceGroupID(parkingSpaceGroupID);
+                    } else {
+                        parkingSpaceGroupStatus =
+                                ParkingSpaceInventoryProvider.INSTANCE.checkForOSPID(ospID);
+                    }
 
                     if ( // Parking Space Group EXISTS
                         parkingSpaceGroupStatus.existsDO()) {
@@ -173,7 +185,7 @@ public class BulkNavigationBean extends BaseBean {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
-                        LOGGER.warning("Parking space does not exist");
+                        LOGGER.warning("Parking space group does not exist");
                         setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
                                               TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_exists_parking_space_group,
                                                                                    parkingSpaceGroupID));
@@ -199,7 +211,8 @@ public class BulkNavigationBean extends BaseBean {
                 LOGGER.warning("Invalid Parameters");
                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
                                       TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_asset_manager_bulk_parameters,
-                                                                           parkingSpaceGroupID));
+                                                                           parkingSpaceGroupID,
+                                                                           ospID));
                 setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                      NavigationFlow.ERROR.name());
             }

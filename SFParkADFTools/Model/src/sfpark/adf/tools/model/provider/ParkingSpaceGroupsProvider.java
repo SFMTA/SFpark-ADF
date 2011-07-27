@@ -67,7 +67,8 @@ public final class ParkingSpaceGroupsProvider {
 
             if (!parkingSpaceIDList.isEmpty()) {
                 DO =
- new ParkingSpaceGroupsDO(parkingSpaceGroupID, parkingSpaceIDList);
+ new ParkingSpaceGroupsDO(ParkingSpaceGroupsDO.GROUP_TYPE.PARKING_SPACE_GROUP,
+                          parkingSpaceGroupID, parkingSpaceIDList);
             }
 
         } catch (SQLException e) {
@@ -80,19 +81,6 @@ public final class ParkingSpaceGroupsProvider {
 
         return new ParkingSpaceGroupsDOStatus(DO);
     }
-
-    /*
-
-
-            while (resultSet.next()) {
-                int numberOfDates =
-                    resultSet.getInt(EventCalendarDO.NUMBER_OF_DATES);
-
-                if (numberOfDates > 0) {
-                    DO = new EventCalendarDO(calendarName, numberOfDates);
-                }
-            }
- */
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -124,23 +112,4 @@ public final class ParkingSpaceGroupsProvider {
         return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
                                                   Where, OrderBy);
     }
-
-    /*
-    private String getSelectStatementForDOs() {
-        LOGGER.entering(CLASSNAME, "getSelectStatementForDOs");
-
-        String Attributes =
-            StringUtil.convertListToString(EventCalendarDO.getAttributeListForSelect());
-
-        String GroupBy = EventCalendarDO.CALENDAR_NAME;
-
-        String OrderBy = EventCalendarDO.CALENDAR_NAME;
-
-        LOGGER.exiting(CLASSNAME, "getSelectStatementForDOs");
-
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME, null,
-                                                  OrderBy, GroupBy);
-    }
-
- */
 }

@@ -242,7 +242,7 @@ public final class DMLOperationsProvider {
         LOGGER.entering(CLASSNAME, "getNewParkingSpaceInventoryBulkTO");
 
         ParkingSpaceInventoryBulkTO TO = new ParkingSpaceInventoryBulkTO();
-        
+
         TO.setAllBoolean(false);
 
         TO.setSensorFlag(DataRepositoryUtil.getSensorFlagDefaultValue());
@@ -552,7 +552,9 @@ public final class DMLOperationsProvider {
      *       ---Changing from Black/Brown is NOT allowed
      *    2. Check for Active Meter Status
      *       ---Changing from U to anything other than U is NOT allowed
-     *    3. Check for MS Pay Station ID
+     *    3. Check for Meter Details
+     *       ---Changing when Active Meter Status = U is NOT allowed
+     *    4. Check for MS Pay Station ID
      *       ---Combination of Post ID and MS Pay Station ID should work
      *
      * Common Steps:
@@ -646,6 +648,15 @@ public final class DMLOperationsProvider {
                 }
 
                 if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
+                    parkingSpaceInventoryDTO.isUnmetered()) {
+
+                    LOGGER.debug("Meter Details can NOT be changed as parking space is unmetered");
+                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
+                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_meter_details)));
+
+                }
+
+                if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
                     parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace() &&
                     !CommonUtils.willPostIDAndPayStationIDWork(parkingSpaceInventoryDTO.getPostID(),
                                                                parkingSpaceInventoryBulkTO.getMSPayStationID(),
@@ -694,9 +705,11 @@ public final class DMLOperationsProvider {
                 if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails()) {
                     parkingSpaceInventoryDTO.setMeterDetails(parkingSpaceInventoryBulkTO.getMeterDetails());
 
-                    if (parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace()) {
-                        parkingSpaceInventoryDTO.setMSPayStationID(parkingSpaceInventoryBulkTO.getMSPayStationID());
-                    }
+                    String msPayStationID =
+                        parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace() ?
+                        parkingSpaceInventoryBulkTO.getMSPayStationID() : "-";
+
+                    parkingSpaceInventoryDTO.setMSPayStationID(msPayStationID);
                 }
 
                 String oldRateArea = getOldRateArea(parkingSpaceInventoryDTO);
@@ -814,7 +827,7 @@ public final class DMLOperationsProvider {
                 }
 
             }
-            
+
         }
 
         // ++++++++++++++++++++++++++++++++++

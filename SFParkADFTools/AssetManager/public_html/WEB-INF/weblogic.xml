@@ -13,5 +13,6 @@
     <role-name>valid-users</role-name>
     <principal-name>MetersGroup</principal-name>
     <principal-name>MetersROGroup</principal-name>
+    <principal-name>GaragesGroup</principal-name>
   </security-role-assignment>
 </weblogic-web-app>

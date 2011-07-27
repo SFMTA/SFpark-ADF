@@ -67,6 +67,8 @@ public enum ErrorBundleKey {
 
     error_bulk_meter_invalid_from_active_meter_status,
 
+    error_bulk_meter_invalid_meter_details,
+
     error_bulk_could_not_load_parking_spaces,
 
     error_parking_space_exception_unique_constraint,

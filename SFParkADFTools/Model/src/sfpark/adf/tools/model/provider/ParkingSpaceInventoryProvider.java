@@ -13,7 +13,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
+import sfpark.adf.tools.model.helper.dO.ParkingSpaceGroupsDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.util.SQLObjectUtil;
@@ -120,6 +122,59 @@ public class ParkingSpaceInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "checkForPostID");
         return new ParkingSpaceInventoryDTOStatus(DTO);
+    }
+
+    /**
+     * Checks for the existence of Parking Spaces recognised by the OSP ID.
+     * Returns a Parking Space Groups Status Object which consolidates all the
+     * necessary information as a single record
+     *
+     * @param ospID
+     * @return
+     */
+    public ParkingSpaceGroupsDOStatus checkForOSPID(String ospID) {
+        LOGGER.entering(CLASSNAME, "checkForOSPID");
+
+        ParkingSpaceGroupsDO DO = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectUtil.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatementForOSPID());
+
+            preparedStatement.setString(1, ospID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<String> parkingSpaceIDList = new ArrayList<String>();
+
+            while (resultSet.next()) {
+                String parkingSpaceID =
+                    resultSet.getString(ParkingSpaceInventoryDTO.PARKING_SPACE_ID);
+
+                parkingSpaceIDList.add(parkingSpaceID);
+            }
+
+            if (!parkingSpaceIDList.isEmpty()) {
+                DO =
+ new ParkingSpaceGroupsDO(ParkingSpaceGroupsDO.GROUP_TYPE.OSP_ID_GROUP, ospID,
+                          parkingSpaceIDList);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DO.getMessage(), e);
+        } finally {
+            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "checkForOSPID");
+
+        return new ParkingSpaceGroupsDOStatus(DO);
     }
 
     public List<ParkingSpaceInventoryDTO> getParkingSpaceInventoryDTOs(List<String> parkingSpaceIDs) {
@@ -378,6 +433,22 @@ public class ParkingSpaceInventoryProvider {
         LOGGER.exiting(CLASSNAME, "getSelectStatementForParkingSpaceID");
         return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
                                                   Where);
+    }
+
+    private String getSelectStatementForOSPID() {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForOSPID");
+
+        String Attributes =
+            ParkingSpaceInventoryDTO.OSP_ID + " , " + ParkingSpaceInventoryDTO.PARKING_SPACE_ID;
+
+        String Where = ParkingSpaceInventoryDTO.OSP_ID + " = ?";
+
+        String OrderBy = ParkingSpaceInventoryDTO.PARKING_SPACE_ID;
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForOSPID");
+
+        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+                                                  Where, OrderBy);
     }
 
     private String getSelectStatementForBulkParkingSpaceID(List<String> parkingSpaceIDs) {
