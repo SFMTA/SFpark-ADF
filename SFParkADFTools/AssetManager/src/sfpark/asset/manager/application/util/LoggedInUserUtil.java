@@ -10,6 +10,11 @@ import sfpark.adf.tools.utilities.constants.SecurityGroup;
 import weblogic.security.Security;
 import weblogic.security.principal.WLSGroupImpl;
 
+/**
+ * @deprecated
+ * Use sfpark.adf.tools.helper.SignedInUser instead
+ * This class will be removed in later deployments
+ */
 public final class LoggedInUserUtil {
 
     /**

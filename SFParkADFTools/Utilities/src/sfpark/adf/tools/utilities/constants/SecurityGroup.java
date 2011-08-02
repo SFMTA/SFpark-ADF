@@ -4,7 +4,12 @@ public enum SecurityGroup {
     METERS("MetersGroup"),
     METERS_READ_ONLY("MetersROGroup"),
 
-    GARAGES("GaragesGroup");
+    GARAGES("GaragesGroup"),
+
+    PRICE_CHANGE_APPROVERS("PriceChangeApproversGroup"),
+    PRICE_CHANGE_DEPLOYERS("PriceChangeDeployersGroup"),
+
+    SUPER_USER("SFParkADFToolsAdminGroup");
 
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++

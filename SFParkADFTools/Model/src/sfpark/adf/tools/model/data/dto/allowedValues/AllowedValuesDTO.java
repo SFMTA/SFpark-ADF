@@ -10,6 +10,15 @@ import java.util.List;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 
 public class AllowedValuesDTO extends BaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "ALLOWED_VALUES";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public AllowedValuesDTO() {
         super();
     }

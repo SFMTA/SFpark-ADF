@@ -21,6 +21,7 @@
       <hash><url n="URL" path="EventManager/EventManager.jpr"/></hash>
       <hash><url n="URL" path="Model/Model.jpr"/></hash>
       <hash><url n="URL" path="OSPManager/OSPManager.jpr"/></hash>
+      <hash><url n="URL" path="PriceChangeManager/PriceChangeManager.jpr"/></hash>
       <hash><url n="URL" path="Translation/Translation.jpr"/></hash>
       <hash><url n="URL" path="Utilities/Utilities.jpr"/></hash>
    </list>
@@ -52,6 +53,11 @@
                      <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
                      <url n="ownerURL" path="AssetManager/AssetManager.jpr"/>
                      <value n="profileName" v="SFParkADFTools_AssetManager_webapp1"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="PriceChangeManager/PriceChangeManager.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_PriceChangeManager_webapp1"/>
                   </hash>
                </list>
             </hash>

@@ -27,8 +27,6 @@ public class MeterOPScheduleProvider {
         MeterOPScheduleProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = MeterOPScheduleDTO.getTableName();
-
     private MeterOPScheduleProvider() {
         super();
     }
@@ -385,7 +383,8 @@ public class MeterOPScheduleProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForMaximumDate");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterOPScheduleDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -411,7 +410,8 @@ public class MeterOPScheduleProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForMeterOPScheduleDTOs");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterOPScheduleDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 
@@ -449,7 +449,8 @@ public class MeterOPScheduleProvider {
             StatementGenerator.equalToOperator(MeterOPScheduleDTO.METER_OP_SCHED_ID);
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForMeterOPScheduleID");
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterOPScheduleDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -474,7 +475,8 @@ public class MeterOPScheduleProvider {
         LOGGER.exiting(CLASSNAME,
                        "getSelectStatementForParkingSpaceIDANDEffToDate");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterOPScheduleDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 
@@ -509,7 +511,8 @@ public class MeterOPScheduleProvider {
 
         LOGGER.exiting(CLASSNAME, "getInsertStatement");
 
-        return StatementGenerator.insertStatement(TABLE_NAME, Columns, Values);
+        return StatementGenerator.insertStatement(MeterOPScheduleDTO.getDatabaseTableName(),
+                                                  Columns, Values);
     }
 
     private int getInsertIndexOf(String indexFor) {
@@ -536,8 +539,8 @@ public class MeterOPScheduleProvider {
 
         LOGGER.exiting(CLASSNAME, "getUpdateStatementForMeterOPScheduleID");
 
-        return StatementGenerator.updateStatement(TABLE_NAME, SetColumnValues,
-                                                  Where);
+        return StatementGenerator.updateStatement(MeterOPScheduleDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
     }
 
     private int getUpdateIndexOf(String indexFor) {

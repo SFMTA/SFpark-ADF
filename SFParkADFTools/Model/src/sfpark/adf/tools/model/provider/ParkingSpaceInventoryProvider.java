@@ -27,9 +27,6 @@ public class ParkingSpaceInventoryProvider {
         ParkingSpaceInventoryProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME =
-        ParkingSpaceInventoryDTO.getTableName();
-
     private ParkingSpaceInventoryProvider() {
         super();
     }
@@ -418,7 +415,8 @@ public class ParkingSpaceInventoryProvider {
         String Where = ParkingSpaceInventoryDTO.PARKING_SPACE_ID + " = ?";
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForParkingSpaceID");
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  ParkingSpaceInventoryDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -431,7 +429,8 @@ public class ParkingSpaceInventoryProvider {
         String Where = ParkingSpaceInventoryDTO.POST_ID + " = ?";
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForParkingSpaceID");
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  ParkingSpaceInventoryDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -447,7 +446,8 @@ public class ParkingSpaceInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForOSPID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  ParkingSpaceInventoryDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 
@@ -463,7 +463,8 @@ public class ParkingSpaceInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForBulkParkingSpaceID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  ParkingSpaceInventoryDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -482,7 +483,8 @@ public class ParkingSpaceInventoryProvider {
             StringUtil.generateStringWithRepetition("?", ParkingSpaceInventoryDTO.getAttributeListForInsert().size());
 
         LOGGER.exiting(CLASSNAME, "getInsertStatement");
-        return StatementGenerator.insertStatement(TABLE_NAME, Columns, Values);
+        return StatementGenerator.insertStatement(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                                  Columns, Values);
     }
 
     private int getInsertIndexOf(String indexFor) {
@@ -507,8 +509,8 @@ public class ParkingSpaceInventoryProvider {
             "\'";
 
         LOGGER.exiting(CLASSNAME, "getUpdateStatementForParkingSpaceID");
-        return StatementGenerator.updateStatement(TABLE_NAME, SetColumnValues,
-                                                  Where);
+        return StatementGenerator.updateStatement(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
     }
 
     private int getUpdateIndexOf(String indexFor) {

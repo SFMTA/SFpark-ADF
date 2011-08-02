@@ -26,38 +26,248 @@ public class AllowedValuesProvider {
         AllowedValuesProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "ALLOWED_VALUES";
+    private static final long TIME_TO_UPDATE =
+        TimeToUpdate.FOUR_HOURS.getTimeInMillis();
 
+    /**
+     * To avoid instantiation
+     */
     private AllowedValuesProvider() {
         super();
     }
 
-    public static final AllowedValuesProvider INSTANCE =
-        new AllowedValuesProvider();
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    public List<AllowedValuesDTO> getAllowedValuesForParkingSpaceJurisdiction() {
-        return getAllowedValuesFor(ParkingSpaceInventoryDTO.getTableName(),
-                                   ParkingSpaceInventoryDTO.JURISDICTION);
+    /*
+    PROCESS_STEP  RATE_CHG_PROCESS_CONTROL
+    STEP_EXEC_STATUS  RATE_CHG_PROCESS_CONTROL
+     */
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // JURISDICTION HELPERS
+
+    private static long TimeOfLastJurisdictionRetrieve = -1;
+    private static List<AllowedValuesDTO> jurisdictionList = null;
+
+    public static synchronized List<AllowedValuesDTO> getJurisdictionList() {
+
+        if (jurisdictionList == null ||
+            ((System.currentTimeMillis() - TimeOfLastJurisdictionRetrieve) >
+             TIME_TO_UPDATE)) {
+            jurisdictionList =
+                    getAllowedValuesFor(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                        ParkingSpaceInventoryDTO.JURISDICTION);
+
+            TimeOfLastJurisdictionRetrieve = System.currentTimeMillis();
+        }
+
+        return jurisdictionList;
     }
 
-    public List<AllowedValuesDTO> getAllowedValuesForParkingSpaceSensorFlag() {
-        return getAllowedValuesFor(ParkingSpaceInventoryDTO.getTableName(),
-                                   ParkingSpaceInventoryDTO.SENSOR_FLAG);
+    public static String getJurisdictionDefaultValue() {
+        return getDefaultValue(getJurisdictionList(), "SFMTA");
     }
 
-    public List<AllowedValuesDTO> getAllowedValuesForParkingSpaceActiveMeterFlag() {
-        return getAllowedValuesFor(ParkingSpaceInventoryDTO.getTableName(),
-                                   ParkingSpaceInventoryDTO.ACTIVE_METER_FLAG);
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // SENSOR STATUS HELPERS
+
+    private static long TimeOfLastSensorFlagRetrieve = -1;
+    private static List<AllowedValuesDTO> sensorFlagList = null;
+
+    public static synchronized List<AllowedValuesDTO> getSensorFlagList() {
+
+        if (sensorFlagList == null ||
+            ((System.currentTimeMillis() - TimeOfLastSensorFlagRetrieve) >
+             TIME_TO_UPDATE)) {
+            sensorFlagList =
+                    getAllowedValuesFor(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                        ParkingSpaceInventoryDTO.SENSOR_FLAG);
+
+            TimeOfLastSensorFlagRetrieve = System.currentTimeMillis();
+        }
+
+        return sensorFlagList;
     }
 
-    public List<AllowedValuesDTO> getAllowedValuesForParkingSpaceReasonCode() {
-        return getAllowedValuesFor(ParkingSpaceInventoryDTO.getTableName(),
-                                   ParkingSpaceInventoryDTO.REASON_CODE);
+    public static String getSensorFlagDefaultValue() {
+        return getDefaultValue(getSensorFlagList(), "N");
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ACTIVE METER STATUS HELPERS
+
+    private static long TimeOfLastActiveMeterFlagRetrieve = -1;
+    private static List<AllowedValuesDTO> activeMeterFlagList = null;
+
+    public static synchronized List<AllowedValuesDTO> getActiveMeterFlagList() {
+
+        if (activeMeterFlagList == null ||
+            ((System.currentTimeMillis() - TimeOfLastActiveMeterFlagRetrieve) >
+             TIME_TO_UPDATE)) {
+            activeMeterFlagList =
+                    getAllowedValuesFor(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                        ParkingSpaceInventoryDTO.ACTIVE_METER_FLAG);
+
+            TimeOfLastActiveMeterFlagRetrieve = System.currentTimeMillis();
+        }
+
+        return activeMeterFlagList;
+    }
+
+    public static List<AllowedValuesDTO> getActiveMeterFlagBulkList() {
+
+        List<AllowedValuesDTO> list = getActiveMeterFlagList();
+
+        for (AllowedValuesDTO allowedValue : list) {
+            if (StringUtil.areEqual(allowedValue.getColumnValue(), "U")) {
+                list.remove(allowedValue);
+                break;
+            }
+        }
+
+        return list;
+    }
+
+    public static String getActiveMeterFlagDefaultValue() {
+        return getDefaultValue(getActiveMeterFlagList(), "U");
+    }
+
+    public static String getActiveMeterFlagBulkDefaultValue() {
+        return getDefaultValue(getActiveMeterFlagBulkList(), "M");
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // REASON CODE HELPERS
+
+    private static long TimeOfLastReasonCodeRetrieve = -1;
+    private static List<AllowedValuesDTO> reasonCodeList = null;
+
+    public static synchronized List<AllowedValuesDTO> getReasonCodeList() {
+
+        if (reasonCodeList == null ||
+            ((System.currentTimeMillis() - TimeOfLastReasonCodeRetrieve) >
+             TIME_TO_UPDATE)) {
+            reasonCodeList =
+                    getAllowedValuesFor(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                        ParkingSpaceInventoryDTO.REASON_CODE);
+
+            TimeOfLastReasonCodeRetrieve = System.currentTimeMillis();
+        }
+
+        return reasonCodeList;
+    }
+
+    public static String getReasonCodeDefaultValue() {
+        return getDefaultValue(getReasonCodeList(), "-");
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // CAP COLOR HELPERS
+
+    private static long TimeOfLastCapColorRetrieve = -1;
+    private static List<AllowedValuesDTO> capColorList = null;
+
+    public static synchronized List<AllowedValuesDTO> getCapColorList() {
+
+        if (capColorList == null ||
+            ((System.currentTimeMillis() - TimeOfLastCapColorRetrieve) >
+             TIME_TO_UPDATE)) {
+            capColorList =
+                    getAllowedValuesFor(ParkingSpaceInventoryDTO.getDatabaseTableName(),
+                                        ParkingSpaceInventoryDTO.CAP_COLOR);
+
+            TimeOfLastCapColorRetrieve = System.currentTimeMillis();
+        }
+
+        return capColorList;
+    }
+
+    public static String getCapColorDefaultValue() {
+        return getDefaultValue(getCapColorList(), "Grey");
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // COLOR RULE APPLIED HELPERS
+
+    private static long TimeOfLastColorRuleAppliedRetrieve = -1;
+    private static List<AllowedValuesDTO> colorRuleAppliedList = null;
+
+    public static synchronized List<AllowedValuesDTO> getColorRuleAppliedList() {
+
+        if (colorRuleAppliedList == null ||
+            ((System.currentTimeMillis() - TimeOfLastColorRuleAppliedRetrieve) >
+             TIME_TO_UPDATE)) {
+            colorRuleAppliedList =
+                    getAllowedValuesFor(MeterOPScheduleDTO.getDatabaseTableName(),
+                                        MeterOPScheduleDTO.COLOR_RULE_APPLIED);
+
+            TimeOfLastColorRuleAppliedRetrieve = System.currentTimeMillis();
+        }
+
+        return colorRuleAppliedList;
+    }
+
+    public static String getDisplayDescriptionForColorRuleApplied(final String colorRuleApplied) {
+
+        if (StringUtil.isBlank(colorRuleApplied)) {
+            throw new IllegalArgumentException("NULL COLOR_RULE_APPLIED NOT allowed");
+        }
+
+        List<AllowedValuesDTO> list = getColorRuleAppliedList();
+
+        StringBuffer displayDescription = new StringBuffer(colorRuleApplied);
+
+        for (AllowedValuesDTO DTO : list) {
+            if (StringUtil.areEqual(colorRuleApplied, DTO.getColumnValue())) {
+                displayDescription.append(" - ");
+                displayDescription.append(DTO.getDescription());
+
+                break;
+            }
+        }
+
+        return displayDescription.toString();
+    }
+
+    public static String getColorRuleAppliedDefaultValue() {
+        return getDefaultValue(getColorRuleAppliedList(), "Yellow");
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // PREPAYMENT TIME HELPERS
+
+    private static long TimeOfLastPrepaymentTimeRetrieve = -1;
+    private static List<AllowedValuesDTO> prepaymentTimeList = null;
+
+    public static synchronized List<AllowedValuesDTO> getPrepaymentTimeList() {
+
+        if (prepaymentTimeList == null ||
+            ((System.currentTimeMillis() - TimeOfLastPrepaymentTimeRetrieve) >
+             TIME_TO_UPDATE)) {
+            prepaymentTimeList =
+                    getAllowedValuesFor(MeterOPScheduleDTO.getDatabaseTableName(),
+                                        MeterOPScheduleDTO.PREPAYMENT_TIME);
+
+            TimeOfLastPrepaymentTimeRetrieve = System.currentTimeMillis();
+        }
+
+        return prepaymentTimeList;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -65,8 +275,8 @@ public class AllowedValuesProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
 
-    private List<AllowedValuesDTO> getAllowedValuesFor(final String TableName,
-                                                       final String ColumnName) {
+    private static synchronized List<AllowedValuesDTO> getAllowedValuesFor(final String TableName,
+                                                                           final String ColumnName) {
         LOGGER.entering(CLASSNAME, "getAllowedValuesFor");
 
         List<AllowedValuesDTO> allowedValuesDTOs =
@@ -105,19 +315,33 @@ public class AllowedValuesProvider {
         return allowedValuesDTOs;
     }
 
+    private static String getDefaultValue(List<AllowedValuesDTO> allowedValues,
+                                          String value) {
+
+        for (AllowedValuesDTO allowedValue : allowedValues) {
+            if (StringUtil.areEqual(allowedValue.getColumnValue(), value)) {
+                return allowedValue.getColumnValue();
+            }
+        }
+
+        return allowedValues.get(0).getColumnValue();
+    }
+
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatementForTableAndColumnName() {
+    private static String getSelectStatementForTableAndColumnName() {
         LOGGER.entering(CLASSNAME, "getSelectStatementForTableAndColumnName");
 
         String Attributes =
             StringUtil.convertListToString(AllowedValuesDTO.getAttributeListForSelect());
 
-        String string1 = AllowedValuesDTO.TABLE_NAME + "=?";
-        String string2 = AllowedValuesDTO.COLUMN_NAME + "=?";
+        String string1 =
+            StatementGenerator.equalToOperator(AllowedValuesDTO.TABLE_NAME);
+        String string2 =
+            StatementGenerator.equalToOperator(AllowedValuesDTO.COLUMN_NAME);
 
         String Where = StatementGenerator.andOperator(string1, string2);
 
@@ -125,89 +349,8 @@ public class AllowedValuesProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForTableAndColumnName");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  AllowedValuesDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
-    }
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // STATIC CLASSES
-
-    public static class Color {
-
-        private static final long TIME_TO_UPDATE =
-            TimeToUpdate.FOUR_HOURS.getTimeInMillis();
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // Cap Color Util
-
-        private static long TimeOfLastCapColorRetrieve = -1;
-        private static List<AllowedValuesDTO> capColorList = null;
-
-        public static synchronized List<AllowedValuesDTO> getCapColorList() {
-
-            if (capColorList == null ||
-                ((System.currentTimeMillis() - TimeOfLastCapColorRetrieve) >
-                 TIME_TO_UPDATE)) {
-                capColorList =
-                        INSTANCE.getAllowedValuesFor(ParkingSpaceInventoryDTO.getTableName(),
-                                                     ParkingSpaceInventoryDTO.CAP_COLOR);
-
-                TimeOfLastCapColorRetrieve = System.currentTimeMillis();
-            }
-
-            return capColorList;
-        }
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // Color Rule Applied Util
-
-        private static long TimeOfLastColorRuleAppliedRetrieve = -1;
-        private static List<AllowedValuesDTO> colorRuleAppliedList = null;
-
-        public static synchronized List<AllowedValuesDTO> getColorRuleAppliedList() {
-
-            if (colorRuleAppliedList == null ||
-                ((System.currentTimeMillis() - TimeOfLastColorRuleAppliedRetrieve) >
-                 TIME_TO_UPDATE)) {
-                colorRuleAppliedList =
-                        INSTANCE.getAllowedValuesFor(MeterOPScheduleDTO.getTableName(),
-                                                     MeterOPScheduleDTO.COLOR_RULE_APPLIED);
-
-                TimeOfLastColorRuleAppliedRetrieve =
-                        System.currentTimeMillis();
-            }
-
-            return colorRuleAppliedList;
-        }
-
-        public static String getDisplayDescriptionForColorRuleApplied(final String colorRuleApplied) {
-
-            if (StringUtil.isBlank(colorRuleApplied)) {
-                throw new IllegalArgumentException("NULL COLOR_RULE_APPLIED NOT allowed");
-            }
-
-            List<AllowedValuesDTO> list = getColorRuleAppliedList();
-
-            StringBuffer displayDescription =
-                new StringBuffer(colorRuleApplied);
-
-            for (AllowedValuesDTO DTO : list) {
-                if (StringUtil.areEqual(colorRuleApplied,
-                                        DTO.getColumnValue())) {
-                    displayDescription.append(" - ");
-                    displayDescription.append(DTO.getDescription());
-
-                    break;
-                }
-            }
-
-            return displayDescription.toString();
-        }
     }
 }

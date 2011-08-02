@@ -86,7 +86,7 @@ public class MeterSchedValidationsDO extends BaseDO {
             return "[define color]";
         }
 
-        return AllowedValuesProvider.Color.getDisplayDescriptionForColorRuleApplied(colorRuleApplied);
+        return AllowedValuesProvider.getDisplayDescriptionForColorRuleApplied(colorRuleApplied);
     }
 
     public String getDisplayAltAddlDesc() {

@@ -25,6 +25,7 @@ import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.translation.CommonBundleKey;
@@ -254,7 +255,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
     }
 
     public List<SelectItem> getListPrePaymentTime() {
-        return ADFUIDisplayUtil.PREPAYMENT_TIME_LIST;
+        return ADFUIDisplayUtil.getPrepaymentTimeList();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -512,7 +513,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
         if (allValid) {
             if (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor() &&
                 parkingSpaceInventoryBulkTO.isInvalidCapColor()) {
-                
+
                 setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_to_cap_color));
 
                 allValid = false;
@@ -714,7 +715,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
         } else {
 
             getParkingSpaceInventoryBulkTO().setToBeUpdatedActiveMeterFlag(false);
-            getParkingSpaceInventoryBulkTO().setActiveMeterFlag(DataRepositoryUtil.getActiveMeterFlagBulkDefaultValue());
+            getParkingSpaceInventoryBulkTO().setActiveMeterFlag(AllowedValuesProvider.getActiveMeterFlagBulkDefaultValue());
 
             getParkingSpaceInventoryBulkTO().setToBeUpdatedMeterDetails(false);
             getParkingSpaceInventoryBulkTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());

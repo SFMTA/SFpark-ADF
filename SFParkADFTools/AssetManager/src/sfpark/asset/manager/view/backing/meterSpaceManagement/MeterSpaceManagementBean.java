@@ -29,6 +29,7 @@ import sfpark.adf.tools.model.data.helper.MeterScheduleType;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.BlockfacesProvider;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
@@ -484,7 +485,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     }
 
     public List<SelectItem> getListPrePaymentTime() {
-        return ADFUIDisplayUtil.PREPAYMENT_TIME_LIST;
+        return ADFUIDisplayUtil.getPrepaymentTimeList();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1221,7 +1222,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             endDateAllRates();
 
         } else if (ID.equals("undeleteParkingSpaceButton")) {
-            getCurrentParkingSpaceInventoryDTO().setCapColor(DataRepositoryUtil.getCapColorDefaultValue());
+            getCurrentParkingSpaceInventoryDTO().setCapColor(AllowedValuesProvider.getCapColorDefaultValue());
 
         }
 

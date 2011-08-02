@@ -7,6 +7,15 @@ import java.sql.SQLException;
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class PCOBeatsDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "PCO_BEATS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public PCOBeatsDO() {
         super();
     }
@@ -15,12 +24,6 @@ public class PCOBeatsDO extends BaseDO {
         super(resultSet);
 
         this.setBeatName(resultSet.getString(BEATNAME));
-    }
-
-    private static final String TableName = "PCO_BEATS";
-
-    public static String getTableName() {
-        return TableName;
     }
 
     public static final String BEATNAME = "BEATNAME";

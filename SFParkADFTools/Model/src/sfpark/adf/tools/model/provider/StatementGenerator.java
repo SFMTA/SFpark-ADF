@@ -32,6 +32,7 @@ final class StatementGenerator {
     private static final String GREATER_THAN_OR_EQUAL_TO = " >= ";
     private static final String EQUAL_TO = " = ";
 
+    private static final String DISTINCT = " DISTINCT ";
     private static final String UPPER = " UPPER ";
     private static final String MAX = " MAX ";
 
@@ -136,7 +137,7 @@ final class StatementGenerator {
     // SINGLE CONDITION OPERATOR HELPERS
 
     protected static String likeOperator(final String LHS) {
-        return singleConditionOperator(LHS, LIKE, QUESTION_MARK);
+        return likeOperator(LHS, QUESTION_MARK);
     }
 
     protected static String likeOperator(final String LHS, final String RHS) {
@@ -144,7 +145,7 @@ final class StatementGenerator {
     }
 
     protected static String lessThanOperator(final String LHS) {
-        return singleConditionOperator(LHS, LESS_THAN, QUESTION_MARK);
+        return lessThanOperator(LHS, QUESTION_MARK);
     }
 
     protected static String lessThanOperator(final String LHS,
@@ -153,8 +154,7 @@ final class StatementGenerator {
     }
 
     protected static String lessThanOrEqualToOperator(final String LHS) {
-        return singleConditionOperator(LHS, LESS_THAN_OR_EQUAL_TO,
-                                       QUESTION_MARK);
+        return lessThanOrEqualToOperator(LHS, QUESTION_MARK);
     }
 
     protected static String lessThanOrEqualToOperator(final String LHS,
@@ -163,7 +163,7 @@ final class StatementGenerator {
     }
 
     protected static String greaterThanOperator(final String LHS) {
-        return singleConditionOperator(LHS, GREATER_THAN, QUESTION_MARK);
+        return greaterThanOperator(LHS, QUESTION_MARK);
     }
 
     protected static String greaterThanOperator(final String LHS,
@@ -172,8 +172,7 @@ final class StatementGenerator {
     }
 
     protected static String greaterThanOrEqualToOperator(final String LHS) {
-        return singleConditionOperator(LHS, GREATER_THAN_OR_EQUAL_TO,
-                                       QUESTION_MARK);
+        return greaterThanOrEqualToOperator(LHS, QUESTION_MARK);
     }
 
     protected static String greaterThanOrEqualToOperator(final String LHS,
@@ -182,7 +181,7 @@ final class StatementGenerator {
     }
 
     protected static String equalToOperator(final String LHS) {
-        return singleConditionOperator(LHS, EQUAL_TO, QUESTION_MARK);
+        return equalToOperator(LHS, QUESTION_MARK);
     }
 
     protected static String equalToOperator(final String LHS,
@@ -194,6 +193,10 @@ final class StatementGenerator {
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // FUNCTION HELPERS
+
+    protected static String distinctFunction(final String Value) {
+        return function(DISTINCT, Value);
+    }
 
     protected static String upperFunction(final String Value) {
         return function(UPPER, Value);

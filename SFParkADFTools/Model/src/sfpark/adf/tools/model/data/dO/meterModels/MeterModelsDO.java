@@ -11,6 +11,15 @@ import sfpark.adf.tools.model.data.dO.BaseDO;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class MeterModelsDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "METER_MODELS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public MeterModelsDO() {
         super();
     }

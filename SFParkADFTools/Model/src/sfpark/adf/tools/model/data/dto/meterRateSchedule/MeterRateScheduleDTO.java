@@ -17,6 +17,15 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "METER_RATE_SCHED";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public MeterRateScheduleDTO() {
         super();
     }
@@ -72,12 +81,6 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
         //     ---TO_TIME = 0
         //     ---DAYS_APPLIED = blank
 
-    }
-
-    private static final String TableName = "METER_RATE_SCHED";
-
-    public static String getTableName() {
-        return TableName;
     }
 
     public static final String METER_RATE_SCHED_ID = "METER_RATE_SCHED_ID";

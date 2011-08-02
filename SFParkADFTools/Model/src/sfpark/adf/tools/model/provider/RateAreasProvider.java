@@ -20,8 +20,6 @@ public class RateAreasProvider {
     private static final String CLASSNAME = RateAreasProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = RateAreasDO.getTableName();
-
     private RateAreasProvider() {
         super();
     }
@@ -96,7 +94,8 @@ public class RateAreasProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForLongitudeAndLatitude");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  RateAreasDO.getDatabaseTableName(),
                                                   Where);
     }
 }

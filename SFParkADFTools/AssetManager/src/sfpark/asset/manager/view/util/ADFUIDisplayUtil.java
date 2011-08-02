@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dO.ospInventory.OSPInventoryDO;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 public final class ADFUIDisplayUtil {
@@ -47,7 +48,7 @@ public final class ADFUIDisplayUtil {
     // Jurisdiction Util
 
     public static List<SelectItem> getJurisdictionDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getJurisdictionList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getJurisdictionList(),
                                            false);
     }
 
@@ -57,7 +58,7 @@ public final class ADFUIDisplayUtil {
     // Sensor Status Util
 
     public static List<SelectItem> getSensorFlagDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getSensorFlagList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getSensorFlagList(),
                                            true);
     }
 
@@ -67,7 +68,7 @@ public final class ADFUIDisplayUtil {
     // Cap Color Util
 
     public static List<SelectItem> getCapColorDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getCapColorList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getCapColorList(),
                                            true);
     }
 
@@ -77,7 +78,7 @@ public final class ADFUIDisplayUtil {
     // Color Rule Applied Util
 
     public static List<SelectItem> getColorRuleAppliedDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getColorRuleAppliedList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getColorRuleAppliedList(),
                                            true);
     }
 
@@ -87,12 +88,12 @@ public final class ADFUIDisplayUtil {
     // Active Meter Status Util
 
     public static List<SelectItem> getActiveMeterFlagDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getActiveMeterFlagList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getActiveMeterFlagList(),
                                            true);
     }
 
     public static List<SelectItem> getActiveMeterFlagBulkDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getActiveMeterFlagBulkList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getActiveMeterFlagBulkList(),
                                            true);
     }
 
@@ -102,7 +103,7 @@ public final class ADFUIDisplayUtil {
     // Reason Code Util
 
     public static List<SelectItem> getReasonCodeDisplayList() {
-        return getAllowedValuesDisplayList(DataRepositoryUtil.getReasonCodeList(),
+        return getAllowedValuesDisplayList(AllowedValuesProvider.getReasonCodeList(),
                                            true);
     }
 
@@ -160,29 +161,20 @@ public final class ADFUIDisplayUtil {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Pre Payment Time Util
 
-    public static final List<Integer> PREPAYMENT_TIME_INTEGER_LIST =
-        Collections.unmodifiableList(new ArrayList<Integer>() {
-            {
-                add(new Integer(0));
-                add(new Integer(300));
-                add(new Integer(400));
-                add(new Integer(500));
-                add(new Integer(600));
-                add(new Integer(700));
-                add(new Integer(800));
-                add(new Integer(900));
-            }
-        });
+    public static List<SelectItem> getPrepaymentTimeList() {
+        List<SelectItem> prepaymentTimeList = new ArrayList<SelectItem>();
 
-    public static final List<SelectItem> PREPAYMENT_TIME_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                add(new SelectItem("", "--"));
-                for (Integer time : PREPAYMENT_TIME_INTEGER_LIST) {
-                    add(new SelectItem(TimeDisplayUtil.extractFromTimeForDisplay(time)));
-                }
-            }
-        });
+        prepaymentTimeList.add(new SelectItem("", "--"));
+
+        for (AllowedValuesDTO allowedValue :
+             AllowedValuesProvider.getPrepaymentTimeList()) {
+
+            prepaymentTimeList.add(new SelectItem(TimeDisplayUtil.extractFromTimeForDisplay(allowedValue.getColumnValue())));
+
+        }
+
+        return prepaymentTimeList;
+    }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

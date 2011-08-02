@@ -23,8 +23,6 @@ public final class MeterModelsProvider {
         MeterModelsProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "METER_MODELS";
-
     private MeterModelsProvider() {
         super();
     }
@@ -70,7 +68,24 @@ public final class MeterModelsProvider {
     }
 
     public List<MeterModelsDO> getMeterModelsDOs() {
-        LOGGER.entering(CLASSNAME, "getMeterModelsDOs");
+        LOGGER.in(CLASSNAME, "getMeterModelsDOs");
+
+        return getMeterModelsFor(false);
+    }
+
+    public List<MeterModelsDO> getMeterModelsForPriceChangeProcessControl() {
+        LOGGER.in(CLASSNAME, "getMeterModelsForPriceChangeProcessControl");
+
+        return getMeterModelsFor(true);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PRIVATE METHODS
+
+    private List<MeterModelsDO> getMeterModelsFor(boolean priceChangeProcessControl) {
+        LOGGER.entering(CLASSNAME, "getMeterModelsFor");
 
         List<MeterModelsDO> meterModelsDOs = new ArrayList<MeterModelsDO>();
 
@@ -81,8 +96,7 @@ public final class MeterModelsProvider {
         try {
             connection = ConnectUtil.getConnection();
 
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatement());
+            preparedStatement = connection.prepareStatement(getSelectStatement(priceChangeProcessControl));
 
             resultSet = preparedStatement.executeQuery();
 
@@ -99,14 +113,10 @@ public final class MeterModelsProvider {
             ConnectUtil.closeAll(resultSet, preparedStatement, connection);
         }
 
-        LOGGER.exiting(CLASSNAME, "getMeterModelsDOs");
+        LOGGER.exiting(CLASSNAME, "getMeterModelsFor");
+
         return meterModelsDOs;
     }
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // PRIVATE METHODS
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -127,17 +137,33 @@ public final class MeterModelsProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterModelsDO.getDatabaseTableName(),
                                                   Where);
     }
 
-    private String getSelectStatement() {
+    private String getSelectStatement(boolean priceChangeProcessControl) {
         LOGGER.entering(CLASSNAME, "getSelectStatement");
 
         String Attributes =
             StringUtil.convertListToString(MeterModelsDO.getAttributeListForSelect());
 
-        String Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
+        String Where = "";
+
+        if (priceChangeProcessControl) {
+            String string1 =
+                StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,
+                                                   "\'Y\'");
+            String string2 =
+                StatementGenerator.inOperator(MeterModelsDO.METER_VENDOR,
+                                              "\'Duncan\', \'IPS\'");
+
+            Where = StatementGenerator.andOperator(string1, string2);
+            
+        } else {
+            Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
+            
+        }
 
         String OrderBy =
             StatementGenerator.commaOperator(MeterModelsDO.METER_TYPE +
@@ -145,9 +171,50 @@ public final class MeterModelsProvider {
                                              MeterModelsDO.METER_VENDOR,
                                              MeterModelsDO.METER_MODEL);
 
+
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterModelsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
+
+    //    private String getSelectStatement() {
+    //        LOGGER.entering(CLASSNAME, "getSelectStatement");
+    //
+    //        String Attributes =
+    //            StringUtil.convertListToString(MeterModelsDO.getAttributeListForSelect());
+    //
+    //        String Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
+    //
+    //        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+    //
+    //        return StatementGenerator.selectStatement(Attributes,
+    //                                                  MeterModelsDO.getDatabaseTableName(),
+    //                                                  Where, getOrderByString());
+    //    }
+
+    //    private String getSelectStatementForPriceChangeProcessControl() {
+    //        LOGGER.entering(CLASSNAME,
+    //                        "getSelectStatementForPriceChangeProcessControl");
+    //
+    //        String Attributes =
+    //            StringUtil.convertListToString(MeterModelsDO.getAttributeListForSelect());
+    //
+    //        String string1 =
+    //            StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,
+    //                                               "\'Y\'");
+    //        String string2 =
+    //            StatementGenerator.inOperator(MeterModelsDO.METER_VENDOR,
+    //                                          "\'Duncan\', \'IPS\'");
+    //
+    //        String Where = StatementGenerator.andOperator(string1, string2);
+    //
+    //        LOGGER.exiting(CLASSNAME,
+    //                       "getSelectStatementForPriceChangeProcessControl");
+    //
+    //        return StatementGenerator.selectStatement(Attributes,
+    //                                                  MeterModelsDO.getDatabaseTableName(),
+    //                                                  Where, getOrderByString());
+    //    }
 }

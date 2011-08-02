@@ -17,6 +17,15 @@ import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class ParkingSpaceInventoryDTO extends BaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "PARKING_SPACE_INVENTORY";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public ParkingSpaceInventoryDTO() {
         super();
     }
@@ -91,12 +100,6 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
         this.setWorkOrder(resultSet.getString(WORK_ORDER));
         this.setComments(resultSet.getString(COMMENTS));
 
-    }
-
-    private static final String TableName = "PARKING_SPACE_INVENTORY";
-
-    public static String getTableName() {
-        return TableName;
     }
 
     public static final String PARKING_SPACE_ID = "PARKING_SPACE_ID";

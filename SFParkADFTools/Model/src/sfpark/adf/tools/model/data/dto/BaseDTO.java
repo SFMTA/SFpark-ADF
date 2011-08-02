@@ -12,16 +12,6 @@ import java.sql.Timestamp;
  */
 public abstract class BaseDTO {
 
-    public static final String CREATED_DT = "CREATED_DT";
-    public static final String LAST_UPD_DT = "LAST_UPD_DT";
-    public static final String LAST_UPD_USER = "LAST_UPD_USER";
-    public static final String LAST_UPD_PGM = "LAST_UPD_PGM";
-
-    private Timestamp CreatedDate;
-    private Timestamp LastUpdatedDate;
-    private String LastUpdatedUser;
-    private String LastUpdatedProgram;
-
     protected BaseDTO() {
         super();
     }
@@ -44,6 +34,20 @@ public abstract class BaseDTO {
         this.LastUpdatedUser = resultSet.getString(LAST_UPD_USER);
 
     }
+
+    public static final String CREATED_DT = "CREATED_DT";
+    public static final String LAST_UPD_DT = "LAST_UPD_DT";
+    public static final String LAST_UPD_USER = "LAST_UPD_USER";
+    public static final String LAST_UPD_PGM = "LAST_UPD_PGM";
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    private Timestamp CreatedDate;
+    private Timestamp LastUpdatedDate;
+    private String LastUpdatedUser;
+    private String LastUpdatedProgram;
 
     public void setCreatedDate(Timestamp CreatedDate) {
         this.CreatedDate = CreatedDate;

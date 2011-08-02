@@ -10,6 +10,15 @@ import java.util.List;
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class RateAreasDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "RATE_AREAS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public RateAreasDO() {
         super();
     }
@@ -19,12 +28,6 @@ public class RateAreasDO extends BaseDO {
 
         this.setAreaName(resultSet.getString(AREA_NAME));
         this.setMCName(resultSet.getString(MC_NAME));
-    }
-
-    private static final String TableName = "RATE_AREAS";
-
-    public static String getTableName() {
-        return TableName;
     }
 
     public static final String AREA_NAME = "AREA_NAME";
