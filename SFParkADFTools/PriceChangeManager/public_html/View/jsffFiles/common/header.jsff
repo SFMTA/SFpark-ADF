@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="headerPGL" styleClass="priceChangeManagerHeader">
+    <af:panelGroupLayout id="headerTextPGL" layout="horizontal"
+                         styleClass="AFStretchWidth">
+      <af:commandLink id="home" immediate="true"
+                      styleClass="priceChangeManagerHeaderTitle"
+                      text="#{priceChangeManagerBundle.string_price_change_management}"/>
+    </af:panelGroupLayout>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <f:subview id="subViewUtilities">
+      <jsp:include page="/View/jsffFiles/common/utilities.jsff" flush="true"/>
+    </f:subview>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  </af:panelGroupLayout>
+</jsp:root>
+<!--
+    <af:panelGroupLayout id="PGL1" layout="horizontal" halign="left">
+      <af:commandImageLink id="LOGO" immediate="true"
+                           actionListener="#{navigationBean.homeLinkClickHandler}"
+                           shortDesc="#{applicationBundle.string_application_name}"
+                           icon="/Resources/Images/oracle_ontrack_logo_transparent.png"
+                           inlineStyle="padding:2px; margin:2px;"
+                           disabled="#{!globalBean.private}"/>
+      <af:spacer id="Spacer1" width="30px"/>
+      <af:outputText id="OT1" noWrap="true"
+                     value="#{applicationBundle.string_application_name}"/>
+  </af:panelGroupLayout>
+</jsp:root>
+-->

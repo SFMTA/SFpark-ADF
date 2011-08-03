@@ -3,6 +3,10 @@
   <application>
     <default-render-kit-id>oracle.adf.rich</default-render-kit-id>
     <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.PriceChangeManagerBundle</base-name>
+      <var>priceChangeManagerBundle</var>
+    </resource-bundle>
+    <resource-bundle>
       <base-name>sfpark.adf.tools.translation.ButtonBundle</base-name>
       <var>buttonBundle</var>
     </resource-bundle>

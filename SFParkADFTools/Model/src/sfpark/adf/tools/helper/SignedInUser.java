@@ -37,10 +37,18 @@ public final class SignedInUser {
         return (hasMetersAccess() || hasGaragesAccess());
     }
 
+    public static boolean canApprovePriceChange() {
+        return hasPriceChangeApproversAccess();
+    }
+
+    public static boolean canDeployPriceChange() {
+        return hasPriceChangeDeployersAccess();
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
+    // PRIVATE METHODS
 
     private static boolean hasMetersAccess() {
         if (USE_SECURITY_MODEL) {
@@ -75,6 +83,33 @@ public final class SignedInUser {
 
         return true;
     }
+
+    private static boolean hasPriceChangeApproversAccess() {
+        if (USE_SECURITY_MODEL) {
+
+            return (isUserInGroup(SecurityGroup.PRICE_CHANGE_APPROVERS) ||
+                    isUserInGroup(SecurityGroup.SUPER_USER));
+
+        }
+
+        return true;
+    }
+
+    private static boolean hasPriceChangeDeployersAccess() {
+        if (USE_SECURITY_MODEL) {
+
+            return (isUserInGroup(SecurityGroup.PRICE_CHANGE_DEPLOYERS) ||
+                    isUserInGroup(SecurityGroup.SUPER_USER));
+
+        }
+
+        return true;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
 
     private static boolean isUserInGroup(SecurityGroup securityGroup) {
 

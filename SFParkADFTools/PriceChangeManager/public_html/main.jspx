@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:output omit-xml-declaration="true" doctype-root-element="HTML"
+              doctype-system="http://www.w3.org/TR/html4/loose.dtd"
+              doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"/>
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <af:document id="d1"
+                 title="#{priceChangeManagerBundle.string_application_name}">
+      <f:facet name="metaContainer">
+        <af:group id="metaGroup">
+          <af:resource type="css" source="/Resources/Styles/common.css"/>
+        </af:group>
+      </f:facet>
+      <af:form id="f1">
+        <af:panelStretchLayout id="mainPanelStretchLayout" topHeight="50px"
+                               startWidth="210px">
+          <f:facet name="top">
+            <f:subview id="subViewHeader">
+              <jsp:include page="/View/jsffFiles/common/header.jsff"
+                           flush="true"/>
+            </f:subview>
+          </f:facet>
+          <f:facet name="start">
+            <f:subview id="subViewNavigation">
+              <jsp:include page="/View/jsffFiles/common/navigation.jsff"
+                           flush="true"/>
+            </f:subview>
+          </f:facet>
+          <f:facet name="center">
+            <af:panelGroupLayout id="contentPanelGroupLayout" layout="scroll"
+                                 styleClass="AFStretchWidth"
+                                 inlineStyle="padding: 10px;">
+              <af:region id="cRegion"
+                         binding="#{navigationBean.contentRichRegion}"
+                         value="#{navigationBean.contentRegionModel}"/>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:panelStretchLayout>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

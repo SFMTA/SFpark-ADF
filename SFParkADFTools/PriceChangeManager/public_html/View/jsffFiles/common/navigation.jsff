@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="navigationPanel" layout="vertical"
+                       binding="#{navigationBean.navigationPanel}"
+                       inlineStyle="border-right: 1px solid #ADB6C7;">
+    <f:facet name="separator">
+      <af:spacer id="navigationPanelSpacer" height="50"/>
+    </f:facet>
+    <af:spacer id="firstSpacer" height="50"/>
+    <af:commandLink id="approvalProcess" immediate="true"
+                    rendered="#{navigationBean.renderApprovalProcessLink}"
+                    disabled="#{navigationBean.disableApprovalProcessLink}"
+                    styleClass="priceChangeManagerNavigationPanelText"
+                    text="#{priceChangeManagerBundle.string_price_approval_process}"
+                    shortDesc="#{priceChangeManagerBundle.tooltip_price_approval_process}"/>
+    <af:commandLink id="deploymentProcess" immediate="true"
+                    rendered="#{navigationBean.renderDeploymentProcessLink}"
+                    disabled="#{navigationBean.disableDeploymentProcessLink}"
+                    styleClass="priceChangeManagerNavigationPanelText"
+                    text="#{priceChangeManagerBundle.string_price_deployment_process}"
+                    shortDesc="#{priceChangeManagerBundle.tooltip_price_deployment_process}"/>
+  </af:panelGroupLayout>
+</jsp:root>
+<!--
+    <af:spacer id="spacer2" height="20px"/>
+    <af:commandImageLink 
+                         actionListener="#{navigationBean.manageHiveLinkClickHandler}"
+
+                         
+    <af:separator id="Separator1" styleClass="navigationPanelSeparator"/>
+    <af:commandImageLink id="manage_realms"
+                         icon="#{navigationBean.manageRealmsIcon}"
+                         disabled="#{navigationBean.manageRealmsLinkDisabled}"
+                         actionListener="#{navigationBean.manageRealmsLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_realms}"
+                         shortDesc="#{applicationBundle.tooltip_manage_realms}"/>
+    <af:separator id="Separator2" styleClass="navigationPanelSeparator"/>
+    <af:commandImageLink id="manage_users"
+                         icon="#{navigationBean.manageUsersIcon}"
+                         disabled="#{navigationBean.manageUsersLinkDisabled}"
+                         actionListener="#{navigationBean.manageUsersLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_users}"
+                         shortDesc="#{applicationBundle.tooltip_manage_users}"/>
+    <af:commandImageLink id="manage_groups"
+                         icon="#{navigationBean.manageGroupsIcon}"
+                         disabled="#{navigationBean.manageGroupsLinkDisabled}"
+                         actionListener="#{navigationBean.manageGroupsLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_groups}"
+                         shortDesc="#{applicationBundle.tooltip_manage_groups}"/>
+    <af:separator id="Separator3" styleClass="navigationPanelSeparator"/>
+    <af:commandImageLink id="manage_gadgets"
+                         icon="#{navigationBean.manageGadgetsIcon}"
+                         disabled="#{navigationBean.manageGadgetsLinkDisabled}"
+                         actionListener="#{navigationBean.manageGadgetsLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_gadgets}"
+                         shortDesc="#{applicationBundle.tooltip_manage_gadgets}"/>
+    <af:commandImageLink id="manage_features"
+                         icon="#{navigationBean.manageFeaturesIcon}"
+                         disabled="#{navigationBean.manageFeaturesLinkDisabled}"
+                         actionListener="#{navigationBean.manageFeaturesLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_features}"
+                         shortDesc="#{applicationBundle.tooltip_manage_features}"/>
+    <af:separator id="Separator4" styleClass="navigationPanelSeparator"/>
+    <af:commandImageLink id="manage_repositories"
+                         icon="#{navigationBean.manageRepositoriesIcon}"
+                         disabled="#{navigationBean.manageRepositoryLinkDisabled}"
+                         actionListener="#{navigationBean.manageRepositoryLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_repositories}"
+                         shortDesc="#{applicationBundle.tooltip_manage_repositories}"/>
+    <af:separator id="Separator5" styleClass="navigationPanelSeparator"/>
+    <af:commandImageLink id="manage_real_time"
+                         icon="#{navigationBean.manageConferencesIcon}"
+                         disabled="#{navigationBean.manageConferencesLinkDisabled}"
+                         actionListener="#{navigationBean.manageConferencesLinkClickHandler}"
+                         immediate="true" styleClass="navigationPanelText"
+                         text="#{applicationBundle.string_manage_conferences}"
+                         shortDesc="#{applicationBundle.tooltip_manage_conferences}"/>
+  </af:panelGroupLayout>
+</jsp:root>
+
+-->
