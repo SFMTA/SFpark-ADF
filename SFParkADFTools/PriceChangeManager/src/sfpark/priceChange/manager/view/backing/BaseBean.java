@@ -18,13 +18,6 @@ import sfpark.priceChange.manager.view.flow.NavigationMode;
 
 public abstract class BaseBean {
 
-    private static final String CURRENT_PAGE_MODE =
-        "sessionScopeKey.currentPageMode";
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     protected BaseBean() {
         // TODO: Create a Session Scope User Context
     }
@@ -32,7 +25,32 @@ public abstract class BaseBean {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // CURRENT PAGE SAVED MECHANISM
+
+    private static final String CURRENT_PAGE_SAVED =
+        "sessionScopeKey.currentPageSaved";
+
+    protected boolean isCurrentPageSaved() {
+        Boolean isCurrentPageSaved =
+            (Boolean)getSessionScopeValue(CURRENT_PAGE_SAVED);
+
+        // If the value is null, then the page was never edited, and so the page
+        // retains all the original values
+        return (isCurrentPageSaved == null) ? Boolean.TRUE :
+               isCurrentPageSaved.booleanValue();
+    }
+
+    protected void setCurrentPageSaved(Boolean currentPageSaved) {
+        setSessionScopeValue(CURRENT_PAGE_SAVED, currentPageSaved);
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CURRENT PAGE MODE MECHANISM
+
+    private static final String CURRENT_PAGE_MODE =
+        "sessionScopeKey.currentPageMode";
 
     protected NavigationMode getCurrentPageMode() {
         String pageModeStr = (String)getSessionScopeValue(CURRENT_PAGE_MODE);

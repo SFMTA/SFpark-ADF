@@ -7,7 +7,9 @@
                          styleClass="AFStretchWidth">
       <af:commandLink id="home" immediate="true"
                       styleClass="priceChangeManagerHeaderTitle"
-                      text="#{priceChangeManagerBundle.string_price_change_management}"/>
+                      text="#{priceChangeManagerBundle.string_price_change_management}"
+                      shortDesc="#{priceChangeManagerBundle.string_price_change_management}"
+                      actionListener="#{navigationBean.navigationCommandLinkClickHandler}"/>
     </af:panelGroupLayout>
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -20,17 +22,3 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
   </af:panelGroupLayout>
 </jsp:root>
-<!--
-    <af:panelGroupLayout id="PGL1" layout="horizontal" halign="left">
-      <af:commandImageLink id="LOGO" immediate="true"
-                           actionListener="#{navigationBean.homeLinkClickHandler}"
-                           shortDesc="#{applicationBundle.string_application_name}"
-                           icon="/Resources/Images/oracle_ontrack_logo_transparent.png"
-                           inlineStyle="padding:2px; margin:2px;"
-                           disabled="#{!globalBean.private}"/>
-      <af:spacer id="Spacer1" width="30px"/>
-      <af:outputText id="OT1" noWrap="true"
-                     value="#{applicationBundle.string_application_name}"/>
-  </af:panelGroupLayout>
-</jsp:root>
--->
