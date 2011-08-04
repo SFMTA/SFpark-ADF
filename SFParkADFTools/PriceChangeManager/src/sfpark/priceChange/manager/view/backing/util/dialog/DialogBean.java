@@ -9,12 +9,11 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 
+import sfpark.adf.tools.view.backing.util.ADFUtil;
 import sfpark.adf.tools.view.backing.util.dialog.DialogBeanCallback;
 import sfpark.adf.tools.view.backing.util.dialog.helpers.DialogType;
 
-import sfpark.priceChange.manager.view.backing.BaseBean;
-
-public class DialogBean extends BaseBean {
+public class DialogBean {
     private RichPopup DialogPopup;
 
     private String DialogTitle;
@@ -25,7 +24,7 @@ public class DialogBean extends BaseBean {
     private RichCommandButton DialogCancelButton;
 
     public static DialogBean getInstance() {
-        return (DialogBean)getCurrentInstanceFor("dialogBean");
+        return (DialogBean)ADFUtil.getCurrentInstanceFor("dialogBean");
     }
 
     public DialogBean() {

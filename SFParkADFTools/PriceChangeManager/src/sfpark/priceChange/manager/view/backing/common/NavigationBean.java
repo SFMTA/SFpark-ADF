@@ -22,6 +22,7 @@ import sfpark.adf.tools.utilities.constants.RequestParameter;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+import sfpark.adf.tools.view.backing.util.ADFUtil;
 import sfpark.adf.tools.view.backing.util.dialog.DialogBeanCallback;
 
 import sfpark.priceChange.manager.application.key.PageFlowScopeKey;
@@ -53,7 +54,7 @@ public class NavigationBean extends BaseBean {
     // ACCESSORS
 
     public static NavigationBean getInstance() {
-        return (NavigationBean)getCurrentInstanceFor("navigationBean");
+        return (NavigationBean)ADFUtil.getCurrentInstanceFor("navigationBean");
     }
 
     public void refreshNavigationPanel() {

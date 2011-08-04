@@ -11,21 +11,20 @@ import oracle.adf.view.rich.model.RegionModel;
 
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.view.backing.util.ADFUtil;
 import sfpark.adf.tools.view.backing.util.wizard.WizardBeanCallback;
 import sfpark.adf.tools.view.backing.util.wizard.WizardBeanInterface;
 import sfpark.adf.tools.view.backing.util.wizard.helpers.WizardModel;
 
 import sfpark.adf.tools.view.backing.util.wizard.helpers.WizardStop;
 
-import sfpark.priceChange.manager.view.backing.BaseBean;
-
-public class WizardBean extends BaseBean {
+public class WizardBean {
 
     private WizardModel wizardModel;
     private WizardBeanCallback wizardBeanCallback;
 
     public static WizardBean getInstance() {
-        return (WizardBean)getCurrentInstanceFor("wizardBean");
+        return (WizardBean)ADFUtil.getCurrentInstanceFor("wizardBean");
     }
 
     public WizardBean() {

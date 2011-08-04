@@ -46,7 +46,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         this.setStepStartFlag(DTO.getStepStartFlag());
         this.setStepExecutionStatus(DTO.getStepExecutionStatus());
         this.setStatusMessage(DTO.getStatusMessage());
-        this.setStepStartDate(this.getStepStartDate());
+        this.setStepStartDate(DTO.getStepStartDate());
         this.setStepEndDate(DTO.getStepEndDate());
 
     }
@@ -58,7 +58,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
         this.setRateChangeReferenceID(resultSet.getString(RATE_CHG_REF_ID));
         this.setComments(resultSet.getString(COMMENTS));
-        this.setPMDistrictID(resultSet.getInt(PM_DISTRICT_ID));
+        this.setPMDistrictID(resultSet.getString(PM_DISTRICT_ID));
         this.setMeterVendor(resultSet.getString(METER_VENDOR));
         this.setMeterModel(resultSet.getString(METER_MODEL));
         this.setBlockSelection(resultSet.getString(BLOCK_SELECTION));
@@ -203,7 +203,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     private String RateChangeReference;
     private String RateChangeReferenceID;
     private String Comments;
-    private int PMDistrictID;
+    private String PMDistrictID;
     private String MeterVendor;
     private String MeterModel;
     private String BlockSelection;
@@ -250,11 +250,11 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return Comments;
     }
 
-    public void setPMDistrictID(int PMDistrictID) {
+    public void setPMDistrictID(String PMDistrictID) {
         this.PMDistrictID = PMDistrictID;
     }
 
-    public int getPMDistrictID() {
+    public String getPMDistrictID() {
         return PMDistrictID;
     }
 

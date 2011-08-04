@@ -1,7 +1,5 @@
 package sfpark.priceChange.manager.view.backing;
 
-import javax.el.ELContext;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -279,21 +277,4 @@ public abstract class BaseBean {
             uiComponent.getClientId(getFacesContext()) + "')";
     }
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ACCESSOR METHODS
-
-    /**
-     * Returns the instance of the subclass of the BaseBean being called for
-     * @param beanClassName subclass reference name of BaseBean for which the instance is being asked for
-     * @return current instance of the subclass of BaseBean
-     */
-    protected static <T extends BaseBean> T getCurrentInstanceFor(String beanClassName) {
-        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-        Object beanInstance =
-            elContext.getELResolver().getValue(elContext, null, beanClassName);
-
-        return (T)beanInstance;
-    }
 }
