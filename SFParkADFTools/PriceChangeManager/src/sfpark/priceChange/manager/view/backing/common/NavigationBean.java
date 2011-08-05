@@ -103,7 +103,7 @@ public class NavigationBean extends BaseBean {
             performClickAction(NavigationFlow.HOME); // TODO Update to Approval Process
 
         } else if (ID.equalsIgnoreCase("deploymentProcess")) {
-            performClickAction(NavigationFlow.HOME); // TODO Update to Deployment Process
+            performClickAction(NavigationFlow.DEPLOYMENT_PROCESS);
 
         } else {
             // Default case for all other clicks

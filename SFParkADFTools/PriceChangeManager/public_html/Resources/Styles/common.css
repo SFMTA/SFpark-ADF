@@ -58,6 +58,11 @@ h3
   border-right: 1px solid #ADB6C7;
 }
 
+.columnHeader {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
 .priceChangeManagerHeader {
   font-family: Arial, Helvetica, sans-serif;
   border-spacing: 0px;
@@ -101,6 +106,7 @@ h3
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16.0px;
   font-weight: bold;
+  color: Black;
   padding-left: 20.0px;
   padding-top: 0px;
   padding-bottom: 0px;

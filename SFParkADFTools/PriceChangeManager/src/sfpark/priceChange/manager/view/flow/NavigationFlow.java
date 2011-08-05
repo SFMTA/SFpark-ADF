@@ -6,7 +6,10 @@ public enum NavigationFlow {
          NavigationSection.COMMON.getJSFFFileRef("/home.jsff")),
 
     ERROR(NavigationSection.COMMON,
-          NavigationSection.COMMON.getJSFFFileRef("/error.jsff"));
+          NavigationSection.COMMON.getJSFFFileRef("/error.jsff")),
+
+    DEPLOYMENT_PROCESS(NavigationSection.PRICE_DEPLOYMENT_PROCESS,
+                       NavigationSection.PRICE_DEPLOYMENT_PROCESS.getJSFFFileRef("/deploymentProcessListPage.jsff"));
 
     // TODO
     /*

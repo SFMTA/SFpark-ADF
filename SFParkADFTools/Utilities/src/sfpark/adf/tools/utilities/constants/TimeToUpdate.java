@@ -1,6 +1,8 @@
 package sfpark.adf.tools.utilities.constants;
 
 public enum TimeToUpdate {
+    DEFAULT(4),
+
     ONE_HOUR(1),
     TWO_HOURS(2),
     THREE_HOURS(3),

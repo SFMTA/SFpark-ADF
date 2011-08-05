@@ -23,6 +23,18 @@ public class GlobalBean extends BaseBean {
         return inlineStyle;
     }
 
+    /**
+     * Returns an Inline Style string for Section Headers used for displaying
+     * headers such as 'Application', 'Realms', 'Gadgets', etc
+     *
+     * @return Inline Style for Section Headers
+     */
+    public String getSectionHeaderInlineStyle() {
+        String inlineStyle = "font-size: 16px; font-weight: bold;";
+
+        return inlineStyle;
+    }
+
     public String getBreadCrumbInlineStyle() {
         String inlineStyle = "font-size: 16px; font-weight: bold;";
 

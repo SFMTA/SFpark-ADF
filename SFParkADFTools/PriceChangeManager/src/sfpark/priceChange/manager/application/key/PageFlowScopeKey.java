@@ -13,6 +13,22 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    ACTIVE_DEPLOYMENT_PROCESS_LIST,
+
+    SELECTED_ACTIVE_DEPLOYMENT_PROCESS_FROM_LIST,
+
+    HISTORIC_DEPLOYMENT_PROCESS_LIST,
+
+    /*
+    public static final String NEW_LDAP_REALM_DTO =
+        "pageFlowScopeKey.newLDAPRealmStep1";
+    public static final String NEW_LDAP_REALM_SEARCH_CONFIG_DTO =
+        "pageFlowScopeKey.newLDAPRealmStep2";
+    public static final String NEW_LDAP_REALM_ATTR_MAPPINGS_DTO =
+        "pageFlowScopeKey.newLDAPRealmStep3";
+
+     */
+
     METER_SCHEDULE_TEMPLATE_TYPE;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

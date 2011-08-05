@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeProcessControlDTO extends BaseDTO {
@@ -193,6 +194,26 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     public boolean isEditableTimeLimitOption() {
         return (StringUtil.areEqual(getProcessStep(), "60"));
+    }
+
+    public String getDisplayProcessStep() {
+        String processStep = getProcessStep();
+
+        if (StringUtil.isBlank(processStep)) {
+            return "-";
+        }
+
+        return AllowedValuesProvider.getProcessStepTreeMap().get(processStep);
+    }
+
+    public String getDisplayStepExecutionStatus() {
+        String stepExecutionStatus = getStepExecutionStatus();
+
+        if (StringUtil.isBlank(stepExecutionStatus)) {
+            return "-";
+        }
+
+        return AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(stepExecutionStatus);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

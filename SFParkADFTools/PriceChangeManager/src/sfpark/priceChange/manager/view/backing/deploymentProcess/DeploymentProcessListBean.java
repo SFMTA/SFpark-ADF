@@ -1,0 +1,173 @@
+package sfpark.priceChange.manager.view.backing.deploymentProcess;
+
+import java.util.List;
+
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.view.rich.component.rich.data.RichTable;
+
+import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
+
+import org.apache.myfaces.trinidad.event.SelectionEvent;
+
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
+import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
+import sfpark.adf.tools.view.backing.util.ADFUtil;
+
+import sfpark.priceChange.manager.application.key.PageFlowScopeKey;
+import sfpark.priceChange.manager.view.backing.BaseBean;
+
+public class DeploymentProcessListBean extends BaseBean implements ListBeanInterface,
+                                                                   RequestScopeBeanInterface {
+
+    private RichCommandButton DeleteProcessButton;
+    private RichTable ActiveDeploymentProcessTable;
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // CONSTRUCTORS
+
+    public DeploymentProcessListBean() {
+        super();
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public static DeploymentProcessListBean getInstance() {
+        return (DeploymentProcessListBean)ADFUtil.getCurrentInstanceFor("deploymentProcessListBean");
+    }
+
+    public void clearPageFlowScopeCache() {
+        // TODO
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL DTO INFORMATION
+
+    public List<RateChangeProcessControlDTO> getActiveDeploymentProcesses() {
+        List<RateChangeProcessControlDTO> activeList =
+            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOYMENT_PROCESS_LIST.getKey());
+
+        if (activeList == null) {
+            activeList =
+                    RateChangeProcessControlProvider.INSTANCE.getActiveRateChangeProcessControlDTOs();
+            setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOYMENT_PROCESS_LIST.getKey(),
+                                  activeList);
+        }
+
+        return activeList;
+    }
+
+    public List<RateChangeProcessControlDTO> getHistoricDeploymentProcesses() {
+        List<RateChangeProcessControlDTO> historicList =
+            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOYMENT_PROCESS_LIST.getKey());
+
+        if (historicList == null) {
+            historicList =
+                    RateChangeProcessControlProvider.INSTANCE.getHistoricRateChangeProcessControlDTOs();
+            setPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOYMENT_PROCESS_LIST.getKey(),
+                                  historicList);
+        }
+
+        return historicList;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // VALIDATORS
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL READ-ONLY INFORMATION
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL RENDER INFORMATION
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL VISIBLE INFORMATION
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL DISABLE INFORMATION
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // DISPLAY LIST VALUES
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // VALUE CHANGE HANDLERS
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // EVENT HANDLERS
+
+    public void addButtonHandler(ActionEvent event) {
+    }
+
+    public void editButtonHandler(ActionEvent event) {
+    }
+
+    public void deleteButtonHandler(ActionEvent event) {
+    }
+
+    public void selectAllButtonHandler(ActionEvent event) {
+        // Do nothing
+    }
+
+    public void unselectAllButtonHandler(ActionEvent event) {
+        // Do nothing
+    }
+
+    public void tableRowSelectionHandler(SelectionEvent event) {
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // UI BINDINGS EXTRA
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // UI BINDINGS
+
+    public void setActiveDeploymentProcessTable(RichTable ActiveDeploymentProcessTable) {
+        this.ActiveDeploymentProcessTable = ActiveDeploymentProcessTable;
+    }
+
+    public RichTable getActiveDeploymentProcessTable() {
+        return ActiveDeploymentProcessTable;
+    }
+
+    public void setDeleteProcessButton(RichCommandButton DeleteProcessButton) {
+        this.DeleteProcessButton = DeleteProcessButton;
+    }
+
+    public RichCommandButton getDeleteProcessButton() {
+        return DeleteProcessButton;
+    }
+}

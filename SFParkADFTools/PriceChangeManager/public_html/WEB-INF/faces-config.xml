@@ -83,6 +83,11 @@
   </managed-bean>
   -->
   <managed-bean>
+    <managed-bean-name>deploymentProcessListBean</managed-bean-name>
+    <managed-bean-class>sfpark.priceChange.manager.view.backing.deploymentProcess.DeploymentProcessListBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>errorsBean</managed-bean-name>
     <managed-bean-class>sfpark.priceChange.manager.view.backing.common.ErrorsBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

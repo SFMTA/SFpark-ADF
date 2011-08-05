@@ -4,7 +4,7 @@ public enum NavigationSection {
     COMMON("/common"),
 
     PRICE_APPROVAL_PROCESS(""),
-    PRICE_DEPLOYMENT_PROCESS("");
+    PRICE_DEPLOYMENT_PROCESS("/deploymentProcess");
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

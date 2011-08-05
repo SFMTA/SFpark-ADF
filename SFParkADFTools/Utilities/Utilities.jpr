@@ -95,10 +95,26 @@
             <value n="id" v="JSF 1.2"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="JSP Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Trinidad Runtime 11"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <list n="libraryReferences">
          <hash>
             <value n="id" v="JSF 1.2"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="JSP Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Trinidad Runtime 11"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

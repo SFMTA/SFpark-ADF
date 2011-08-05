@@ -11,11 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.TreeMap;
+
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -27,7 +30,7 @@ public class AllowedValuesProvider {
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
     private static final long TIME_TO_UPDATE =
-        TimeToUpdate.FOUR_HOURS.getTimeInMillis();
+        TimeToUpdate.DEFAULT.getTimeInMillis();
 
     /**
      * To avoid instantiation
@@ -39,11 +42,6 @@ public class AllowedValuesProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
-
-    /*
-    PROCESS_STEP  RATE_CHG_PROCESS_CONTROL
-    STEP_EXEC_STATUS  RATE_CHG_PROCESS_CONTROL
-     */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -268,6 +266,75 @@ public class AllowedValuesProvider {
         }
 
         return prepaymentTimeList;
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // PROCESS STEP HELPERS
+
+    private static long TimeOfLastProcessStepRetrieve = -1;
+    private static TreeMap<String, String> processStepTreeMap = null;
+
+    public static synchronized TreeMap<String, String> getProcessStepTreeMap() {
+
+        if (processStepTreeMap == null ||
+            ((System.currentTimeMillis() - TimeOfLastProcessStepRetrieve) >
+             TIME_TO_UPDATE)) {
+
+            processStepTreeMap = new TreeMap<String, String>();
+
+            List<AllowedValuesDTO> list =
+                getAllowedValuesFor(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                    RateChangeProcessControlDTO.PROCESS_STEP);
+
+            for (AllowedValuesDTO processStep : list) {
+
+                String key = processStep.getColumnValue();
+                String value = processStep.getDescription();
+
+                processStepTreeMap.put(key, value);
+            }
+
+            TimeOfLastProcessStepRetrieve = System.currentTimeMillis();
+        }
+
+        return processStepTreeMap;
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // STEP EXEC STATUS HELPERS
+
+    private static long TimeOfLastProcessStepExecStatusRetrieve = -1;
+    private static TreeMap<String, String> processStepExecStatusTreeMap = null;
+
+    public static synchronized TreeMap<String, String> getProcessStepExecStatusTreeMap() {
+
+        if (processStepExecStatusTreeMap == null ||
+            ((System.currentTimeMillis() -
+              TimeOfLastProcessStepExecStatusRetrieve) > TIME_TO_UPDATE)) {
+
+            processStepExecStatusTreeMap = new TreeMap<String, String>();
+
+            List<AllowedValuesDTO> list =
+                getAllowedValuesFor(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                    RateChangeProcessControlDTO.STEP_EXEC_STATUS);
+
+            for (AllowedValuesDTO stepExecStatus : list) {
+
+                String key = stepExecStatus.getColumnValue();
+                String value = stepExecStatus.getDescription();
+
+                processStepExecStatusTreeMap.put(key, value);
+            }
+
+            TimeOfLastProcessStepExecStatusRetrieve =
+                    System.currentTimeMillis();
+        }
+
+        return processStepExecStatusTreeMap;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
