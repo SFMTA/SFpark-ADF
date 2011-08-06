@@ -11,15 +11,15 @@
     <af:separator id="sectionHeaderSeparator"/>
     <af:toolbar id="mainToolbar">
       <af:group id="mainToolbarAdd">
-        <!--<af:spacer id="spaceBeforeAddButton" width="10"/>-->
+        <af:spacer id="spaceBeforeAddButton" width="5"/>
         <af:commandButton id="addButton" inlineStyle="width: 100px;"
                           text="#{buttonBundle.button_initiate_process}"
                           actionListener="#{deploymentProcessListBean.addButtonHandler}"/>
-        <!--<af:spacer id="spaceAfterAddButton" width="10"/>-->
+        <af:spacer id="spaceAfterAddButton" width="5"/>
       </af:group>
       <af:group id="mainToolbarEditAndDelete">
-        <!--<af:spacer id="spaceBeforeEditButton" width="10"/>-->
-        <af:commandToolbarButton id="editButton" inlineStyle="width: 100px;"
+        <af:spacer id="spaceBeforeEditButton" width="5"/>
+        <af:commandToolbarButton id="editButton" inlineStyle="width: 120px;"
                                  actionDelivery="none"
                                  text="#{buttonBundle.button_modify_process}">
           <f:facet name="popup">
@@ -33,14 +33,16 @@
             </af:menu>
           </f:facet>
         </af:commandToolbarButton>
-        <!--<af:spacer id="spaceAfterEditButton" width="10"/>-->
+        <af:spacer id="spaceAfterEditButton" width="5"/>
         <af:commandButton id="deleteButton" inlineStyle="width: 100px;"
                           text="#{buttonBundle.button_delete_process}"
                           binding="#{deploymentProcessListBean.deleteProcessButton}"
                           actionListener="#{deploymentProcessListBean.deleteButtonHandler}"/>
       </af:group>
     </af:toolbar>
-    <af:outputText id="inlineMessage" noWrap="true" value="Hello World"/>
+    <af:outputText id="inlineMessage" noWrap="true"
+                   styleClass="#{deploymentProcessListBean.inlineMessageClass}"
+                   value="#{deploymentProcessListBean.inlineMessageText}"/>
     <af:table id="ADPTabl" var="row" varStatus="rowStatus" width="650px"
               inlineStyle="height: 200px;" contentDelivery="immediate"
               rowSelection="single" rowBandingInterval="0"

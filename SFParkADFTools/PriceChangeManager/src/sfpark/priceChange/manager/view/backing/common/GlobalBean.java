@@ -35,6 +35,23 @@ public class GlobalBean extends BaseBean {
         return inlineStyle;
     }
 
+    /**
+     * Returns an Inline Style string for Section Headers used for displaying
+     * headers such as 'Application', 'Realms', 'Gadgets', etc
+     *
+     * @return Inline Style for Section Headers
+     */
+    public String getSubSectionHeaderInlineStyle() {
+        String inlineStyle = "font-size: 14px; font-weight: bold;";
+
+        return inlineStyle;
+    }
+
+    /**
+     * Returns an Inline Style string for Bread Crumb text
+     *
+     * @return Inline Style for Bread Crumbs
+     */
     public String getBreadCrumbInlineStyle() {
         String inlineStyle = "font-size: 16px; font-weight: bold;";
 
@@ -44,6 +61,20 @@ public class GlobalBean extends BaseBean {
     public String getGeneralButtonInlineStyle() {
 
         String inlineStyle = "width: 80px;";
+
+        return inlineStyle;
+    }
+
+    /**
+     * Returns an Inline Style string for buttons of the type 'commit'
+     * E.g., Buttons that perform operations such as 'Save', 'Finish', 'Ok'
+     *
+     * @return Inline Style for 'commit' type buttons
+     */
+    public String getCommitButtonInlineStyle() {
+
+        String inlineStyle =
+            this.getGeneralButtonInlineStyle() + " font-weight: bold;";
 
         return inlineStyle;
     }

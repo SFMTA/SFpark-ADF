@@ -13,11 +13,11 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    ACTIVE_DEPLOYMENT_PROCESS_LIST,
+    ACTIVE_DEPLOY_PROCESS_LIST,
+    HISTORIC_DEPLOY_PROCESS_LIST,
 
-    SELECTED_ACTIVE_DEPLOYMENT_PROCESS_FROM_LIST,
-
-    HISTORIC_DEPLOYMENT_PROCESS_LIST,
+    SELECTED_ACTIVE_DEPLOY_PROCESS_FROM_LIST,
+    SELECTED_ACTIVE_DEPLOY_PROCESS_FOR_PROPS,
 
     /*
     public static final String NEW_LDAP_REALM_DTO =

@@ -21,7 +21,8 @@ public final class DMLOperationsProvider {
     public static final DMLOperationsProvider INSTANCE =
         new DMLOperationsProvider();
 
-    private static final String LAST_UPDATED_PROGRAM = "Asset Manager Tool";
+    private static final String LAST_UPDATED_PROGRAM =
+        "Price Change Manager Tool";
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

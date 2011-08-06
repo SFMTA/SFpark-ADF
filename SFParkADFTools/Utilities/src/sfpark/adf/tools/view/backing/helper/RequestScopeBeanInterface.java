@@ -10,4 +10,32 @@ public interface RequestScopeBeanInterface {
      */
     public void clearPageFlowScopeCache();
 
+    /**
+     * Used to set the Inline Message Text
+     *
+     * @param inlineMessageText
+     */
+    public void setInlineMessageText(String inlineMessageText);
+
+    /**
+     * Retrieves the Inline Message Text
+     *
+     * @return
+     */
+    public String getInlineMessageText();
+
+    /**
+     * Used to set the Inline Message Class
+     *
+     * @param inlineMessageClass
+     */
+    public void setInlineMessageClass(String inlineMessageClass);
+
+    /**
+     * Retrieves the Inline Message Class
+     *
+     * @return
+     */
+    public String getInlineMessageClass();
+
 }

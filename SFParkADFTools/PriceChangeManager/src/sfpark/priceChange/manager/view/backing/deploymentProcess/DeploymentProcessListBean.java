@@ -18,7 +18,9 @@ import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 import sfpark.adf.tools.view.backing.util.ADFUtil;
 
 import sfpark.priceChange.manager.application.key.PageFlowScopeKey;
+import sfpark.priceChange.manager.application.key.SessionScopeKey;
 import sfpark.priceChange.manager.view.backing.BaseBean;
+import sfpark.priceChange.manager.view.flow.NavigationFlow;
 
 public class DeploymentProcessListBean extends BaseBean implements ListBeanInterface,
                                                                    RequestScopeBeanInterface {
@@ -47,6 +49,20 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
         // TODO
     }
 
+    public void setInlineMessageText(String inlineMessageText) {
+    }
+
+    public String getInlineMessageText() {
+        return null;
+    }
+
+    public void setInlineMessageClass(String inlineMessageClass) {
+    }
+
+    public String getInlineMessageClass() {
+        return null;
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -54,12 +70,12 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
 
     public List<RateChangeProcessControlDTO> getActiveDeploymentProcesses() {
         List<RateChangeProcessControlDTO> activeList =
-            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOYMENT_PROCESS_LIST.getKey());
+            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOY_PROCESS_LIST.getKey());
 
         if (activeList == null) {
             activeList =
                     RateChangeProcessControlProvider.INSTANCE.getActiveRateChangeProcessControlDTOs();
-            setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOYMENT_PROCESS_LIST.getKey(),
+            setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOY_PROCESS_LIST.getKey(),
                                   activeList);
         }
 
@@ -68,12 +84,12 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
 
     public List<RateChangeProcessControlDTO> getHistoricDeploymentProcesses() {
         List<RateChangeProcessControlDTO> historicList =
-            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOYMENT_PROCESS_LIST.getKey());
+            (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOY_PROCESS_LIST.getKey());
 
         if (historicList == null) {
             historicList =
                     RateChangeProcessControlProvider.INSTANCE.getHistoricRateChangeProcessControlDTOs();
-            setPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOYMENT_PROCESS_LIST.getKey(),
+            setPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOY_PROCESS_LIST.getKey(),
                                   historicList);
         }
 
@@ -124,6 +140,17 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
     }
 
     public void editButtonHandler(ActionEvent event) {
+        // TODO revise later
+
+        RateChangeProcessControlDTO selectedDTO =
+            (RateChangeProcessControlDTO)getActiveDeploymentProcessTable().getSelectedRowData();
+
+        if (selectedDTO != null) {
+            setPageFlowScopeValue(PageFlowScopeKey.SELECTED_ACTIVE_DEPLOY_PROCESS_FOR_PROPS.getKey(),
+                                  selectedDTO);
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.EDIT_DEPLOYMENT_PROCESS.name());
+        }
     }
 
     public void deleteButtonHandler(ActionEvent event) {
