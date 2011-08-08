@@ -51,9 +51,9 @@ public final class LoggedInUserUtil {
     private static boolean hasMetersAccess() {
         if (USE_SECURITY_MODEL) {
 
-            if (isUserInGroup(SecurityGroup.METERS_READ_ONLY)) {
-                return false;
-            }
+//            if (isUserInGroup(SecurityGroup.METERS_READ_ONLY)) {
+//                return false;
+//            }
 
             return isUserInGroup(SecurityGroup.METERS);
 
