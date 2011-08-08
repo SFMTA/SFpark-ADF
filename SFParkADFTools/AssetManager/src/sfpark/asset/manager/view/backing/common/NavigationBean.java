@@ -11,6 +11,7 @@ import oracle.adf.view.rich.model.RegionModel;
 
 import sfpark.adf.tools.helper.Logger;
 
+import sfpark.adf.tools.helper.SignedInUser;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
@@ -25,7 +26,6 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.asset.manager.application.key.PageFlowScopeKey;
 import sfpark.asset.manager.application.key.ParameterKey;
 import sfpark.asset.manager.application.key.SessionScopeKey;
-import sfpark.asset.manager.application.util.LoggedInUserUtil;
 import sfpark.asset.manager.view.backing.BaseBean;
 import sfpark.asset.manager.view.backing.meterSpaceManagement.MeterSpaceManagementBean;
 import sfpark.asset.manager.view.flow.NavigationFlow;
@@ -185,7 +185,8 @@ public class NavigationBean extends BaseBean {
                     // ++++++++++++++++++++++++++++++++++
 
                     if ( // Can ADD
-                        LoggedInUserUtil.canAddParkingSpace()) {
+                        // LoggedInUserUtil.canAddParkingSpace()
+                        SignedInUser.canAddParkingSpace()) {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
@@ -235,7 +236,8 @@ public class NavigationBean extends BaseBean {
                     // ++++++++++++++++++++++++++++++++++
 
                     if ( // Can EDIT or READ_ONLY
-                        LoggedInUserUtil.canEditOrReadOnlyParkingSpace()) {
+                        // LoggedInUserUtil.canEditOrReadOnlyParkingSpace()
+                        SignedInUser.canEditOrReadOnlyParkingSpace()) {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
@@ -360,7 +362,8 @@ public class NavigationBean extends BaseBean {
 
     private void setProperPageMode() {
 
-        if (LoggedInUserUtil.canReadOnlyParkingSpace()) {
+        if ( // LoggedInUserUtil.canReadOnlyParkingSpace()
+            SignedInUser.canReadOnlyParkingSpace()) {
             setCurrentPageMode(NavigationMode.READ_ONLY);
         } else {
             setCurrentPageMode(NavigationMode.EDIT);

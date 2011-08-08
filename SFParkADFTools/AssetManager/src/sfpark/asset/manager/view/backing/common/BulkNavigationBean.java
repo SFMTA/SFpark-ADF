@@ -11,6 +11,7 @@ import oracle.adf.view.rich.model.RegionModel;
 
 import sfpark.adf.tools.helper.Logger;
 
+import sfpark.adf.tools.helper.SignedInUser;
 import sfpark.adf.tools.model.helper.dO.ParkingSpaceGroupsDOStatus;
 import sfpark.adf.tools.model.provider.ParkingSpaceGroupsProvider;
 import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
@@ -23,7 +24,6 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.asset.manager.application.key.PageFlowScopeKey;
 import sfpark.asset.manager.application.key.ParameterKey;
 import sfpark.asset.manager.application.key.SessionScopeKey;
-import sfpark.asset.manager.application.util.LoggedInUserUtil;
 import sfpark.asset.manager.view.backing.BaseBean;
 import sfpark.asset.manager.view.flow.NavigationFlow;
 import sfpark.asset.manager.view.flow.NavigationMode;
@@ -153,7 +153,8 @@ public class BulkNavigationBean extends BaseBean {
                 // ++++++++++++++++++++++++++++++++++
 
                 if ( // Can EDIT
-                    LoggedInUserUtil.canEditBulkParkingSpace()) {
+                    // LoggedInUserUtil.canEditBulkParkingSpace()
+                    SignedInUser.canEditBulkParkingSpace()) {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
