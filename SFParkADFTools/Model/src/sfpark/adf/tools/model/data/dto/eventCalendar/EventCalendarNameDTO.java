@@ -5,6 +5,7 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 
+@Deprecated
 public class EventCalendarNameDTO extends BaseDTO {
     public EventCalendarNameDTO() {
         super();

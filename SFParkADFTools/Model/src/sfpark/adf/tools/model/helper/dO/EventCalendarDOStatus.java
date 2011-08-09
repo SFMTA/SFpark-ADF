@@ -2,6 +2,7 @@ package sfpark.adf.tools.model.helper.dO;
 
 import sfpark.adf.tools.model.data.dO.eventCalendar.EventCalendarDO;
 
+@Deprecated
 public class EventCalendarDOStatus implements DOStatusInterface {
 
     private boolean exists;

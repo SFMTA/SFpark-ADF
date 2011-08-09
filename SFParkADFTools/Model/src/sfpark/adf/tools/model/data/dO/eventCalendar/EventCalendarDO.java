@@ -9,6 +9,7 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
+@Deprecated
 public class EventCalendarDO extends BaseDO {
     public EventCalendarDO() {
         super();

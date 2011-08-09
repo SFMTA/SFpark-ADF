@@ -16,12 +16,13 @@ import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dO.eventCalendar.EventCalendarDO;
 import sfpark.adf.tools.model.data.dto.eventCalendar.EventCalendarDTO;
 import sfpark.adf.tools.model.data.dto.eventCalendar.EventCalendarNameDTO;
-import sfpark.adf.tools.model.exception.EventCalendarDeleteException;
+import sfpark.adf.tools.model.exception.SQLDeleteException;
 import sfpark.adf.tools.model.helper.dO.EventCalendarDOStatus;
 import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+@Deprecated
 public final class EventCalendarProvider {
 
     private static final String CLASSNAME =
@@ -99,7 +100,7 @@ public final class EventCalendarProvider {
             int executeResult = preparedStatement.executeUpdate();
 
             if (executeResult == 0) {
-                throw new EventCalendarDeleteException();
+                throw new SQLDeleteException();
             }
 
             connection.commit();

@@ -12,8 +12,8 @@ import java.util.List;
 
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
-import sfpark.adf.tools.model.data.dto.eventCalendar.EventCalendarDTO;
-import sfpark.adf.tools.model.data.dto.eventCalendar.EventCalendarNameDTO;
+import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
+import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.garageOPHours.GarageOPHoursDTO;
 import sfpark.adf.tools.model.data.dto.garageRates.GarageRatesDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
@@ -162,11 +162,16 @@ public final class ProviderWrapper {
                                                                          (GarageOPHoursDTO)DTO,
                                                                          lastUpdatedUser,
                                                                          lastUpdatedProgram);
-        } else if (DTO instanceof EventCalendarDTO) {
-            return EventCalendarProvider.INSTANCE.prepareInsertStatement(connection,
-                                                                         (EventCalendarDTO)DTO,
-                                                                         lastUpdatedUser,
-                                                                         lastUpdatedProgram);
+        } else if (DTO instanceof CalendarHeaderDTO) {
+            return CalendarHeaderProvider.INSTANCE.prepareInsertStatement(connection,
+                                                                          (CalendarHeaderDTO)DTO,
+                                                                          lastUpdatedUser,
+                                                                          lastUpdatedProgram);
+        } else if (DTO instanceof CalendarDetailDTO) {
+            return CalendarDetailProvider.INSTANCE.prepareInsertStatement(connection,
+                                                                          (CalendarDetailDTO)DTO,
+                                                                          lastUpdatedUser,
+                                                                          lastUpdatedProgram);
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
             return ParkingSpaceInventoryProvider.INSTANCE.prepareInsertStatement(connection,
                                                                                  (ParkingSpaceInventoryDTO)DTO,
@@ -201,6 +206,10 @@ public final class ProviderWrapper {
             return new MeterOPScheduleInsertException();
         } else if (DTO instanceof MeterRateScheduleDTO) {
             return new MeterRateScheduleInsertException();
+        } else if (DTO instanceof CalendarHeaderDTO) {
+            return new CalendarHeaderInsertException();
+        } else if (DTO instanceof CalendarDetailDTO) {
+            return new CalendarDetailInsertException();
         }
 
         return new SQLInsertException();
@@ -231,11 +240,11 @@ public final class ProviderWrapper {
                                                                          (GarageOPHoursDTO)DTO,
                                                                          lastUpdatedUser,
                                                                          lastUpdatedProgram);
-        } else if (DTO instanceof EventCalendarNameDTO) {
-            return EventCalendarProvider.INSTANCE.prepareUpdateStatement(connection,
-                                                                         (EventCalendarNameDTO)DTO,
-                                                                         lastUpdatedUser,
-                                                                         lastUpdatedProgram);
+        } else if (DTO instanceof CalendarHeaderDTO) {
+            return CalendarHeaderProvider.INSTANCE.prepareUpdateStatement(connection,
+                                                                          (CalendarHeaderDTO)DTO,
+                                                                          lastUpdatedUser,
+                                                                          lastUpdatedProgram);
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
             return ParkingSpaceInventoryProvider.INSTANCE.prepareUpdateStatement(connection,
                                                                                  (ParkingSpaceInventoryDTO)DTO,
@@ -265,8 +274,8 @@ public final class ProviderWrapper {
             return new GarageOPHoursUpdateException();
         } else if (DTO instanceof GarageRatesDTO) {
             return new GarageRatesUpdateException();
-        } else if (DTO instanceof EventCalendarNameDTO) {
-            return new EventCalendarUpdateException();
+        } else if (DTO instanceof CalendarHeaderDTO) {
+            return new CalendarHeaderUpdateException();
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
             return new ParkingSpaceInventoryUpdateException();
         } else if (DTO instanceof MeterOPScheduleDTO) {
@@ -286,9 +295,12 @@ public final class ProviderWrapper {
     private PreparedStatement prepareDeleteStatement(Connection connection,
                                                      BaseDTO DTO) throws SQLException {
 
-        if (DTO instanceof EventCalendarDTO) {
-            return EventCalendarProvider.INSTANCE.prepareDeleteStatement(connection,
-                                                                         (EventCalendarDTO)DTO);
+        if (DTO instanceof CalendarHeaderDTO) {
+            return CalendarHeaderProvider.INSTANCE.prepareDeleteStatement(connection,
+                                                                          (CalendarHeaderDTO)DTO);
+        } else if (DTO instanceof CalendarDetailDTO) {
+            return CalendarDetailProvider.INSTANCE.prepareDeleteStatement(connection,
+                                                                          (CalendarDetailDTO)DTO);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -297,8 +309,10 @@ public final class ProviderWrapper {
 
     private SQLException deleteException(BaseDTO DTO) {
 
-        if (DTO instanceof EventCalendarDTO) {
-            return new EventCalendarDeleteException();
+        if (DTO instanceof CalendarHeaderDTO) {
+            return new CalendarHeaderDeleteException();
+        } else if (DTO instanceof CalendarDetailDTO) {
+            return new CalendarDetailDeleteException();
         }
 
         return new SQLUpdateException();

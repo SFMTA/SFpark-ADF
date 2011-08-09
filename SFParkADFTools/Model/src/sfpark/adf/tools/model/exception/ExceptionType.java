@@ -5,9 +5,12 @@ import java.sql.SQLException;
 public enum ExceptionType {
     UNIQUE_CONTRAINT,
 
-    EVENT_CALENDAR_INSERT,
-    EVENT_CALENDAR_UPDATE,
-    EVENT_CALENDAR_DELETE,
+    CALENDAR_HEADER_INSERT,
+    CALENDAR_HEADER_UPDATE,
+    CALENDAR_HEADER_DELETE,
+
+    CALENDAR_DETAIL_INSERT,
+    CALENDAR_DETAIL_DELETE,
 
     OSP_INVENTORY_INSERT,
     OSP_INVENTORY_UPDATE,
@@ -75,16 +78,24 @@ public enum ExceptionType {
             return METER_RATE_SCHEDULE_UPDATE;
         }
 
-        if (exception instanceof EventCalendarInsertException) {
-            return EVENT_CALENDAR_INSERT;
+        if (exception instanceof CalendarHeaderInsertException) {
+            return CALENDAR_HEADER_INSERT;
         }
 
-        if (exception instanceof EventCalendarUpdateException) {
-            return EVENT_CALENDAR_UPDATE;
+        if (exception instanceof CalendarHeaderUpdateException) {
+            return CALENDAR_HEADER_UPDATE;
         }
 
-        if (exception instanceof EventCalendarDeleteException) {
-            return EVENT_CALENDAR_DELETE;
+        if (exception instanceof CalendarHeaderDeleteException) {
+            return CALENDAR_HEADER_DELETE;
+        }
+
+        if (exception instanceof CalendarDetailInsertException) {
+            return CALENDAR_DETAIL_INSERT;
+        }
+
+        if (exception instanceof CalendarDetailDeleteException) {
+            return CALENDAR_DETAIL_DELETE;
         }
 
         if (exception instanceof OSPInventoryInsertException) {
