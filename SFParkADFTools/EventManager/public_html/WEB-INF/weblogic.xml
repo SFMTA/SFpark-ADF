@@ -11,6 +11,6 @@
     <!-- ++++++++++++++++++++++++++++++++++++ -->
     <security-role-assignment>
         <role-name>valid-users</role-name>
-        <principal-name>users</principal-name>
+        <principal-name>UNKNOWN</principal-name>
     </security-role-assignment>
 </weblogic-web-app>

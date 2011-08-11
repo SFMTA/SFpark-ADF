@@ -129,7 +129,7 @@
             <hash n="archiveOptions">
                <value n="hasManifest" v="false"/>
             </hash>
-            <value n="contextRoot" v="eventManager1"/>
+            <value n="contextRoot"/>
             <url n="earURL" path="deploy/SFParkADFTools_EventManager_webapp1.ear"/>
             <value n="enterpriseAppName" v="SFParkADFTools_EventManager_webapp1"/>
             <hash n="fileGroups">
