@@ -1,0 +1,705 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="calendarPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="calendarPropertiesPGLSpacer" height="20"/>
+    </f:facet>
+    <af:outputText id="pageHeader"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"
+                   value="#{calendarManagerBundle.string_calendar_management}"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{calendarPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{calendarPropertiesBean.inlineMessageText}"
+                       styleClass="#{calendarPropertiesBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="calendarHeaderPanel" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="calendarHeaderPanelSpacer" width="100"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsPSIFormPanel">
+        <af:inputText id="calendarNameIT" required="true"
+                      maximumLength="#{calendarPropertiesBean.calendarHeaderDTO.maximumLengthCalendarName}"
+                      columns="#{calendarPropertiesBean.calendarHeaderDTO.columnsCalendarName}"
+                      label="#{labelBundle.label_calendar_name}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.calendarName}"/>
+        <!--
+        autoSubmit="true"
+        validator="#{calendarPropertiesBean.postIDValidator}"
+        -->
+        <af:spacer id="calendarNameSpacer" height="10"/>
+        <af:selectOneChoice id="calendarTypeSOC" readOnly="true"
+                            label="#{labelBundle.label_calendar_type}"
+                            value="#{calendarPropertiesBean.calendarHeaderDTO.calendarType}">
+          <f:selectItems id="calendarTypeSOCSI"
+                         value="#{calendarPropertiesBean.listCalendarType}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:inputText id="calendarIDIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_calendar_id}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.calendarID}"/>
+        <af:spacer id="calendarIDITSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.createdDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedProgram}"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
+<!--
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+        <af:panelLabelAndMessage id="deleteParkingSpacePLM"
+                                 rendered="#{calendarPropertiesBean.renderDeleteParkingSpacePLM}"
+                                 label="#{labelBundle.label_delete_parking_space}">
+          <af:commandButton id="deleteParkingSpaceButton"
+                            rendered="#{calendarPropertiesBean.renderButtons}"
+                            visible="#{calendarPropertiesBean.visibleDeleteParkingSpaceButton}"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_delete_parking_space}"
+                            actionListener="#{calendarPropertiesBean.deleteUndeleteParkingSpaceButtonHandler}"
+                            partialTriggers="undeleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_delete_parking_space}"/>
+          <af:commandButton id="undeleteParkingSpaceButton"
+                            rendered="#{calendarPropertiesBean.renderButtons}"
+                            visible="#{calendarPropertiesBean.visibleUndeleteParkingSpaceButton}"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_undelete_parking_space}"
+                            actionListener="#{calendarPropertiesBean.deleteUndeleteParkingSpaceButtonHandler}"
+                            partialTriggers="deleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_undelete_parking_space}"/>
+        </af:panelLabelAndMessage>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+    <af:spacer id="psiANDschedSpacer" height="30"/>
+    <af:panelGroupLayout id="meterSchedPanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{calendarPropertiesBean.renderMeterSchedPanel}">
+      <f:facet name="separator">
+        <af:spacer id="meterSchedPanelSpacer" height="10"/>
+      </f:facet>
+      <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                     value="#{assetManagerBundle.string_meter_operating_schedules}"/>
+      <af:showDetail id="historicalSchedulesSD" disclosed="false"
+                     disclosedText="#{assetManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{assetManagerBundle.string_show_historic_data}">
+        <af:table id="HMSTabl" var="row" varStatus="rowStatus"
+                  styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                  contentDelivery="immediate" rowSelection="none"
+                  rowBandingInterval="0" columnSelection="none"
+                  disableColumnReordering="true" columnStretching="last"
+                  emptyText="#{assetManagerBundle.info_empty_historic_meter_schedule_list}"
+                  summary="Historic Meter Schedule List"
+                  value="#{calendarPropertiesBean.historicMeterSchedules}"
+                  binding="#{calendarPropertiesBean.historicMeterScheduleTable}">
+          <af:column id="HMSTableColSchedType" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     sortProperty="scheduleType"
+                     headerText="#{columnBundle.column_schedule_type}">
+            <af:outputText id="HMSTableRowSchedType"
+                           value="#{row.scheduleType}"/>
+          </af:column>
+          <af:column id="HMSTableColEffFromDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:inputDate id="HMSTableRowEffFromDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          value="#{row.effectiveFromDate}"
+                          maxValue="#{calendarPropertiesBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMSTableColEffToDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:inputDate id="HMSTableRowEffToDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          value="#{row.effectiveToDate}"
+                          maxValue="#{calendarPropertiesBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMSTableColColorApplied" align="center" width="220px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_color_rule_applied}">
+            <af:selectOneChoice id="HMSTableRowColorAppliedSOC" simple="true"
+                                rendered="#{row.editableColorRuleApplied}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.colorRuleApplied}">
+              <f:selectItems id="HMSTableRowColorAppliedSOCSI"
+                             value="#{calendarPropertiesBean.listColorRuleAppliedSOC}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowColorAppliedOT"
+                           rendered="#{!row.editableColorRuleApplied}"
+                           value="#{row.colorRuleApplied}"/>
+          </af:column>
+          <af:column id="HMSTableColAddlDesc" align="center" width="110px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_addl_desc}">
+            <af:outputText id="HMSTableRowAddlDesc"
+                           value="#{row.alternateAddlDesc}"/>
+          </af:column>
+          <af:column id="HMSTableColFromTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:selectOneChoice id="HMSTableRowFromTimeSOC" simple="true"
+                                rendered="#{row.editableFromTime}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.fromTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowFromTimeSI"
+                             value="#{calendarPropertiesBean.listFromTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowFromTimeOT"
+                           rendered="#{!row.editableFromTime}"
+                           value="#{row.fromTime}"/>
+          </af:column>
+          <af:column id="HMSTableColToTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:selectOneChoice id="HMSTableRowToTimeSOC" simple="true"
+                                rendered="#{row.editableToTime}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.toTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowToTimeSI"
+                             value="#{calendarPropertiesBean.listToTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowToTimeOT"
+                           rendered="#{!row.editableToTime}"
+                           value="#{row.toTime}"/>
+          </af:column>
+          <af:column id="HMSTableColDaysApplied" align="center" width="200px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_days_applied}">
+            <af:selectManyChoice id="HMSTableRowDaysAppliedSMC" simple="true"
+                                 required="true"
+                                 rendered="#{row.editableDaysApplied}"
+                                 readOnly="#{calendarPropertiesBean.readOnly}"
+                                 value="#{row.weekDaysApplied}">
+              <f:selectItems id="HMSTableRowDaysAppliedSMCSI"
+                             value="#{calendarPropertiesBean.listWeekDaysApplied}"/>
+            </af:selectManyChoice>
+            <af:outputText id="HMSTableRowDaysAppliedOT"
+                           rendered="#{!row.editableDaysApplied}"
+                           value="#{row.daysApplied}"/>
+          </af:column>
+          <af:column id="HMSTableColTimeLimit" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_limit}">
+            <af:selectOneChoice id="HMSTableRowTimeLimit" required="true"
+                                simple="true"
+                                rendered="#{row.editableTimeLimit}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.timeLimit}"
+                                contentStyle="width: 50px;">
+              <f:selectItems id="HMSTableRowTimeLimitSI"
+                             value="#{calendarPropertiesBean.listTimeLimit}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowTimeLimitOT"
+                           rendered="#{!row.editableTimeLimit}"
+                           value="#{row.timeLimit}"/>
+          </af:column>
+          <af:column id="HMSTableColPrepaymentTime" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_prepayment_time}">
+            <af:selectOneChoice id="HMSTableRowPrepaymentTime" simple="true"
+                                rendered="#{row.editablePrePaymentTime}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.prePaymentTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowPrepaymentTimeSI"
+                             value="#{calendarPropertiesBean.listPrePaymentTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowPrepaymentTimeOT"
+                           rendered="#{!row.editablePrePaymentTime}"
+                           value="#{row.prePaymentTime}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:toolbar id="meterSchedToolbar"
+                  rendered="#{calendarPropertiesBean.renderButtons}">
+        <af:group id="meterSchedToolbarAddAndDelete">
+          <af:commandToolbarButton id="addSchedButton"
+                                   inlineStyle="width: 130px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_schedule}">
+            <f:facet name="popup">
+              <af:menu id="addSchedButtonMenu">
+                <af:commandMenuItem id="addOPSched" text="OP Schedule"
+                                    actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addALTSched" text="ALT Schedule"
+                                    actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addTOWSched" text="TOW Schedule"
+                                    actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="meterSchedToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="endSchedButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_end_schedule}"
+                            binding="#{calendarPropertiesBean.deleteSchedButton}"
+                            actionListener="#{calendarPropertiesBean.deleteButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:table id="MSTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate"
+                rowSelection="#{calendarPropertiesBean.rowSelectionValue}"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{assetManagerBundle.info_empty_meter_schedule_list}"
+                summary="Meter Schedule List"
+                value="#{calendarPropertiesBean.activeMeterSchedules}"
+                binding="#{calendarPropertiesBean.activeMeterScheduleTable}"
+                selectionListener="#{calendarPropertiesBean.tableRowSelectionHandler}">
+        <af:column id="MSTableColOverride" align="center" width="100px"
+                   sortable="false"
+                   rendered="#{!calendarPropertiesBean.readOnly}"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="MSTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false" sortProperty="scheduleType"
+                   headerText="#{columnBundle.column_schedule_type}">
+          <af:outputText id="MSTableRowSchedType" value="#{row.scheduleType}"/>
+        </af:column>
+        <af:column id="MSTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="MSTableRowEffFromDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="MSTableRowEffToDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColColorApplied" align="center" width="220px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_color_rule_applied}">
+          <af:selectOneChoice id="MSTableRowColorAppliedSOC" simple="true"
+                              rendered="#{row.editableColorRuleApplied}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.colorRuleApplied}">
+            <f:selectItems id="MSTableRowColorAppliedSOCSI"
+                           value="#{calendarPropertiesBean.listColorRuleAppliedSOC}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowColorAppliedOT"
+                         rendered="#{!row.editableColorRuleApplied}"
+                         value="#{row.colorRuleApplied}"/>
+        </af:column>
+        <af:column id="MSTableColAddlDesc" align="center" width="110px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_addl_desc}">
+          <af:outputText id="MSTableRowAddlDesc"
+                         value="#{row.alternateAddlDesc}"/>
+        </af:column>
+        <af:column id="MSTableColFromTime" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:selectOneChoice id="MSTableRowFromTimeSOC" simple="true"
+                              rendered="#{row.editableFromTime}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.fromTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowFromTimeSI"
+                           value="#{calendarPropertiesBean.listFromTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowFromTimeOT"
+                         rendered="#{!row.editableFromTime}"
+                         value="#{row.fromTime}"/>
+        </af:column>
+        <af:column id="MSTableColToTime" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:selectOneChoice id="MSTableRowToTimeSOC" simple="true"
+                              rendered="#{row.editableToTime}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.toTime}" contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowToTimeSI"
+                           value="#{calendarPropertiesBean.listToTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowToTimeOT"
+                         rendered="#{!row.editableToTime}"
+                         value="#{row.toTime}"/>
+        </af:column>
+        <af:column id="MSTableColDaysApplied" align="center" width="200px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_days_applied}">
+          <af:selectManyChoice id="MSTableRowDaysAppliedSMC" simple="true"
+                               required="true"
+                               rendered="#{row.editableDaysApplied}"
+                               readOnly="#{calendarPropertiesBean.readOnly}"
+                               value="#{row.weekDaysApplied}">
+            <f:selectItems id="MSTableRowDaysAppliedSMCSI"
+                           value="#{calendarPropertiesBean.listWeekDaysApplied}"/>
+          </af:selectManyChoice>
+          <af:outputText id="MSTableRowDaysAppliedOT"
+                         rendered="#{!row.editableDaysApplied}"
+                         value="#{row.daysApplied}"/>
+        </af:column>
+        <af:column id="MSTableColTimeLimit" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_limit}">
+          <af:selectOneChoice id="MSTableRowTimeLimit" required="true"
+                              simple="true" rendered="#{row.editableTimeLimit}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.timeLimit}"
+                              contentStyle="width: 50px;">
+            <f:selectItems id="MSTableRowTimeLimitSI"
+                           value="#{calendarPropertiesBean.listTimeLimit}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowTimeLimitOT"
+                         rendered="#{!row.editableTimeLimit}"
+                         value="#{row.timeLimit}"/>
+        </af:column>
+        <af:column id="MSTableColPrepaymentTime" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_prepayment_time}">
+          <af:selectOneChoice id="MSTableRowPrepaymentTime" simple="true"
+                              rendered="#{row.editablePrePaymentTime}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.prePaymentTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowPrepaymentTimeSI"
+                           value="#{calendarPropertiesBean.listPrePaymentTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowPrepaymentTimeOT"
+                         rendered="#{!row.editablePrePaymentTime}"
+                         value="#{row.prePaymentTime}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+    <af:spacer id="schedANDrateSpacer" height="30"/>
+    <af:panelGroupLayout id="meterRatePanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{calendarPropertiesBean.renderMeterRatePanel}">
+      <f:facet name="separator">
+        <af:spacer id="meterRatePanelSpacer" height="10"/>
+      </f:facet>
+      <af:outputText id="OT2" inlineStyle="font-size: 14px;"
+                     value="#{assetManagerBundle.string_meter_rate_schedules}"/>
+      <af:showDetail id="historicalRatesSD" disclosed="false"
+                     disclosedText="#{assetManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{assetManagerBundle.string_show_historic_data}">
+        <af:table id="HMRTabl" var="row" varStatus="rowStatus"
+                  styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                  contentDelivery="immediate" rowSelection="none"
+                  rowBandingInterval="0" columnSelection="none"
+                  disableColumnReordering="true" columnStretching="last"
+                  emptyText="#{assetManagerBundle.info_empty_historic_meter_rate_list}"
+                  summary="Historic Meter Rate List"
+                  value="#{calendarPropertiesBean.historicMeterRates}"
+                  binding="#{calendarPropertiesBean.historicMeterRateTable}">
+          <af:column id="HMRTableColRateType" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     sortProperty="rateType"
+                     headerText="#{columnBundle.column_rate_type}">
+            <af:outputText id="HMRTableRowRateType" value="#{row.rateType}"/>
+          </af:column>
+          <af:column id="HMRTableColEffFromDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:inputDate id="HMRTableRowEffFromDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          value="#{row.effectiveFromDate}"
+                          maxValue="#{calendarPropertiesBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMRTableColEffToDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:inputDate id="HMRTableRowEffToDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          value="#{row.effectiveToDate}"
+                          maxValue="#{calendarPropertiesBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMRTableColFromTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:selectOneChoice id="HMRTableRowFromTimeSOC" simple="true"
+                                rendered="#{row.editableFromTime}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.fromTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMRTableRowFromTimeSI"
+                             value="#{calendarPropertiesBean.listFromTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMRTableRowFromTimeOT"
+                           rendered="#{!row.editableFromTime}"
+                           value="#{row.fromTime}"/>
+          </af:column>
+          <af:column id="HMRTableColToTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:selectOneChoice id="HMRTableRowToTimeSOC" simple="true"
+                                rendered="#{row.editableToTime}"
+                                readOnly="#{calendarPropertiesBean.readOnly}"
+                                value="#{row.toTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMRTableRowToTimeSI"
+                             value="#{calendarPropertiesBean.listToTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMRTableRowToTimeOT"
+                           rendered="#{!row.editableToTime}"
+                           value="#{row.toTime}"/>
+          </af:column>
+          <af:column id="HMRTableColDaysApplied" align="center" width="200px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_days_applied}">
+            <af:selectManyChoice id="HMRTableColDaysAppliedSMC" simple="true"
+                                 required="true"
+                                 rendered="#{row.editableDaysApplied}"
+                                 readOnly="#{calendarPropertiesBean.readOnly}"
+                                 value="#{row.weekDaysApplied}">
+              <f:selectItems id="HMRTableColDaysAppliedSI"
+                             value="#{calendarPropertiesBean.listWeekDaysApplied}"/>
+            </af:selectManyChoice>
+            <af:outputText id="HMRTableColDaysAppliedOT"
+                           rendered="#{!row.editableDaysApplied}"
+                           value="#{row.daysApplied}"/>
+          </af:column>
+          <af:column id="HMRTableColRate" align="center" width="80px"
+                     sortable="false" headerText="#{columnBundle.column_rate}">
+            <af:inputText id="HMRTableRowRate" simple="true" required="true"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          columns="6" value="#{row.rate}">
+              <af:validateDoubleRange minimum="0"/>
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:inputText>
+          </af:column>
+          <af:column id="HMRTableColRateChgRef" align="center" sortable="false"
+                     headerText="#{columnBundle.column_rate_change_ref}">
+            <af:inputText id="HMRTableRowRateChgRef" maximumLength="20"
+                          simple="true" columns="21"
+                          readOnly="#{calendarPropertiesBean.readOnly}"
+                          value="#{row.rateChangeReference}"/>
+          </af:column>
+          <af:column id="HMRTableColPSGroupID" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_parking_space_group_id}">
+            <af:outputText id="HMRTableRowPSGroupID" value="#{row.PSGroupID}"/>
+          </af:column>
+          <af:column id="HMRTableColEventID" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_event_id}">
+            <af:outputText id="HMRTableRowEventID" value="#{row.eventID}"/>
+          </af:column>
+          <af:column id="HMRTableColBlockID" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_block_id}">
+            <af:outputText id="HMRTableRowBlockID" value="#{row.blockID}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:toolbar id="meterRateToolbar"
+                  rendered="#{calendarPropertiesBean.renderButtons}">
+        <af:group id="meterRateToolbarAddAndDelete">
+          <af:commandToolbarButton id="addRateButton"
+                                   inlineStyle="width: 110px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_rate}">
+            <f:facet name="popup">
+              <af:menu id="addRateButtonMenu">
+                <af:commandMenuItem id="addBaseRate" text="Base Rate"
+                                    actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addHourlyRate" text="Hourly Rate"
+                                    actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="meterRateToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="endRateButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_end_rate}"
+                            binding="#{calendarPropertiesBean.deleteRateButton}"
+                            actionListener="#{calendarPropertiesBean.deleteButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:table id="MRTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate"
+                rowSelection="#{calendarPropertiesBean.rowSelectionValue}"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{assetManagerBundle.info_empty_meter_rate_list}"
+                summary="Meter Rate List"
+                value="#{calendarPropertiesBean.activeMeterRates}"
+                binding="#{calendarPropertiesBean.activeMeterRateTable}"
+                selectionListener="#{calendarPropertiesBean.tableRowSelectionHandler}">
+        <af:column id="MRTableColOverride" align="center" width="100px"
+                   sortable="false"
+                   rendered="#{!calendarPropertiesBean.readOnly}"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="MRTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false" sortProperty="rateType"
+                   headerText="#{columnBundle.column_rate_type}">
+          <af:outputText id="MRTableRowRateType" value="#{row.rateType}"/>
+        </af:column>
+        <af:column id="MRTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="MRTableRowEffFromDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MRTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="MRTableRowEffToDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MRTableColFromTime" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:selectOneChoice id="MRTableRowFromTimeSOC" simple="true"
+                              rendered="#{row.editableFromTime}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.fromTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MRTableRowFromTimeSI"
+                           value="#{calendarPropertiesBean.listFromTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MRTableRowFromTimeOT"
+                         rendered="#{!row.editableFromTime}"
+                         value="#{row.fromTime}"/>
+        </af:column>
+        <af:column id="MRTableColToTime" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:selectOneChoice id="MRTableRowToTimeSOC" simple="true"
+                              rendered="#{row.editableToTime}"
+                              readOnly="#{calendarPropertiesBean.readOnly}"
+                              value="#{row.toTime}" contentStyle="width: 60px;">
+            <f:selectItems id="MRTableRowToTimeSI"
+                           value="#{calendarPropertiesBean.listToTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MRTableRowToTimeOT"
+                         rendered="#{!row.editableToTime}"
+                         value="#{row.toTime}"/>
+        </af:column>
+        <af:column id="MRTableColDaysApplied" align="center" width="200px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_days_applied}">
+          <af:selectManyChoice id="MRTableColDaysAppliedSMC" simple="true"
+                               required="true"
+                               rendered="#{row.editableDaysApplied}"
+                               readOnly="#{calendarPropertiesBean.readOnly}"
+                               value="#{row.weekDaysApplied}">
+            <f:selectItems id="MRTableColDaysAppliedSI"
+                           value="#{calendarPropertiesBean.listWeekDaysApplied}"/>
+          </af:selectManyChoice>
+          <af:outputText id="MRTableColDaysAppliedOT"
+                         rendered="#{!row.editableDaysApplied}"
+                         value="#{row.daysApplied}"/>
+        </af:column>
+        <af:column id="MRTableColRate" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_rate}">
+          <af:inputText id="MRTableRowRate" simple="true" required="true"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        columns="6" value="#{row.rate}">
+            <af:validateDoubleRange minimum="0"/>
+            <af:convertNumber type="currency" locale="en-US"
+                              maxFractionDigits="2"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="MRTableColRateChgRef" align="center" sortable="false"
+                   headerText="#{columnBundle.column_rate_change_ref}">
+          <af:inputText id="MRTableRowRateChgRef" maximumLength="20"
+                        simple="true" columns="21"
+                        readOnly="#{calendarPropertiesBean.readOnly}"
+                        value="#{row.rateChangeReference}"/>
+        </af:column>
+        <af:column id="MRTableColPSGroupID" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_parking_space_group_id}">
+          <af:outputText id="MRTableRowPSGroupID" value="#{row.PSGroupID}"/>
+        </af:column>
+        <af:column id="MRTableColEventID" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_event_id}">
+          <af:outputText id="MRTableRowEventID" value="#{row.eventID}"/>
+        </af:column>
+        <af:column id="MRTableColBlockID" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_block_id}">
+          <af:outputText id="MRTableRowBlockID" value="#{row.blockID}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
+-->
