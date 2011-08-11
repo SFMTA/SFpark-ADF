@@ -21,6 +21,16 @@ public final class SignedInUser {
     private static final boolean USE_SECURITY_MODEL =
         DeveloperMode.DEPLOYED_ON_SERVER;
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PUBLIC METHODS
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ASSET MANAGER HELPERS
+
     public static boolean canAddParkingSpace() {
         return hasMetersAccess();
     }
@@ -37,12 +47,13 @@ public final class SignedInUser {
         return (hasMetersAccess() || hasGaragesAccess());
     }
 
-    public static boolean canApprovePriceChange() {
-        return hasPriceChangeApproversAccess();
-    }
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // CALENDAR MANAGER HELPERS
 
-    public static boolean canDeployPriceChange() {
-        return hasPriceChangeDeployersAccess();
+    public static boolean canOperateRateChangeCalendars() {
+        return hasRateChangeAccess();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -84,23 +95,11 @@ public final class SignedInUser {
         return true;
     }
 
-    private static boolean hasPriceChangeApproversAccess() {
+    private static boolean hasRateChangeAccess() {
         if (USE_SECURITY_MODEL) {
 
-            return (isUserInGroup(SecurityGroup.PRICE_CHANGE_APPROVERS) ||
+            return (isUserInGroup(SecurityGroup.RATE_CHANGE) ||
                     isUserInGroup(SecurityGroup.SUPER_USER));
-
-        }
-
-        return true;
-    }
-
-    private static boolean hasPriceChangeDeployersAccess() {
-        if (USE_SECURITY_MODEL) {
-
-            return (isUserInGroup(SecurityGroup.PRICE_CHANGE_DEPLOYERS) ||
-                    isUserInGroup(SecurityGroup.SUPER_USER));
-
         }
 
         return true;

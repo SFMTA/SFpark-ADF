@@ -24,6 +24,18 @@ public enum CalendarType {
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
 
+    public boolean isRateChange() {
+        return (this == RATE_CHANGE);
+    }
+
+    public boolean isSpecialEvent() {
+        return (this == SPECIAL_EVENT);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++
+
     private final String StringForTable;
 
     private CalendarType(String StringForTable) {

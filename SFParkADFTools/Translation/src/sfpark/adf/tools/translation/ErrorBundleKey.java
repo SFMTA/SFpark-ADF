@@ -2,6 +2,15 @@ package sfpark.adf.tools.translation;
 
 public enum ErrorBundleKey {
 
+    error_title_invalid_parameters,
+    error_title_insufficient_privileges,
+    error_title_nonexistent_resource,
+    error_title_unsupported_operation,
+    error_title_unsupported_resource,
+
+    error_message_insufficient_privileges,
+    error_message_unsupported_operation,
+
     error_insufficient_privileges,
 
     error_invalid_request_parameters_1,
@@ -84,6 +93,19 @@ public enum ErrorBundleKey {
     // OSP Manager Errors
 
     error_invalid_osp_manager_parameters,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Calendar Manager Errors
+
+    error_message_invalid_calendar_manager_parameters,
+
+    error_message_nonexistent_calendar_id_resource,
+
+    error_message_unsupported_calendar_resource_not_rate_change,
+
+    error_message_unsupported_calendar_delete_operation,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

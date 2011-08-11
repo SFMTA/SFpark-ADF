@@ -6,8 +6,7 @@ public enum SecurityGroup {
 
     GARAGES("GaragesGroup"),
 
-    PRICE_CHANGE_APPROVERS("PriceChangeApproversGroup"),
-    PRICE_CHANGE_DEPLOYERS("PriceChangeDeployersGroup"),
+    RATE_CHANGE("RateChangeGroup"),
 
     SUPER_USER("SFParkADFToolsAdminGroup");
 

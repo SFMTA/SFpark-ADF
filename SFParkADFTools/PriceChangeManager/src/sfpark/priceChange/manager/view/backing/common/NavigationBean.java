@@ -14,8 +14,6 @@ import oracle.adf.view.rich.model.RegionModel;
 
 import sfpark.adf.tools.helper.Logger;
 
-import sfpark.adf.tools.helper.SignedInUser;
-
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.RequestParameter;
@@ -71,11 +69,11 @@ public class NavigationBean extends BaseBean {
     // ALL RENDER INFORMATION
 
     public boolean isRenderApprovalProcessLink() {
-        return SignedInUser.canApprovePriceChange();
+        return true;
     }
 
     public boolean isRenderDeploymentProcessLink() {
-        return SignedInUser.canDeployPriceChange();
+        return true;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

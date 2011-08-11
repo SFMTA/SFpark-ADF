@@ -105,6 +105,10 @@ public class CalendarHeaderDTO extends BaseDTO {
         return StringUtil.areEqual(getStatus(), "L");
     }
 
+    public int getColumnsCalendarName() {
+        return (getMaximumLengthCalendarName() + 1);
+    }
+
     public int getMaximumLengthCalendarName() {
         return 20;
     }
