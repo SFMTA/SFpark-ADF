@@ -3,6 +3,7 @@ package sfpark.adf.tools.translation;
 enum TranslationBundle {
     AssetManagerBundle,
     OSPManagerBundle,
+    CalendarManagerBundle,
     PriceChangeManagerBundle,
 
     ColumnBundle,

@@ -24,23 +24,10 @@ public final class TranslationUtil {
                                    Key.name(), args);
     }
 
-    @Deprecated
-    public static String getOSPManagerBundleString(String Key,
-                                                   Object... args) {
-        return getTranslatedString(TranslationBundle.OSPManagerBundle.getBaseName(),
-                                   Key, args);
-    }
-
-    @Deprecated
-    public static String getButtonBundleString(String Key, Object... args) {
-        return getTranslatedString(TranslationBundle.ButtonBundle.getBaseName(),
-                                   Key, args);
-    }
-
-    @Deprecated
-    public static String getColumnBundleString(String Key, Object... args) {
-        return getTranslatedString(TranslationBundle.ColumnBundle.getBaseName(),
-                                   Key, args);
+    public static String getCalendarManagerBundleString(CalendarManagerBundleKey Key,
+                                                        Object... args) {
+        return getTranslatedString(TranslationBundle.CalendarManagerBundle.getBaseName(),
+                                   Key.name(), args);
     }
 
     public static String getCommonBundleString(CommonBundleKey Key,
@@ -53,12 +40,6 @@ public final class TranslationUtil {
                                               Object... args) {
         return getTranslatedString(TranslationBundle.ErrorBundle.getBaseName(),
                                    Key.name(), args);
-    }
-
-    @Deprecated
-    public static String getLabelBundleString(String Key, Object... args) {
-        return getTranslatedString(TranslationBundle.LabelBundle.getBaseName(),
-                                   Key, args);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

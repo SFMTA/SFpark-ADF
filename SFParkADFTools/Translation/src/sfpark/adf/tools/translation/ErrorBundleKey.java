@@ -107,6 +107,17 @@ public enum ErrorBundleKey {
 
     error_message_unsupported_calendar_delete_operation,
 
+    error_exists_already_calendar_name,
+
+    error_empty_calendar_detail_table,
+
+    error_create_calendar_name_failure,
+
+    error_calendar_exception_calendar_header_update,
+    error_calendar_exception_unique_constraint,
+    error_calendar_exception_calendar_detail_insert,
+    error_calendar_exception_calendar_detail_delete,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
