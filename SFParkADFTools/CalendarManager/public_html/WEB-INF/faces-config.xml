@@ -51,6 +51,11 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>calendarDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.calendar.manager.view.backing.calendar.CalendarDeleteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>errorsBean</managed-bean-name>
     <managed-bean-class>sfpark.calendar.manager.view.backing.common.ErrorsBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

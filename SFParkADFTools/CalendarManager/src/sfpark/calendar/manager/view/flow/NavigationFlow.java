@@ -15,7 +15,9 @@ public enum NavigationFlow {
 
     ReadOnlyCalendar("/View/jsffFiles/calendar/calendarPropertiesPage.jsff"),
 
-    DeleteCalendar("/View/jsffFiles/calendar/calendarDeletePage.jsff");
+    DeleteCalendar("/View/jsffFiles/calendar/calendarDeletePage.jsff"),
+
+    AfterDeleteCalendar("/View/jsffFiles/common/errorsPage.jsff");
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -81,7 +81,6 @@
         <af:spacer id="passiveInfoSpacer" height="10"/>
       </af:panelFormLayout>
     </af:panelGroupLayout>
-    <!--<af:spacer id="chANDcdSpacer" height="20"/>-->
     <af:panelGroupLayout id="calendarDetailPanel" layout="vertical"
                          inlineStyle="padding: 15px;"
                          partialTriggers="validateAndSaveButton"

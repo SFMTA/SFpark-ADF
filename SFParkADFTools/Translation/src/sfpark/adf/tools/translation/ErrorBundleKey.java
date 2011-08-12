@@ -19,6 +19,7 @@ public enum ErrorBundleKey {
 
     error_create_failure,
     error_save_failure,
+    error_delete_failure,
     error_invalid_login,
 
     error_exception_save_failure,

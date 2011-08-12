@@ -253,6 +253,7 @@ public class RateChangeNavigationBean extends BaseBean {
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++
+                                        LOGGER.debug("DELETE Mode");
                                         setPageFlowScopeValue(PageFlowScopeKey.CALENDAR_HEADER_DTO.getKey(),
                                                               calendarHeaderDTO);
                                         setCurrentPageMode(NavigationMode.DELETE);

@@ -7,12 +7,17 @@ public enum CalendarManagerBundleKey {
 
     string_calendar_dates,
 
+    string_delete_confirmation,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Title Strings
 
     string_pick_calendar_dates,
+
+    string_title_delete_operation_successful,
+    string_message_delete_operation_successful,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
