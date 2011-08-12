@@ -3,8 +3,9 @@ package sfpark.calendar.manager.view.backing.calendar;
 import java.sql.Date;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import java.util.TreeSet;
@@ -30,6 +31,8 @@ import sfpark.calendar.manager.application.key.PageFlowScopeKey;
 import sfpark.calendar.manager.application.key.SessionScopeKey;
 import sfpark.calendar.manager.view.backing.BaseBean;
 import sfpark.calendar.manager.view.flow.NavigationFlow;
+import sfpark.calendar.manager.view.provider.DMLOperationsProvider;
+import sfpark.calendar.manager.view.provider.helper.CalendarDetailDDO;
 
 public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface,
                                                                PropertiesBeanInterface,
@@ -56,7 +59,8 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        // TODO
+        removePageFlowScopeValue(PageFlowScopeKey.DATE_PICKER_CHOSEN_DATES_LIST.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.DATE_PICKER_DISABLED_DATES_SET.getKey());
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -94,41 +98,6 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // VALIDATORS
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL READ-ONLY INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL RENDER INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL VISIBLE INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DISABLE INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // DISPLAY LIST VALUES
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // VALUE CHANGE HANDLERS
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
     public void addButtonHandler(ActionEvent event) {
@@ -140,30 +109,32 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
     }
 
     public void deleteButtonHandler(ActionEvent event) {
-        // TODO
-        
-        /*
+
         if (getChosenDatesTable().getSelectedRowKeys().size() == 1) {
             Date date = (Date)getChosenDatesTable().getSelectedRowData();
 
             // Enable the date to allow addition
-            List<java.util.Date> disabledDates = getDisabledDates();
-            disabledDates.remove(date);
-            setDisabledDates(disabledDates);
+            TreeSet<Date> disabledDateTreeSet = getDisabledDateTreeSet();
+            disabledDateTreeSet.remove(date);
+            setDisabledDateTreeSet(disabledDateTreeSet);
 
             // Remove the chosen date from the Table
-            List<Date> chosenDates =
-                (List<Date>)getChosenDatesTable().getValue();
-            chosenDates.remove(date);
-            getChosenDatesTable().setValue(chosenDates);
+            TreeSet<Date> chosenDateTreeSet =
+                new TreeSet<Date>((List<Date>)getChosenDatesTable().getValue());
+            chosenDateTreeSet.remove(date);
+            getChosenDatesTable().setValue(new ArrayList<Date>(chosenDateTreeSet));
         }
 
+        // To update the table of chosen dates
         getChosenDatesTable().getSelectedRowKeys().clear();
-        getRemoveButton().setDisabled(true);
-
-        addPartialTarget(getRemoveButton());
         addPartialTarget(getChosenDatesTable());
-         */
+
+        // To disable the button
+        getRemoveButton().setDisabled(true);
+        addPartialTarget(getRemoveButton());
+
+        // To update the enabled dates
+        addPartialTarget(getCalendarDisplay());
     }
 
     public void selectAllButtonHandler(ActionEvent event) {
@@ -183,39 +154,32 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
     }
 
     public void saveButtonHandler(ActionEvent event) {
-        // TODO
-        
-        /*
+
         List<Date> chosenDates = (List<Date>)getChosenDatesTable().getValue();
 
         if (!chosenDates.isEmpty()) {
-            List<EventCalendarDateDAO> eventCalendarDateDAOs =
-                (List<EventCalendarDateDAO>)getPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey());
+            List<CalendarDetailDDO> calendarDetailDDOs =
+                (List<CalendarDetailDDO>)getPageFlowScopeValue(PageFlowScopeKey.CALENDAR_DETAIL_DDO_LIST.getKey());
 
-            if (eventCalendarDateDAOs == null) {
+            if (calendarDetailDDOs == null) {
                 // Shouldn't happen
-                eventCalendarDateDAOs = new ArrayList<EventCalendarDateDAO>();
+                calendarDetailDDOs = new ArrayList<CalendarDetailDDO>();
             }
 
-            for (Date date : chosenDates) {
-                eventCalendarDateDAOs.add(new EventCalendarDateDAO(true,
-                                                                   EventCalendarDateDAO.DateType.INSERT,
-                                                                   date));
-            }
+            calendarDetailDDOs.addAll(DMLOperationsProvider.INSTANCE.getCalendarDetailDDOs(chosenDates));
 
-            Collections.sort(eventCalendarDateDAOs,
-                             new Comparator<EventCalendarDateDAO>() {
-                    public int compare(EventCalendarDateDAO o1,
-                                       EventCalendarDateDAO o2) {
-                        return o1.getDate().compareTo(o2.getDate());
+            Collections.sort(calendarDetailDDOs,
+                             new Comparator<CalendarDetailDDO>() {
+                    public int compare(CalendarDetailDDO o1,
+                                       CalendarDetailDDO o2) {
+                        return o1.getDisplayDateDT().compareTo(o2.getDisplayDateDT());
                     }
                 });
 
-            setPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey(),
-                                  eventCalendarDateDAOs);
+            setPageFlowScopeValue(PageFlowScopeKey.CALENDAR_DETAIL_DDO_LIST.getKey(),
+                                  calendarDetailDDOs);
         }
-         */
-        
+
         moveOn();
     }
 
@@ -238,7 +202,7 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
         TreeSet<Date> chosenDateTreeSet =
             new TreeSet<Date>((List<Date>)getChosenDatesTable().getValue());
         chosenDateTreeSet.add(chosenDate);
-        getChosenDatesTable().setValue(Arrays.asList(chosenDateTreeSet.toArray()));
+        getChosenDatesTable().setValue(new ArrayList<Date>(chosenDateTreeSet));
         addPartialTarget(getChosenDatesTable());
     }
 
@@ -288,12 +252,7 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
                                                     java.util.Date date,
                                                     java.util.Date date1) {
 
-                List<java.util.Date> disabledDates =
-                    new ArrayList<java.util.Date>();
-
-                disabledDates.addAll(getDisabledDateTreeSet());
-
-                return disabledDates;
+                return new ArrayList<java.util.Date>(getDisabledDateTreeSet());
             }
         };
 

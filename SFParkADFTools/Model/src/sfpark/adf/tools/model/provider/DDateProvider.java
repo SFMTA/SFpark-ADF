@@ -2,6 +2,7 @@ package sfpark.adf.tools.model.provider;
 
 import java.sql.Connection;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
@@ -68,6 +69,43 @@ public final class DDateProvider {
         return dDateDOs;
     }
 
+    public List<DDateDO> getDDateDOs(List<Date> chosenDatesList) {
+        LOGGER.entering(CLASSNAME, "getDDateDOs");
+
+        List<DDateDO> dDateDOs = new ArrayList<DDateDO>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectUtil.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement(chosenDatesList.size()));
+            for (int i = 0; i < chosenDatesList.size(); i++) {
+                preparedStatement.setDate((i + 1), chosenDatesList.get(i));
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DDateDO DO = DDateDO.extract(resultSet);
+
+                dDateDOs.add(DO);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
+        } finally {
+            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "getDDateDOs");
+
+        return dDateDOs;
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -86,6 +124,25 @@ public final class DDateProvider {
 
         String Where =
             StatementGenerator.inOperator(DDateDO.DATE_DT, CalendarDetailProvider.INSTANCE.getSelectStatement());
+
+        String OrderBy = DDateDO.DATE_DT;
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  DDateDO.getDatabaseTableName(),
+                                                  Where, OrderBy);
+    }
+
+    private String getSelectStatement(int size) {
+        LOGGER.entering(CLASSNAME, "getSelectStatement");
+
+        String Attributes =
+            StringUtil.convertListToString(DDateDO.getAttributeListForSelect());
+
+        String Where =
+            StatementGenerator.inOperator(DDateDO.DATE_DT, StringUtil.generateStringWithRepetition("?",
+                                                                                                   size));
 
         String OrderBy = DDateDO.DATE_DT;
 

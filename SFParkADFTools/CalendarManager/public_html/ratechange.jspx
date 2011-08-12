@@ -11,7 +11,7 @@
                  title="#{calendarManagerBundle.string_application_name}">
       <f:facet name="metaContainer">
         <af:group id="metaGroup">
-          <af:resource type="css" source="/resourceFiles/Styles/common.css"/>
+          <af:resource type="css" source="../resourceFiles/Styles/common.css"/>
         </af:group>
       </f:facet>
       <af:form id="f1">

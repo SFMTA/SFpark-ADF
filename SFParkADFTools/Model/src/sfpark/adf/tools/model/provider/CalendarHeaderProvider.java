@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
+import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -46,7 +47,7 @@ public class CalendarHeaderProvider {
             connection = ConnectUtil.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatement());
+                    connection.prepareStatement(getSelectStatementForCalendarID());
             preparedStatement.setString(1, calendarID);
 
             resultSet = preparedStatement.executeQuery();
@@ -62,6 +63,41 @@ public class CalendarHeaderProvider {
         }
 
         LOGGER.exiting(CLASSNAME, "checkForCalendarID");
+
+        return new CalendarHeaderDTOStatus(DTO);
+    }
+
+    public CalendarHeaderDTOStatus checkForCalendarNameAndType(String calendarName,
+                                                               CalendarType calendarType) {
+        LOGGER.entering(CLASSNAME, "checkForCalendarNameAndType");
+
+        CalendarHeaderDTO DTO = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectUtil.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatementForCalendarNameAndType());
+            preparedStatement.setString(1, calendarName);
+            preparedStatement.setString(2, calendarType.getStringForTable());
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DTO = CalendarHeaderDTO.extract(resultSet);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
+        } finally {
+            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "checkForCalendarNameAndType");
 
         return new CalendarHeaderDTOStatus(DTO);
     }
@@ -137,8 +173,8 @@ public class CalendarHeaderProvider {
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatement() {
-        LOGGER.entering(CLASSNAME, "getSelectStatement");
+    private String getSelectStatementForCalendarID() {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForCalendarID");
 
         String Attributes =
             StringUtil.convertListToString(CalendarHeaderDTO.getAttributeListForSelect());
@@ -146,7 +182,26 @@ public class CalendarHeaderProvider {
         String Where =
             StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_ID);
 
-        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForCalendarID");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  CalendarHeaderDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+
+    private String getSelectStatementForCalendarNameAndType() {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForCalendarNameAndType");
+
+        String Attributes =
+            StringUtil.convertListToString(CalendarHeaderDTO.getAttributeListForSelect());
+
+        String string1 =
+            StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_NAME);
+        String string2 =
+            StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_TYPE);
+        String Where = StatementGenerator.andOperator(string1, string2);
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForCalendarNameAndType");
 
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),

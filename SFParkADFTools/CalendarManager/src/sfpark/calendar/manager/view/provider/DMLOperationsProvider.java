@@ -1,5 +1,7 @@
 package sfpark.calendar.manager.view.provider;
 
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +65,8 @@ public class DMLOperationsProvider {
     }
 
     /**
-     * Retrieves the DDateDO List and converts into into CalendarDetailDDO List
-     * to be understood by the UI
+     * Retrieves the DDateDO List and converts into CalendarDetailDDO List to
+     * be understood by the UI
      *
      * @param calendarID
      * @return
@@ -80,6 +82,33 @@ public class DMLOperationsProvider {
             for (DDateDO DO : dDateDOs) {
                 CalendarDetailDDO DDO =
                     new CalendarDetailDDO(false, CalendarDetailOperationType.NO_OP,
+                                          DO.getDateDT(), DO.getDateType());
+
+                calendarDetailDDOs.add(DDO);
+            }
+        }
+
+        return calendarDetailDDOs;
+    }
+
+    /**
+     * Retrieves the DDateDO List and converts into CalendarDetailDDO List to
+     * be understood by the UI
+     *
+     * @param chosenDates
+     * @return
+     */
+    public List<CalendarDetailDDO> getCalendarDetailDDOs(List<Date> chosenDates) {
+        List<CalendarDetailDDO> calendarDetailDDOs =
+            new ArrayList<CalendarDetailDDO>();
+
+        if (chosenDates != null && !chosenDates.isEmpty()) {
+            List<DDateDO> dDateDOs =
+                DDateProvider.INSTANCE.getDDateDOs(chosenDates);
+
+            for (DDateDO DO : dDateDOs) {
+                CalendarDetailDDO DDO =
+                    new CalendarDetailDDO(true, CalendarDetailOperationType.INSERT,
                                           DO.getDateDT(), DO.getDateType());
 
                 calendarDetailDDOs.add(DDO);
