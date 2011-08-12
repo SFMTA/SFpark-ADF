@@ -16,6 +16,14 @@ public enum PageFlowScopeKey {
 
     CALENDAR_TYPE,
     CALENDAR_HEADER_DTO,
+    CALENDAR_DETAIL_DDO_LIST,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    DATE_PICKER_CHOSEN_DATES_LIST,
+    DATE_PICKER_DISABLED_DATES_SET,
 
     METER_SCHEDULE_TEMPLATE_TYPE;
 

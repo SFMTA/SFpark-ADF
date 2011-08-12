@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -22,28 +21,12 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.DateListProvider;
 
-import sfpark.event.manager.application.key.PageFlowScopeKey;
-import sfpark.event.manager.application.key.SessionScopeKey;
-import sfpark.event.manager.view.backing.BaseBean;
-import sfpark.event.manager.view.backing.BaseBeanInterface;
-import sfpark.event.manager.view.backing.helper.ListBeanInterface;
-import sfpark.event.manager.view.backing.helper.PropertiesBeanInterface;
-import sfpark.event.manager.view.provider.helper.eventCalendar.EventCalendarDateDAO;
-
-public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterface,
-                                                                  PropertiesBeanInterface,
-                                                                  ListBeanInterface {
+public class AddEventCalendarDateBean {
 
     private RichChooseDate CalendarDisplay;
 
     private RichCommandButton RemoveButton;
     private RichTable ChosenDatesTable;
-
-    public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey());
-        removePageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_CURRENT_DATE.getKey());
-        removePageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_LIST.getKey());
-    }
 
     public AddEventCalendarDateBean() {
         super();
@@ -55,34 +38,34 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
     // LIST VALUES
 
     public List<Date> getChosenDates() {
-        List<Date> chosenDates =
-            (List<Date>)getPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_LIST.getKey());
-
-        if (chosenDates == null) {
-            chosenDates = new ArrayList<Date>();
-            setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_LIST.getKey(),
-                                  chosenDates);
-        }
+        List<Date> chosenDates = new ArrayList<Date>();
+//            (List<Date>)getPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_LIST.getKey());
+//
+//        if (chosenDates == null) {
+//            chosenDates = new ArrayList<Date>();
+//            setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_LIST.getKey(),
+//                                  chosenDates);
+//        }
 
         return chosenDates;
     }
 
     private List<java.util.Date> getDisabledDates() {
-        List<java.util.Date> disabledDates =
-            (List<java.util.Date>)getPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey());
-
-        if (disabledDates == null) {
-            disabledDates = new ArrayList<java.util.Date>();
-            setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey(),
-                                  disabledDates);
-        }
+        List<java.util.Date> disabledDates = new ArrayList<java.util.Date>();
+//            (List<java.util.Date>)getPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey());
+//
+//        if (disabledDates == null) {
+//            disabledDates = new ArrayList<java.util.Date>();
+//            setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey(),
+//                                  disabledDates);
+//        }
 
         return disabledDates;
     }
 
     private void setDisabledDates(List<java.util.Date> disabledDates) {
-        setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey(),
-                              disabledDates);
+//        setPageFlowScopeValue(PageFlowScopeKey.ADD_EVENT_CALENDAR_DATE_DISABLED_DATES.getKey(),
+//                              disabledDates);
     }
 
     public DateListProvider getDateListProvider() {
@@ -115,7 +98,7 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
             setDisabledDates(disabledDates);
 
             setCalendarDisplayDate(chosenDate);
-            addPartialTarget(getCalendarDisplay());
+//            addPartialTarget(getCalendarDisplay());
         }
 
         Date chosenSQLDate = new Date(chosenDate.getTime());
@@ -126,7 +109,7 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
             chosenDates.add(chosenSQLDate);
             Collections.sort(chosenDates);
             getChosenDatesTable().setValue(chosenDates);
-            addPartialTarget(getChosenDatesTable());
+//            addPartialTarget(getChosenDatesTable());
         }
     }
 
@@ -135,30 +118,30 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
         List<Date> chosenDates = (List<Date>)getChosenDatesTable().getValue();
 
         if (!chosenDates.isEmpty()) {
-            List<EventCalendarDateDAO> eventCalendarDateDAOs =
-                (List<EventCalendarDateDAO>)getPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey());
+//            List<EventCalendarDateDAO> eventCalendarDateDAOs =
+//                (List<EventCalendarDateDAO>)getPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey());
 
-            if (eventCalendarDateDAOs == null) {
-                // Shouldn't happen
-                eventCalendarDateDAOs = new ArrayList<EventCalendarDateDAO>();
-            }
+//            if (eventCalendarDateDAOs == null) {
+//                // Shouldn't happen
+//                eventCalendarDateDAOs = new ArrayList<EventCalendarDateDAO>();
+//            }
 
-            for (Date date : chosenDates) {
-                eventCalendarDateDAOs.add(new EventCalendarDateDAO(true,
-                                                                   EventCalendarDateDAO.DateType.INSERT,
-                                                                   date));
-            }
+//            for (Date date : chosenDates) {
+//                eventCalendarDateDAOs.add(new EventCalendarDateDAO(true,
+//                                                                   EventCalendarDateDAO.DateType.INSERT,
+//                                                                   date));
+//            }
 
-            Collections.sort(eventCalendarDateDAOs,
-                             new Comparator<EventCalendarDateDAO>() {
-                    public int compare(EventCalendarDateDAO o1,
-                                       EventCalendarDateDAO o2) {
-                        return o1.getDate().compareTo(o2.getDate());
-                    }
-                });
-
-            setPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey(),
-                                  eventCalendarDateDAOs);
+//            Collections.sort(eventCalendarDateDAOs,
+//                             new Comparator<EventCalendarDateDAO>() {
+//                    public int compare(EventCalendarDateDAO o1,
+//                                       EventCalendarDateDAO o2) {
+//                        return o1.getDate().compareTo(o2.getDate());
+//                    }
+//                });
+//
+//            setPageFlowScopeValue(PageFlowScopeKey.EVENT_CALENDAR_DATE_LIST.getKey(),
+//                                  eventCalendarDateDAOs);
         }
 
         moveOn();
@@ -199,8 +182,8 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
         getChosenDatesTable().getSelectedRowKeys().clear();
         getRemoveButton().setDisabled(true);
 
-        addPartialTarget(getRemoveButton());
-        addPartialTarget(getChosenDatesTable());
+//        addPartialTarget(getRemoveButton());
+//        addPartialTarget(getChosenDatesTable());
     }
 
     public void tableRowSelectionHandler(SelectionEvent event) {
@@ -209,7 +192,7 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
             (getChosenDatesTable().getSelectedRowKeys().size() == 1);
 
         getRemoveButton().setDisabled(!enable);
-        addPartialTarget(getRemoveButton());
+//        addPartialTarget(getRemoveButton());
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -218,10 +201,10 @@ public class AddEventCalendarDateBean extends BaseBean implements BaseBeanInterf
     // HELPER METHODS
 
     private void moveOn() {
-        clearPageFlowScopeCache();
-        String backTo =
-            (String)getPageFlowScopeValue(PageFlowScopeKey.BACK_FROM_ADD_EVENT_CALENDAR_DATE.getKey());
-        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(), backTo);
+//        clearPageFlowScopeCache();
+//        String backTo =
+//            (String)getPageFlowScopeValue(PageFlowScopeKey.BACK_FROM_ADD_EVENT_CALENDAR_DATE.getKey());
+//        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(), backTo);
     }
 
     private void setCalendarDisplayDate(java.util.Date value) {

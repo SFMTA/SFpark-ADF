@@ -2,13 +2,7 @@ package sfpark.event.manager.view.provider.helper.eventCalendar;
 
 import java.sql.Date;
 
-import sfpark.event.manager.view.provider.helper.BaseDAO;
-
-public class EventCalendarDateDAO extends BaseDAO {
-    public EventCalendarDateDAO() {
-        super();
-    }
-
+public class EventCalendarDateDAO {
     public EventCalendarDateDAO(boolean newDate,
                                 EventCalendarDateDAO.DateType dateType,
                                 Date date) {

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.helper.CalendarStatus;
 import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -40,8 +41,8 @@ public class CalendarHeaderDTO extends BaseDTO {
 
         this.setCalendarID(resultSet.getString(CALENDAR_ID));
         this.setCalendarName(resultSet.getString(CALENDAR_NAME));
-        this.setCalendarType(CalendarType.extractType(resultSet.getString(CALENDAR_TYPE)));
-        this.setStatus(resultSet.getString(STATUS));
+        this.setCalendarType(CalendarType.extract(resultSet.getString(CALENDAR_TYPE)));
+        this.setStatus(CalendarStatus.extract(resultSet.getString(STATUS)));
 
     }
 
@@ -99,11 +100,24 @@ public class CalendarHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // PURELY FOR DISPLAY PURPOSES
 
-    public boolean isLocked() {
-        return StringUtil.areEqual(getStatus(), "L");
+    public boolean isSameAs(CalendarHeaderDTO originalDTO) {
+
+        if (StringUtil.areEqual(this.getCalendarName(),
+                                originalDTO.getCalendarName()) &&
+            this.getCalendarType().equals(originalDTO.getCalendarType()) &&
+            this.getStatus().equals(originalDTO.getStatus())) {
+
+            return true;
+        }
+
+        return false;
     }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PURELY FOR DISPLAY PURPOSES
 
     public int getColumnsCalendarName() {
         return (getMaximumLengthCalendarName() + 1);
@@ -120,7 +134,7 @@ public class CalendarHeaderDTO extends BaseDTO {
     private String CalendarID;
     private CalendarType calendarType;
     private String CalendarName;
-    private String Status;
+    private CalendarStatus Status;
 
     public void setCalendarID(String CalendarID) {
         this.CalendarID = CalendarID;
@@ -146,11 +160,11 @@ public class CalendarHeaderDTO extends BaseDTO {
         return CalendarName;
     }
 
-    public void setStatus(String Status) {
+    public void setStatus(CalendarStatus Status) {
         this.Status = Status;
     }
 
-    public String getStatus() {
+    public CalendarStatus getStatus() {
         return Status;
     }
 }

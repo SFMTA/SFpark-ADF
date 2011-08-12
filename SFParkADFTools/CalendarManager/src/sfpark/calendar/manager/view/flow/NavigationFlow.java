@@ -3,6 +3,8 @@ package sfpark.calendar.manager.view.flow;
 public enum NavigationFlow {
     ERROR("/View/jsffFiles/common/errorsPage.jsff"),
 
+    PickCalendarDates("/View/jsffFiles/calendar/pickCalendarDatesPage.jsff"),
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

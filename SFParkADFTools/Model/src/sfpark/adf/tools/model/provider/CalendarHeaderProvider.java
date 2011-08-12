@@ -84,7 +84,7 @@ public class CalendarHeaderProvider {
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.CALENDAR_NAME),
                                     DTO.getCalendarName());
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.STATUS),
-                                    DTO.getStatus());
+                                    DTO.getStatus().getStringForTable());
 
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
@@ -106,7 +106,7 @@ public class CalendarHeaderProvider {
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.CALENDAR_NAME),
                                     DTO.getCalendarName());
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.STATUS),
-                                    DTO.getStatus());
+                                    DTO.getStatus().getStringForTable());
 
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.LAST_UPD_USER),
                                     lastUpdatedUser);

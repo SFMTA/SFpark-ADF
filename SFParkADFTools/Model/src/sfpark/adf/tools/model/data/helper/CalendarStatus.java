@@ -1,35 +1,35 @@
 package sfpark.adf.tools.model.data.helper;
 
-public enum CalendarType {
-    RATE_CHANGE("RateChg", "Rate Change"),
-    SPECIAL_EVENT("SpecEvt", "Special Event");
+public enum CalendarStatus {
+    UNLOCKED(" ", "Unlocked"),
+    LOCKED("L", "Locked");
 
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
 
-    public static CalendarType extract(String typeString) {
-        for (CalendarType calendarType : values()) {
-            if (calendarType.getStringForTable().equalsIgnoreCase(typeString)) {
-                return calendarType;
+    public static CalendarStatus extract(String statusString) {
+        for (CalendarStatus calendarStatus : values()) {
+            if (calendarStatus.getStringForTable().equalsIgnoreCase(statusString)) {
+                return calendarStatus;
             }
         }
 
         // Should never reach here
         // Added this to avoid compilation errors
-        return RATE_CHANGE;
+        return UNLOCKED;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
 
-    public boolean isRateChange() {
-        return (this == RATE_CHANGE);
+    public boolean isUnlocked() {
+        return (this == UNLOCKED);
     }
 
-    public boolean isSpecialEvent() {
-        return (this == SPECIAL_EVENT);
+    public boolean isLocked() {
+        return (this == LOCKED);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++
@@ -39,7 +39,7 @@ public enum CalendarType {
     private final String StringForTable;
     private final String StringForDisplay;
 
-    private CalendarType(String StringForTable, String StringForDisplay) {
+    private CalendarStatus(String StringForTable, String StringForDisplay) {
         this.StringForTable = StringForTable;
         this.StringForDisplay = StringForDisplay;
     }

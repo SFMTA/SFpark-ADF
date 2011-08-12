@@ -220,7 +220,7 @@ public class RateChangeNavigationBean extends BaseBean {
                                                           calendarHeaderDTO);
 
                                     if ( // LOCKED Calendar
-                                        calendarHeaderDTO.isLocked()) {
+                                        calendarHeaderDTO.getStatus().isLocked()) {
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++
@@ -249,7 +249,7 @@ public class RateChangeNavigationBean extends BaseBean {
                                     if ( // NOT used
                                         notUsed &&
                                         // NOT locked
-                                        !calendarHeaderDTO.isLocked()) {
+                                        !calendarHeaderDTO.getStatus().isLocked()) {
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++
                                         // ++++++++++++++++++++++++++++++++++

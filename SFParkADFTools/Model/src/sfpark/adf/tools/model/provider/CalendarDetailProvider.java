@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class CalendarDetailProvider {
             connection = ConnectUtil.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatement());
+                    connection.prepareStatement(getSelectAllStatement());
             preparedStatement.setString(1, calendarID);
 
             resultSet = preparedStatement.executeQuery();
@@ -75,6 +74,18 @@ public class CalendarDetailProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PROTECTED METHODS
+
+    protected String getSelectStatement() {
+
+        String Attributes = CalendarDetailDTO.DATE_DT;
+
+        String Where =
+            StatementGenerator.equalToOperator(CalendarDetailDTO.CALENDAR_ID);
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  CalendarDetailDTO.getDatabaseTableName(),
+                                                  Where);
+    }
 
     protected PreparedStatement prepareInsertStatement(Connection connection,
                                                        CalendarDetailDTO DTO,
@@ -119,8 +130,8 @@ public class CalendarDetailProvider {
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatement() {
-        LOGGER.entering(CLASSNAME, "getSelectStatement");
+    private String getSelectAllStatement() {
+        LOGGER.entering(CLASSNAME, "getSelectAllStatement");
 
         String Attributes =
             StringUtil.convertListToString(CalendarDetailDTO.getAttributeListForSelect());
@@ -130,7 +141,7 @@ public class CalendarDetailProvider {
 
         String OrderBy = CalendarDetailDTO.DATE_DT;
 
-        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+        LOGGER.exiting(CLASSNAME, "getSelectAllStatement");
 
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarDetailDTO.getDatabaseTableName(),
