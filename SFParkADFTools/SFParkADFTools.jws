@@ -19,7 +19,6 @@
    <list n="listOfChildren">
       <hash><url n="URL" path="AssetManager/AssetManager.jpr"/></hash>
       <hash><url n="URL" path="CalendarManager/CalendarManager.jpr"/></hash>
-      <hash><url n="URL" path="EventManager/EventManager.jpr"/></hash>
       <hash><url n="URL" path="Model/Model.jpr"/></hash>
       <hash><url n="URL" path="OSPManager/OSPManager.jpr"/></hash>
       <hash><url n="URL" path="PriceChangeManager/PriceChangeManager.jpr"/></hash>
