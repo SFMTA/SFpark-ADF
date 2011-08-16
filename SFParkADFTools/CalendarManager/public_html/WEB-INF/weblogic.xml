@@ -11,6 +11,6 @@
   <!-- ++++++++++++++++++++++++++++++++++++ -->
   <security-role-assignment>
     <role-name>valid-users</role-name>
-    <principal-name>RateChangeGroup</principal-name>
+    <principal-name>CalendarsGroup</principal-name>
   </security-role-assignment>
 </weblogic-web-app>

@@ -12,8 +12,8 @@ import sfpark.adf.tools.model.data.dO.dTable.DDateDO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.helper.CalendarStatus;
-import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.model.helper.TableRecord;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.CalendarDetailProvider;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.DDateProvider;
@@ -48,15 +48,14 @@ public class DMLOperationsProvider {
      * --- Sets the Calendar Type
      * --- Sets the Status
      *
-     * @param calendarType
      * @return
      */
-    public CalendarHeaderDTO getNewCalendarHeaderDTO(CalendarType calendarType) {
+    public CalendarHeaderDTO getNewCalendarHeaderDTO() {
         LOGGER.entering(CLASSNAME, "getNewCalendarHeaderDTO");
 
         CalendarHeaderDTO DTO = new CalendarHeaderDTO();
 
-        DTO.setCalendarType(calendarType);
+        DTO.setCalendarType(AllowedValuesProvider.getCalendarTypeDefaultValue());
         DTO.setStatus(CalendarStatus.UNLOCKED);
 
         LOGGER.exiting(CLASSNAME, "getNewCalendarHeaderDTO");

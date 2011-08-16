@@ -15,7 +15,6 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
-import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
@@ -93,14 +92,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
 
         if (DTO == null) {
 
-            String calendarTypeString =
-                (String)getPageFlowScopeValue(PageFlowScopeKey.CALENDAR_TYPE.getKey());
-
-            CalendarType calendarType =
-                CalendarType.valueOf(calendarTypeString);
-
-            DTO =
-DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
+            DTO = DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO();
             setPageFlowScopeValue(PageFlowScopeKey.CALENDAR_HEADER_DTO.getKey(),
                                   DTO);
         }
@@ -130,6 +122,10 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
 
     public boolean isReadOnly() {
         return (getCurrentPageMode().isReadOnlyMode());
+    }
+
+    public boolean isReadOnlyCalendarType() {
+        return (!getCurrentPageMode().isAddMode());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -202,7 +198,7 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                                          calendarHeaderDTO.getCalendarName());
         }
 
-        // System.out.println("Check for Calendar Name = " + checkCalendarNameUniqueness);
+        printLog("Check for Calendar Name = " + checkCalendarNameUniqueness);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -219,16 +215,16 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
             }
         }
 
-        // System.out.println("After Calendar Name check = " + allValid);
+        printLog("After Calendar Name check = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            // System.out.println("Under EDIT mode, test to see that Calendar Detail Table is NOT empty");
+            printLog("Under EDIT mode, test to see that Calendar Detail Table is NOT empty");
 
             allValid =
                     areValidCalendarDetails((List<CalendarDetailDDO>)getCalendarDetailTable().getValue());
         }
 
-        // System.out.println("After Calendar Table = " + allValid);
+        printLog("After Calendar Table = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -245,14 +241,14 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            // System.out.println("All entries are Valid. Proceed");
+            printLog("All entries are Valid. Proceed");
 
             if (currentPageMode.isAddMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ADD Mode
-                // System.out.println("ADD Mode");
+                printLog("ADD Mode");
 
                 CalendarHeaderDTO currentDTO = getCalendarHeaderDTO();
 
@@ -265,7 +261,7 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                                                                                     currentDTO.getCalendarType());
 
                     if (calendarHeaderStatus.existsDTO()) {
-                        // System.out.println("ADD operation was successful");
+                        printLog("ADD operation was successful");
                         setInlineMessageText(TranslationUtil.getCalendarManagerBundleString(CalendarManagerBundleKey.info_create_success));
                         setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
 
@@ -275,12 +271,12 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                                               calendarHeaderStatus.getDTO());
 
                     } else {
-                        // System.out.println("ADD operation failed");
+                        printLog("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_calendar_name_failure));
                         setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
                     }
                 } else {
-                    // System.out.println("ADD operation failed");
+                    printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_calendar_name_failure));
                     setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
                 }
@@ -290,7 +286,7 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // EDIT Mode
-                // System.out.println("EDIT Mode");
+                printLog("EDIT Mode");
 
                 CalendarHeaderDTO currentDTO = getCalendarHeaderDTO();
 
@@ -302,13 +298,13 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                                                                 calendarDetails);
 
                 if (operationStatus == null) {
-                    // System.out.println("There were no changes. So nothing was saved");
+                    printLog("There were no changes. So nothing was saved");
                     setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
                     setInlineMessageClass("");
                 } else {
 
                     if (operationStatus.getType().isSuccess()) {
-                        // System.out.println("EDIT operation was successful");
+                        printLog("EDIT operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
 
@@ -323,7 +319,7 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
                         getCalendarDetailTable().setValue(null);
 
                     } else {
-                        // System.out.println("EDIT operation failed");
+                        printLog("EDIT operation failed");
 
                         String errorMessage = "";
 
@@ -538,6 +534,10 @@ DMLOperationsProvider.INSTANCE.getNewCalendarHeaderDTO(calendarType);
             getUndeleteDateButton().setDisabled(disable);
             addPartialTarget(getUndeleteDateButton());
         }
+    }
+
+    private void printLog(String message) {
+        System.out.println(message);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

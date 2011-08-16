@@ -17,9 +17,12 @@
                     label="#{labelBundle.label_calendar_name}"
                     value="#{calendarDeleteBean.calendarHeaderDTO.calendarName}"/>
       <af:spacer id="calendarNameSpacer" height="10"/>
-      <af:inputText id="calendarTypeIT" readOnly="true"
-                    label="#{labelBundle.label_calendar_type}"
-                    value="#{calendarDeleteBean.calendarHeaderDTO.calendarType.stringForDisplay}"/>
+      <af:selectOneChoice id="calendarTypeSOC" readOnly="true"
+                          label="#{labelBundle.label_calendar_type}"
+                          value="#{calendarPropertiesBean.calendarHeaderDTO.calendarType}">
+        <f:selectItems id="calendarTypeSOCSI"
+                       value="#{globalBean.listCalendarType}"/>
+      </af:selectOneChoice>
       <af:spacer id="calendarTypeSpacer" height="10"/>
       <af:inputText id="calendarStatusIT" readOnly="true"
                     label="#{labelBundle.label_calendar_status}"

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
-import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -68,7 +67,7 @@ public class CalendarHeaderProvider {
     }
 
     public CalendarHeaderDTOStatus checkForCalendarNameAndType(String calendarName,
-                                                               CalendarType calendarType) {
+                                                               String calendarType) {
         LOGGER.entering(CLASSNAME, "checkForCalendarNameAndType");
 
         CalendarHeaderDTO DTO = null;
@@ -83,7 +82,7 @@ public class CalendarHeaderProvider {
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForCalendarNameAndType());
             preparedStatement.setString(1, calendarName);
-            preparedStatement.setString(2, calendarType.getStringForTable());
+            preparedStatement.setString(2, calendarType);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -116,7 +115,7 @@ public class CalendarHeaderProvider {
             connection.prepareStatement(getInsertStatement());
 
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.CALENDAR_TYPE),
-                                    DTO.getCalendarType().getStringForTable());
+                                    DTO.getCalendarType());
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.CALENDAR_NAME),
                                     DTO.getCalendarName());
         preparedStatement.setString(getInsertIndexOf(CalendarHeaderDTO.STATUS),
@@ -138,7 +137,7 @@ public class CalendarHeaderProvider {
             connection.prepareStatement(getUpdateStatementForCalendarID(DTO.getCalendarID()));
 
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.CALENDAR_TYPE),
-                                    DTO.getCalendarType().getStringForTable());
+                                    DTO.getCalendarType());
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.CALENDAR_NAME),
                                     DTO.getCalendarName());
         preparedStatement.setString(getUpdateIndexOf(CalendarHeaderDTO.STATUS),

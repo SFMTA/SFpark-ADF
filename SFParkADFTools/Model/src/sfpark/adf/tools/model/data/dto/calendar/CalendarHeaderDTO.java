@@ -9,7 +9,6 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.CalendarStatus;
-import sfpark.adf.tools.model.data.helper.CalendarType;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class CalendarHeaderDTO extends BaseDTO {
@@ -41,7 +40,7 @@ public class CalendarHeaderDTO extends BaseDTO {
 
         this.setCalendarID(resultSet.getString(CALENDAR_ID));
         this.setCalendarName(resultSet.getString(CALENDAR_NAME));
-        this.setCalendarType(CalendarType.extract(resultSet.getString(CALENDAR_TYPE)));
+        this.setCalendarType(resultSet.getString(CALENDAR_TYPE));
         this.setStatus(CalendarStatus.extract(resultSet.getString(STATUS)));
 
     }
@@ -105,7 +104,8 @@ public class CalendarHeaderDTO extends BaseDTO {
 
         if (StringUtil.areEqual(this.getCalendarName(),
                                 originalDTO.getCalendarName()) &&
-            this.getCalendarType().equals(originalDTO.getCalendarType()) &&
+            StringUtil.areEqual(this.getCalendarType(),
+                                originalDTO.getCalendarType()) &&
             this.getStatus().equals(originalDTO.getStatus())) {
 
             return true;
@@ -132,7 +132,7 @@ public class CalendarHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private String CalendarID;
-    private CalendarType calendarType;
+    private String CalendarType;
     private String CalendarName;
     private CalendarStatus Status;
 
@@ -144,12 +144,12 @@ public class CalendarHeaderDTO extends BaseDTO {
         return CalendarID;
     }
 
-    public void setCalendarType(CalendarType calendarType) {
-        this.calendarType = calendarType;
+    public void setCalendarType(String CalendarType) {
+        this.CalendarType = CalendarType;
     }
 
-    public CalendarType getCalendarType() {
-        return calendarType;
+    public String getCalendarType() {
+        return CalendarType;
     }
 
     public void setCalendarName(String CalendarName) {

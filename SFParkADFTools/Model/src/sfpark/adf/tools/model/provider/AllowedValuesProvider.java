@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
+import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
@@ -266,6 +267,33 @@ public class AllowedValuesProvider {
         }
 
         return prepaymentTimeList;
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // CALENDAR_TYPE HELPERS
+
+    private static long TimeOfLastCalendarTypeRetrieve = -1;
+    private static List<AllowedValuesDTO> calendarTypeList = null;
+
+    public static synchronized List<AllowedValuesDTO> getCalendarTypeList() {
+
+        if (calendarTypeList == null ||
+            ((System.currentTimeMillis() - TimeOfLastCalendarTypeRetrieve) >
+             TIME_TO_UPDATE)) {
+            calendarTypeList =
+                    getAllowedValuesFor(CalendarHeaderDTO.getDatabaseTableName(),
+                                        CalendarHeaderDTO.CALENDAR_TYPE);
+
+            TimeOfLastCalendarTypeRetrieve = System.currentTimeMillis();
+        }
+
+        return calendarTypeList;
+    }
+
+    public static String getCalendarTypeDefaultValue() {
+        return getCalendarTypeList().get(0).getColumnValue();
     }
 
     // ++++++++++++++++++++++++++++++++++
