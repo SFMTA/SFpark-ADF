@@ -116,9 +116,6 @@ public class NavigationBean extends BaseBean {
         String ADFCtrlCurrent = getCurrentADFControl();
         String ADFCtrlFromURL =
             getRequestParameterValue(RequestParameter.ADF_CTRL_STATE.getKey());
-        
-        LOGGER.debug("ADF Ctrl Current  = " + ADFCtrlCurrent);
-        LOGGER.debug("ADF Ctrl from URL = " + ADFCtrlFromURL);
 
         if ( // HTTP Method is GET
             httpMethod.equalsIgnoreCase("GET") &&
