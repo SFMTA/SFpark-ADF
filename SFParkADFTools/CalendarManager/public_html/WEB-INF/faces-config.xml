@@ -38,7 +38,7 @@
   <managed-bean>
     <managed-bean-name>navigationBean</managed-bean-name>
     <managed-bean-class>sfpark.calendar.manager.view.backing.common.NavigationBean</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
+    <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
     <managed-bean-name>calendarPropertiesBean</managed-bean-name>
