@@ -1,4 +1,4 @@
-package sfpark.calendar.manager.view.backing;
+package sfpark.rateChange.manager.view.backing;
 
 import javax.faces.component.UIComponent;
 
@@ -13,8 +13,6 @@ import oracle.adf.view.rich.context.AdfFacesContext;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
 
-import sfpark.calendar.manager.view.flow.NavigationMode;
-
 public abstract class BaseBean {
 
     protected BaseBean() {
@@ -24,23 +22,23 @@ public abstract class BaseBean {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // CURRENT PAGE MODE MECHANISM
+    // CURRENT PAGE MODE MECHANISM TODO
 
-    private static final String CURRENT_PAGE_MODE =
-        "sessionScopeKey.currentPageMode";
-
-    protected NavigationMode getCurrentPageMode() {
-        String pageModeStr = (String)getSessionScopeValue(CURRENT_PAGE_MODE);
-
-        // If the value is null, then the mechanism is broken. Just set it to
-        // READ_ONLY
-        return (pageModeStr == null) ? NavigationMode.READ_ONLY :
-               NavigationMode.valueOf(pageModeStr);
-    }
-
-    protected void setCurrentPageMode(NavigationMode pageMode) {
-        setSessionScopeValue(CURRENT_PAGE_MODE, pageMode.name());
-    }
+    //  private static final String CURRENT_PAGE_MODE =
+    //      "sessionScopeKey.currentPageMode";
+    //
+    //  protected NavigationMode getCurrentPageMode() {
+    //      String pageModeStr = (String)getSessionScopeValue(CURRENT_PAGE_MODE);
+    //
+    //      // If the value is null, then the mechanism is broken. Just set it to
+    //      // READ_ONLY
+    //      return (pageModeStr == null) ? NavigationMode.READ_ONLY :
+    //             NavigationMode.valueOf(pageModeStr);
+    //  }
+    //
+    //  protected void setCurrentPageMode(NavigationMode pageMode) {
+    //      setSessionScopeValue(CURRENT_PAGE_MODE, pageMode.name());
+    //  }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -255,5 +253,4 @@ public abstract class BaseBean {
         return "AdfPage.PAGE.findComponent('" +
             uiComponent.getClientId(getFacesContext()) + "')";
     }
-
 }

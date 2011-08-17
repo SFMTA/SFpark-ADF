@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee">
+  <application>
+    <default-render-kit-id>oracle.adf.rich</default-render-kit-id>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.RateChangeManagerBundle</base-name>
+      <var>rateChangeManagerBundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.ButtonBundle</base-name>
+      <var>buttonBundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.ColumnBundle</base-name>
+      <var>columnBundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.CommonBundle</base-name>
+      <var>commonBundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.ErrorBundle</base-name>
+      <var>errorBundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <base-name>sfpark.adf.tools.translation.LabelBundle</base-name>
+      <var>labelBundle</var>
+    </resource-bundle>
+  </application>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <managed-bean>
+    <managed-bean-name>globalBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.GlobalBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  <managed-bean>
+    <managed-bean-name>navigationBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.NavigationBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>rateChangePropertiesBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.rateChangePropertiesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickrateChangeDatesBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.PickrateChangeDatesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>rateChangeDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.rateChangeDeleteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+-->
+  <managed-bean>
+    <managed-bean-name>errorsBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.ErrorsBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- Listeners -->
+  <lifecycle>
+    <phase-listener id="nocache">sfpark.rateChange.manager.application.listener.CacheControlListener</phase-listener>
+  </lifecycle>
+</faces-config>
