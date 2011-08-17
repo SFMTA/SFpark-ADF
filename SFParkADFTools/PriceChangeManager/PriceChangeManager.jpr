@@ -132,7 +132,7 @@
             <hash n="archiveOptions">
                <value n="hasManifest" v="false"/>
             </hash>
-            <value n="contextRoot" v="priceChangeManager"/>
+            <value n="contextRoot"/>
             <url n="earURL" path="deploy/SFParkADFTools_PriceChangeManager_webapp1.ear"/>
             <value n="enterpriseAppName" v="SFParkADFTools_PriceChangeManager_webapp1"/>
             <hash n="fileGroups">

@@ -11,7 +11,6 @@
   <!-- ++++++++++++++++++++++++++++++++++++ -->
   <security-role-assignment>
     <role-name>valid-users</role-name>
-    <principal-name>PriceChangeApproversGroup</principal-name>
-    <principal-name>PriceChangeDeployersGroup</principal-name>
+    <principal-name>UNKNOWN</principal-name>
   </security-role-assignment>
 </weblogic-web-app>
