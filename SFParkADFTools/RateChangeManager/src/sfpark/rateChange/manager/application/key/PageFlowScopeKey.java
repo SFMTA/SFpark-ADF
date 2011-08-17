@@ -13,6 +13,7 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    RATE_CHANGE_HEADER_DTO,
     //  CALENDAR_HEADER_DTO,
     //  CALENDAR_DETAIL_DDO_LIST,
 

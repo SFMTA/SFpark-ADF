@@ -64,6 +64,40 @@ public final class StoredProcedureProvider {
         return calendarDeletable;
     }
 
+    public boolean isRateChangeReferenceDeletable(String rateChgRefID) {
+        LOGGER.entering(CLASSNAME, "isRateChangeReferenceDeletable");
+
+        boolean rateChangeReferenceDeletable = (rateChgRefID != null); // TODO
+
+        //        Connection connection = null;
+        //        PreparedStatement preparedStatement = null;
+        //        ResultSet resultSet = null;
+        //
+        //        try {
+        //            connection = ConnectUtil.getConnection();
+        //
+        //            preparedStatement =
+        //                    connection.prepareStatement(getSelectStatement("IS_CALENDAR_DELETABLE(?)")); // TODO
+        //            preparedStatement.setString(1, rateChgRefID);
+        //
+        //            resultSet = preparedStatement.executeQuery();
+        //
+        //            while (resultSet.next()) {
+        //                rateChangeReferenceDeletable = (resultSet.getInt(1) == 1);
+        //            }
+        //
+        //        } catch (SQLException e) {
+        //            LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
+        //                           e);
+        //        } finally {
+        //            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        //        }
+
+        LOGGER.exiting(CLASSNAME, "isRateChangeReferenceDeletable");
+
+        return rateChangeReferenceDeletable;
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
