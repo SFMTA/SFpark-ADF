@@ -28,30 +28,6 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         super();
     }
 
-    private RateChangeProcessControlDTO(RateChangeProcessControlDTO DTO) {
-        super(DTO);
-
-        this.setProcessID(DTO.getProcessID());
-        this.setRateChangeReference(DTO.getRateChangeReference());
-        this.setRateChangeReferenceID(DTO.getRateChangeReferenceID());
-        this.setComments(DTO.getComments());
-        this.setPMDistrictID(DTO.getPMDistrictID());
-        this.setMeterVendor(DTO.getMeterVendor());
-        this.setMeterModel(DTO.getMeterModel());
-        this.setBlockSelection(DTO.getBlockSelection());
-        this.setOutputXMLFileName(DTO.getOutputXMLFileName());
-        this.setInputXMLFileName(DTO.getInputXMLFileName());
-        this.setEffectiveFromDate(DTO.getEffectiveFromDate());
-        this.setTimeLimitOption(DTO.getTimeLimitOption());
-        this.setProcessStep(DTO.getProcessStep());
-        this.setStepStartFlag(DTO.getStepStartFlag());
-        this.setStepExecutionStatus(DTO.getStepExecutionStatus());
-        this.setStatusMessage(DTO.getStatusMessage());
-        this.setStepStartDate(DTO.getStepStartDate());
-        this.setStepEndDate(DTO.getStepEndDate());
-
-    }
-
     private RateChangeProcessControlDTO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
@@ -140,15 +116,6 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         }
 
         return new RateChangeProcessControlDTO(resultSet);
-    }
-
-    public static RateChangeProcessControlDTO copy(RateChangeProcessControlDTO DTO) {
-
-        if (DTO == null) {
-            return null;
-        }
-
-        return new RateChangeProcessControlDTO(DTO);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
