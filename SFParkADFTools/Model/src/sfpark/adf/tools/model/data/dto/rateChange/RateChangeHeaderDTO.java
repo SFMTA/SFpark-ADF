@@ -1,5 +1,6 @@
 package sfpark.adf.tools.model.data.dto.rateChange;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
@@ -8,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.helper.RateChangeAreaType;
+import sfpark.adf.tools.model.data.helper.RateChangeStatus;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeHeaderDTO extends BaseDTO {
 
@@ -26,7 +30,23 @@ public class RateChangeHeaderDTO extends BaseDTO {
     private RateChangeHeaderDTO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
-        // TODO
+        this.setRateChangeReferenceID(resultSet.getString(RATE_CHG_REF_ID));
+        this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
+        this.setRateChangeDescription(resultSet.getString(RATE_CHG_DESC));
+        this.setPMDistricts(resultSet.getString(PM_DISTRICTS));
+        this.setAreaType(RateChangeAreaType.extract(resultSet.getString(AREA_TYPE)));
+        this.setGroupID(resultSet.getString(GROUP_ID));
+        this.setCalendarID(resultSet.getString(CALENDAR_ID));
+        this.setRateChangePolicy(resultSet.getString(RATE_CHG_POLICY));
+        this.setPlannedChangeEffectiveDate(resultSet.getDate(PLANNED_CHG_EFF_DT));
+        this.setStatus(RateChangeStatus.extract(resultSet.getString(STATUS)));
+        this.setSubmittedBy(resultSet.getString(SUBMITTED_BY));
+        this.setSubmittedOn(resultSet.getDate(SUBMITTED_DT));
+        this.setApprovedBy(resultSet.getString(APPROVED_BY));
+        this.setApprovedOn(resultSet.getDate(APPROVED_DT));
+
+        this.setPMDistrictsList(StringUtil.convertStringToList(this.getPMDistricts()));
+
     }
 
     public static final String RATE_CHG_REF_ID = "RATE_CHG_REF_ID";
@@ -90,203 +110,181 @@ public class RateChangeHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
-    /*
-    private String LabelRateChangeReference;
+    private List<String> PMDistrictsList;
+    private String DisplayCalendarName;
 
-    public void setLabelRateChangeReference(String LabelRateChangeReference) {
-        this.LabelRateChangeReference = LabelRateChangeReference;
+    public void setPMDistrictsList(List<String> PMDistrictsList) {
+        this.PMDistrictsList = PMDistrictsList;
     }
 
-    public String getLabelRateChangeReference() {
-        return LabelRateChangeReference;
+    public List<String> getPMDistrictsList() {
+        return PMDistrictsList;
     }
 
-    public int getMaximumLengthValueRateChangeReference() {
-        return (getMaximumLengthRateChangeReference() -
-                getLabelRateChangeReference().length());
+    public void setDisplayCalendarName(String CalendarName) {
+        this.DisplayCalendarName = CalendarName;
+    }
+
+    public String getDisplayCalendarName() {
+        return DisplayCalendarName;
+    }
+
+    public int getColumnsRateChangeReference() {
+        return getMaximumLengthRateChangeReference() + 1;
     }
 
     public int getMaximumLengthRateChangeReference() {
         return 20;
     }
 
-    public int getMaximumLengthComments() {
-        return 50;
+    public int getMaximumLengthRateChangeDescription() {
+        return 100;
     }
 
-    public int getMaximumLengthInputXMLFileName() {
-        return 300;
+    public int getColumnsSubmittedBy() {
+        return getMaximumLengthSubmittedBy() + 1;
     }
 
-    public boolean isEditableEffectiveFromDate() {
-        return (StringUtil.areEqual(getProcessStep(), "10") ||
-                StringUtil.areEqual(getProcessStep(), "70"));
+    public int getMaximumLengthSubmittedBy() {
+        return 20;
     }
 
-    public boolean isEditableInputXMLFileName() {
-        return (StringUtil.areEqual(getProcessStep(), "40"));
+    public int getColumnsApprovedBy() {
+        return getMaximumLengthApprovedBy() + 1;
     }
 
-    public boolean isEditableTimeLimitOption() {
-        return (StringUtil.areEqual(getProcessStep(), "60"));
+    public int getMaximumLengthApprovedBy() {
+        return 20;
     }
 
-    public String getDisplayProcessStep() {
-        String processStep = getProcessStep();
-
-        if (StringUtil.isBlank(processStep)) {
-            return "-";
-        }
-
-        return AllowedValuesProvider.getProcessStepTreeMap().get(processStep);
-    }
-
-    public String getDisplayStepExecutionStatus() {
-        String stepExecutionStatus = getStepExecutionStatus();
-
-        if (StringUtil.isBlank(stepExecutionStatus)) {
-            return "-";
-        }
-
-        return AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(stepExecutionStatus);
-    }
-
- */
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    private String RateChangeReferenceID;
+    private String RateChangeReference;
+    private String RateChangeDescription;
+    private String PMDistricts;
+    private RateChangeAreaType AreaType;
+    private String GroupID;
+    private String CalendarID;
+    private String RateChangePolicy;
+    private Date PlannedChangeEffectiveDate;
+    private RateChangeStatus Status;
+    private String SubmittedBy;
+    private Date SubmittedOn;
+    private String ApprovedBy;
+    private Date ApprovedOn;
 
+    public void setRateChangeReferenceID(String RateChangeReferenceID) {
+        this.RateChangeReferenceID = RateChangeReferenceID;
+    }
+
+    public String getRateChangeReferenceID() {
+        return RateChangeReferenceID;
+    }
+
+    public void setRateChangeReference(String RateChangeReference) {
+        this.RateChangeReference = RateChangeReference;
+    }
+
+    public String getRateChangeReference() {
+        return RateChangeReference;
+    }
+
+    public void setRateChangeDescription(String RateChangeDescription) {
+        this.RateChangeDescription = RateChangeDescription;
+    }
+
+    public String getRateChangeDescription() {
+        return RateChangeDescription;
+    }
+
+    public void setPMDistricts(String PMDistricts) {
+        this.PMDistricts = PMDistricts;
+    }
+
+    public String getPMDistricts() {
+        return PMDistricts;
+    }
+
+    public void setAreaType(RateChangeAreaType AreaType) {
+        this.AreaType = AreaType;
+    }
+
+    public RateChangeAreaType getAreaType() {
+        return AreaType;
+    }
+
+    public void setGroupID(String GroupID) {
+        this.GroupID = GroupID;
+    }
+
+    public String getGroupID() {
+        return GroupID;
+    }
+
+    public void setCalendarID(String CalendarID) {
+        this.CalendarID = CalendarID;
+    }
+
+    public String getCalendarID() {
+        return CalendarID;
+    }
+
+    public void setRateChangePolicy(String RateChangePolicy) {
+        this.RateChangePolicy = RateChangePolicy;
+    }
+
+    public String getRateChangePolicy() {
+        return RateChangePolicy;
+    }
+
+    public void setPlannedChangeEffectiveDate(Date PlannedChangeEffectiveDate) {
+        this.PlannedChangeEffectiveDate = PlannedChangeEffectiveDate;
+    }
+
+    public Date getPlannedChangeEffectiveDate() {
+        return PlannedChangeEffectiveDate;
+    }
+
+    public void setStatus(RateChangeStatus Status) {
+        this.Status = Status;
+    }
+
+    public RateChangeStatus getStatus() {
+        return Status;
+    }
+
+    public void setSubmittedBy(String SubmittedBy) {
+        this.SubmittedBy = SubmittedBy;
+    }
+
+    public String getSubmittedBy() {
+        return SubmittedBy;
+    }
+
+    public void setSubmittedOn(Date SubmittedOn) {
+        this.SubmittedOn = SubmittedOn;
+    }
+
+    public Date getSubmittedOn() {
+        return SubmittedOn;
+    }
+
+    public void setApprovedBy(String ApprovedBy) {
+        this.ApprovedBy = ApprovedBy;
+    }
+
+    public String getApprovedBy() {
+        return ApprovedBy;
+    }
+
+    public void setApprovedOn(Date ApprovedOn) {
+        this.ApprovedOn = ApprovedOn;
+    }
+
+    public Date getApprovedOn() {
+        return ApprovedOn;
+    }
 }
-/*
-RATE_CHG_HEADER
-===============
-
-Index     = 1
-Name      = RATE_CHG_REF_ID
-Type      = NUMBER
-Precision = 0
-Nullable  = NO
-
-
-Index     = 2
-Name      = RATE_CHG_REF
-Type      = VARCHAR2
-Precision = 20
-Nullable  = YES
-
-
-Index     = 3
-Name      = RATE_CHG_DESC
-Type      = VARCHAR2
-Precision = 100
-Nullable  = YES
-
-
-Index     = 4
-Name      = PM_DISTRICTS
-Type      = VARCHAR2
-Precision = 500
-Nullable  = YES
-
-
-Index     = 5
-Name      = AREA_TYPE
-Type      = VARCHAR2
-Precision = 10
-Nullable  = YES
-
-
-Index     = 6
-Name      = GROUP_ID
-Type      = NUMBER
-Precision = 0
-Nullable  = YES
-
-
-Index     = 7
-Name      = CALENDAR_ID
-Type      = NUMBER
-Precision = 0
-Nullable  = YES
-
-
-Index     = 8
-Name      = RATE_CHG_POLICY
-Type      = NUMBER
-Precision = 0
-Nullable  = YES
-
-
-Index     = 9
-Name      = PLANNED_CHG_EFF_DT
-Type      = DATE
-Precision = 7
-Nullable  = YES
-
-
-Index     = 10
-Name      = STATUS
-Type      = VARCHAR2
-Precision = 10
-Nullable  = YES
-
-
-Index     = 11
-Name      = SUBMITTED_BY
-Type      = VARCHAR2
-Precision = 20
-Nullable  = YES
-
-
-Index     = 12
-Name      = SUBMITTED_DT
-Type      = DATE
-Precision = 7
-Nullable  = YES
-
-
-Index     = 13
-Name      = APPROVED_BY
-Type      = VARCHAR2
-Precision = 20
-Nullable  = YES
-
-
-Index     = 14
-Name      = APPROVED_DT
-Type      = DATE
-Precision = 7
-Nullable  = YES
-
-
-Index     = 15
-Name      = CREATED_DT
-Type      = DATE
-Precision = 7
-Nullable  = YES
-
-
-Index     = 16
-Name      = LAST_UPD_DT
-Type      = DATE
-Precision = 7
-Nullable  = YES
-
-
-Index     = 17
-Name      = LAST_UPD_USER
-Type      = VARCHAR2
-Precision = 30
-Nullable  = YES
-
-
-Index     = 18
-Name      = LAST_UPD_PGM
-Type      = VARCHAR2
-Precision = 30
-Nullable  = YES
-
-
-
- */
