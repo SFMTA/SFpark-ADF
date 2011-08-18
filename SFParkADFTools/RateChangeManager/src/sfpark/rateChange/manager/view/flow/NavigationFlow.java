@@ -15,7 +15,7 @@ public enum NavigationFlow {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    AddRateChange("/View/jsffFiles/common/errorsPage.jsff"),
+    AddRateChange("/View/jsffFiles/rateChange/rateChangePropertiesPage.jsff"),
 
     UpdateRateChange("/View/jsffFiles/common/errorsPage.jsff"),
 

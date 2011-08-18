@@ -19,6 +19,7 @@ import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
@@ -40,6 +41,7 @@ public class AllowedValuesProvider {
         super();
     }
 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
@@ -294,6 +296,33 @@ public class AllowedValuesProvider {
 
     public static String getCalendarTypeDefaultValue() {
         return getCalendarTypeList().get(0).getColumnValue();
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // RATE_CHG_POLICY HELPERS
+
+    private static long TimeOfLastRateChgPolicyRetrieve = -1;
+    private static List<AllowedValuesDTO> rateChgPolicyList = null;
+
+    public static synchronized List<AllowedValuesDTO> getRateChgPolicyList() {
+
+        if (rateChgPolicyList == null ||
+            ((System.currentTimeMillis() - TimeOfLastRateChgPolicyRetrieve) >
+             TIME_TO_UPDATE)) {
+            rateChgPolicyList =
+                    getAllowedValuesFor(RateChangeHeaderDTO.getDatabaseTableName(),
+                                        RateChangeHeaderDTO.RATE_CHG_POLICY);
+
+            TimeOfLastRateChgPolicyRetrieve = System.currentTimeMillis();
+        }
+
+        return rateChgPolicyList;
+    }
+
+    public static String getRateChgPolicyDefaultValue() {
+        return getRateChgPolicyList().get(0).getColumnValue();
     }
 
     // ++++++++++++++++++++++++++++++++++
