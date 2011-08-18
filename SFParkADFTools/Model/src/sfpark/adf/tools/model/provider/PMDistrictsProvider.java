@@ -14,7 +14,7 @@ import java.util.List;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
-import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
+import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -36,7 +36,7 @@ public final class PMDistrictsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    public List<PMDistrictsDO> getPMDistrictsFor(String RateChangeReferenceID) {
+    public List<PMDistrictsDO> getPMDistrictsFor(PMDistrictAreaType areaType) {
         LOGGER.entering(CLASSNAME, "getPMDistrictsFor");
 
         List<PMDistrictsDO> pmDistrictsDOs = new ArrayList<PMDistrictsDO>();
@@ -49,8 +49,8 @@ public final class PMDistrictsProvider {
             connection = ConnectUtil.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForRateChangeReferenceID());
-            preparedStatement.setString(1, RateChangeReferenceID);
+                    connection.prepareStatement(getSelectStatementForAreaType());
+            preparedStatement.setString(1, areaType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -61,7 +61,7 @@ public final class PMDistrictsProvider {
             }
 
         } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_DO.getMessage(), e);
+            LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
         } finally {
             ConnectUtil.closeAll(resultSet, preparedStatement, connection);
         }
@@ -81,42 +81,21 @@ public final class PMDistrictsProvider {
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatementForRateChangeReferenceID() {
-        LOGGER.entering(CLASSNAME,
-                        "getSelectStatementForRateChangeReferenceID");
+    private String getSelectStatementForAreaType() {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForAreaType");
 
         String Attributes =
             StringUtil.convertListToString(PMDistrictsDO.getAttributeListForSelect());
 
         String Where =
-            StatementGenerator.inOperator(PMDistrictsDO.PM_DISTRICT_ID,
-                                          getNestedSelectStatementForRateChangeReferenceID());
+            StatementGenerator.equalToOperator(PMDistrictsDO.AREA_TYPE);
 
-        String OrderBy = PMDistrictsDO.PM_DISTRICT_ID;
+        String OrderBy = PMDistrictsDO.PM_DISTRICT_NAME;
 
-        LOGGER.exiting(CLASSNAME,
-                       "getSelectStatementForRateChangeReferenceID");
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForAreaType");
 
         return StatementGenerator.selectStatement(Attributes,
                                                   PMDistrictsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
-    }
-
-    private String getNestedSelectStatementForRateChangeReferenceID() {
-        LOGGER.entering(CLASSNAME,
-                        "getNestedSelectStatementForRateChangeReferenceID");
-
-        String Attributes =
-            StatementGenerator.distinctFunction(BlockRateScheduleDTO.PM_DISTRICT_ID);
-
-        String Where =
-            StatementGenerator.equalToOperator(BlockRateScheduleDTO.RATE_CHG_REF_ID);
-
-        LOGGER.exiting(CLASSNAME,
-                       "getNestedSelectStatementForRateChangeReferenceID");
-
-        return StatementGenerator.selectStatement(Attributes,
-                                                  BlockRateScheduleDTO.getDatabaseTableName(),
-                                                  Where);
     }
 }

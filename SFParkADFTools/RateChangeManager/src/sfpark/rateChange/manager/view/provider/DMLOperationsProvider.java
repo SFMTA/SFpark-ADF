@@ -7,7 +7,7 @@ import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
-import sfpark.adf.tools.model.data.helper.RateChangeAreaType;
+import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
@@ -46,7 +46,7 @@ public class DMLOperationsProvider {
 
         RateChangeHeaderDTO DTO = new RateChangeHeaderDTO();
 
-        DTO.setAreaType(RateChangeAreaType.PILOT);
+        DTO.setAreaType(PMDistrictAreaType.PILOT);
         DTO.setCalendarID("0");
         DTO.setRateChangePolicy(AllowedValuesProvider.getRateChgPolicyDefaultValue());
         DTO.setPlannedChangeEffectiveDate(SQLDateUtil.getTodaysDate());

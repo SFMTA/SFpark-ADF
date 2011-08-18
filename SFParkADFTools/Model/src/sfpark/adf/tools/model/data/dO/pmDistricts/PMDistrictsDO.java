@@ -33,6 +33,7 @@ public class PMDistrictsDO extends BaseDO {
 
     public static final String PM_DISTRICT_ID = "PM_DISTRICT_ID";
     public static final String PM_DISTRICT_NAME = "PM_DISTRICT_NAME";
+    public static final String AREA_TYPE = "AREA_TYPE";
 
     private static final List<String> AttributeListForSelect =
         Arrays.asList(PM_DISTRICT_ID, PM_DISTRICT_NAME);

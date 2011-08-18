@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
-import sfpark.adf.tools.model.data.helper.RateChangeAreaType;
+import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -34,7 +34,7 @@ public class RateChangeHeaderDTO extends BaseDTO {
         this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
         this.setRateChangeDescription(resultSet.getString(RATE_CHG_DESC));
         this.setPMDistricts(resultSet.getString(PM_DISTRICTS));
-        this.setAreaType(RateChangeAreaType.extract(resultSet.getString(AREA_TYPE)));
+        this.setAreaType(PMDistrictAreaType.extract(resultSet.getString(AREA_TYPE)));
         this.setGroupID(resultSet.getString(GROUP_ID));
         this.setCalendarID(resultSet.getString(CALENDAR_ID));
         this.setRateChangePolicy(resultSet.getString(RATE_CHG_POLICY));
@@ -165,7 +165,7 @@ public class RateChangeHeaderDTO extends BaseDTO {
     private String RateChangeReference;
     private String RateChangeDescription;
     private String PMDistricts;
-    private RateChangeAreaType AreaType;
+    private PMDistrictAreaType AreaType;
     private String GroupID;
     private String CalendarID;
     private String RateChangePolicy;
@@ -208,11 +208,11 @@ public class RateChangeHeaderDTO extends BaseDTO {
         return PMDistricts;
     }
 
-    public void setAreaType(RateChangeAreaType AreaType) {
+    public void setAreaType(PMDistrictAreaType AreaType) {
         this.AreaType = AreaType;
     }
 
-    public RateChangeAreaType getAreaType() {
+    public PMDistrictAreaType getAreaType() {
         return AreaType;
     }
 
