@@ -87,6 +87,19 @@ public class CalendarDetailProvider {
                                                   Where);
     }
 
+    protected String getSelectStatementForDate() {
+
+        String Attributes =
+            StatementGenerator.distinctFunction(CalendarDetailDTO.CALENDAR_ID);
+
+        String Where =
+            StatementGenerator.lessThanOrEqualToOperator(CalendarDetailDTO.DATE_DT);
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  CalendarDetailDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+
     protected PreparedStatement prepareInsertStatement(Connection connection,
                                                        CalendarDetailDTO DTO,
                                                        final String lastUpdatedUser,

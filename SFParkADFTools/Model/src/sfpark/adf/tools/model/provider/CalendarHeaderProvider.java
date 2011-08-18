@@ -2,11 +2,15 @@ package sfpark.adf.tools.model.provider;
 
 import java.sql.Connection;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
@@ -99,6 +103,46 @@ public class CalendarHeaderProvider {
         LOGGER.exiting(CLASSNAME, "checkForCalendarNameAndType");
 
         return new CalendarHeaderDTOStatus(DTO);
+    }
+
+    public List<CalendarHeaderDTO> getCalendarHeaderDTOs(String searchString,
+                                                         String searchType,
+                                                         Date searchDate) {
+        LOGGER.entering(CLASSNAME, "getCalendarHeaderDTOs");
+
+        List<CalendarHeaderDTO> calendarHeaderDTOs =
+            new ArrayList<CalendarHeaderDTO>();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectUtil.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatementForCalendarNameLikeAndDate());
+            preparedStatement.setString(1, searchString);
+            preparedStatement.setString(2, searchType);
+            preparedStatement.setDate(3, searchDate);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                CalendarHeaderDTO DTO = CalendarHeaderDTO.extract(resultSet);
+
+                calendarHeaderDTOs.add(DTO);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
+        } finally {
+            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "getCalendarHeaderDTOs");
+
+        return calendarHeaderDTOs;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -205,6 +249,34 @@ public class CalendarHeaderProvider {
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where);
+    }
+
+    private String getSelectStatementForCalendarNameLikeAndDate() {
+        LOGGER.entering(CLASSNAME,
+                        "getSelectStatementForCalendarNameLikeAndDate");
+
+        String Attributes =
+            StringUtil.convertListToString(CalendarHeaderDTO.getAttributeListForSelect());
+
+        String string1 =
+            StatementGenerator.likeOperator(CalendarHeaderDTO.CALENDAR_NAME);
+        String string2 =
+            StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_TYPE);
+        String string3 =
+            StatementGenerator.inOperator(CalendarHeaderDTO.CALENDAR_ID,
+                                          CalendarDetailProvider.INSTANCE.getSelectStatementForDate());
+
+        String Where =
+            StatementGenerator.andOperator(string1, string2, string3);
+
+        String OrderBy = CalendarHeaderDTO.CALENDAR_NAME;
+
+        LOGGER.exiting(CLASSNAME,
+                       "getSelectStatementForCalendarNameLikeAndDate");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  CalendarHeaderDTO.getDatabaseTableName(),
+                                                  Where, OrderBy);
     }
 
     // ++++++++++++++++++++++++++++++++++

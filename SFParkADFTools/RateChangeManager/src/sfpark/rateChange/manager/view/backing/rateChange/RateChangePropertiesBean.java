@@ -12,14 +12,15 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
-import sfpark.adf.tools.model.data.helper.RateChangeAreaType;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
+import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
+import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class RateChangePropertiesBean extends BaseBean implements PropertiesBeanInterface,
@@ -121,17 +122,6 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LIST VALUES
 
-    public List<SelectItem> getListAreaType() {
-        List<SelectItem> listAreaType = new ArrayList<SelectItem>();
-
-        for (RateChangeAreaType areaType : RateChangeAreaType.values()) {
-            listAreaType.add(new SelectItem(areaType,
-                                            areaType.getStringForDisplay()));
-        }
-
-        return listAreaType;
-    }
-
     public List<SelectItem> getListRateChgPolicy() {
         List<SelectItem> listRateChgPolicy = new ArrayList<SelectItem>();
 
@@ -152,6 +142,22 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public void pickButtonHandler(ActionEvent event) {
+        //
+        // Reuse as various buttons
+        //
+
+        String ID = event.getComponent().getId();
+
+        if (ID.contains("areaType")) {
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PickAreaType.name());
+        } else if (ID.contains("calendar")) {
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PickCalendar.name());
+        }
+    }
 
     public void saveButtonHandler(ActionEvent event) {
 

@@ -78,10 +78,10 @@
                          value="#{rateChangePropertiesBean.listRateChgPolicy}"/>
         </af:selectOneChoice>
         <af:spacer id="rateChgPolicySpacer" height="20"/>
-        <af:commandButton id="areaTypeButton"
+        <af:commandButton id="areaTypeButton" immediate="true"
                           rendered="#{rateChangePropertiesBean.renderButtons}"
                           inlineStyle="width: 150px;" text="Change Area Type"
-                          actionListener="#{}" immediate="true"/>
+                          actionListener="#{rateChangePropertiesBean.pickButtonHandler}"/>
         <af:inputText id="areaTypeIT" readOnly="true"
                       label="#{labelBundle.label_area_type}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.areaType.stringForDisplay}"/>
@@ -89,10 +89,10 @@
                       label="#{labelBundle.label_pm_districts}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.PMDistricts}"/>
         <af:spacer id="areaTypeSpacer" height="20"/>
-        <af:commandButton id="calendarButton"
+        <af:commandButton id="calendarButton" immediate="true"
                           rendered="#{rateChangePropertiesBean.renderButtons}"
                           inlineStyle="width: 150px;" text="Change Calendar"
-                          actionListener="#{}" immediate="true"/>
+                          actionListener="#{rateChangePropertiesBean.pickButtonHandler}"/>
         <af:inputText id="calendarNameIT" readOnly="true"
                       label="#{labelBundle.label_calendar_name}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.displayCalendarName}"/>

@@ -9,7 +9,7 @@ public enum NavigationFlow {
 
     PickAreaType("/View/jsffFiles/common/errorsPage.jsff"),
 
-    PickCalendar("/View/jsffFiles/common/errorsPage.jsff"),
+    PickCalendar("/View/jsffFiles/rateChange/helper/pickCalendarPage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

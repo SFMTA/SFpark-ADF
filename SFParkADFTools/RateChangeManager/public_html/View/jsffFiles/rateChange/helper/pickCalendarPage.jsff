@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickCalendarPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickCalendarPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_rate_change_management}"
+                                actionListener="#{pickCalendarBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_calendar}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarCancel">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickCalendarBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelGroupLayout id="searchPanel" layout="horizontal">
+      <af:inputText id="searchIT" required="true" columns="11"
+                    label="#{labelBundle.label_search_calendar_name}"
+                    value="#{pickCalendarBean.searchString}"/>
+      <af:spacer id="searchITSpacer" width="10"/>
+      <af:commandButton id="refreshTable" inlineStyle="width: 100px;"
+                        text="#{buttonBundle.button_refresh_table}"
+                        actionListener="#{pickCalendarBean.saveButtonHandler}"/>
+    </af:panelGroupLayout>
+    <af:table id="CITable" var="row" varStatus="rowStatus" width="300"
+              inlineStyle="margin-left: 60px; height: 200px;"
+              contentDelivery="immediate" rowSelection="single"
+              rowBandingInterval="1" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{rateChangeManagerBundle.info_empty_calendar_id_list}"
+              summary="Calendar List" value="#{pickCalendarBean.listCalendarID}"
+              binding="#{pickCalendarBean.calendarIDTable}"
+              selectionListener="#{pickCalendarBean.tableRowSelectionHandler}">
+      <af:column id="CITableColCalendarID" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_calendar_id}">
+        <af:outputText id="CITableRowCalendarID" value="#{row.calendarID}"/>
+      </af:column>
+      <af:column id="CITableColCalendarName" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_calendar_name}">
+        <af:outputText id="CITableRowCalendarName" value="#{row.calendarName}"/>
+      </af:column>
+    </af:table>
+    <af:inputText id="CITableNoteIT" readOnly="true"
+                  inlineStyle="margin-left: 60px;"
+                  label="#{labelBundle.label_note}"
+                  value="#{commonBundle.note_table_single_select}"/>
+  </af:panelGroupLayout>
+</jsp:root>
