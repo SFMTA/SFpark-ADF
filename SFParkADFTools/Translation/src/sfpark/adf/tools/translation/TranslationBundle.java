@@ -4,7 +4,7 @@ enum TranslationBundle {
     AssetManagerBundle,
     OSPManagerBundle,
     CalendarManagerBundle,
-    PriceChangeManagerBundle,
+    RateChangeManagerBundle,
 
     ColumnBundle,
     CommonBundle,
