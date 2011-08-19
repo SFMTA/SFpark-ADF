@@ -77,9 +77,6 @@ public class PickCalendarBean extends BaseBean implements PropertiesBeanInterfac
         }
     }
 
-    public void clearPageFlowScopeCache() {
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

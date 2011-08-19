@@ -85,9 +85,12 @@
         <af:inputText id="areaTypeIT" readOnly="true"
                       label="#{labelBundle.label_area_type}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.areaType.stringForDisplay}"/>
-        <af:inputText id="pmDistrictsIT" readOnly="true"
-                      label="#{labelBundle.label_pm_districts}"
-                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.PMDistricts}"/>
+        <af:panelLabelAndMessage id="pmDistrictsPLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_pm_districts}">
+          <af:outputText id="pmDistrictsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 270px;">#{rateChangePropertiesBean.rateChangeHeaderDTO.displayPMDistricts}&lt;/div>'/>
+        </af:panelLabelAndMessage>
         <af:spacer id="areaTypeSpacer" height="20"/>
         <af:commandButton id="calendarButton" immediate="true"
                           rendered="#{rateChangePropertiesBean.renderButtons}"

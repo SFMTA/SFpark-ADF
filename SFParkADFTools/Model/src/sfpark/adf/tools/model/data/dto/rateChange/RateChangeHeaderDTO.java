@@ -5,9 +5,11 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
@@ -44,8 +46,6 @@ public class RateChangeHeaderDTO extends BaseDTO {
         this.setSubmittedOn(resultSet.getDate(SUBMITTED_DT));
         this.setApprovedBy(resultSet.getString(APPROVED_BY));
         this.setApprovedOn(resultSet.getDate(APPROVED_DT));
-
-        this.setPMDistrictsList(StringUtil.convertStringToList(this.getPMDistricts()));
 
     }
 
@@ -110,16 +110,8 @@ public class RateChangeHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
-    private List<String> PMDistrictsList;
+    private List<PMDistrictsDO> PMDistrictDOs;
     private String DisplayCalendarName;
-
-    public void setPMDistrictsList(List<String> PMDistrictsList) {
-        this.PMDistrictsList = PMDistrictsList;
-    }
-
-    public List<String> getPMDistrictsList() {
-        return PMDistrictsList;
-    }
 
     public void setDisplayCalendarName(String CalendarName) {
         this.DisplayCalendarName = CalendarName;
@@ -127,6 +119,40 @@ public class RateChangeHeaderDTO extends BaseDTO {
 
     public String getDisplayCalendarName() {
         return DisplayCalendarName;
+    }
+
+    public void setPMDistrictDOs(List<PMDistrictsDO> PMDistrictDOs) {
+        this.PMDistrictDOs = PMDistrictDOs;
+
+        if (PMDistrictDOs != null) {
+            List<String> tempList = new ArrayList<String>();
+
+            for (PMDistrictsDO DO : PMDistrictDOs) {
+                tempList.add(DO.getPMDistrictID());
+            }
+
+            setPMDistricts(StringUtil.convertListToString(tempList));
+        }
+    }
+
+    private List<PMDistrictsDO> getPMDistrictDOs() {
+        return PMDistrictDOs;
+    }
+
+    public String getDisplayPMDistricts() {
+
+        if (getPMDistrictDOs() == null) {
+            return "";
+        }
+
+        List<String> tempList = new ArrayList<String>();
+
+        for (PMDistrictsDO DO : getPMDistrictDOs()) {
+            tempList.add(DO.getPMDistrictName());
+        }
+
+        return StringUtil.convertListToString(tempList,
+                                              StringUtil.SEPARATOR.COMMA_WITH_TRAILING_SPACE);
     }
 
     public int getColumnsRateChangeReference() {

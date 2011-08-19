@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickAreaTypePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickAreaTypePGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_rate_change_management}"
+                                actionListener="#{pickAreaTypeBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_area_type}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarDoneAndCancel">
+        <af:spacer id="spaceBeforeDoneButton" width="30"/>
+        <af:commandButton id="doneButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_done}"
+                          actionListener="#{pickAreaTypeBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterDoneButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickAreaTypeBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelFormLayout id="areaTypePFL" inlineStyle="margin-left: 60px;">
+      <af:selectOneChoice id="areaTypeSOC" required="true"
+                          label="#{labelBundle.label_area_type}"
+                          value="#{pickAreaTypeBean.areaType}" autoSubmit="true"
+                          validator="#{pickAreaTypeBean.areaTypeValidator}">
+        <f:selectItems id="areaTypeSOCSI"
+                       value="#{pickAreaTypeBean.listAreaType}"/>
+      </af:selectOneChoice>
+      <af:spacer id="areaTypeSpacer" height="10"/>
+      <af:selectManyListbox id="pmDistrictsSML"
+                            label="#{labelBundle.label_pm_districts}"
+                            value="#{pickAreaTypeBean.PMDistrictsDOs}"
+                            autoSubmit="true" partialTriggers="areaTypeSOC">
+        <f:selectItems id="pmDistrictsSMLSI"
+                       value="#{pickAreaTypeBean.listPMDistricts}"
+                       binding="#{pickAreaTypeBean.PMDistrictSelectItems}"/>
+      </af:selectManyListbox>
+    </af:panelFormLayout>
+  </af:panelGroupLayout>
+</jsp:root>

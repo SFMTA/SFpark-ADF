@@ -26,7 +26,7 @@ public class PMDistrictsDO extends BaseDO {
     private PMDistrictsDO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
-        this.setPMDistrictID(resultSet.getInt(PM_DISTRICT_ID));
+        this.setPMDistrictID(resultSet.getString(PM_DISTRICT_ID));
         this.setPMDistrictName(resultSet.getString(PM_DISTRICT_NAME));
 
     }
@@ -59,14 +59,14 @@ public class PMDistrictsDO extends BaseDO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private int PMDistrictID;
+    private String PMDistrictID;
     private String PMDistrictName;
 
-    public void setPMDistrictID(int PMDistrictID) {
+    public void setPMDistrictID(String PMDistrictID) {
         this.PMDistrictID = PMDistrictID;
     }
 
-    public int getPMDistrictID() {
+    public String getPMDistrictID() {
         return PMDistrictID;
     }
 
