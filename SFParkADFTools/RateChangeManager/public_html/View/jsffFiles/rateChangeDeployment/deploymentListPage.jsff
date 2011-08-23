@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"></jsp:root>
+<!--
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="deploymentProcessList" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="deploymentProcessListSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="sectionHeader" noWrap="true" value="Deployment Process"
+                   inlineStyle="#{globalBean.sectionHeaderInlineStyle}"/>
+    <af:separator id="sectionHeaderSeparator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarAdd">
+        <af:spacer id="spaceBeforeAddButton" width="5"/>
+        <af:commandButton id="addButton" inlineStyle="width: 100px;"
+                          text="#{buttonBundle.button_initiate_process}"
+                          actionListener="#{deploymentProcessListBean.addButtonHandler}"/>
+        <af:spacer id="spaceAfterAddButton" width="5"/>
+      </af:group>
+      <af:group id="mainToolbarEditAndDelete">
+        <af:spacer id="spaceBeforeEditButton" width="5"/>
+        <af:commandToolbarButton id="editButton" inlineStyle="width: 120px;"
+                                 actionDelivery="none"
+                                 text="#{buttonBundle.button_modify_process}">
+          <f:facet name="popup">
+            <af:menu id="editButtonMenu">
+              <af:commandMenuItem id="downgrade" text="Downgrade"
+                                  actionListener="#{deploymentProcessListBean.editButtonHandler}"/>
+              <af:commandMenuItem id="upgrade" text="Upgrade"
+                                  actionListener="#{deploymentProcessListBean.editButtonHandler}"/>
+              <af:commandMenuItem id="showDetails" text="Show Details"
+                                  actionListener="#{deploymentProcessListBean.editButtonHandler}"/>
+            </af:menu>
+          </f:facet>
+        </af:commandToolbarButton>
+        <af:spacer id="spaceAfterEditButton" width="5"/>
+        <af:commandButton id="deleteButton" inlineStyle="width: 100px;"
+                          text="#{buttonBundle.button_delete_process}"
+                          binding="#{deploymentProcessListBean.deleteProcessButton}"
+                          actionListener="#{deploymentProcessListBean.deleteButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:outputText id="inlineMessage" noWrap="true"
+                   styleClass="#{deploymentProcessListBean.inlineMessageClass}"
+                   value="#{deploymentProcessListBean.inlineMessageText}"/>
+    <af:table id="ADPTabl" var="row" varStatus="rowStatus" width="650px"
+              inlineStyle="height: 200px;" contentDelivery="immediate"
+              rowSelection="single" rowBandingInterval="0"
+              columnSelection="none" disableColumnReordering="true"
+              columnStretching="last"
+              emptyText="#{priceChangeManagerBundle.info_empty_active_deployment_process_list}"
+              summary="Active Deployment Process List"
+              value="#{deploymentProcessListBean.activeDeploymentProcesses}"
+              binding="#{deploymentProcessListBean.activeDeploymentProcessTable}"
+              selectionListener="#{deploymentProcessListBean.tableRowSelectionHandler}">
+      <af:column id="ADPTableColRateChgRef" width="150px" rowHeader="unstyled"
+                 sortable="true" sortProperty="rateChangeReference"
+                 headerClass="columnHeader" headerText="Rate Change Reference">
+        <af:outputText id="ADPTableRowRateChgRef"
+                       value="#{row.rateChangeReference}"/>
+      </af:column>
+      <af:column id="ADPTableColRateChgRefID" width="150px" sortable="true"
+                 sortProperty="rateChangeReferenceID" headerClass="columnHeader"
+                 headerText="Rate Change Reference ID">
+        <af:outputText id="ADPTableRowRateChgRefID"
+                       value="#{row.rateChangeReferenceID}"/>
+      </af:column>
+      <af:column id="ADPTableColProcessStep" width="200px" sortable="false"
+                 headerClass="columnHeader" headerText="Process Step">
+        <af:outputText id="ADPTableRowProcessStep"
+                       value="#{row.displayProcessStep}"/>
+      </af:column>
+      <af:column id="ADPTableColStepExecutionStatus" width="80px"
+                 sortable="false" headerClass="columnHeader"
+                 headerText="Step Execution Status">
+        <af:outputText id="ADPTableRowStepExecutionStatus"
+                       value="#{row.displayStepExecutionStatus}"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>
+
+-->
