@@ -1,5 +1,7 @@
 package sfpark.adf.tools.model.data.helper;
 
+import sfpark.adf.tools.utilities.generic.StringUtil;
+
 public enum CalendarStatus {
     UNLOCKED(" ", "Unlocked"),
     LOCKED("L", "Locked");
@@ -10,7 +12,8 @@ public enum CalendarStatus {
 
     public static CalendarStatus extract(String statusString) {
         for (CalendarStatus calendarStatus : values()) {
-            if (calendarStatus.getStringForTable().equalsIgnoreCase(statusString)) {
+            if (StringUtil.areEqual(calendarStatus.getStringForTable(),
+                                    statusString)) {
                 return calendarStatus;
             }
         }

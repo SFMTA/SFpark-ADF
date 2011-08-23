@@ -1,5 +1,7 @@
 package sfpark.adf.tools.model.data.helper;
 
+import sfpark.adf.tools.utilities.generic.StringUtil;
+
 public enum RateChangeStatus {
     WORKING("Working", "Working"),
     SUBMITTED("Submitted", "Submitted"),
@@ -11,7 +13,8 @@ public enum RateChangeStatus {
 
     public static RateChangeStatus extract(String statusString) {
         for (RateChangeStatus rateChangeStatus : values()) {
-            if (rateChangeStatus.getStringForTable().equalsIgnoreCase(statusString)) {
+            if (StringUtil.areEqual(rateChangeStatus.getStringForTable(),
+                                    statusString)) {
                 return rateChangeStatus;
             }
         }

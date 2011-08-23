@@ -1,5 +1,7 @@
 package sfpark.adf.tools.model.data.helper;
 
+import sfpark.adf.tools.utilities.generic.StringUtil;
+
 public enum PMDistrictAreaType {
     PILOT("Pilot", "Pilot"),
     CONTROL("Control", "Control");
@@ -10,7 +12,8 @@ public enum PMDistrictAreaType {
 
     public static PMDistrictAreaType extract(String areaTypeString) {
         for (PMDistrictAreaType PMDistrictAreaType : values()) {
-            if (PMDistrictAreaType.getStringForTable().equalsIgnoreCase(areaTypeString)) {
+            if (StringUtil.areEqual(PMDistrictAreaType.getStringForTable(),
+                                    areaTypeString)) {
                 return PMDistrictAreaType;
             }
         }
