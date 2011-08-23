@@ -17,7 +17,7 @@ public enum NavigationFlow {
 
     AddRateChange("/View/jsffFiles/rateChange/rateChangePropertiesPage.jsff"),
 
-    UpdateRateChange("/View/jsffFiles/common/errorsPage.jsff"),
+    UpdateRateChange("/View/jsffFiles/rateChange/rateChangeUpdatePage.jsff"),
 
     DeleteRateChange("/View/jsffFiles/common/errorsPage.jsff"),
     AfterDeleteRateChange("/View/jsffFiles/common/errorsPage.jsff"),

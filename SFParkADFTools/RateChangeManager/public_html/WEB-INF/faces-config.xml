@@ -46,6 +46,11 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>rateChangeUpdateBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangeUpdateBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>pickCalendarBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickCalendarBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

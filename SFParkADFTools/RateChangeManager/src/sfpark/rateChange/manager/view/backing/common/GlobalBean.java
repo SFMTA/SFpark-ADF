@@ -45,4 +45,8 @@ public class GlobalBean extends BaseBean {
     public String getDateTimePattern() {
         return PatternString.DATE_TIME.getPattern();
     }
+
+    public String getDatePattern() {
+        return PatternString.DATE.getPattern();
+    }
 }

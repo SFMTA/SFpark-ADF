@@ -136,6 +136,14 @@ public enum ErrorBundleKey {
 
     error_create_rate_change_reference_failure,
 
+    error_invalid_calendar_id,
+
+    error_exists_already_rate_chg_ref,
+
+    error_date_approved_before_submitted,
+
+    error_exception_rate_change_update,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

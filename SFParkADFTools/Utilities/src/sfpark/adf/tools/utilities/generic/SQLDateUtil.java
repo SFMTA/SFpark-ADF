@@ -45,9 +45,9 @@ public final class SQLDateUtil {
         return new Date(calendar.getTimeInMillis());
     }
 
-    public static Date getTomorrowsDate() {
+    public static Date getNumOfDaysBeforeToday(int numOfDays) {
         Calendar calendar = getTodaysDateCalendarInstance();
-        calendar.add(Calendar.DATE, 1);
+        calendar.add(Calendar.DATE, (-1 * numOfDays));
 
         return new Date(calendar.getTimeInMillis());
     }
@@ -59,9 +59,37 @@ public final class SQLDateUtil {
         return new Date(calendar.getTimeInMillis());
     }
 
+    public static Date getPreviousDateFor(Date forDate, int numOfDays) {
+        Calendar calendar = getProvidedDateCalendarInstance(forDate);
+        calendar.add(Calendar.DATE, (-1 * numOfDays));
+
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date getTomorrowsDate() {
+        Calendar calendar = getTodaysDateCalendarInstance();
+        calendar.add(Calendar.DATE, 1);
+
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date getNumOfDaysAfterToday(int numOfDays) {
+        Calendar calendar = getTodaysDateCalendarInstance();
+        calendar.add(Calendar.DATE, numOfDays);
+
+        return new Date(calendar.getTimeInMillis());
+    }
+
     public static Date getNextDateFor(Date forDate) {
         Calendar calendar = getProvidedDateCalendarInstance(forDate);
         calendar.add(Calendar.DATE, 1);
+
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date getNextDateFor(Date forDate, int numOfDays) {
+        Calendar calendar = getProvidedDateCalendarInstance(forDate);
+        calendar.add(Calendar.DATE, numOfDays);
 
         return new Date(calendar.getTimeInMillis());
     }

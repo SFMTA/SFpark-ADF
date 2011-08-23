@@ -30,6 +30,12 @@ public final class TranslationUtil {
                                    Key.name(), args);
     }
 
+    public static String getRateChangeManagerBundleString(RateChangeManagerBundleKey Key,
+                                                          Object... args) {
+        return getTranslatedString(TranslationBundle.RateChangeManagerBundle.getBaseName(),
+                                   Key.name(), args);
+    }
+
     public static String getCommonBundleString(CommonBundleKey Key,
                                                Object... args) {
         return getTranslatedString(TranslationBundle.CommonBundle.getBaseName(),

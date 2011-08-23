@@ -13,6 +13,7 @@ import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
+import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeHeaderDTO extends BaseDTO {
@@ -108,10 +109,47 @@ public class RateChangeHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public boolean isSameAs(RateChangeHeaderDTO originalDTO) {
+
+        if (StringUtil.areEqual(this.getRateChangeReferenceID(),
+                                originalDTO.getRateChangeReferenceID()) &&
+            StringUtil.areEqual(this.getRateChangeReference(),
+                                originalDTO.getRateChangeReference()) &&
+            StringUtil.areEqual(this.getRateChangeDescription(),
+                                originalDTO.getRateChangeDescription()) &&
+            StringUtil.areEqual(this.getPMDistricts(),
+                                originalDTO.getPMDistricts()) &&
+            this.getAreaType().equals(originalDTO.getAreaType()) &&
+            StringUtil.areEqual(this.getCalendarID(),
+                                originalDTO.getCalendarID()) &&
+            StringUtil.areEqual(this.getRateChangePolicy(),
+                                originalDTO.getRateChangePolicy()) &&
+            SQLDateUtil.areEqual(this.getPlannedChangeEffectiveDate(),
+                                 originalDTO.getPlannedChangeEffectiveDate()) &&
+            StringUtil.areEqual(this.getSubmittedBy(),
+                                originalDTO.getSubmittedBy()) &&
+            SQLDateUtil.areEqual(this.getSubmittedOn(),
+                                 originalDTO.getSubmittedOn()) &&
+            StringUtil.areEqual(this.getApprovedBy(),
+                                originalDTO.getApprovedBy()) &&
+            SQLDateUtil.areEqual(this.getApprovedOn(),
+                                 originalDTO.getApprovedOn())) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
-    private List<PMDistrictsDO> PMDistrictDOs;
     private String DisplayCalendarName;
+    private Date MinimumAllowedDate;
+    private List<PMDistrictsDO> PMDistrictDOs;
 
     public void setDisplayCalendarName(String CalendarName) {
         this.DisplayCalendarName = CalendarName;
@@ -119,6 +157,14 @@ public class RateChangeHeaderDTO extends BaseDTO {
 
     public String getDisplayCalendarName() {
         return DisplayCalendarName;
+    }
+
+    public void setMinimumAllowedDate(Date MinimumAllowedDate) {
+        this.MinimumAllowedDate = MinimumAllowedDate;
+    }
+
+    public Date getMinimumAllowedDate() {
+        return MinimumAllowedDate;
     }
 
     public void setPMDistrictDOs(List<PMDistrictsDO> PMDistrictDOs) {

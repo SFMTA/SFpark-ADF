@@ -1,5 +1,7 @@
 package sfpark.rateChange.manager.view.provider;
 
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
+import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
@@ -49,7 +52,11 @@ public class DMLOperationsProvider {
         DTO.setAreaType(PMDistrictAreaType.PILOT);
         DTO.setCalendarID("0");
         DTO.setRateChangePolicy(AllowedValuesProvider.getRateChgPolicyDefaultValue());
-        DTO.setPlannedChangeEffectiveDate(SQLDateUtil.getTodaysDate());
+
+        Date minimumAllowedDate = SQLDateUtil.getNumOfDaysAfterToday(7);
+        DTO.setPlannedChangeEffectiveDate(minimumAllowedDate);
+        DTO.setMinimumAllowedDate(minimumAllowedDate);
+
         DTO.setStatus(RateChangeStatus.WORKING);
 
         LOGGER.exiting(CLASSNAME, "getNewRateChangeHeaderDTO");
@@ -77,6 +84,49 @@ public class DMLOperationsProvider {
                                          rateChangeHeaderDTO));
 
         LOGGER.exiting(CLASSNAME, "addRateChangeHeader");
+
+        return performOperation(tableRecords);
+    }
+
+    public OperationStatus updateRateChangeHeader(RateChangeHeaderDTO rateChangeHeaderDTO) {
+        LOGGER.entering(CLASSNAME, "editRateChangeHeader");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        RateChangeHeaderDTO originalDTO =
+            RateChangeHeaderProvider.INSTANCE.checkForRateChangeReferenceID(rateChangeHeaderDTO.getRateChangeReferenceID()).getDTO();
+
+        if (!rateChangeHeaderDTO.isSameAs(originalDTO)) {
+
+            switch (rateChangeHeaderDTO.getStatus()) {
+            case WORKING:
+                {
+                    rateChangeHeaderDTO.setStatus(RateChangeStatus.SUBMITTED);
+                    tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                     rateChangeHeaderDTO));
+                    // TODO Change to Submitted
+                }
+                break;
+
+            case SUBMITTED:
+                {
+                    rateChangeHeaderDTO.setStatus(RateChangeStatus.APPROVED);
+                    tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                     rateChangeHeaderDTO));
+                    // TODO Change to Approved
+                }
+                break;
+
+            default:
+                {
+                    // Do nothing
+                }
+                break;
+            }
+
+        }
+
+        LOGGER.exiting(CLASSNAME, "editRateChangeHeader");
 
         return performOperation(tableRecords);
     }

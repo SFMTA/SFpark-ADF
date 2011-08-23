@@ -12,6 +12,9 @@ public enum ExceptionType {
     CALENDAR_DETAIL_INSERT,
     CALENDAR_DETAIL_DELETE,
 
+    RATE_CHANGE_HEADER_INSERT,
+    RATE_CHANGE_HEADER_UPDATE,
+
     OSP_INVENTORY_INSERT,
     OSP_INVENTORY_UPDATE,
 
@@ -96,6 +99,14 @@ public enum ExceptionType {
 
         if (exception instanceof CalendarDetailDeleteException) {
             return CALENDAR_DETAIL_DELETE;
+        }
+
+        if (exception instanceof RateChangeHeaderInsertException) {
+            return RATE_CHANGE_HEADER_INSERT;
+        }
+
+        if (exception instanceof RateChangeHeaderUpdateException) {
+            return RATE_CHANGE_HEADER_UPDATE;
         }
 
         if (exception instanceof OSPInventoryInsertException) {

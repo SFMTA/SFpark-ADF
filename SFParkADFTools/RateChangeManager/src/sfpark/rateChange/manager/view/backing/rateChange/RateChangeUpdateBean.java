@@ -1,48 +1,43 @@
 package sfpark.rateChange.manager.view.backing.rateChange;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import javax.faces.model.SelectItem;
-
-import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 import sfpark.adf.tools.model.status.OperationStatus;
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
-import sfpark.adf.tools.utilities.generic.StringUtil;
+import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
-import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
-import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
-public class RateChangePropertiesBean extends BaseBean implements PropertiesBeanInterface,
-                                                                  RequestScopeBeanInterface {
+public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInterface,
+                                                              RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
 
-    public RateChangePropertiesBean() {
+    public RateChangeUpdateBean() {
         super();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
     public void clearPageFlowScopeCache() {
     }
@@ -76,6 +71,8 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             (RateChangeHeaderDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey());
 
         if (DTO == null) {
+            // Should NOT happen
+            // Just in case
             DTO = DMLOperationsProvider.INSTANCE.getNewRateChangeHeaderDTO();
             setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                   DTO);
@@ -93,6 +90,17 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         return (getCurrentPageMode().isReadOnlyMode());
     }
 
+    public boolean isReadOnlySubmittedInfo() {
+        return (getCurrentPageMode().isReadOnlyMode() ||
+                getRateChangeHeaderDTO().getStatus().isSubmitted() ||
+                getRateChangeHeaderDTO().getStatus().isApproved());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL VISIBLE INFORMATION
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -102,29 +110,11 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         return (!getCurrentPageMode().isReadOnlyMode());
     }
 
-    public boolean isRenderCenterFormPanel() {
-        return (!getCurrentPageMode().isReadOnlyMode());
-    }
-
-    public boolean isRenderPassiveInfo() {
-        return getCurrentPageMode().isReadOnlyMode();
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // LIST VALUES
-
-    public List<SelectItem> getListRateChgPolicy() {
-        List<SelectItem> listRateChgPolicy = new ArrayList<SelectItem>();
-
-        for (AllowedValuesDTO allowedValuesDTO :
-             AllowedValuesProvider.getRateChgPolicyList()) {
-            listRateChgPolicy.add(new SelectItem(allowedValuesDTO.getColumnValue(),
-                                                 allowedValuesDTO.getDescription()));
-        }
-
-        return listRateChgPolicy;
+    public boolean isRenderApprovedInfo() {
+        return ((getCurrentPageMode().isUpdateMode() &&
+                 getRateChangeHeaderDTO().getStatus().isSubmitted()) ||
+                (getCurrentPageMode().isReadOnlyMode() &&
+                 getRateChangeHeaderDTO().getStatus().isApproved()));
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -132,74 +122,43 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
-    public void pickButtonHandler(ActionEvent event) {
-        //
-        // Reuse as various buttons
-        //
-
-        String ID = event.getComponent().getId();
-
-        if (ID.contains("areaType")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 NavigationFlow.PickAreaType.name());
-        } else if (ID.contains("calendar")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 NavigationFlow.PickCalendar.name());
-        }
-    }
-
     /**
      * Validates the Form and Saves if all entries are valid
      *
      * Common Validity Tests:
      * =====================
-     *    1. Calendar ID should not be ZERO
-     *    2. Rate Change Reference should NOT exist
+     *    1.
      *
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
         boolean allValid = true;
-        NavigationMode currentPageMode = getCurrentPageMode();
 
         RateChangeHeaderDTO rateChangeHeaderDTO = getRateChangeHeaderDTO();
 
-        boolean checkForRateChgRefUniqueness = false;
+        boolean validateApprovedDate = false;
 
-        if (currentPageMode.isAddMode()) {
-            checkForRateChgRefUniqueness = true;
+        if (rateChangeHeaderDTO.getStatus().isSubmitted()) {
+            validateApprovedDate = true;
         }
 
-        printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        printLog("Validate Approved Date = " + validateApprovedDate);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        if (allValid) {
-            String calendarID = rateChangeHeaderDTO.getCalendarID();
+        if (allValid && validateApprovedDate) {
+            Date submittedOn = rateChangeHeaderDTO.getSubmittedOn();
+            Date approvedOn = rateChangeHeaderDTO.getApprovedOn();
 
-            if (StringUtil.isBlank(calendarID) ||
-                StringUtil.areEqual(calendarID, "0")) {
+            if (approvedOn.before(submittedOn)) {
                 allValid = false;
-                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_calendar_id));
-            }
-
-        }
-
-        printLog("After Calendar ID = " + allValid);
-
-        if (allValid && checkForRateChgRefUniqueness) {
-            RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(rateChangeHeaderDTO.getRateChangeReference());
-
-            if (rateChangeHeaderStatus.existsDTO()) {
-                allValid = false;
-                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exists_already_rate_change_reference));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_date_approved_before_submitted));
             }
         }
 
-        printLog("After Rate Chg Ref check = " + allValid);
+        printLog("After validate date = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -218,44 +177,62 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         if (allValid) {
             printLog("All entries are Valid. Proceed");
 
-            if (currentPageMode.isAddMode()) {
+            if (getCurrentPageMode().isUpdateMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
-                // ADD Mode
-                printLog("ADD Mode");
+                // UPDATE Mode
+                printLog("UPDATE Mode");
 
                 RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
 
                 OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
+                    DMLOperationsProvider.INSTANCE.updateRateChangeHeader(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
-                    RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
+                if (operationStatus == null) {
+                    printLog("There were no changes. So nothing was saved");
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
+                    setInlineMessageClass("");
 
-                    if (rateChangeHeaderStatus.existsDTO()) {
-                        printLog("ADD operation was successful");
-
-                        // TODO Call stored procedure
-
-                        setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
+                } else {
+                    if (operationStatus.getType().isSuccess()) {
+                        printLog("UPDATE operation was successful");
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
 
-                        clearPageFlowScopeCache();
+                        RateChangeHeaderDTOStatus rateChangeHeaderStatus =
+                            RateChangeHeaderProvider.INSTANCE.checkForRateChangeReferenceID(currentDTO.getRateChangeReferenceID());
+
                         setCurrentPageMode(NavigationMode.READ_ONLY);
                         setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                               rateChangeHeaderStatus.getDTO());
 
+                        clearPageFlowScopeCache();
+
                     } else {
-                        printLog("ADD operation failed");
-                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
+                        printLog("UPDATE operation failed");
+
+                        String errorMessage = "";
+
+                        switch (ExceptionType.getExceptionType(operationStatus.getException())) {
+
+                        case RATE_CHANGE_HEADER_UPDATE:
+                            errorMessage =
+                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_update);
+                            break;
+
+                        default:
+                            errorMessage =
+                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            break;
+
+                        }
+
+                        setInlineMessageText(errorMessage);
                         setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+
                     }
-                } else {
-                    printLog("ADD operation failed");
-                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+
                 }
 
             }
@@ -286,6 +263,10 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS EXTRA
+
+    public Date getMinimumAllowedDate() {
+        return SQLDateUtil.getTodaysDate();
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

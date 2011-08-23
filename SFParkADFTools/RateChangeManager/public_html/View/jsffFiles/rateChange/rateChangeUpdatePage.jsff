@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="rateChangeUpdatePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="rateChangeUpdatePGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{rateChangeUpdateBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{rateChangeUpdateBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{rateChangeUpdateBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{rateChangeUpdateBean.inlineMessageText}"
+                       styleClass="#{rateChangeUpdateBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="rateChangeHeaderPanel" layout="horizontal"
+                         valign="top" inlineStyle="margin-left: 50px;"
+                         partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="rateChangeHeaderPanelSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsRCHFormPanel">
+        <af:inputText id="rateChgRefIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.rateChangeReference}"/>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputText id="plannedEffDateIT" readOnly="true"
+                      label="#{labelBundle.label_planned_change_eff_date}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.plannedChangeEffectiveDate}">
+          <af:convertDateTime pattern="#{globalBean.datePattern}"/>
+        </af:inputText>
+        <af:spacer id="plannedEffDateSpacer" height="20"/>
+        <af:inputText id="submittedByIT" required="true"
+                      readOnly="#{rateChangeUpdateBean.readOnlySubmittedInfo}"
+                      maximumLength="#{rateChangeUpdateBean.rateChangeHeaderDTO.maximumLengthSubmittedBy}"
+                      columns="#{rateChangeUpdateBean.rateChangeHeaderDTO.columnsSubmittedBy}"
+                      label="#{labelBundle.label_submitted_by}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.submittedBy}"
+                      autoSubmit="true"/>
+        <af:inputDate id="submittedOnID" columns="11" required="true"
+                      readOnly="#{rateChangeUpdateBean.readOnlySubmittedInfo}"
+                      label="#{labelBundle.label_submitted_on}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.submittedOn}"
+                      minValue="#{rateChangeUpdateBean.minimumAllowedDate}"
+                      maxValue="#{rateChangeUpdateBean.rateChangeHeaderDTO.plannedChangeEffectiveDate}"
+                      autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="submittedSpacer" height="20"/>
+        <af:inputText id="approvedByIT" required="true"
+                      rendered="#{rateChangeUpdateBean.renderApprovedInfo}"
+                      readOnly="#{rateChangeUpdateBean.readOnly}"
+                      maximumLength="#{rateChangeUpdateBean.rateChangeHeaderDTO.maximumLengthApprovedBy}"
+                      columns="#{rateChangeUpdateBean.rateChangeHeaderDTO.columnsApprovedBy}"
+                      label="#{labelBundle.label_approved_by}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.approvedBy}"
+                      autoSubmit="true"/>
+        <af:inputDate id="approvedOnID" columns="11" required="true"
+                      rendered="#{rateChangeUpdateBean.renderApprovedInfo}"
+                      readOnly="#{rateChangeUpdateBean.readOnly}"
+                      label="#{labelBundle.label_approved_on}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.approvedOn}"
+                      minValue="#{rateChangeUpdateBean.minimumAllowedDate}"
+                      maxValue="#{rateChangeUpdateBean.rateChangeHeaderDTO.plannedChangeEffectiveDate}"
+                      autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="approvedSpacer" height="20"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefIDSpacer" height="10"/>
+        <af:inputText id="statusIT" readOnly="true"
+                      label="#{labelBundle.label_status}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.status.stringForDisplay}"/>
+        <af:spacer id="statusSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.createdDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.lastUpdatedDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{rateChangeUpdateBean.rateChangeHeaderDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
