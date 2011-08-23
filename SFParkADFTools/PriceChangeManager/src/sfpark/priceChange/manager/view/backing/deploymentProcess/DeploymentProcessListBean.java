@@ -2,25 +2,15 @@ package sfpark.priceChange.manager.view.backing.deploymentProcess;
 
 import javax.faces.event.ActionEvent;
 
-import oracle.adf.view.rich.component.rich.data.RichTable;
-
-import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
-
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
-import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
-import sfpark.adf.tools.view.backing.util.ADFUtil;
-
-import sfpark.priceChange.manager.application.key.PageFlowScopeKey;
-import sfpark.priceChange.manager.application.key.SessionScopeKey;
-import sfpark.priceChange.manager.view.backing.BaseBean;
-import sfpark.priceChange.manager.view.flow.NavigationFlow;
-
-public class DeploymentProcessListBean extends BaseBean implements ListBeanInterface,
+public class DeploymentProcessListBean implements ListBeanInterface,
                                                                    RequestScopeBeanInterface {
+    
+    /*
 
     private RichCommandButton DeleteProcessButton;
     private RichTable ActiveDeploymentProcessTable;
@@ -42,6 +32,8 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
         return (DeploymentProcessListBean)ADFUtil.getCurrentInstanceFor("deploymentProcessListBean");
     }
 
+    // */
+
     public void clearPageFlowScopeCache() {
         // TODO
     }
@@ -60,12 +52,12 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
         return null;
     }
 
+    /*
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    /*
     public List<RateChangeProcessControlDTO> getActiveDeploymentProcesses() {
         List<RateChangeProcessControlDTO> activeList =
             (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOY_PROCESS_LIST.getKey());
@@ -94,8 +86,6 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
         return historicList;
     }
     
-    // */
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -136,11 +126,14 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
+    // */
+    
     public void addButtonHandler(ActionEvent event) {
     }
 
     public void editButtonHandler(ActionEvent event) {
         // TODO revise later
+        /*
 
         RateChangeProcessControlDTO selectedDTO =
             (RateChangeProcessControlDTO)getActiveDeploymentProcessTable().getSelectedRowData();
@@ -151,6 +144,7 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.EDIT_DEPLOYMENT_PROCESS.name());
         }
+        // */
     }
 
     public void deleteButtonHandler(ActionEvent event) {
@@ -167,6 +161,7 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
     public void tableRowSelectionHandler(SelectionEvent event) {
     }
 
+    /*
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -197,4 +192,6 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
     public RichCommandButton getDeleteProcessButton() {
         return DeleteProcessButton;
     }
+    
+    // */
 }

@@ -9,10 +9,7 @@ import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.adf.tools.view.backing.util.ADFUtil;
 
-import sfpark.priceChange.manager.application.key.PageFlowScopeKey;
-import sfpark.priceChange.manager.view.backing.BaseBean;
-
-public class DeploymentProcessPropertiesBean extends BaseBean implements PropertiesBeanInterface,
+public class DeploymentProcessPropertiesBean implements PropertiesBeanInterface,
                                                                          RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -37,21 +34,19 @@ public class DeploymentProcessPropertiesBean extends BaseBean implements Propert
     }
 
     public void setInlineMessageText(String inlineMessageText) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(),
-                                   inlineMessageText);
+        // this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(), inlineMessageText);
     }
 
     public String getInlineMessageText() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
+        return ""; // (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
     }
 
     public void setInlineMessageClass(String inlineMessageClass) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(),
-                                   inlineMessageClass);
+        // this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(), inlineMessageClass);
     }
 
     public String getInlineMessageClass() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
+        return ""; // (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -60,8 +55,8 @@ public class DeploymentProcessPropertiesBean extends BaseBean implements Propert
     // ALL DTO INFORMATION
 
     public RateChangeProcessControlDTO getRateChangeProcessControlDTO() {
-        RateChangeProcessControlDTO DTO =
-            (RateChangeProcessControlDTO)getPageFlowScopeValue(PageFlowScopeKey.SELECTED_ACTIVE_DEPLOY_PROCESS_FOR_PROPS.getKey());
+        RateChangeProcessControlDTO DTO = new RateChangeProcessControlDTO();
+            // (RateChangeProcessControlDTO)getPageFlowScopeValue(PageFlowScopeKey.SELECTED_ACTIVE_DEPLOY_PROCESS_FOR_PROPS.getKey());
 
         if (DTO == null) {
             // Invalid situation
@@ -118,7 +113,7 @@ public class DeploymentProcessPropertiesBean extends BaseBean implements Propert
     }
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
-        setCurrentPageSaved(Boolean.FALSE);
+        // setCurrentPageSaved(Boolean.FALSE);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

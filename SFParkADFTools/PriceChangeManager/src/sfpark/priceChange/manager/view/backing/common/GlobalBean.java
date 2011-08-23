@@ -4,9 +4,7 @@ import sfpark.adf.tools.utilities.constants.PatternString;
 
 import sfpark.adf.tools.utilities.constants.RegularExpression;
 
-import sfpark.priceChange.manager.view.backing.BaseBean;
-
-public class GlobalBean extends BaseBean {
+public class GlobalBean {
     public GlobalBean() {
         super();
     }
