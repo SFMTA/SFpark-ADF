@@ -1,7 +1,5 @@
 package sfpark.priceChange.manager.view.backing.deploymentProcess;
 
-import java.util.List;
-
 import javax.faces.event.ActionEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
@@ -11,7 +9,6 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
-import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -68,6 +65,7 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
+    /*
     public List<RateChangeProcessControlDTO> getActiveDeploymentProcesses() {
         List<RateChangeProcessControlDTO> activeList =
             (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.ACTIVE_DEPLOY_PROCESS_LIST.getKey());
@@ -81,7 +79,7 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
 
         return activeList;
     }
-
+    
     public List<RateChangeProcessControlDTO> getHistoricDeploymentProcesses() {
         List<RateChangeProcessControlDTO> historicList =
             (List<RateChangeProcessControlDTO>)getPageFlowScopeValue(PageFlowScopeKey.HISTORIC_DEPLOY_PROCESS_LIST.getKey());
@@ -95,6 +93,8 @@ public class DeploymentProcessListBean extends BaseBean implements ListBeanInter
 
         return historicList;
     }
+    
+    // */
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

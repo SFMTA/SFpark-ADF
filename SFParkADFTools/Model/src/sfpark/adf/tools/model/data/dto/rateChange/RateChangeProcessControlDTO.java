@@ -7,10 +7,15 @@ import java.sql.SQLException;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import sfpark.adf.tools.model.data.dO.blocks.BlocksDO;
+import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
+import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -35,17 +40,17 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
         this.setRateChangeReferenceID(resultSet.getString(RATE_CHG_REF_ID));
         this.setComments(resultSet.getString(COMMENTS));
-        this.setPMDistrictID(resultSet.getString(PM_DISTRICT_ID));
+        this.setPMDistricts(resultSet.getString(PM_DISTRICTS));
         this.setMeterVendor(resultSet.getString(METER_VENDOR));
         this.setMeterModel(resultSet.getString(METER_MODEL));
         this.setBlockSelection(resultSet.getString(BLOCK_SELECTION));
-        this.setOutputXMLFileName(resultSet.getString(XML_OUTPUT_FILE_NAME));
-        this.setInputXMLFileName(resultSet.getString(XML_INPUT_FILE_NAME));
+        this.setXMLOutputFileName(resultSet.getString(XML_OUTPUT_FILE_NAME));
+        this.setXMLInputFileName(resultSet.getString(XML_INPUT_FILE_NAME));
         this.setEffectiveFromDate(resultSet.getDate(EFF_FROM_DT));
-        this.setTimeLimitOption(resultSet.getString(TIME_LIMIT_OPTION));
+        this.setTimeLimitOption(RateChangeProcessTimeLimitOption.extract(resultSet.getString(TIME_LIMIT_OPTION)));
         this.setProcessStep(resultSet.getString(PROCESS_STEP));
-        this.setStepStartFlag(resultSet.getString(STEP_START_FLAG));
-        this.setStepExecutionStatus(resultSet.getString(STEP_EXEC_STATUS));
+        this.setStepStartFlag(RateChangeProcessStepStartFlag.extract(resultSet.getString(STEP_START_FLAG)));
+        this.setStepExecStatus(resultSet.getString(STEP_EXEC_STATUS));
         this.setStatusMessage(resultSet.getString(STATUS_MESSAGE));
         this.setStepStartDate(resultSet.getTimestamp(STEP_START_DT));
         this.setStepEndDate(resultSet.getTimestamp(STEP_END_DT));
@@ -56,7 +61,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     public static final String RATE_CHG_REF = "RATE_CHG_REF";
     public static final String RATE_CHG_REF_ID = "RATE_CHG_REF_ID";
     public static final String COMMENTS = "COMMENTS";
-    public static final String PM_DISTRICT_ID = "PM_DISTRICT_ID";
+    public static final String PM_DISTRICTS = "PM_DISTRICTS";
     public static final String METER_VENDOR = "METER_VENDOR";
     public static final String METER_MODEL = "METER_MODEL";
     public static final String BLOCK_SELECTION = "BLOCK_SELECTION";
@@ -73,25 +78,23 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     private static final List<String> AttributeListForSelect =
         Arrays.asList(PROCESS_ID, RATE_CHG_REF, RATE_CHG_REF_ID, COMMENTS,
-                      PM_DISTRICT_ID, METER_VENDOR, METER_MODEL,
-                      BLOCK_SELECTION, XML_OUTPUT_FILE_NAME,
-                      XML_INPUT_FILE_NAME, EFF_FROM_DT, TIME_LIMIT_OPTION,
-                      PROCESS_STEP, STEP_START_FLAG, STEP_EXEC_STATUS,
-                      STATUS_MESSAGE, STEP_START_DT, STEP_END_DT, CREATED_DT,
-                      LAST_UPD_DT, LAST_UPD_USER, LAST_UPD_PGM);
+                      PM_DISTRICTS, METER_VENDOR, METER_MODEL, BLOCK_SELECTION,
+                      XML_OUTPUT_FILE_NAME, XML_INPUT_FILE_NAME, EFF_FROM_DT,
+                      TIME_LIMIT_OPTION, PROCESS_STEP, STEP_START_FLAG,
+                      STEP_EXEC_STATUS, STATUS_MESSAGE, STEP_START_DT,
+                      STEP_END_DT, CREATED_DT, LAST_UPD_DT, LAST_UPD_USER,
+                      LAST_UPD_PGM);
 
     private static final List<String> AttributeListForInsert =
-        Arrays.asList(RATE_CHG_REF, RATE_CHG_REF_ID, COMMENTS, PM_DISTRICT_ID,
-                      METER_VENDOR, METER_MODEL, BLOCK_SELECTION,
-                      XML_INPUT_FILE_NAME, EFF_FROM_DT, TIME_LIMIT_OPTION,
-                      PROCESS_STEP, STEP_START_FLAG, LAST_UPD_USER,
-                      LAST_UPD_PGM);
+        Arrays.asList(RATE_CHG_REF, RATE_CHG_REF_ID, COMMENTS, PM_DISTRICTS,
+                      METER_VENDOR, METER_MODEL, BLOCK_SELECTION, EFF_FROM_DT,
+                      TIME_LIMIT_OPTION, PROCESS_STEP, STEP_START_FLAG,
+                      LAST_UPD_USER, LAST_UPD_PGM);
 
     private static final List<String> AttributeListForUpdate =
-        Arrays.asList(RATE_CHG_REF, RATE_CHG_REF_ID, COMMENTS,
-                      XML_INPUT_FILE_NAME, EFF_FROM_DT, TIME_LIMIT_OPTION,
-                      PROCESS_STEP, STEP_START_FLAG, LAST_UPD_USER,
-                      LAST_UPD_PGM);
+        Arrays.asList(COMMENTS, XML_INPUT_FILE_NAME, EFF_FROM_DT,
+                      TIME_LIMIT_OPTION, PROCESS_STEP, STEP_START_FLAG,
+                      LAST_UPD_USER, LAST_UPD_PGM);
 
     public static List<String> getAttributeListForSelect() {
         return AttributeListForSelect;
@@ -124,6 +127,8 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     // PURELY FOR DISPLAY PURPOSES
 
     private String LabelRateChangeReference;
+    private List<PMDistrictsDO> PMDistrictDOs;
+    private List<BlocksDO> BlockDOs;
 
     public void setLabelRateChangeReference(String LabelRateChangeReference) {
         this.LabelRateChangeReference = LabelRateChangeReference;
@@ -131,6 +136,42 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     public String getLabelRateChangeReference() {
         return LabelRateChangeReference;
+    }
+
+    public void setPMDistrictDOs(List<PMDistrictsDO> PMDistrictDOs) {
+        this.PMDistrictDOs = PMDistrictDOs;
+
+        if (PMDistrictDOs != null) {
+            List<String> tempList = new ArrayList<String>();
+
+            for (PMDistrictsDO DO : PMDistrictDOs) {
+                tempList.add(DO.getPMDistrictID());
+            }
+
+            setPMDistricts(StringUtil.convertListToString(tempList));
+        }
+    }
+
+    public List<PMDistrictsDO> getPMDistrictDOs() {
+        return PMDistrictDOs;
+    }
+
+    public void setBlockDOs(List<BlocksDO> BlockDOs) {
+        this.BlockDOs = BlockDOs;
+
+        if (BlockDOs != null) {
+            List<String> tempList = new ArrayList<String>();
+
+            for (BlocksDO DO : BlockDOs) {
+                tempList.add(DO.getBlockID());
+            }
+
+            setBlockSelection(StringUtil.convertListToString(tempList));
+        }
+    }
+
+    public List<BlocksDO> getBlockDOs() {
+        return BlockDOs;
     }
 
     public int getMaximumLengthValueRateChangeReference() {
@@ -146,7 +187,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return 50;
     }
 
-    public int getMaximumLengthInputXMLFileName() {
+    public int getMaximumLengthXMLInputFileName() {
         return 300;
     }
 
@@ -155,7 +196,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
                 StringUtil.areEqual(getProcessStep(), "70"));
     }
 
-    public boolean isEditableInputXMLFileName() {
+    public boolean isEditableXMLInputFileName() {
         return (StringUtil.areEqual(getProcessStep(), "40"));
     }
 
@@ -173,14 +214,14 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return AllowedValuesProvider.getProcessStepTreeMap().get(processStep);
     }
 
-    public String getDisplayStepExecutionStatus() {
-        String stepExecutionStatus = getStepExecutionStatus();
+    public String getDisplayStepExecStatus() {
+        String stepExecStatus = getStepExecStatus();
 
-        if (StringUtil.isBlank(stepExecutionStatus)) {
+        if (StringUtil.isBlank(stepExecStatus)) {
             return "-";
         }
 
-        return AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(stepExecutionStatus);
+        return AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(stepExecStatus);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -191,17 +232,17 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     private String RateChangeReference;
     private String RateChangeReferenceID;
     private String Comments;
-    private String PMDistrictID;
+    private String PMDistricts;
     private String MeterVendor;
     private String MeterModel;
     private String BlockSelection;
-    private String OutputXMLFileName;
-    private String InputXMLFileName;
+    private String XMLOutputFileName;
+    private String XMLInputFileName;
     private Date EffectiveFromDate;
-    private String TimeLimitOption;
+    private RateChangeProcessTimeLimitOption TimeLimitOption;
     private String ProcessStep;
-    private String StepStartFlag;
-    private String StepExecutionStatus;
+    private RateChangeProcessStepStartFlag StepStartFlag;
+    private String StepExecStatus;
     private String StatusMessage;
     private Timestamp StepStartDate;
     private Timestamp StepEndDate;
@@ -238,12 +279,12 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return Comments;
     }
 
-    public void setPMDistrictID(String PMDistrictID) {
-        this.PMDistrictID = PMDistrictID;
+    public void setPMDistricts(String PMDistricts) {
+        this.PMDistricts = PMDistricts;
     }
 
-    public String getPMDistrictID() {
-        return PMDistrictID;
+    public String getPMDistricts() {
+        return PMDistricts;
     }
 
     public void setMeterVendor(String MeterVendor) {
@@ -270,20 +311,20 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return BlockSelection;
     }
 
-    public void setOutputXMLFileName(String OutputXMLFileName) {
-        this.OutputXMLFileName = OutputXMLFileName;
+    public void setXMLOutputFileName(String XMLOutputFileName) {
+        this.XMLOutputFileName = XMLOutputFileName;
     }
 
-    public String getOutputXMLFileName() {
-        return OutputXMLFileName;
+    public String getXMLOutputFileName() {
+        return XMLOutputFileName;
     }
 
-    public void setInputXMLFileName(String InputXMLFileName) {
-        this.InputXMLFileName = InputXMLFileName;
+    public void setXMLInputFileName(String XMLInputFileName) {
+        this.XMLInputFileName = XMLInputFileName;
     }
 
-    public String getInputXMLFileName() {
-        return InputXMLFileName;
+    public String getXMLInputFileName() {
+        return XMLInputFileName;
     }
 
     public void setEffectiveFromDate(Date EffectiveFromDate) {
@@ -294,11 +335,11 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return EffectiveFromDate;
     }
 
-    public void setTimeLimitOption(String TimeLimitOption) {
+    public void setTimeLimitOption(RateChangeProcessTimeLimitOption TimeLimitOption) {
         this.TimeLimitOption = TimeLimitOption;
     }
 
-    public String getTimeLimitOption() {
+    public RateChangeProcessTimeLimitOption getTimeLimitOption() {
         return TimeLimitOption;
     }
 
@@ -310,20 +351,20 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return ProcessStep;
     }
 
-    public void setStepStartFlag(String StepStartFlag) {
+    public void setStepStartFlag(RateChangeProcessStepStartFlag StepStartFlag) {
         this.StepStartFlag = StepStartFlag;
     }
 
-    public String getStepStartFlag() {
+    public RateChangeProcessStepStartFlag getStepStartFlag() {
         return StepStartFlag;
     }
 
-    public void setStepExecutionStatus(String StepExecutionStatus) {
-        this.StepExecutionStatus = StepExecutionStatus;
+    public void setStepExecStatus(String StepExecStatus) {
+        this.StepExecStatus = StepExecStatus;
     }
 
-    public String getStepExecutionStatus() {
-        return StepExecutionStatus;
+    public String getStepExecStatus() {
+        return StepExecStatus;
     }
 
     public void setStatusMessage(String StatusMessage) {

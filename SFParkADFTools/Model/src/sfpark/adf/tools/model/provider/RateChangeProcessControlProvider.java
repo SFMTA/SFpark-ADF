@@ -36,6 +36,8 @@ public class RateChangeProcessControlProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
+    /*
+    
     public List<RateChangeProcessControlDTO> getActiveRateChangeProcessControlDTOs() {
         LOGGER.in(CLASSNAME, "getActiveRateChangeProcessControlDTOs");
         return getRateChangeProcessControlDTOs(false);
@@ -45,6 +47,8 @@ public class RateChangeProcessControlProvider {
         LOGGER.in(CLASSNAME, "getActiveRateChangeProcessControlDTOs");
         return getRateChangeProcessControlDTOs(true);
     }
+    
+    // */
 
     /**
      * Checks for the existence of the Rate Change Reference. Returns a Rate
@@ -141,29 +145,27 @@ public class RateChangeProcessControlProvider {
                                     DTO.getRateChangeReferenceID());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.COMMENTS),
                                     DTO.getComments());
-        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.PM_DISTRICT_ID),
-                                    DTO.getPMDistrictID());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.PM_DISTRICTS),
+                                    DTO.getPMDistricts());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.METER_VENDOR),
                                     DTO.getMeterVendor());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.METER_MODEL),
                                     DTO.getMeterModel());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.BLOCK_SELECTION),
                                     DTO.getBlockSelection());
-        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.XML_INPUT_FILE_NAME),
-                                    DTO.getInputXMLFileName());
         preparedStatement.setDate(getInsertIndexOf(RateChangeProcessControlDTO.EFF_FROM_DT),
                                   DTO.getEffectiveFromDate());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.TIME_LIMIT_OPTION),
-                                    DTO.getTimeLimitOption());
+                                    DTO.getTimeLimitOption().getStringForTable());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.PROCESS_STEP),
                                     DTO.getProcessStep());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
-                                    DTO.getStepStartFlag());
+                                    DTO.getStepStartFlag().getStringForTable());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
                                     lastUpdatedProgram);
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
-
+        
         return preparedStatement;
     }
 
@@ -175,27 +177,23 @@ public class RateChangeProcessControlProvider {
         PreparedStatement preparedStatement =
             connection.prepareStatement(getUpdateStatementForProcessID(DTO.getProcessID()));
 
-        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.RATE_CHG_REF),
-                                    DTO.getRateChangeReference());
-        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.RATE_CHG_REF_ID),
-                                    DTO.getRateChangeReferenceID());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.COMMENTS),
                                     DTO.getComments());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.XML_INPUT_FILE_NAME),
-                                    DTO.getInputXMLFileName());
+                                    DTO.getXMLInputFileName());
         preparedStatement.setDate(getUpdateIndexOf(RateChangeProcessControlDTO.EFF_FROM_DT),
                                   DTO.getEffectiveFromDate());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.TIME_LIMIT_OPTION),
-                                    DTO.getTimeLimitOption());
+                                    DTO.getTimeLimitOption().getStringForTable());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.PROCESS_STEP),
                                     DTO.getProcessStep());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
-                                    DTO.getStepStartFlag());
+                                    DTO.getStepStartFlag().getStringForTable());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
                                     lastUpdatedProgram);
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
-
+        
         return preparedStatement;
     }
 
@@ -204,6 +202,8 @@ public class RateChangeProcessControlProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
 
+    /*
+    
     private List<RateChangeProcessControlDTO> getRateChangeProcessControlDTOs(boolean historic) {
         LOGGER.entering(CLASSNAME, "getRateChangeProcessControlDTOs");
 
@@ -240,6 +240,8 @@ public class RateChangeProcessControlProvider {
 
         return rateChangeProcessControlDTOs;
     }
+    
+    // */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -262,6 +264,7 @@ public class RateChangeProcessControlProvider {
                                                   Where);
     }
 
+    /*
     private String getSelectStatement(boolean historic) {
         LOGGER.entering(CLASSNAME, "getSelectStatement");
 
@@ -284,6 +287,8 @@ public class RateChangeProcessControlProvider {
                                                   RateChangeProcessControlDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
+    
+    // */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
