@@ -391,7 +391,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         boolean disabled =
             getCurrentParkingSpaceInventoryDTO().isUnmetered() ||
             getCurrentParkingSpaceInventoryDTO().isDeleted() ||
-            !getCurrentParkingSpaceInventoryDTO().getMeterDetails().isMeterMultiSpace();
+            !getCurrentParkingSpaceInventoryDTO().getMeterDetails().getMeterType().isMultiSpace();
 
         return disabled;
     }
@@ -400,7 +400,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         boolean disabled =
             getCurrentParkingSpaceInventoryDTO().isUnmetered() ||
             getCurrentParkingSpaceInventoryDTO().isDeleted() ||
-            !getCurrentParkingSpaceInventoryDTO().getMeterDetails().isMeterMultiSpace();
+            !getCurrentParkingSpaceInventoryDTO().getMeterDetails().getMeterType().isMultiSpace();
 
         return disabled;
     }
@@ -939,7 +939,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         if (allValid) {
 
-            if (parkingSpaceInventoryDTO.getMeterDetails().isMeterMultiSpace()) {
+            if (parkingSpaceInventoryDTO.getMeterDetails().getMeterType().isMultiSpace()) {
 
                 if (!CommonUtils.willPostIDAndPayStationIDWork(parkingSpaceInventoryDTO.getPostID(),
                                                                parkingSpaceInventoryDTO.getMSPayStationID(),

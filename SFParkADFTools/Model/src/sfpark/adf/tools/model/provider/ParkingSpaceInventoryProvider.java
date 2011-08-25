@@ -246,9 +246,9 @@ public class ParkingSpaceInventoryProvider {
         preparedStatement.setString(getInsertIndexOf(ParkingSpaceInventoryDTO.METER_MODEL),
                                     DTO.getMeterDetails().getMeterModel());
         preparedStatement.setString(getInsertIndexOf(ParkingSpaceInventoryDTO.METER_TYPE),
-                                    DTO.getMeterDetails().getMeterType());
+                                    DTO.getMeterDetails().getMeterType().getStringForTable());
         preparedStatement.setString(getInsertIndexOf(ParkingSpaceInventoryDTO.SMART_METER_FLAG),
-                                    DTO.getMeterDetails().getSmartMeterFlag());
+                                    DTO.getMeterDetails().getSmartMeterFlag().getStringForTable());
 
         preparedStatement.setString(getInsertIndexOf(ParkingSpaceInventoryDTO.MS_PAY_STATION_ID),
                                     DTO.getMSPayStationID());
@@ -334,9 +334,9 @@ public class ParkingSpaceInventoryProvider {
         preparedStatement.setString(getUpdateIndexOf(ParkingSpaceInventoryDTO.METER_MODEL),
                                     DTO.getMeterDetails().getMeterModel());
         preparedStatement.setString(getUpdateIndexOf(ParkingSpaceInventoryDTO.METER_TYPE),
-                                    DTO.getMeterDetails().getMeterType());
+                                    DTO.getMeterDetails().getMeterType().getStringForTable());
         preparedStatement.setString(getUpdateIndexOf(ParkingSpaceInventoryDTO.SMART_METER_FLAG),
-                                    DTO.getMeterDetails().getSmartMeterFlag());
+                                    DTO.getMeterDetails().getSmartMeterFlag().getStringForTable());
 
         preparedStatement.setString(getUpdateIndexOf(ParkingSpaceInventoryDTO.MS_PAY_STATION_ID),
                                     DTO.getMSPayStationID());

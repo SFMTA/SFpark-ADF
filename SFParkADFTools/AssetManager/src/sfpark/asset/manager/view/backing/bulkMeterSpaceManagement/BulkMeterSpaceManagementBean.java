@@ -207,8 +207,8 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
     public boolean isDisableMSPayStationIDIT() {
         boolean disabled =
             getParkingSpaceInventoryBulkTO().isUnmetered() || !getParkingSpaceInventoryBulkTO().isToBeUpdatedMeterDetails() ||
-            !getParkingSpaceInventoryBulkTO().getMeterDetails().isMeterMultiSpace() ||
-            getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().contains("-");
+            !getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().isMultiSpace() ||
+            getParkingSpaceInventoryBulkTO().getMeterDetails().getMeterType().isNone();
 
         return disabled;
     }

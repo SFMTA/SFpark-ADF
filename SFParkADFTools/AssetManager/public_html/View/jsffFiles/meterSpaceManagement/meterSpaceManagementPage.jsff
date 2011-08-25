@@ -173,11 +173,11 @@
                       binding="#{meterSpaceManagementBean.meterModelIT}"/>
         <af:inputText id="smartMeterIT" readOnly="true"
                       label="#{labelBundle.label_smart_meter}"
-                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.displaySmartMeterFlag}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.smartMeterFlag.stringForDisplay}"
                       binding="#{meterSpaceManagementBean.smartMeterIT}"/>
         <af:inputText id="meterTypeIT" readOnly="true"
                       label="#{labelBundle.label_meter_type}"
-                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.displayMeterType}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.meterType.stringForDisplay}"
                       binding="#{meterSpaceManagementBean.meterTypeIT}"/>
         <af:inputText id="msPayStationIDIT" maximumLength="9" columns="10"
                       required="true" showRequired="false"

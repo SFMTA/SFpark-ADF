@@ -658,7 +658,7 @@ public final class DMLOperationsProvider {
                 }
 
                 if (parkingSpaceInventoryBulkTO.isToBeUpdatedMeterDetails() &&
-                    parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace() &&
+                    parkingSpaceInventoryBulkTO.getMeterDetails().getMeterType().isMultiSpace() &&
                     !CommonUtils.willPostIDAndPayStationIDWork(parkingSpaceInventoryDTO.getPostID(),
                                                                parkingSpaceInventoryBulkTO.getMSPayStationID(),
                                                                parkingSpaceInventoryDTO.getOnOffStreetType())) {
@@ -707,7 +707,7 @@ public final class DMLOperationsProvider {
                     parkingSpaceInventoryDTO.setMeterDetails(parkingSpaceInventoryBulkTO.getMeterDetails());
 
                     String msPayStationID =
-                        parkingSpaceInventoryBulkTO.getMeterDetails().isMeterMultiSpace() ?
+                        parkingSpaceInventoryBulkTO.getMeterDetails().getMeterType().isMultiSpace() ?
                         parkingSpaceInventoryBulkTO.getMSPayStationID() : "-";
 
                     parkingSpaceInventoryDTO.setMSPayStationID(msPayStationID);

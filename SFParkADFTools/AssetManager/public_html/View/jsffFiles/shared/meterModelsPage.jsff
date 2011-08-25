@@ -47,13 +47,13 @@
                  sortable="false"
                  headerText="#{columnBundle.column_meter_type}">
         <af:outputText id="MMTableRowMeterType"
-                       value="#{row.displayMeterType}"/>
+                       value="#{row.meterType.stringForDisplay}"/>
       </af:column>
       <af:column id="MMTableColSmartMeter" align="center" width="100px"
                  sortable="false"
                  headerText="#{columnBundle.column_smart_meter}">
         <af:outputText id="MMTableRowSmartMeter"
-                       value="#{row.displaySmartMeterFlag}"/>
+                       value="#{row.smartMeterFlag.stringForDisplay}"/>
       </af:column>
     </af:table>
   </af:panelGroupLayout>

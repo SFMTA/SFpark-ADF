@@ -8,7 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.BaseDO;
-import sfpark.adf.tools.utilities.generic.StringUtil;
+import sfpark.adf.tools.model.data.helper.MeterSmartFlag;
+import sfpark.adf.tools.model.data.helper.MeterType;
 
 public class MeterModelsDO extends BaseDO {
 
@@ -29,8 +30,8 @@ public class MeterModelsDO extends BaseDO {
 
         this.setMeterVendor(resultSet.getString(METER_VENDOR));
         this.setMeterModel(resultSet.getString(METER_MODEL));
-        this.setMeterType(resultSet.getString(METER_TYPE));
-        this.setSmartMeterFlag(resultSet.getString(SMART_METER_FLAG));
+        this.setMeterType(MeterType.extract(resultSet.getString(METER_TYPE)));
+        this.setSmartMeterFlag(MeterSmartFlag.extract(resultSet.getString(SMART_METER_FLAG)));
 
     }
 
@@ -62,42 +63,11 @@ public class MeterModelsDO extends BaseDO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // PURELY FOR DISPLAY PURPOSES
-
-    public boolean isMeterMultiSpace() {
-        return StringUtil.areEqual(getMeterType(), "MS");
-    }
-
-    public String getDisplayMeterType() {
-
-        String meterType = getMeterType();
-
-        if (StringUtil.areEqual(meterType, "SS")) {
-            return "Single Space";
-        } else if (StringUtil.areEqual(meterType, "MS")) {
-            return "Multi Space";
-        }
-
-        return meterType;
-    }
-
-    public String getDisplaySmartMeterFlag() {
-
-        if (StringUtil.areEqual(getSmartMeterFlag(), "Y")) {
-            return "Yes";
-        }
-
-        return "No";
-    }
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private String MeterVendor;
     private String MeterModel;
-    private String MeterType;
-    private String SmartMeterFlag;
+    private MeterType meterType;
+    private MeterSmartFlag SmartMeterFlag;
 
     public void setMeterVendor(String MeterVendor) {
         this.MeterVendor = MeterVendor;
@@ -115,19 +85,19 @@ public class MeterModelsDO extends BaseDO {
         return MeterModel;
     }
 
-    public void setMeterType(String MeterType) {
-        this.MeterType = MeterType;
+    public void setMeterType(MeterType meterType) {
+        this.meterType = meterType;
     }
 
-    public String getMeterType() {
-        return MeterType;
+    public MeterType getMeterType() {
+        return meterType;
     }
 
-    public void setSmartMeterFlag(String SmartMeterFlag) {
+    public void setSmartMeterFlag(MeterSmartFlag SmartMeterFlag) {
         this.SmartMeterFlag = SmartMeterFlag;
     }
 
-    public String getSmartMeterFlag() {
+    public MeterSmartFlag getSmartMeterFlag() {
         return SmartMeterFlag;
     }
 }

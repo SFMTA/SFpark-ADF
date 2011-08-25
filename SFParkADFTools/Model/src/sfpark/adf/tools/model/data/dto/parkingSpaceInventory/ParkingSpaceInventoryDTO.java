@@ -240,10 +240,8 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
                                 originalDTO.getMeterDetails().getMeterVendor()) &&
             StringUtil.areEqual(this.getMeterDetails().getMeterModel(),
                                 originalDTO.getMeterDetails().getMeterModel()) &&
-            StringUtil.areEqual(this.getMeterDetails().getMeterType(),
-                                originalDTO.getMeterDetails().getMeterType()) &&
-            StringUtil.areEqual(this.getMeterDetails().getSmartMeterFlag(),
-                                originalDTO.getMeterDetails().getSmartMeterFlag()) &&
+            ObjectUtil.getNullSafe(this.getMeterDetails().getMeterType()).equals(ObjectUtil.getNullSafe(originalDTO.getMeterDetails().getMeterType())) &&
+            ObjectUtil.getNullSafe(this.getMeterDetails().getSmartMeterFlag()).equals(ObjectUtil.getNullSafe(originalDTO.getMeterDetails().getSmartMeterFlag())) &&
             StringUtil.areEqual(this.getMSPayStationID(),
                                 originalDTO.getMSPayStationID()) &&
             (ObjectUtil.getNullSafe(this.getMSSpaceNum()) ==
@@ -302,7 +300,7 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
 
         setMeterDetails(meterModelsDO);
 
-        if (meterModelsDO.isMeterMultiSpace()) {
+        if (meterModelsDO.getMeterType().isMultiSpace()) {
             setMSPayStationID(getPostID());
             setMSSpaceNum(1);
         } else {

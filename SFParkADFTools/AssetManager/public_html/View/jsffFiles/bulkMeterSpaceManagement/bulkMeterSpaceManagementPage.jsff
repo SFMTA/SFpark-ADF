@@ -129,10 +129,10 @@
                       value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterModel}"/>
         <af:inputText id="smartMeterIT" readOnly="true"
                       label="#{labelBundle.label_smart_meter}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displaySmartMeterFlag}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.smartMeterFlag.stringForDisplay}"/>
         <af:inputText id="meterTypeIT" readOnly="true"
                       label="#{labelBundle.label_meter_type}"
-                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.displayMeterType}"/>
+                      value="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.meterDetails.meterType.stringForDisplay}"/>
         <af:inputText id="msPayStationIDIT" maximumLength="9" columns="10"
                       required="true"
                       disabled="#{bulkMeterSpaceManagementBean.disableMSPayStationIDIT}"

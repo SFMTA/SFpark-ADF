@@ -89,7 +89,7 @@ public class ParkingSpaceInventoryBulkTO extends BaseTO {
 
         setMeterDetails(meterModelsDO);
 
-        if (meterModelsDO.isMeterMultiSpace()) {
+        if (meterModelsDO.getMeterType().isMultiSpace()) {
             // So that the UI does not complain about invalid data
             setMSPayStationID("000-00000");
         } else {
