@@ -41,11 +41,6 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>deploymentProcessListBean</managed-bean-name>
-    <managed-bean-class>sfpark.priceChange.manager.view.backing.deploymentProcess.DeploymentProcessListBean</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
     <managed-bean-name>deploymentProcessPropertiesBean</managed-bean-name>
     <managed-bean-class>sfpark.priceChange.manager.view.backing.deploymentProcess.DeploymentProcessPropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
