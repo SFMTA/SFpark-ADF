@@ -66,6 +66,11 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>pickMeterBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickMeterBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>pickPMDistrictsAndBlocksBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickPMDistrictsAndBlocksBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

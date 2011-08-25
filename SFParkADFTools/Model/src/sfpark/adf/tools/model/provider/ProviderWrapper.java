@@ -21,6 +21,7 @@ import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.exception.*;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.status.OperationStatus;
@@ -193,6 +194,11 @@ public final class ProviderWrapper {
                                                                             (RateChangeHeaderDTO)DTO,
                                                                             lastUpdatedUser,
                                                                             lastUpdatedProgram);
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return RateChangeProcessControlProvider.INSTANCE.prepareInsertStatement(connection,
+                                                                                    (RateChangeProcessControlDTO)DTO,
+                                                                                    lastUpdatedUser,
+                                                                                    lastUpdatedProgram);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -218,6 +224,8 @@ public final class ProviderWrapper {
             return new CalendarDetailInsertException();
         } else if (DTO instanceof RateChangeHeaderDTO) {
             return new RateChangeHeaderInsertException();
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return new RateChangeProcessControlInsertException();
         }
 
         return new SQLInsertException();
@@ -273,6 +281,11 @@ public final class ProviderWrapper {
                                                                             (RateChangeHeaderDTO)DTO,
                                                                             lastUpdatedUser,
                                                                             lastUpdatedProgram);
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return RateChangeProcessControlProvider.INSTANCE.prepareUpdateStatement(connection,
+                                                                                    (RateChangeProcessControlDTO)DTO,
+                                                                                    lastUpdatedUser,
+                                                                                    lastUpdatedProgram);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -297,6 +310,8 @@ public final class ProviderWrapper {
             return new MeterRateScheduleUpdateException();
         } else if (DTO instanceof RateChangeHeaderDTO) {
             return new RateChangeHeaderUpdateException();
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return new RateChangeProcessControlUpdateException();
         }
 
         return new SQLUpdateException();

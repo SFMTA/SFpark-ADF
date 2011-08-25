@@ -15,6 +15,9 @@ public enum ExceptionType {
     RATE_CHANGE_HEADER_INSERT,
     RATE_CHANGE_HEADER_UPDATE,
 
+    RATE_CHANGE_PROCESS_CONTROL_INSERT,
+    RATE_CHANGE_PROCESS_CONTROL_UPDATE,
+
     OSP_INVENTORY_INSERT,
     OSP_INVENTORY_UPDATE,
 
@@ -107,6 +110,14 @@ public enum ExceptionType {
 
         if (exception instanceof RateChangeHeaderUpdateException) {
             return RATE_CHANGE_HEADER_UPDATE;
+        }
+
+        if (exception instanceof RateChangeProcessControlInsertException) {
+            return RATE_CHANGE_PROCESS_CONTROL_INSERT;
+        }
+
+        if (exception instanceof RateChangeProcessControlUpdateException) {
+            return RATE_CHANGE_PROCESS_CONTROL_UPDATE;
         }
 
         if (exception instanceof OSPInventoryInsertException) {

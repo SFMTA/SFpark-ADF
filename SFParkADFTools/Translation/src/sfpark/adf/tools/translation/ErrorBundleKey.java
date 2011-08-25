@@ -138,6 +138,8 @@ public enum ErrorBundleKey {
 
     error_invalid_calendar_id,
 
+    error_invalid_meter_vendor,
+
     error_exists_already_rate_chg_ref,
 
     error_date_approved_before_submitted,

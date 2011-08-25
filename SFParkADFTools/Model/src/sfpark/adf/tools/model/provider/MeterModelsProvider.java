@@ -73,8 +73,8 @@ public final class MeterModelsProvider {
         return getMeterModelsFor(false);
     }
 
-    public List<MeterModelsDO> getMeterModelsForPriceChangeProcessControl() {
-        LOGGER.in(CLASSNAME, "getMeterModelsForPriceChangeProcessControl");
+    public List<MeterModelsDO> getMeterModelsDOsForRateChangeProcessControl() {
+        LOGGER.in(CLASSNAME, "getMeterModelsDOsForRateChangeProcessControl");
 
         return getMeterModelsFor(true);
     }
@@ -84,7 +84,7 @@ public final class MeterModelsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
 
-    private List<MeterModelsDO> getMeterModelsFor(boolean priceChangeProcessControl) {
+    private List<MeterModelsDO> getMeterModelsFor(boolean rateChangeProcessControl) {
         LOGGER.entering(CLASSNAME, "getMeterModelsFor");
 
         List<MeterModelsDO> meterModelsDOs = new ArrayList<MeterModelsDO>();
@@ -96,7 +96,8 @@ public final class MeterModelsProvider {
         try {
             connection = ConnectUtil.getConnection();
 
-            preparedStatement = connection.prepareStatement(getSelectStatement(priceChangeProcessControl));
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement(rateChangeProcessControl));
 
             resultSet = preparedStatement.executeQuery();
 
@@ -142,7 +143,7 @@ public final class MeterModelsProvider {
                                                   Where);
     }
 
-    private String getSelectStatement(boolean priceChangeProcessControl) {
+    private String getSelectStatement(boolean rateChangeProcessControl) {
         LOGGER.entering(CLASSNAME, "getSelectStatement");
 
         String Attributes =
@@ -150,7 +151,7 @@ public final class MeterModelsProvider {
 
         String Where = "";
 
-        if (priceChangeProcessControl) {
+        if (rateChangeProcessControl) {
             String string1 =
                 StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,
                                                    "\'Y\'");
@@ -159,10 +160,10 @@ public final class MeterModelsProvider {
                                               "\'Duncan\', \'IPS\'");
 
             Where = StatementGenerator.andOperator(string1, string2);
-            
+
         } else {
             Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
-            
+
         }
 
         String OrderBy =
@@ -178,43 +179,4 @@ public final class MeterModelsProvider {
                                                   MeterModelsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
-
-    //    private String getSelectStatement() {
-    //        LOGGER.entering(CLASSNAME, "getSelectStatement");
-    //
-    //        String Attributes =
-    //            StringUtil.convertListToString(MeterModelsDO.getAttributeListForSelect());
-    //
-    //        String Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
-    //
-    //        LOGGER.exiting(CLASSNAME, "getSelectStatement");
-    //
-    //        return StatementGenerator.selectStatement(Attributes,
-    //                                                  MeterModelsDO.getDatabaseTableName(),
-    //                                                  Where, getOrderByString());
-    //    }
-
-    //    private String getSelectStatementForPriceChangeProcessControl() {
-    //        LOGGER.entering(CLASSNAME,
-    //                        "getSelectStatementForPriceChangeProcessControl");
-    //
-    //        String Attributes =
-    //            StringUtil.convertListToString(MeterModelsDO.getAttributeListForSelect());
-    //
-    //        String string1 =
-    //            StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,
-    //                                               "\'Y\'");
-    //        String string2 =
-    //            StatementGenerator.inOperator(MeterModelsDO.METER_VENDOR,
-    //                                          "\'Duncan\', \'IPS\'");
-    //
-    //        String Where = StatementGenerator.andOperator(string1, string2);
-    //
-    //        LOGGER.exiting(CLASSNAME,
-    //                       "getSelectStatementForPriceChangeProcessControl");
-    //
-    //        return StatementGenerator.selectStatement(Attributes,
-    //                                                  MeterModelsDO.getDatabaseTableName(),
-    //                                                  Where, getOrderByString());
-    //    }
 }

@@ -42,12 +42,16 @@
         <af:panelLabelAndMessage id="rateChgRefPLM"
                                  label="#{labelBundle.label_rate_change_reference}">
           <af:inputText id="rateChgRefIT" required="true"
+                        rendered="#{!rateChangeDeployBean.readOnly}"
                         readOnly="#{rateChangeDeployBean.readOnly}"
                         maximumLength="#{rateChangeDeployBean.rateChangeProcessControlDTO.maximumLengthValueRateChangeReference}"
                         columns="#{rateChangeDeployBean.rateChangeProcessControlDTO.columnsValueRateChangeReference}"
                         label="#{rateChangeDeployBean.rateChangeProcessControlDTO.labelRateChangeReference}"
                         value="#{rateChangeDeployBean.rateChangeProcessControlDTO.valueRateChangeReference}"
                         autoSubmit="true"/>
+          <af:outputText id="rateChgRefOT"
+                         rendered="#{rateChangeDeployBean.readOnly}"
+                         value="#{rateChangeDeployBean.rateChangeProcessControlDTO.rateChangeReference}"></af:outputText>
         </af:panelLabelAndMessage>
         <af:spacer id="rateChgRefSpacer" height="10"/>
         <af:inputText id="commentsIT" rows="5" columns="40"
@@ -95,7 +99,7 @@
                                  inlineStyle="vertical-align: top;"
                                  label="#{labelBundle.label_block_selection}">
           <af:outputText id="blockSelectionOT" escape="false"
-                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangeDeployBean.rateChangeProcessControlDTO.blockSelection}&lt;/div>'/>
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangeDeployBean.rateChangeProcessControlDTO.displayBlockSelection}&lt;/div>'/>
         </af:panelLabelAndMessage>
       </af:panelFormLayout>
       <af:panelFormLayout id="rhsRCPCFormPanel">

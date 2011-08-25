@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
@@ -35,20 +32,6 @@ public class RateChangeProcessControlProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
-
-    /*
-    
-    public List<RateChangeProcessControlDTO> getActiveRateChangeProcessControlDTOs() {
-        LOGGER.in(CLASSNAME, "getActiveRateChangeProcessControlDTOs");
-        return getRateChangeProcessControlDTOs(false);
-    }
-
-    public List<RateChangeProcessControlDTO> getHistoricRateChangeProcessControlDTOs() {
-        LOGGER.in(CLASSNAME, "getActiveRateChangeProcessControlDTOs");
-        return getRateChangeProcessControlDTOs(true);
-    }
-    
-    // */
 
     /**
      * Checks for the existence of the Rate Change Reference. Returns a Rate
@@ -91,41 +74,6 @@ public class RateChangeProcessControlProvider {
         return new RateChangeProcessControlDTOStatus(DTO);
     }
 
-    /*
-    public MeterOPScheduleDTO getMeterScheduleFor(String meterOPScheduleID) {
-        LOGGER.entering(CLASSNAME, "getMeterScheduleFor");
-
-        MeterOPScheduleDTO meterOPScheduleDTO = null;
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = ConnectUtil.getConnection();
-
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatementForMeterOPScheduleID());
-            preparedStatement.setString(1, meterOPScheduleID);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                meterOPScheduleDTO = MeterOPScheduleDTO.extract(resultSet);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
-        } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
-        }
-
-        LOGGER.exiting(CLASSNAME, "getMeterScheduleFor");
-        return meterOPScheduleDTO;
-    }
-
- */
-
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -161,11 +109,14 @@ public class RateChangeProcessControlProvider {
                                     DTO.getProcessStep());
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
                                     DTO.getStepStartFlag().getStringForTable());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.STEP_EXEC_STATUS),
+                                    DTO.getStepExecStatus());
+
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
                                     lastUpdatedProgram);
         preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
-        
+
         return preparedStatement;
     }
 
@@ -189,11 +140,14 @@ public class RateChangeProcessControlProvider {
                                     DTO.getProcessStep());
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
                                     DTO.getStepStartFlag().getStringForTable());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.STEP_EXEC_STATUS),
+                                    DTO.getStepExecStatus());
+
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
                                     lastUpdatedProgram);
         preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
-        
+
         return preparedStatement;
     }
 
@@ -201,47 +155,6 @@ public class RateChangeProcessControlProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
-
-    /*
-    
-    private List<RateChangeProcessControlDTO> getRateChangeProcessControlDTOs(boolean historic) {
-        LOGGER.entering(CLASSNAME, "getRateChangeProcessControlDTOs");
-
-        List<RateChangeProcessControlDTO> rateChangeProcessControlDTOs =
-            new ArrayList<RateChangeProcessControlDTO>();
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = ConnectUtil.getConnection();
-
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatement(historic));
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-
-                RateChangeProcessControlDTO DTO =
-                    RateChangeProcessControlDTO.extract(resultSet);
-
-                rateChangeProcessControlDTOs.add(DTO);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
-        } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
-        }
-
-        LOGGER.exiting(CLASSNAME, "getRateChangeProcessControlDTOs");
-
-        return rateChangeProcessControlDTOs;
-    }
-    
-    // */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -263,32 +176,6 @@ public class RateChangeProcessControlProvider {
                                                   RateChangeProcessControlDTO.getDatabaseTableName(),
                                                   Where);
     }
-
-    /*
-    private String getSelectStatement(boolean historic) {
-        LOGGER.entering(CLASSNAME, "getSelectStatement");
-
-        String Attributes =
-            StringUtil.convertListToString(RateChangeProcessControlDTO.getAttributeListForSelect());
-
-        String Where =
-            historic ? StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_STEP,
-                                                          "99") :
-            StatementGenerator.lessThanOperator(RateChangeProcessControlDTO.PROCESS_STEP,
-                                                "99");
-
-        String OrderBy =
-            StatementGenerator.commaOperator(RateChangeProcessControlDTO.PROCESS_STEP,
-                                             RateChangeProcessControlDTO.STEP_EXEC_STATUS);
-
-        LOGGER.exiting(CLASSNAME, "getSelectStatement");
-
-        return StatementGenerator.selectStatement(Attributes,
-                                                  RateChangeProcessControlDTO.getDatabaseTableName(),
-                                                  Where, OrderBy);
-    }
-    
-    // */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -344,27 +231,3 @@ public class RateChangeProcessControlProvider {
                 1);
     }
 }
-
-/*
-    // ++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++
-    // SELECT HELPERS
-
-    private String getSelectStatementForMeterOPScheduleID() {
-        LOGGER.entering(CLASSNAME, "getSelectStatementForMeterOPScheduleID");
-
-        String Attributes =
-            StringUtil.convertListToString(MeterOPScheduleDTO.getAttributeListForSelect());
-
-        String Where =
-            StatementGenerator.equalToOperator(MeterOPScheduleDTO.METER_OP_SCHED_ID);
-
-        LOGGER.exiting(CLASSNAME, "getSelectStatementForMeterOPScheduleID");
-        return StatementGenerator.selectStatement(Attributes,
-                                                  MeterOPScheduleDTO.getDatabaseTableName(),
-                                                  Where);
-    }
-
-
- */

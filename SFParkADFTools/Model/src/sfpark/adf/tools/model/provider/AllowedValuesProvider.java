@@ -360,7 +360,7 @@ public class AllowedValuesProvider {
     }
 
     public static String getProcessStepDefaultValue() {
-        return getProcessStepTreeMap().firstEntry().getValue();
+        return getProcessStepTreeMap().firstKey();
     }
 
     // ++++++++++++++++++++++++++++++++++
@@ -396,6 +396,10 @@ public class AllowedValuesProvider {
         }
 
         return processStepExecStatusTreeMap;
+    }
+
+    public static String getProcessStepExecStatusDefaultValue() {
+        return getProcessStepExecStatusTreeMap().firstKey();
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -10,6 +10,7 @@ public enum NavigationFlow {
     PickAreaType("/View/jsffFiles/rateChange/helper/pickAreaTypePage.jsff"),
     PickCalendar("/View/jsffFiles/rateChange/helper/pickCalendarPage.jsff"),
 
+    PickMeter("/View/jsffFiles/rateChange/helper/pickMeterPage.jsff"),
     PickPMDistrictsAndBlocks("/View/jsffFiles/rateChange/helper/pickPMDistrictsAndBlocksPage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

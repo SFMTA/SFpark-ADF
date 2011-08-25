@@ -79,37 +79,31 @@ public class PickPMDistrictsAndBlocksBean extends BaseBean implements Properties
             pmDistrictDOs = new ArrayList<PMDistrictsDO>();
         }
 
-        RateChangeProcessControlDTO DTO =
-            (RateChangeProcessControlDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey());
+        List<BlocksDO> selectedBlockList = new ArrayList<BlocksDO>();
 
-        DTO.setPMDistrictDOs(pmDistrictDOs);
-
-        if (pmDistrictDOs.isEmpty()) {
-            DTO.setBlockSelection("");
-
-        } else {
-
+        if (!pmDistrictDOs.isEmpty()) {
             RichTable table = getBlockSelectionTable();
             RowKeySet rowKeySet = table.getSelectedRowKeys();
             int numOfSelectedRows = rowKeySet.size();
 
             if (numOfSelectedRows > 0) {
-                List<String> selectedBlockList = new ArrayList<String>();
-
                 for (Object rowKey : rowKeySet) {
                     table.setRowKey(rowKey);
 
                     BlocksDO DO = (BlocksDO)table.getRowData();
 
                     if (DO != null) {
-                        selectedBlockList.add(DO.getBlockID());
+                        selectedBlockList.add(DO);
                     }
                 }
-
-                DTO.setBlockSelection(StringUtil.convertListToString(selectedBlockList));
             }
-
         }
+
+        RateChangeProcessControlDTO DTO =
+            (RateChangeProcessControlDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey());
+
+        DTO.setPMDistrictDOs(pmDistrictDOs);
+        DTO.setBlockDOs(selectedBlockList);
 
         setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(),
                               DTO);

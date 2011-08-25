@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import sfpark.adf.tools.model.data.dO.blocks.BlocksDO;
 import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
@@ -87,12 +88,12 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         Arrays.asList(RATE_CHG_REF, RATE_CHG_REF_ID, COMMENTS, PM_DISTRICTS,
                       METER_VENDOR, METER_MODEL, BLOCK_SELECTION, EFF_FROM_DT,
                       TIME_LIMIT_OPTION, PROCESS_STEP, STEP_START_FLAG,
-                      LAST_UPD_USER, LAST_UPD_PGM);
+                      STEP_EXEC_STATUS, LAST_UPD_USER, LAST_UPD_PGM);
 
     private static final List<String> AttributeListForUpdate =
         Arrays.asList(COMMENTS, XML_INPUT_FILE_NAME, EFF_FROM_DT,
                       TIME_LIMIT_OPTION, PROCESS_STEP, STEP_START_FLAG,
-                      LAST_UPD_USER, LAST_UPD_PGM);
+                      STEP_EXEC_STATUS, LAST_UPD_USER, LAST_UPD_PGM);
 
     public static List<String> getAttributeListForSelect() {
         return AttributeListForSelect;
@@ -127,6 +128,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     private String LabelRateChangeReference;
     private String ValueRateChangeReference;
     private List<PMDistrictsDO> PMDistrictDOs;
+    private List<BlocksDO> BlockDOs;
 
     public void setLabelRateChangeReference(String LabelRateChangeReference) {
         this.LabelRateChangeReference = LabelRateChangeReference;
@@ -169,7 +171,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     public String getDisplayPMDistricts() {
 
-        if (getPMDistrictDOs() == null) {
+        if (getPMDistrictDOs() == null || getPMDistrictDOs().isEmpty()) {
             return "";
         }
 
@@ -177,6 +179,40 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
         for (PMDistrictsDO DO : getPMDistrictDOs()) {
             tempList.add(DO.getPMDistrictName());
+        }
+
+        return StringUtil.convertListToString(tempList,
+                                              StringUtil.SEPARATOR.COMMA_WITH_TRAILING_SPACE);
+    }
+
+    public void setBlockDOs(List<BlocksDO> BlockDOs) {
+        this.BlockDOs = BlockDOs;
+
+        if (BlockDOs != null) {
+            List<String> tempList = new ArrayList<String>();
+
+            for (BlocksDO DO : BlockDOs) {
+                tempList.add(DO.getBlockID());
+            }
+
+            setBlockSelection(StringUtil.convertListToString(tempList));
+        }
+    }
+
+    public List<BlocksDO> getBlockDOs() {
+        return BlockDOs;
+    }
+
+    public String getDisplayBlockSelection() {
+
+        if (getBlockDOs() == null || getBlockDOs().isEmpty()) {
+            return "";
+        }
+
+        List<String> tempList = new ArrayList<String>();
+
+        for (BlocksDO DO : getBlockDOs()) {
+            tempList.add(DO.getBlockID());
         }
 
         return StringUtil.convertListToString(tempList,

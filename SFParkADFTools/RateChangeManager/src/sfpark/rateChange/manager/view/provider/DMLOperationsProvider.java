@@ -78,6 +78,7 @@ public class DMLOperationsProvider {
         DTO.setTimeLimitOption(RateChangeProcessTimeLimitOption.YES);
         DTO.setProcessStep(AllowedValuesProvider.getProcessStepDefaultValue());
         DTO.setStepStartFlag(RateChangeProcessStepStartFlag.HOLD);
+        DTO.setStepExecStatus(AllowedValuesProvider.getProcessStepExecStatusDefaultValue());
 
         LOGGER.exiting(CLASSNAME, "getNewRateChangeProcessControlDTO");
 
@@ -147,6 +148,25 @@ public class DMLOperationsProvider {
         }
 
         LOGGER.exiting(CLASSNAME, "editRateChangeHeader");
+
+        return performOperation(tableRecords);
+    }
+
+    /**
+     * Adds the Rate Change Process Control
+     *
+     * @param rateChangeProcessControlDTO
+     * @return
+     */
+    public OperationStatus addRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
+        LOGGER.entering(CLASSNAME, "addRateChangeProcessControl");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
+                                         rateChangeProcessControlDTO));
+
+        LOGGER.exiting(CLASSNAME, "addRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }

@@ -5,6 +5,13 @@ import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
+import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
+import sfpark.adf.tools.model.status.OperationStatus;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -12,6 +19,7 @@ import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class RateChangeDeployBean extends BaseBean implements PropertiesBeanInterface,
@@ -116,16 +124,6 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DISABLE INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // LIST VALUES
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
     public void pickButtonHandler(ActionEvent event) {
@@ -136,7 +134,8 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
         String ID = event.getComponent().getId();
 
         if (ID.contains("meterVendor")) {
-            // TODO PickMeterVendor
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PickMeter.name());
         } else if (ID.contains("pmDistricts")) {
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.PickPMDistrictsAndBlocks.name());
@@ -144,60 +143,26 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
 
     }
 
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
-
-    private void printLog(String message) {
-        System.out.println(message);
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS EXTRA
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS
-
-}
-
-/*
-
-
-
+    /**
      * Validates the Form and Saves if all entries are valid
      *
      * Common Validity Tests:
      * =====================
-     *    1. Calendar ID should not be ZERO
+     *    1. Meter Vendor should be selected
      *    2. Rate Change Reference should NOT exist
      *
      * @param event
-
+     */
     public void saveButtonHandler(ActionEvent event) {
         boolean allValid = true;
         NavigationMode currentPageMode = getCurrentPageMode();
 
-        RateChangeHeaderDTO rateChangeHeaderDTO = getRateChangeHeaderDTO();
+        RateChangeProcessControlDTO rateChangeProcessControlDTO =
+            getRateChangeProcessControlDTO();
 
         boolean checkForRateChgRefUniqueness = false;
 
-        if (currentPageMode.isAddMode()) {
+        if (currentPageMode.isDeployMode()) {
             checkForRateChgRefUniqueness = true;
         }
 
@@ -208,23 +173,21 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            String calendarID = rateChangeHeaderDTO.getCalendarID();
+            String meterVendor = rateChangeProcessControlDTO.getMeterVendor();
 
-            if (StringUtil.isBlank(calendarID) ||
-                StringUtil.areEqual(calendarID, "0")) {
+            if (StringUtil.isBlank(meterVendor)) {
                 allValid = false;
-                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_calendar_id));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_meter_vendor));
             }
-
         }
 
-        printLog("After Calendar ID = " + allValid);
+        printLog("After Meter Vendor = " + allValid);
 
         if (allValid && checkForRateChgRefUniqueness) {
-            RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(rateChangeHeaderDTO.getRateChangeReference());
+            RateChangeProcessControlDTOStatus rateChangeProcessControlStatus =
+                RateChangeProcessControlProvider.INSTANCE.checkForRateChangeReference(rateChangeProcessControlDTO.getRateChangeReference());
 
-            if (rateChangeHeaderStatus.existsDTO()) {
+            if (rateChangeProcessControlStatus.existsDTO()) {
                 allValid = false;
                 setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exists_already_rate_change_reference));
             }
@@ -249,40 +212,40 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
         if (allValid) {
             printLog("All entries are Valid. Proceed");
 
-            if (currentPageMode.isAddMode()) {
+            if (currentPageMode.isDeployMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
-                // ADD Mode
-                printLog("ADD Mode");
+                // DEPLOY Mode
+                printLog("DEPLOY Mode");
 
-                RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
+                RateChangeProcessControlDTO currentDTO =
+                    getRateChangeProcessControlDTO();
 
                 OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
+                    DMLOperationsProvider.INSTANCE.addRateChangeProcessControl(currentDTO);
 
                 if (operationStatus.getType().isSuccess()) {
-                    RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
+                    RateChangeProcessControlDTOStatus rateChangeProcessControlStatus =
+                        RateChangeProcessControlProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
 
-                    if (rateChangeHeaderStatus.existsDTO()) {
+                    if (rateChangeProcessControlStatus.existsDTO()) {
                         printLog("ADD operation was successful");
-
-                        // TODO Call stored procedure
 
                         setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
                         setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
 
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.READ_ONLY);
-                        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                              rateChangeHeaderStatus.getDTO());
+                        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(),
+                                              rateChangeProcessControlStatus.getDTO());
 
                     } else {
                         printLog("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
                         setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
                     }
+
                 } else {
                     printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
@@ -295,4 +258,21 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
             setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
         }
     }
- */
+
+    public void cancelButtonHandler(ActionEvent event) {
+        // Do nothing
+    }
+
+    public void anyValueChangeHandler(ValueChangeEvent event) {
+        // Do nothing
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
+
+    private void printLog(String message) {
+        System.out.println(message);
+    }
+}

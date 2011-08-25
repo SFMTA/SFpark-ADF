@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickMeterPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickMeterPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_rate_change_management}"
+                                actionListener="#{pickMeterBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_meter}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarCancel">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickMeterBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:table id="MTable" var="row" varStatus="rowStatus" width="500"
+              inlineStyle="margin-left: 60px; height: 100px;"
+              contentDelivery="immediate" rowSelection="single"
+              rowBandingInterval="1" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{rateChangeManagerBundle.info_empty_meters_list}"
+              summary="Meters List" value="#{pickMeterBean.listMeters}"
+              binding="#{pickMeterBean.meterTable}"
+              selectionListener="#{pickMeterBean.tableRowSelectionHandler}">
+      <af:column id="MTableColMeterVendor" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_meter_vendor}">
+        <af:outputText id="MTableRowMeterVendor" value="#{row.meterVendor}"/>
+      </af:column>
+      <af:column id="MTableColMeterModel" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_meter_model}">
+        <af:outputText id="MTableRowMeterModel" value="#{row.meterModel}"/>
+      </af:column>
+      <af:column id="MTableColMeterType" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_meter_type}">
+        <af:outputText id="MTableRowMeterType"
+                       value="#{row.meterType.stringForDisplay}"/>
+      </af:column>
+      <af:column id="MTableColSmartMeter" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_smart_meter}">
+        <af:outputText id="MTableRowSmartMeter"
+                       value="#{row.smartMeterFlag.stringForDisplay}"/>
+      </af:column>
+    </af:table>
+    <af:inputText id="CITableNoteIT" readOnly="true"
+                  inlineStyle="margin-left: 60px;"
+                  label="#{labelBundle.label_note}"
+                  value="#{commonBundle.note_table_single_select}"/>
+  </af:panelGroupLayout>
+</jsp:root>
