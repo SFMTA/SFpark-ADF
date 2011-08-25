@@ -206,7 +206,7 @@ public class RateChangeHeaderDTO extends BaseDTO {
     }
 
     public int getMaximumLengthRateChangeReference() {
-        return 20;
+        return 15; // To provide at least 5 char space for the process control ref
     }
 
     public int getMaximumLengthRateChangeDescription() {

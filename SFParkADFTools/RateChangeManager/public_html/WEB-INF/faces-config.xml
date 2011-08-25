@@ -51,13 +51,28 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>pickCalendarBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickCalendarBean</managed-bean-class>
+    <managed-bean-name>rateChangeDeployBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangeDeployBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
     <managed-bean-name>pickAreaTypeBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickAreaTypeBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickCalendarBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickCalendarBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickPMDistrictsAndBlocksBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickPMDistrictsAndBlocksBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>deploymentPropertiesBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChangeDeployment.DeploymentPropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>

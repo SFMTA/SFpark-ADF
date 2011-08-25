@@ -17,6 +17,8 @@ public enum RateChangeManagerBundleKey {
 
     string_pick_area_type,
 
+    string_pick_pm_districts,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -32,6 +34,8 @@ public enum RateChangeManagerBundleKey {
     info_create_success,
 
     info_empty_calendar_id_list,
+
+    info_empty_active_deployment_process_list,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

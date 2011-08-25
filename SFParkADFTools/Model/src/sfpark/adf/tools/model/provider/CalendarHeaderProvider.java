@@ -262,9 +262,11 @@ public class CalendarHeaderProvider {
             StatementGenerator.likeOperator(CalendarHeaderDTO.CALENDAR_NAME);
         String string2 =
             StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_TYPE);
-        String string3 =
-            StatementGenerator.inOperator(CalendarHeaderDTO.CALENDAR_ID,
-                                          CalendarDetailProvider.INSTANCE.getSelectStatementForDate());
+
+        String RHS =
+            " ( " + CalendarDetailProvider.INSTANCE.getSelectStatementForDate() +
+            " ) ";
+        String string3 = StatementGenerator.greaterThanOperator("?", RHS);
 
         String Where =
             StatementGenerator.andOperator(string1, string2, string3);
@@ -274,10 +276,28 @@ public class CalendarHeaderProvider {
         LOGGER.exiting(CLASSNAME,
                        "getSelectStatementForCalendarNameLikeAndDate");
 
+        LOGGER.debug("Calendar Header ::: " +
+                     StatementGenerator.selectStatement(Attributes,
+                                                        CalendarHeaderDTO.getDatabaseTableName(),
+                                                        Where, OrderBy));
+
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
+
+    /*
+  SELECT CALENDAR_ID, CALENDAR_NAME
+  FROM SFPARK_ODS.CALENDAR_HEADER
+  WHERE CALENDAR_NAME LIKE '%'
+  AND CALENDAR_TYPE = 'RateChg'
+  AND to_date('2011-08-24', 'yyyy-mm-dd') > (
+                                              SELECT MAX (DATE_DT)
+                                              FROM SFPARK_ODS.CALENDAR_DETAIL
+                                              WHERE CALENDAR_HEADER.CALENDAR_ID = CALENDAR_ID
+                                            )
+  ORDER BY CALENDAR_NAME;
+   */
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++

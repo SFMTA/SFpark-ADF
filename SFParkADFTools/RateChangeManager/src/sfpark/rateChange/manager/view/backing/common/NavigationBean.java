@@ -266,7 +266,9 @@ public class NavigationBean extends BaseBean {
                             // ++++++++++++++++++++++++++++++++++
 
                             if ( // Approved
-                                rateChangeHeaderDTO.getStatus().isApproved()) {
+                                rateChangeHeaderDTO.getStatus().isApproved() &&
+                                // Pilot
+                                rateChangeHeaderDTO.getAreaType().isPilot()) {
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
@@ -281,7 +283,7 @@ public class NavigationBean extends BaseBean {
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
-                                LOGGER.warning("Unsupported Operation - Can not deploy, NOT yet approved");
+                                LOGGER.warning("Unsupported Operation - Can not deploy, NOT yet approved or NOT pilot");
                                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
                                                       TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
                                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),

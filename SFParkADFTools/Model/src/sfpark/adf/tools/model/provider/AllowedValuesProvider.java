@@ -359,6 +359,10 @@ public class AllowedValuesProvider {
         return processStepTreeMap;
     }
 
+    public static String getProcessStepDefaultValue() {
+        return getProcessStepTreeMap().firstEntry().getValue();
+    }
+
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++

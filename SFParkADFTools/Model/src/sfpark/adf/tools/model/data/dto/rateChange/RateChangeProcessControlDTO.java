@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import sfpark.adf.tools.model.data.dO.blocks.BlocksDO;
 import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeProcessControlDTO extends BaseDTO {
@@ -127,8 +125,8 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     // PURELY FOR DISPLAY PURPOSES
 
     private String LabelRateChangeReference;
+    private String ValueRateChangeReference;
     private List<PMDistrictsDO> PMDistrictDOs;
-    private List<BlocksDO> BlockDOs;
 
     public void setLabelRateChangeReference(String LabelRateChangeReference) {
         this.LabelRateChangeReference = LabelRateChangeReference;
@@ -136,6 +134,19 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     public String getLabelRateChangeReference() {
         return LabelRateChangeReference;
+    }
+
+    public void setValueRateChangeReference(String ValueRateChangeReference) {
+        this.ValueRateChangeReference = ValueRateChangeReference;
+
+        if (StringUtil.isNotBlank(ValueRateChangeReference)) {
+            setRateChangeReference(getLabelRateChangeReference() +
+                                   ValueRateChangeReference);
+        }
+    }
+
+    public String getValueRateChangeReference() {
+        return ValueRateChangeReference;
     }
 
     public void setPMDistrictDOs(List<PMDistrictsDO> PMDistrictDOs) {
@@ -156,22 +167,24 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return PMDistrictDOs;
     }
 
-    public void setBlockDOs(List<BlocksDO> BlockDOs) {
-        this.BlockDOs = BlockDOs;
+    public String getDisplayPMDistricts() {
 
-        if (BlockDOs != null) {
-            List<String> tempList = new ArrayList<String>();
-
-            for (BlocksDO DO : BlockDOs) {
-                tempList.add(DO.getBlockID());
-            }
-
-            setBlockSelection(StringUtil.convertListToString(tempList));
+        if (getPMDistrictDOs() == null) {
+            return "";
         }
+
+        List<String> tempList = new ArrayList<String>();
+
+        for (PMDistrictsDO DO : getPMDistrictDOs()) {
+            tempList.add(DO.getPMDistrictName());
+        }
+
+        return StringUtil.convertListToString(tempList,
+                                              StringUtil.SEPARATOR.COMMA_WITH_TRAILING_SPACE);
     }
 
-    public List<BlocksDO> getBlockDOs() {
-        return BlockDOs;
+    public int getColumnsValueRateChangeReference() {
+        return (getMaximumLengthValueRateChangeReference() + 1);
     }
 
     public int getMaximumLengthValueRateChangeReference() {
@@ -179,7 +192,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
                 getLabelRateChangeReference().length());
     }
 
-    public int getMaximumLengthRateChangeReference() {
+    private int getMaximumLengthRateChangeReference() {
         return 20;
     }
 
@@ -202,26 +215,6 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     public boolean isEditableTimeLimitOption() {
         return (StringUtil.areEqual(getProcessStep(), "60"));
-    }
-
-    public String getDisplayProcessStep() {
-        String processStep = getProcessStep();
-
-        if (StringUtil.isBlank(processStep)) {
-            return "-";
-        }
-
-        return AllowedValuesProvider.getProcessStepTreeMap().get(processStep);
-    }
-
-    public String getDisplayStepExecStatus() {
-        String stepExecStatus = getStepExecStatus();
-
-        if (StringUtil.isBlank(stepExecStatus)) {
-            return "-";
-        }
-
-        return AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(stepExecStatus);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

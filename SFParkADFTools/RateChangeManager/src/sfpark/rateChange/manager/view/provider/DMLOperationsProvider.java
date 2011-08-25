@@ -9,7 +9,10 @@ import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
+import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
+import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
@@ -60,6 +63,23 @@ public class DMLOperationsProvider {
         DTO.setStatus(RateChangeStatus.WORKING);
 
         LOGGER.exiting(CLASSNAME, "getNewRateChangeHeaderDTO");
+
+        return DTO;
+    }
+
+    public RateChangeProcessControlDTO getNewRateChangeProcessControlDTO(RateChangeHeaderDTO rateChangeHeaderDTO) {
+        LOGGER.entering(CLASSNAME, "getNewRateChangeProcessControlDTO");
+
+        RateChangeProcessControlDTO DTO = new RateChangeProcessControlDTO();
+
+        DTO.setLabelRateChangeReference(rateChangeHeaderDTO.getRateChangeReference());
+        DTO.setRateChangeReferenceID(rateChangeHeaderDTO.getRateChangeReferenceID());
+        DTO.setEffectiveFromDate(rateChangeHeaderDTO.getPlannedChangeEffectiveDate());
+        DTO.setTimeLimitOption(RateChangeProcessTimeLimitOption.YES);
+        DTO.setProcessStep(AllowedValuesProvider.getProcessStepDefaultValue());
+        DTO.setStepStartFlag(RateChangeProcessStepStartFlag.HOLD);
+
+        LOGGER.exiting(CLASSNAME, "getNewRateChangeProcessControlDTO");
 
         return DTO;
     }

@@ -13,6 +13,7 @@ import java.util.List;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
+import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -90,15 +91,36 @@ public class CalendarDetailProvider {
     protected String getSelectStatementForDate() {
 
         String Attributes =
-            StatementGenerator.distinctFunction(CalendarDetailDTO.CALENDAR_ID);
+            StatementGenerator.maxFunction(CalendarDetailDTO.DATE_DT);
 
+        String LHS =
+            CalendarHeaderDTO.getDatabaseTableName() + "." + CalendarHeaderDTO.CALENDAR_ID;
         String Where =
-            StatementGenerator.lessThanOrEqualToOperator(CalendarDetailDTO.DATE_DT);
+            StatementGenerator.equalToOperator(LHS, CalendarDetailDTO.CALENDAR_ID);
+
+        LOGGER.debug("Calendar Detail ::: " +
+                     StatementGenerator.selectStatement(Attributes,
+                                                        CalendarDetailDTO.getDatabaseTableName(),
+                                                        Where));
 
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarDetailDTO.getDatabaseTableName(),
                                                   Where);
     }
+
+    /*
+SELECT CALENDAR_ID, CALENDAR_NAME
+FROM SFPARK_ODS.CALENDAR_HEADER
+WHERE CALENDAR_NAME LIKE '%'
+AND CALENDAR_TYPE = 'RateChg'
+AND to_date('2011-08-24', 'yyyy-mm-dd') > (
+                                            SELECT MAX (DATE_DT)
+                                            FROM SFPARK_ODS.CALENDAR_DETAIL
+                                            WHERE CALENDAR_HEADER.CALENDAR_ID = CALENDAR_ID
+                                          )
+ORDER BY CALENDAR_NAME;
+
+ */
 
     protected PreparedStatement prepareInsertStatement(Connection connection,
                                                        CalendarDetailDTO DTO,

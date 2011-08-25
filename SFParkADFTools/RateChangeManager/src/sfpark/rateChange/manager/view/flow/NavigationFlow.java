@@ -8,8 +8,9 @@ public enum NavigationFlow {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     PickAreaType("/View/jsffFiles/rateChange/helper/pickAreaTypePage.jsff"),
-
     PickCalendar("/View/jsffFiles/rateChange/helper/pickCalendarPage.jsff"),
+
+    PickPMDistrictsAndBlocks("/View/jsffFiles/rateChange/helper/pickPMDistrictsAndBlocksPage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -22,7 +23,7 @@ public enum NavigationFlow {
     DeleteRateChange("/View/jsffFiles/common/errorsPage.jsff"),
     AfterDeleteRateChange("/View/jsffFiles/common/errorsPage.jsff"),
 
-    DeployRateChange("/View/jsffFiles/common/errorsPage.jsff");
+    DeployRateChange("/View/jsffFiles/rateChange/rateChangeDeployPage.jsff");
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

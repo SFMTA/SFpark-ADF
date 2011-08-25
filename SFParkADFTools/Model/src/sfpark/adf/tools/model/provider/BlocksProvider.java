@@ -33,7 +33,7 @@ public final class BlocksProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    public List<BlocksDO> getBlocksFor(int PMDistrictID) {
+    public List<BlocksDO> getBlocksFor(String pmDistricts) {
         LOGGER.entering(CLASSNAME, "getBlocksFor");
 
         List<BlocksDO> blocksDOList = new ArrayList<BlocksDO>();
@@ -46,8 +46,7 @@ public final class BlocksProvider {
             connection = ConnectUtil.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForPMDistrictID());
-            preparedStatement.setInt(1, PMDistrictID);
+                    connection.prepareStatement(getSelectStatementForPMDistricts(pmDistricts));
 
             resultSet = preparedStatement.executeQuery();
 
@@ -78,21 +77,30 @@ public final class BlocksProvider {
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatementForPMDistrictID() {
-        LOGGER.entering(CLASSNAME, "getSelectStatementForPMDistrictID");
+    private String getSelectStatementForPMDistricts(String pmDistricts) {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForPMDistricts");
 
         String Attributes =
             StringUtil.convertListToString(BlocksDO.getAttributeListForSelect());
 
         String Where =
-            StatementGenerator.equalToOperator(BlocksDO.PM_DISTRICT_ID);
+            StatementGenerator.inOperator(BlocksDO.PM_DISTRICT_ID, pmDistricts);
 
-        String OrderBy = BlocksDO.BLOCK_ID;
+        String OrderBy =
+            StatementGenerator.commaOperator(BlocksDO.BLOCK_ID, BlocksDO.STREET_NAME);
 
-        LOGGER.exiting(CLASSNAME, "getSelectStatementForPMDistrictID");
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForPMDistricts");
 
         return StatementGenerator.selectStatement(Attributes,
                                                   BlocksDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
+
+    /*
+    SELECT BLOCK_ID, STREET_NAME
+    FROM SFPARK_ODS.BLOCKS
+    WHERE PM_DISTRICT_ID IN (1,5)
+    ORDER BY BLOCK_ID, STREET_NAME;
+
+     */
 }
