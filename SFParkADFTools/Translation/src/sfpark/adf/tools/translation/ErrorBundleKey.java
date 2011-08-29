@@ -125,12 +125,17 @@ public enum ErrorBundleKey {
     // Rate Change Manager Errors
 
     error_message_invalid_rate_change_manager_parameters,
+    error_message_invalid_rate_change_manager_deploy_parameters,
 
     error_message_nonexistent_rate_change_reference_id_resource,
+    error_message_nonexistent_process_id_resource,
 
     error_message_unsupported_rate_change_update_operation,
     error_message_unsupported_rate_change_delete_operation,
     error_message_unsupported_rate_change_deploy_operation,
+
+    error_message_unsupported_rate_change_process_edit_operation,
+    error_message_unsupported_rate_change_process_delete_operation,
 
     error_exists_already_rate_change_reference,
 

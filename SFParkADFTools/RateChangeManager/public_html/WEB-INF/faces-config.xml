@@ -41,6 +41,11 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>deploymentBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.DeploymentBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>rateChangePropertiesBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangePropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
@@ -73,11 +78,6 @@
   <managed-bean>
     <managed-bean-name>pickPMDistrictsAndBlocksBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.helper.PickPMDistrictsAndBlocksBean</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>deploymentPropertiesBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChangeDeployment.DeploymentPropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>

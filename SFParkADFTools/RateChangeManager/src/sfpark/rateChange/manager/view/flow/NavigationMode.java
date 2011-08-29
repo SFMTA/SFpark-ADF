@@ -5,6 +5,9 @@ public enum NavigationMode {
     UPDATE,
     DELETE,
     DEPLOY,
+
+    EDIT,
+
     READ_ONLY;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,6 +28,10 @@ public enum NavigationMode {
 
     public boolean isDeployMode() {
         return (this == DEPLOY);
+    }
+
+    public boolean isEditMode() {
+        return (this == EDIT);
     }
 
     public boolean isReadOnlyMode() {

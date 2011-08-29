@@ -240,6 +240,15 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return 300;
     }
 
+    public boolean isDeletable() {
+        return StringUtil.areEqual(getProcessStep(), "10");
+    }
+
+    public boolean isEditable() {
+        return !(StringUtil.areEqual(getProcessStep(), "70") ||
+                 StringUtil.areEqual(getProcessStep(), "99"));
+    }
+
     public boolean isEditableEffectiveFromDate() {
         return (StringUtil.areEqual(getProcessStep(), "10") ||
                 StringUtil.areEqual(getProcessStep(), "70"));
@@ -252,6 +261,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     public boolean isEditableTimeLimitOption() {
         return (StringUtil.areEqual(getProcessStep(), "60"));
     }
+
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

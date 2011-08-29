@@ -5,10 +5,16 @@ import java.util.Locale;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public enum OperationValue {
+
+    // Used for RATE_CHG_HEADER
     ADD,
     UPDATE,
     DELETE,
     DEPLOY,
+
+    // Used for RATE_CHG_PROCESS_CONTROL
+    EDIT,
+    // DELETE (Already available from above)
 
     UNKNOWN;
 
@@ -50,6 +56,10 @@ public enum OperationValue {
 
     public boolean isDeploy() {
         return (this == DEPLOY);
+    }
+
+    public boolean isEdit() {
+        return (this == EDIT);
     }
 
     public boolean isUnknown() {

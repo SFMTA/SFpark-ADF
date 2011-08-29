@@ -3,7 +3,8 @@ package sfpark.rateChange.manager.application.key;
 public enum ParameterKey {
 
     OPERATION("operation"),
-    RATE_CHG_REF_ID("rateChgRefID");
+    RATE_CHG_REF_ID("rateChgRefID"),
+    PROCESS_ID("processID");
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

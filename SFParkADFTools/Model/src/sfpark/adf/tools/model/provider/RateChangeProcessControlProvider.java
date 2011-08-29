@@ -42,36 +42,23 @@ public class RateChangeProcessControlProvider {
      * @return Consolidated Rate Change Process Control Status Object
      */
     public RateChangeProcessControlDTOStatus checkForRateChangeReference(String rateChangeReference) {
-        LOGGER.entering(CLASSNAME, "checkForRateChangeReference");
+        LOGGER.in(CLASSNAME, "checkForRateChangeReference");
 
-        RateChangeProcessControlDTO DTO = null;
+        return checkForRateChangeProcessControl(rateChangeReference, true);
+    }
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+    /**
+     * Checks for the existence of the Process ID. Returns a Rate Change Process
+     * Control Status Object which consolidates all the necessary information as
+     * a single record
+     *
+     * @param processID
+     * @return Consolidated Rate Change Process Control Status Object
+     */
+    public RateChangeProcessControlDTOStatus checkForProcessID(String processID) {
+        LOGGER.in(CLASSNAME, "checkForProcessID");
 
-        try {
-            connection = ConnectUtil.getConnection();
-
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatementForRateChangeReference());
-            preparedStatement.setString(1, rateChangeReference);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                DTO = RateChangeProcessControlDTO.extract(resultSet);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
-        } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
-        }
-
-        LOGGER.exiting(CLASSNAME, "checkForRateChangeReference");
-
-        return new RateChangeProcessControlDTOStatus(DTO);
+        return checkForRateChangeProcessControl(processID, false);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -156,19 +143,54 @@ public class RateChangeProcessControlProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
 
+    private RateChangeProcessControlDTOStatus checkForRateChangeProcessControl(String value,
+                                                                               boolean rateChangeReference) {
+        LOGGER.entering(CLASSNAME, "checkForRateChangeProcessControl");
+
+        RateChangeProcessControlDTO DTO = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = ConnectUtil.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement(rateChangeReference));
+            preparedStatement.setString(1, value);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DTO = RateChangeProcessControlDTO.extract(resultSet);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
+        } finally {
+            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "checkForRateChangeProcessControl");
+
+        return new RateChangeProcessControlDTOStatus(DTO);
+    }
+
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatementForRateChangeReference() {
+    private String getSelectStatement(boolean rateChangeReference) {
         LOGGER.entering(CLASSNAME, "getSelectStatementForRateChangeReference");
 
         String Attributes =
             StringUtil.convertListToString(RateChangeProcessControlDTO.getAttributeListForSelect());
 
         String Where =
-            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.RATE_CHG_REF);
+            (rateChangeReference) ? StatementGenerator.equalToOperator(RateChangeProcessControlDTO.RATE_CHG_REF) :
+            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_ID);
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForRateChangeReference");
 
