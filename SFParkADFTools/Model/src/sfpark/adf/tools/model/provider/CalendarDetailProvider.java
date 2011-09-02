@@ -12,9 +12,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class CalendarDetailProvider {
@@ -46,7 +46,7 @@ public class CalendarDetailProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectAllStatement());
@@ -63,7 +63,8 @@ public class CalendarDetailProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getCalendarDetailDTOs");

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
-import sfpark.adf.tools.model.util.ConnectUtil;
+import sfpark.adf.tools.helper.OracleDBConnection;
 
 public final class StoredProcedureProvider {
 
@@ -40,7 +40,7 @@ public final class StoredProcedureProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement("IS_CALENDAR_DELETABLE(?)"));
@@ -56,7 +56,8 @@ public final class StoredProcedureProvider {
             LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
                            e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "isCalendarDeletable");
@@ -74,7 +75,7 @@ public final class StoredProcedureProvider {
         //        ResultSet resultSet = null;
         //
         //        try {
-        //            connection = ConnectUtil.getConnection();
+        //            connection = OracleDBConnection.getConnection();
         //
         //            preparedStatement =
         //                    connection.prepareStatement(getSelectStatement("IS_CALENDAR_DELETABLE(?)")); // TODO
@@ -90,7 +91,7 @@ public final class StoredProcedureProvider {
         //            LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
         //                           e);
         //        } finally {
-        //            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+        //            OracleDBConnection.closeAll(resultSet, preparedStatement, connection);
         //        }
 
         LOGGER.exiting(CLASSNAME, "isRateChangeReferenceDeletable");

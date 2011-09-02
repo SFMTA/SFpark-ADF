@@ -13,8 +13,8 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.meterModels.MeterModelsDO;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class MeterModelsProvider {
@@ -45,7 +45,7 @@ public final class MeterModelsProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForNullDO());
@@ -60,7 +60,8 @@ public final class MeterModelsProvider {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
 
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getNullMeterModelDO");
@@ -94,7 +95,7 @@ public final class MeterModelsProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement(rateChangeProcessControl));
@@ -111,7 +112,8 @@ public final class MeterModelsProvider {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
 
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterModelsFor");

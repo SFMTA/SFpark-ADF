@@ -14,8 +14,8 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.dTable.DDateDO;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class DDateProvider {
@@ -44,7 +44,7 @@ public final class DDateProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement());
@@ -61,7 +61,8 @@ public final class DDateProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getDDateDOs");
@@ -79,7 +80,7 @@ public final class DDateProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement(chosenDatesList.size()));
@@ -98,7 +99,8 @@ public final class DDateProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getDDateDOs");

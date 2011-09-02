@@ -14,9 +14,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.helper.MeterScheduleType;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -59,7 +59,7 @@ public class MeterOPScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMeterOPScheduleID());
@@ -74,7 +74,8 @@ public class MeterOPScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterScheduleFor");
@@ -92,7 +93,7 @@ public class MeterOPScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMaximumDate(scheduleType,
                                                                                  parkingSpaceIDs));
@@ -106,7 +107,8 @@ public class MeterOPScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_MAX_DATE.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getNextEffectiveFromDate");
@@ -254,7 +256,7 @@ public class MeterOPScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForParkingSpaceIDANDEffToDate(historic));
@@ -274,7 +276,8 @@ public class MeterOPScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterOPScheduleDTOs");
@@ -294,7 +297,7 @@ public class MeterOPScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMeterOPScheduleDTOs(scheduleType,
                                                                                          parkingSpaceIDs));
@@ -311,7 +314,8 @@ public class MeterOPScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterOPScheduleDTOs");
@@ -332,7 +336,7 @@ public class MeterOPScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForParkingSpaceID(scheduleType));
@@ -350,7 +354,7 @@ public class MeterOPScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement, connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterOPScheduleDTOs");

@@ -13,9 +13,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.meterSchedValidations.MeterSchedValidationsDO;
 import sfpark.adf.tools.model.data.helper.MeterScheduleType;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class MeterScheduleValidationsProvider {
@@ -49,7 +49,7 @@ public final class MeterScheduleValidationsProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement());
@@ -68,7 +68,8 @@ public final class MeterScheduleValidationsProvider {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
 
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterSchedValidationDOs");

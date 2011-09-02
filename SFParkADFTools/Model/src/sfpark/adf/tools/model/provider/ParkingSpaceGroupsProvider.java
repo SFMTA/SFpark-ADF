@@ -13,9 +13,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.helper.dO.ParkingSpaceGroupsDOStatus;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class ParkingSpaceGroupsProvider {
@@ -48,7 +48,7 @@ public final class ParkingSpaceGroupsProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement());
@@ -74,7 +74,8 @@ public final class ParkingSpaceGroupsProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForParkingSpaceGroupID");

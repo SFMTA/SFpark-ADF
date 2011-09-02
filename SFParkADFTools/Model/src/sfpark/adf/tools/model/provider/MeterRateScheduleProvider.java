@@ -14,9 +14,9 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 import sfpark.adf.tools.model.data.helper.MeterRateType;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -59,7 +59,7 @@ public class MeterRateScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMeterRateScheduleID());
@@ -74,7 +74,8 @@ public class MeterRateScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterRateScheduleFor");
@@ -93,7 +94,7 @@ public class MeterRateScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMaximumDate(rateType,
@@ -108,7 +109,8 @@ public class MeterRateScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_MAX_DATE.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getNextEffectiveFromDate");
@@ -263,7 +265,7 @@ public class MeterRateScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForParkingSpaceIDANDEffToDate(historic));
@@ -282,7 +284,8 @@ public class MeterRateScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
 
@@ -303,7 +306,7 @@ public class MeterRateScheduleProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForMeterRateScheduleDTOs(rateType,
@@ -321,7 +324,8 @@ public class MeterRateScheduleProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getMeterRateScheduleDTOs");

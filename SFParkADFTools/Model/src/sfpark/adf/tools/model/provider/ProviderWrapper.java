@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
@@ -25,7 +26,6 @@ import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.exception.*;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
-import sfpark.adf.tools.model.util.ConnectUtil;
 
 public final class ProviderWrapper {
 
@@ -55,7 +55,7 @@ public final class ProviderWrapper {
 
         try {
 
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             connection.setAutoCommit(false);
 
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -124,11 +124,12 @@ public final class ProviderWrapper {
         } catch (SQLException e) {
             LOGGER.warning("Could not perform the SQL Operation. ", e);
 
-            ConnectUtil.handleRollback(connection);
+            OracleDBConnection.handleRollback(connection);
 
             operationStatus = OperationStatus.failure(e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "performOperationOnRecords");

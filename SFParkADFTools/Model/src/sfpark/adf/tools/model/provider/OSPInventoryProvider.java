@@ -13,10 +13,10 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.ospInventory.OSPInventoryDO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 import sfpark.adf.tools.model.helper.dto.OSPInventoryDTOStatus;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.util.SQLObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -55,7 +55,7 @@ public class OSPInventoryProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement());
@@ -73,7 +73,8 @@ public class OSPInventoryProvider {
             LOGGER.warning(ErrorMessage.SELECT_DO_LIST.getMessage(), e);
 
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getOSPInventoryDOs");
@@ -91,7 +92,7 @@ public class OSPInventoryProvider {
 
         try {
 
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForOSPID());
             preparedStatement.setString(1, ospID);
@@ -105,7 +106,8 @@ public class OSPInventoryProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForOSP");

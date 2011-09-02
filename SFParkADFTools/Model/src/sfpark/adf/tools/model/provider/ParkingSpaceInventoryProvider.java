@@ -13,11 +13,11 @@ import java.util.List;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.helper.dO.ParkingSpaceGroupsDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.util.SQLObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -57,7 +57,7 @@ public class ParkingSpaceInventoryProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForParkingSpaceID());
@@ -72,7 +72,8 @@ public class ParkingSpaceInventoryProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForParkingSpace");
@@ -99,7 +100,7 @@ public class ParkingSpaceInventoryProvider {
 
         try {
 
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForPostID());
             preparedStatement.setString(1, postID);
@@ -114,7 +115,8 @@ public class ParkingSpaceInventoryProvider {
             LOGGER.warning("Could not perform select query to retrieve the DTO. ",
                            e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForPostID");
@@ -139,7 +141,7 @@ public class ParkingSpaceInventoryProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForOSPID());
@@ -166,7 +168,8 @@ public class ParkingSpaceInventoryProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForOSPID");
@@ -185,7 +188,7 @@ public class ParkingSpaceInventoryProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
             preparedStatement =
                     connection.prepareStatement(getSelectStatementForBulkParkingSpaceID(parkingSpaceIDs));
 
@@ -201,7 +204,8 @@ public class ParkingSpaceInventoryProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "getParkingSpaceInventoryDTOs");

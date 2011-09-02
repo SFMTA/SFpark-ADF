@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
-import sfpark.adf.tools.model.util.ConnectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeProcessControlProvider {
@@ -154,7 +154,7 @@ public class RateChangeProcessControlProvider {
         ResultSet resultSet = null;
 
         try {
-            connection = ConnectUtil.getConnection();
+            connection = OracleDBConnection.getConnection();
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement(rateChangeReference));
@@ -169,7 +169,8 @@ public class RateChangeProcessControlProvider {
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
         } finally {
-            ConnectUtil.closeAll(resultSet, preparedStatement, connection);
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
         }
 
         LOGGER.exiting(CLASSNAME, "checkForRateChangeProcessControl");
