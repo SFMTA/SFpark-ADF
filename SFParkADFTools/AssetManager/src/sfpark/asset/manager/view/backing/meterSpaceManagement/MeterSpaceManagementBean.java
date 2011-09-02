@@ -49,12 +49,16 @@ import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 import sfpark.adf.tools.utilities.ui.DayUI;
 import sfpark.adf.tools.utilities.ui.TimeUI;
 
+import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
+
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
 import sfpark.asset.manager.application.key.PageFlowScopeKey;
 import sfpark.asset.manager.application.key.SessionScopeKey;
 import sfpark.asset.manager.view.backing.BaseBean;
-import sfpark.asset.manager.view.backing.BaseBeanInterface;
-import sfpark.asset.manager.view.backing.helper.ListBeanInterface;
-import sfpark.asset.manager.view.backing.helper.PropertiesBeanInterface;
+
 import sfpark.asset.manager.view.flow.NavigationFlow;
 import sfpark.asset.manager.view.flow.NavigationMode;
 import sfpark.asset.manager.view.provider.CommonUtils;
@@ -62,7 +66,7 @@ import sfpark.asset.manager.view.provider.DMLOperationsProvider;
 import sfpark.asset.manager.view.util.ADFUIDisplayUtil;
 import sfpark.asset.manager.view.util.DataRepositoryUtil;
 
-public class MeterSpaceManagementBean extends BaseBean implements BaseBeanInterface,
+public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBeanInterface,
                                                                   ListBeanInterface,
                                                                   PropertiesBeanInterface {
 

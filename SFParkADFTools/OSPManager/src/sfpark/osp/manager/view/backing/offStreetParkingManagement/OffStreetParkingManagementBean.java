@@ -39,16 +39,20 @@ import sfpark.adf.tools.utilities.ui.DayUI;
 
 import sfpark.adf.tools.utilities.ui.TimeUI;
 
+import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
+
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
 import sfpark.osp.manager.application.key.PageFlowScopeKey;
 import sfpark.osp.manager.view.backing.BaseBean;
-import sfpark.osp.manager.view.backing.BaseBeanInterface;
-import sfpark.osp.manager.view.backing.helper.ListBeanInterface;
-import sfpark.osp.manager.view.backing.helper.PropertiesBeanInterface;
+
 import sfpark.osp.manager.view.flow.NavigationMode;
 import sfpark.osp.manager.view.provider.DMLOperationsProvider;
 import sfpark.osp.manager.view.util.ADFUIDisplayUtil;
 
-public class OffStreetParkingManagementBean extends BaseBean implements BaseBeanInterface,
+public class OffStreetParkingManagementBean extends BaseBean implements RequestScopeBeanInterface,
                                                                         ListBeanInterface,
                                                                         PropertiesBeanInterface {
 
