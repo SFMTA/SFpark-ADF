@@ -307,16 +307,23 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     /**
      * Can be edited ONLY when
-     *    ---STEP_EXEC_STATUS != 1  (Running)
-     *    ---PROCESS_STEP     != 70 (Finalised)
-     *                        != 99 (Completed)
+     * Either
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     *    ---PROCESS_STEP     < 70 (Finalised)
+     * Or
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     *                        != 3 (Success)
+     *    ---PROCESS_STEP     = 70 (Finalised)
+     *
      * @return
      */
     public boolean isEditable() {
         int currentProcessStep = getIntegerProcessStep();
         int currentExecStatus = getIntegerStepExecStatus();
 
-        return (currentProcessStep < 70 && currentExecStatus != 1);
+        return ((currentProcessStep < 70 && currentExecStatus != 1) ||
+                (currentProcessStep == 70 && currentExecStatus != 1 &&
+                 currentExecStatus != 3));
     }
 
     public boolean isEditableEffectiveFromDate() {
@@ -343,10 +350,6 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     /**
      * Next step is possible ONLY under following circumstances
-     * Either
-     *    ---PROCESS_STEP     = 10 (Apply prices to meters)
-     *    ---STEP_EXEC_STATUS != 1 (Running)
-     * Or
      *    ---PROCESS_STEP     < 70 (Finalised)
      *    ---STEP_EXEC_STATUS = 3  (Success)
      *
@@ -360,8 +363,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
             return false;
         }
 
-        return ((currentProcessStep == 10 && currentExecStatus != 1) ||
-                (currentProcessStep < 70 && currentExecStatus == 3));
+        return (currentProcessStep < 70 && currentExecStatus == 3);
     }
 
     public String getPreviousProcessStep() {
@@ -375,8 +377,8 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     /**
      * Previous step is possible ONLY under following circumstances
-     * ---PROCESS_STEP     > 10 (Apply prices to meters)
-     *                     < 70 (Finalised)
+     * ---PROCESS_STEP     >  10 (Apply prices to meters)
+     *                     <= 70 (Finalised)
      * ---STEP_EXEC_STATUS != 1 (Running)
      *
      * @return
@@ -389,7 +391,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
             return false;
         }
 
-        return (currentProcessStep > 10 && currentProcessStep < 70 &&
+        return (currentProcessStep > 10 && currentProcessStep <= 70 &&
                 currentExecStatus != 1);
     }
 
