@@ -7,6 +7,7 @@ public enum NavigationMode {
     DEPLOY,
 
     EDIT,
+    EXECUTE,
 
     READ_ONLY;
 
@@ -32,6 +33,10 @@ public enum NavigationMode {
 
     public boolean isEditMode() {
         return (this == EDIT);
+    }
+
+    public boolean isExecuteMode() {
+        return (this == EXECUTE);
     }
 
     public boolean isReadOnlyMode() {

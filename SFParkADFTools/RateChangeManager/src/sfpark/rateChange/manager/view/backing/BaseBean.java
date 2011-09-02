@@ -21,6 +21,10 @@ public abstract class BaseBean {
         // TODO: Create a Session Scope User Context
     }
 
+    protected void printLog(String message) {
+        System.out.println(message); // TODO comment out before deploying
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

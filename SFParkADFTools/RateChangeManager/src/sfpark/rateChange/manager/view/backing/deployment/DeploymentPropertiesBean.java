@@ -1,14 +1,35 @@
 package sfpark.rateChange.manager.view.backing.deployment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import javax.faces.model.SelectItem;
+
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
+import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
+import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
+import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
+
+import sfpark.adf.tools.translation.CommonBundleKey;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
+import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
+import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.flow.NavigationMode;
+import sfpark.rateChange.manager.view.helper.ADFUIHelper;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class DeploymentPropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                   RequestScopeBeanInterface {
@@ -73,149 +94,86 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL READ-ONLY INFORMATION
 
-    //    public boolean isReadOnly() {
-    //        return (getCurrentPageMode().isReadOnlyMode());
-    //    }
+    public boolean isReadOnly() {
+        return (getCurrentPageMode().isExecuteMode() ||
+                getCurrentPageMode().isReadOnlyMode());
+    }
+
+    public boolean isReadOnlyEffectiveFromDate() {
+        return (getCurrentPageMode().isExecuteMode() ||
+                !getRateChangeProcessControlDTO().isEditableEffectiveFromDate());
+    }
+
+    public boolean isReadOnlyTimeLimitOption() {
+        return (getCurrentPageMode().isExecuteMode() ||
+                !getRateChangeProcessControlDTO().isEditableTimeLimitOption());
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL RENDER INFORMATION
 
-    //    public boolean isRenderButtons() {
-    //        return (!getCurrentPageMode().isReadOnlyMode());
-    //    }
-    //
-    //    public boolean isRenderCenterFormPanel() {
-    //        return (!getCurrentPageMode().isReadOnlyMode());
-    //    }
-    //
-    //    public boolean isRenderPassiveInfo() {
-    //        return getCurrentPageMode().isReadOnlyMode();
-    //    }
+    public boolean isRenderXMLInputFileName() {
+        return (getCurrentPageMode().isEditMode() &&
+                getRateChangeProcessControlDTO().isEditableXMLInputFileName());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL DISABLE INFORMATION
+
+    public boolean isDisableValidateAndSaveButton() {
+        return getCurrentPageMode().isExecuteMode();
+    }
+
+    public boolean isDisableExecuteButton() {
+        return getCurrentPageMode().isEditMode();
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // LIST VALUES
 
-    //    public List<SelectItem> getListRateChgPolicy() {
-    //        List<SelectItem> listRateChgPolicy = new ArrayList<SelectItem>();
-    //
-    //        for (AllowedValuesDTO allowedValuesDTO :
-    //             AllowedValuesProvider.getRateChgPolicyList()) {
-    //            listRateChgPolicy.add(new SelectItem(allowedValuesDTO.getColumnValue(),
-    //                                                 allowedValuesDTO.getDescription()));
-    //        }
-    //
-    //        return listRateChgPolicy;
-    //    }
+    public List<SelectItem> getListTimeLimitOption() {
+        List<SelectItem> listTimeLimitOption = new ArrayList<SelectItem>();
+
+        for (RateChangeProcessTimeLimitOption timeLimitOption :
+             RateChangeProcessTimeLimitOption.values()) {
+            listTimeLimitOption.add(new SelectItem(timeLimitOption,
+                                                   timeLimitOption.getStringForDisplay()));
+        }
+
+        return listTimeLimitOption;
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
-
-    private void printLog(String message) {
-        System.out.println(message);
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS EXTRA
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS
-
-}
-
-/*
-
-    public void pickButtonHandler(ActionEvent event) {
-        //
-        // Reuse as various buttons
-        //
-
-        String ID = event.getComponent().getId();
-
-        if (ID.contains("areaType")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 NavigationFlow.PickAreaType.name());
-        } else if (ID.contains("calendar")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 NavigationFlow.PickCalendar.name());
-        }
-    }
-
+    /**
      * Validates the Form and Saves if all entries are valid
      *
-     * Common Validity Tests:
-     * =====================
-     *    1. Calendar ID should not be ZERO
-     *    2. Rate Change Reference should NOT exist
+     * Under EDIT Mode
+     * ===============
+     *    1. Save the DTO
+     *    2. Set the Page Mode to EXECUTE
+     *
+     * Under EXECUTE Mode
+     * ==================
+     *    1. Change the STEP_START_FLAG to Y
+     *    2. Save the DTO
+     *    3. Call the WebService
+     *    4. Move onto the next page
      *
      * @param event
+     */
     public void saveButtonHandler(ActionEvent event) {
         boolean allValid = true;
         NavigationMode currentPageMode = getCurrentPageMode();
-
-        RateChangeHeaderDTO rateChangeHeaderDTO = getRateChangeHeaderDTO();
-
-        boolean checkForRateChgRefUniqueness = false;
-
-        if (currentPageMode.isAddMode()) {
-            checkForRateChgRefUniqueness = true;
-        }
-
-        printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
-
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        if (allValid) {
-            String calendarID = rateChangeHeaderDTO.getCalendarID();
-
-            if (StringUtil.isBlank(calendarID) ||
-                StringUtil.areEqual(calendarID, "0")) {
-                allValid = false;
-                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_calendar_id));
-            }
-
-        }
-
-        printLog("After Calendar ID = " + allValid);
-
-        if (allValid && checkForRateChgRefUniqueness) {
-            RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(rateChangeHeaderDTO.getRateChangeReference());
-
-            if (rateChangeHeaderStatus.existsDTO()) {
-                allValid = false;
-                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exists_already_rate_change_reference));
-            }
-        }
-
-        printLog("After Rate Chg Ref check = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -234,50 +192,165 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
         if (allValid) {
             printLog("All entries are Valid. Proceed");
 
-            if (currentPageMode.isAddMode()) {
+            if (currentPageMode.isEditMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
-                // ADD Mode
-                printLog("ADD Mode");
+                // EDIT Mode
+                printLog("EDIT Mode");
 
-                RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
+                RateChangeProcessControlDTO currentDTO =
+                    getRateChangeProcessControlDTO();
 
                 OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
+                    DMLOperationsProvider.INSTANCE.editRateChangeProcessControl(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
-                    RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
+                if (operationStatus == null) {
+                    printLog("There were no changes. So nothing was saved");
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
+                    setInlineMessageClass("");
+                    setCurrentPageMode(NavigationMode.EXECUTE);
 
-                    if (rateChangeHeaderStatus.existsDTO()) {
-                        printLog("ADD operation was successful");
+                } else {
+                    if (operationStatus.isSuccess()) {
+                        printLog("EDIT operation was successful");
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
-                        // TODO Call stored procedure
+                        RateChangeProcessControlDTOStatus rateChangeProcessControlStatus =
+                            RateChangeProcessControlProvider.INSTANCE.checkForProcessID(currentDTO.getProcessID());
 
-                        setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setCurrentPageMode(NavigationMode.EXECUTE);
+                        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(),
+                                              rateChangeProcessControlStatus.getDTO());
 
                         clearPageFlowScopeCache();
-                        setCurrentPageMode(NavigationMode.READ_ONLY);
-                        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                              rateChangeHeaderStatus.getDTO());
 
                     } else {
-                        printLog("ADD operation failed");
-                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        printLog("EDIT operation failed");
+
+                        String errorMessage = "";
+
+                        switch (ExceptionType.getExceptionType(operationStatus.getException())) {
+
+                        case RATE_CHANGE_PROCESS_CONTROL_UPDATE:
+                            errorMessage =
+                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                            break;
+
+                        default:
+                            errorMessage =
+                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            break;
+
+                        }
+
+                        setInlineMessageText(errorMessage);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+
                     }
+                }
+
+            } else if (currentPageMode.isExecuteMode()) {
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // EXECUTE Mode
+                printLog("EXECUTE Mode");
+
+                RateChangeProcessControlDTO currentDTO =
+                    getRateChangeProcessControlDTO();
+
+                OperationStatus operationStatus =
+                    DMLOperationsProvider.INSTANCE.executeRateChangeProcessControl(currentDTO);
+                boolean webServiceStatus =
+                    true; // TODO Some code to contact the web service
+
+                if (operationStatus.isSuccess() &&
+                    webServiceStatus) {
+                    // Move on to the next page
+                    // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
+
+                    clearPageFlowScopeCache();
+
+                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
+                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_execute_operation_successful));
+                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_execute_operation_successful,
+                                                                                           currentDTO.getRateChangeReference()));
+
+                    setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                         NavigationFlow.AfterEditRateChangeProcessProperties.name());
+
+                } else if (!operationStatus.isSuccess()) {
+                    printLog("EXECUTE operation failed during the saving of the DTO");
+
+                    String errorMessage = "";
+
+                    switch (ExceptionType.getExceptionType(operationStatus.getException())) {
+
+                    case RATE_CHANGE_PROCESS_CONTROL_UPDATE:
+                        errorMessage =
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                        break;
+
+                    default:
+                        errorMessage =
+                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                        break;
+
+                    }
+
+                    setInlineMessageText(errorMessage);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+
                 } else {
-                    printLog("ADD operation failed");
-                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    printLog("EXECUTE operation failed during the Web Service Call");
+
+                    String errorMessage =
+                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute);
+
+                    setInlineMessageText(errorMessage);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+
                 }
 
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }
- */
+
+    public void cancelButtonHandler(ActionEvent event) {
+        // Do nothing
+    }
+
+    public void anyValueChangeHandler(ValueChangeEvent event) {
+        // Do nothing
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // UI BINDINGS EXTRA
+
+    public String getDisplayStepExecutionStatus() {
+        return ADFUIHelper.getDisplayableStepExecutionStatus(getRateChangeProcessControlDTO().getStepExecStatus());
+    }
+
+    public String getDisplayProcessStep() {
+        return ADFUIHelper.getDisplayableProcessStep(getRateChangeProcessControlDTO().getProcessStep());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // UI BINDINGS
+
+}
