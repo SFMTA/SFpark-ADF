@@ -3,10 +3,12 @@ package sfpark.calendar.manager.view.backing.calendar;
 import javax.faces.event.ActionEvent;
 
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
-import sfpark.adf.tools.model.status.OperationStatus;
+
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.translation.CalendarManagerBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.calendar.manager.application.key.PageFlowScopeKey;
@@ -79,7 +81,7 @@ public class CalendarDeleteBean extends BaseBean implements RequestScopeBeanInte
         OperationStatus operationStatus =
             DMLOperationsProvider.INSTANCE.deleteCalendar(calendarHeaderDTO);
 
-        if (operationStatus.getType().isSuccess()) {
+        if (operationStatus.isSuccess()) {
             // Move on to the next page
             // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
@@ -92,7 +94,7 @@ public class CalendarDeleteBean extends BaseBean implements RequestScopeBeanInte
 
         } else {
             setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_delete_failure));
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }
 }

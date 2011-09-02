@@ -5,12 +5,14 @@ import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
 import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -225,7 +227,7 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.addRateChangeProcessControl(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
+                if (operationStatus.isSuccess()) {
                     RateChangeProcessControlDTOStatus rateChangeProcessControlStatus =
                         RateChangeProcessControlProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
 
@@ -233,7 +235,7 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                         printLog("ADD operation was successful");
 
                         setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.READ_ONLY);
@@ -243,19 +245,19 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                     } else {
                         printLog("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
 
                 } else {
                     printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
 
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }
 
@@ -265,14 +267,5 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
-
-    private void printLog(String message) {
-        System.out.println(message);
     }
 }

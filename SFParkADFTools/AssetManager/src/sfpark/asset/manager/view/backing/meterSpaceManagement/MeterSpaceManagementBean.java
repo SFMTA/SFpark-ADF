@@ -27,6 +27,7 @@ import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
 import sfpark.adf.tools.model.data.helper.MeterRateType;
 import sfpark.adf.tools.model.data.helper.MeterScheduleType;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
@@ -34,13 +35,13 @@ import sfpark.adf.tools.model.provider.BlockfacesProvider;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
 
 import sfpark.adf.tools.translation.AssetManagerBundleKey;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.constants.RegularExpression;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -1047,14 +1048,14 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.addParkingSpace(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
+                if (operationStatus.isSuccess()) {
                     ParkingSpaceInventoryDTOStatus parkingSpaceStatus =
                         ParkingSpaceInventoryProvider.INSTANCE.checkForPostID(currentDTO.getPostID());
 
                     if (parkingSpaceStatus.existsDTO()) {
                         // System.out.println("ADD operation was successful");
                         setInlineMessageText(TranslationUtil.getAssetManagerBundleString(AssetManagerBundleKey.info_create_success));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.EDIT);
@@ -1064,12 +1065,12 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                     } else {
                         // System.out.println("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
                 } else {
                     // System.out.println("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
 
             } else if (currentPageMode.isEditMode()) {
@@ -1105,10 +1106,10 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                     setInlineMessageClass("");
 
                 } else {
-                    if (operationStatus.getType().isSuccess()) {
+                    if (operationStatus.isSuccess()) {
                         // System.out.println("EDIT operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         ParkingSpaceInventoryDTOStatus parkingSpaceStatus =
                             ParkingSpaceInventoryProvider.INSTANCE.checkForParkingSpace(currentDTO.getParkingSpaceID());
@@ -1167,7 +1168,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                         }
 
                         setInlineMessageText(errorMessage);
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
                     }
                 }
@@ -1176,7 +1177,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
             }
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
             if (currentPageMode.isEditMode()) {
                 refreshTablesAfterClickingSave();

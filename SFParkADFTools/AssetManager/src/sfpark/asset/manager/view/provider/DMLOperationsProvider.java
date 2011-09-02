@@ -18,6 +18,7 @@ import sfpark.adf.tools.model.data.helper.MeterRateType;
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.helper.dO.PCOBeatsDOStatus;
 import sfpark.adf.tools.model.helper.dO.RateAreasDOStatus;
@@ -28,7 +29,6 @@ import sfpark.adf.tools.model.provider.PCOBeatsProvider;
 import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateAreasProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
 
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
@@ -607,8 +607,7 @@ public final class DMLOperationsProvider {
             ParkingSpaceInventoryProvider.INSTANCE.getParkingSpaceInventoryDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
         if (parkingSpaceInventoryDTOs.isEmpty()) {
-            return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                       new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_could_not_load_parking_spaces)));
+            return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_could_not_load_parking_spaces))); 
         }
 
         // ++++++++++++++++++++++++++++++++++
@@ -633,8 +632,7 @@ public final class DMLOperationsProvider {
                     parkingSpaceInventoryBulkTO.isInvalidCapColor(parkingSpaceInventoryDTO.getCapColor())) {
 
                     LOGGER.debug("CAP_COLOR can NOT be changed");
-                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_cap_color)));
+                    return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_cap_color)));
 
                 }
 
@@ -643,8 +641,7 @@ public final class DMLOperationsProvider {
                     !parkingSpaceInventoryBulkTO.isUnmetered()) {
 
                     LOGGER.debug("ACTIVE_METER_FLAG can NOT be changed");
-                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_active_meter_status)));
+                    return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_from_active_meter_status)));
 
                 }
 
@@ -652,8 +649,7 @@ public final class DMLOperationsProvider {
                     parkingSpaceInventoryDTO.isUnmetered()) {
 
                     LOGGER.debug("Meter Details can NOT be changed as parking space is unmetered");
-                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_meter_details)));
+                    return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_meter_invalid_meter_details)));
 
                 }
 
@@ -664,8 +660,7 @@ public final class DMLOperationsProvider {
                                                                parkingSpaceInventoryDTO.getOnOffStreetType())) {
 
                     LOGGER.debug("Combination of POST_ID and MS_PAYSTATION_ID does NOT work");
-                    return new OperationStatus(OperationStatus.Type.BATCH_FAILURE,
-                                               new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_work_postid_and_mspaystationid)));
+                    return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_not_work_postid_and_mspaystationid)));
 
                 }
 

@@ -14,11 +14,13 @@ import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
+
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 public class DMLOperationsProvider {
@@ -134,7 +136,7 @@ public class DMLOperationsProvider {
                     rateChangeHeaderDTO.setStatus(RateChangeStatus.APPROVED);
                     tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                                      rateChangeHeaderDTO));
-                    // TODO Change to Approved
+                    // TODO Lock the calendar
                 }
                 break;
 
@@ -167,6 +169,51 @@ public class DMLOperationsProvider {
                                          rateChangeProcessControlDTO));
 
         LOGGER.exiting(CLASSNAME, "addRateChangeProcessControl");
+
+        return performOperation(tableRecords);
+    }
+
+    /**
+     * Edits the Rate Change Process Control
+     *
+     * @param rateChangeProcessControlDTO
+     * @return
+     */
+    public OperationStatus editRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
+        LOGGER.entering(CLASSNAME, "editRateChangeProcessControl");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        RateChangeProcessControlDTO originalDTO =
+            RateChangeProcessControlProvider.INSTANCE.checkForProcessID(rateChangeProcessControlDTO.getProcessID()).getDTO();
+
+        if (!rateChangeProcessControlDTO.isSameAs(originalDTO)) {
+            tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                             rateChangeProcessControlDTO));
+        }
+
+        LOGGER.exiting(CLASSNAME, "editRateChangeProcessControl");
+
+        return performOperation(tableRecords);
+    }
+
+    /**
+     * Executes the Rate Change Process Control
+     *
+     * @param rateChangeProcessControlDTO
+     * @return
+     */
+    public OperationStatus executeRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
+        LOGGER.entering(CLASSNAME, "executeRateChangeProcessControl");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        rateChangeProcessControlDTO.setStepStartFlag(RateChangeProcessStepStartFlag.INITIATE);
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                         rateChangeProcessControlDTO));
+
+        LOGGER.exiting(CLASSNAME, "executeRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }

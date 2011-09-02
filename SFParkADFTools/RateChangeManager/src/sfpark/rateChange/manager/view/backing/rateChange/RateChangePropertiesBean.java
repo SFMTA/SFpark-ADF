@@ -10,13 +10,15 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -230,7 +232,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
+                if (operationStatus.isSuccess()) {
                     RateChangeHeaderDTOStatus rateChangeHeaderStatus =
                         RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
 
@@ -240,7 +242,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                         // TODO Call stored procedure
 
                         setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.READ_ONLY);
@@ -250,18 +252,18 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                     } else {
                         printLog("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
                 } else {
                     printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
 
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }
 
@@ -272,24 +274,4 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
-
-    private void printLog(String message) {
-        System.out.println(message);
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS EXTRA
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS
-
 }

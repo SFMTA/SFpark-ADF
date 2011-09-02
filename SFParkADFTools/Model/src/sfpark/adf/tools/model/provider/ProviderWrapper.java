@@ -23,8 +23,8 @@ import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInvento
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.exception.*;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
-import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.model.util.ConnectUtil;
 
 public final class ProviderWrapper {
@@ -44,8 +44,7 @@ public final class ProviderWrapper {
         LOGGER.entering(CLASSNAME, "performOperationOnRecords");
 
         if (tableRecords.isEmpty()) {
-            return new OperationStatus(OperationStatus.Type.GENERAL_FAILURE,
-                                       new EmptyArgumentsException());
+            return OperationStatus.failure(new EmptyArgumentsException());
         }
 
         OperationStatus operationStatus = null;
@@ -120,16 +119,14 @@ public final class ProviderWrapper {
 
             connection.commit();
 
-            operationStatus =
-                    new OperationStatus(OperationStatus.Type.BATCH_SUCCESSFUL);
+            operationStatus = OperationStatus.success();
 
         } catch (SQLException e) {
             LOGGER.warning("Could not perform the SQL Operation. ", e);
 
             ConnectUtil.handleRollback(connection);
 
-            operationStatus =
-                    new OperationStatus(OperationStatus.Type.BATCH_FAILURE, e);
+            operationStatus = OperationStatus.failure(e);
         } finally {
             ConnectUtil.closeAll(resultSet, preparedStatement, connection);
         }

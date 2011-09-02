@@ -7,12 +7,14 @@ import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -195,10 +197,10 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                     setInlineMessageClass("");
 
                 } else {
-                    if (operationStatus.getType().isSuccess()) {
+                    if (operationStatus.isSuccess()) {
                         printLog("UPDATE operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         RateChangeHeaderDTOStatus rateChangeHeaderStatus =
                             RateChangeHeaderProvider.INSTANCE.checkForRateChangeReferenceID(currentDTO.getRateChangeReferenceID());
@@ -229,7 +231,7 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                         }
 
                         setInlineMessageText(errorMessage);
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
                     }
 
@@ -238,7 +240,7 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }
 
@@ -254,10 +256,6 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
-
-    private void printLog(String message) {
-        System.out.println(message);
-    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

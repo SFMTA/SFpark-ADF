@@ -12,12 +12,13 @@ import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
 import sfpark.adf.tools.model.data.helper.GarageRatesQualifier;
 import sfpark.adf.tools.model.data.helper.GarageRatesTimeBand;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.GarageOPHoursProvider;
 import sfpark.adf.tools.model.provider.GarageRatesProvider;
 import sfpark.adf.tools.model.provider.OSPInventoryProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
-import sfpark.adf.tools.model.status.OperationStatus;
+
 import sfpark.adf.tools.utilities.constants.WeekDays;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;

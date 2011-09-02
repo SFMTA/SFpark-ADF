@@ -23,12 +23,14 @@ import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.OSPInventoryDTOStatus;
 import sfpark.adf.tools.model.provider.GarageOPHoursProvider;
 import sfpark.adf.tools.model.provider.GarageRatesProvider;
 
 import sfpark.adf.tools.model.provider.OSPInventoryProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -297,7 +299,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
     public List<SelectItem> getListToDay() {
         return DayUI.TO_DAY_LIST;
     }
-    
+
     public List<SelectItem> getListFromTime() {
         return TimeUI.FROM_TIME_LIST;
     }
@@ -671,10 +673,10 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
                     setInlineMessageClass("");
 
                 } else {
-                    if (operationStatus.getType().isSuccess()) {
+                    if (operationStatus.isSuccess()) {
                         // System.out.println("EDIT operation was successful");
                         setInlineMessageText("Successfully saved all the details.");
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         OSPInventoryDTOStatus ospStatus =
                             OSPInventoryProvider.INSTANCE.checkForOSP(currentOSPInventoryDTO.getOSPID());
@@ -741,7 +743,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
                         }
 
                         setInlineMessageText(errorMessage);
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
 
                 }
@@ -756,7 +758,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements BaseBean
 
             }
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
             if (currentPageMode.isEditMode()) {
                 resetAllActiveGarageRatesTableButtons();

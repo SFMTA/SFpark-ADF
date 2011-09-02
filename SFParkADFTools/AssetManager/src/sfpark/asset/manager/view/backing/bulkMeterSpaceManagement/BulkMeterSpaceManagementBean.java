@@ -25,12 +25,13 @@ import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -589,10 +590,10 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
                 setInlineMessageClass("");
 
             } else {
-                if (operationStatus.getType().isSuccess()) {
+                if (operationStatus.isSuccess()) {
                     // System.out.println("EDIT operation was successful");
                     setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                     clearPageFlowScopeCache();
                     getMeterScheduleTable().setValue(null);
@@ -648,13 +649,13 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements BaseBeanIn
                     }
 
                     setInlineMessageText(errorMessage);
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
                 }
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
         }
 

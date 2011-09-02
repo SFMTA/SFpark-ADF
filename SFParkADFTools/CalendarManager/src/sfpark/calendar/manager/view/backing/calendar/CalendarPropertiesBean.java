@@ -16,13 +16,15 @@ import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.exception.ExceptionType;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
-import sfpark.adf.tools.model.status.OperationStatus;
+
 import sfpark.adf.tools.translation.CalendarManagerBundleKey;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
@@ -255,7 +257,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.addCalendar(currentDTO);
 
-                if (operationStatus.getType().isSuccess()) {
+                if (operationStatus.isSuccess()) {
                     CalendarHeaderDTOStatus calendarHeaderStatus =
                         CalendarHeaderProvider.INSTANCE.checkForCalendarNameAndType(currentDTO.getCalendarName(),
                                                                                     currentDTO.getCalendarType());
@@ -263,7 +265,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                     if (calendarHeaderStatus.existsDTO()) {
                         printLog("ADD operation was successful");
                         setInlineMessageText(TranslationUtil.getCalendarManagerBundleString(CalendarManagerBundleKey.info_create_success));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.EDIT);
@@ -273,12 +275,12 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                     } else {
                         printLog("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_calendar_name_failure));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
                 } else {
                     printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_calendar_name_failure));
-                    setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
 
             } else if (currentPageMode.isEditMode()) {
@@ -303,10 +305,10 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                     setInlineMessageClass("");
                 } else {
 
-                    if (operationStatus.getType().isSuccess()) {
+                    if (operationStatus.isSuccess()) {
                         printLog("EDIT operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
-                        setInlineMessageClass(OperationStatus.STYLECLASS_SUCCESSFUL);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         CalendarHeaderDTOStatus calendarHeaderStatus =
                             CalendarHeaderProvider.INSTANCE.checkForCalendarID(currentDTO.getCalendarID());
@@ -363,7 +365,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                         }
 
                         setInlineMessageText(errorMessage);
-                        setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
                     }
 
@@ -374,7 +376,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
             }
 
         } else {
-            setInlineMessageClass(OperationStatus.STYLECLASS_FAILURE);
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
 
             if (currentPageMode.isEditMode()) {
                 refreshTablesAfterClickingSave();

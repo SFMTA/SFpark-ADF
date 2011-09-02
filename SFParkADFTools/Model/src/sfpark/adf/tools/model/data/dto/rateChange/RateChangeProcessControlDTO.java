@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.util.TreeSet;
+
 import sfpark.adf.tools.model.data.dO.blocks.BlocksDO;
 import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
+import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class RateChangeProcessControlDTO extends BaseDTO {
@@ -123,7 +126,55 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public boolean isSameAs(RateChangeProcessControlDTO originalDTO) {
+
+        if (StringUtil.areEqual(this.getProcessID(),
+                                originalDTO.getProcessID()) &&
+            StringUtil.areEqual(this.getRateChangeReference(),
+                                originalDTO.getRateChangeReference()) &&
+            StringUtil.areEqual(this.getRateChangeReferenceID(),
+                                originalDTO.getRateChangeReferenceID()) &&
+            StringUtil.areEqual(this.getComments(),
+                                originalDTO.getComments()) &&
+            StringUtil.areEqual(this.getPMDistricts(),
+                                originalDTO.getPMDistricts()) &&
+            StringUtil.areEqual(this.getMeterVendor(),
+                                originalDTO.getMeterVendor()) &&
+            StringUtil.areEqual(this.getMeterModel(),
+                                originalDTO.getMeterModel()) &&
+            StringUtil.areEqual(this.getBlockSelection(),
+                                originalDTO.getBlockSelection()) &&
+            StringUtil.areEqual(this.getXMLOutputFileName(),
+                                originalDTO.getXMLOutputFileName()) &&
+            StringUtil.areEqual(this.getXMLInputFileName(),
+                                originalDTO.getXMLInputFileName()) &&
+            SQLDateUtil.areEqual(this.getEffectiveFromDate(),
+                                 originalDTO.getEffectiveFromDate()) &&
+            this.getTimeLimitOption().equals(originalDTO.getTimeLimitOption()) &&
+            StringUtil.areEqual(this.getProcessStep(),
+                                originalDTO.getProcessStep()) &&
+            this.getStepStartFlag().equals(originalDTO.getStepStartFlag()) &&
+            StringUtil.areEqual(this.getStepExecStatus(),
+                                originalDTO.getStepExecStatus())) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
+
+    private static final TreeSet<String> DUNCAN_PROCESS_STEP =
+        new TreeSet<String>(Arrays.asList("10", "20", "30", "70"));
+
+    private static final TreeSet<String> IPS_PROCESS_STEP =
+        new TreeSet<String>(Arrays.asList("10", "20", "30", "40", "50", "60",
+                                          "70"));
 
     private String LabelRateChangeReference;
     private String ValueRateChangeReference;
@@ -240,13 +291,32 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return 300;
     }
 
+    /**
+     * Can be deleted ONLY when
+     *    ---STEP_EXEC_STATUS = 0  (Inactive)
+     *    ---PROCESS_STEP     = 10 (Apply prices to meters)
+     *
+     * @return
+     */
     public boolean isDeletable() {
-        return StringUtil.areEqual(getProcessStep(), "10");
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+
+        return (currentProcessStep == 10 && currentExecStatus == 0);
     }
 
+    /**
+     * Can be edited ONLY when
+     *    ---STEP_EXEC_STATUS != 1  (Running)
+     *    ---PROCESS_STEP     != 70 (Finalised)
+     *                        != 99 (Completed)
+     * @return
+     */
     public boolean isEditable() {
-        return !(StringUtil.areEqual(getProcessStep(), "70") ||
-                 StringUtil.areEqual(getProcessStep(), "99"));
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+
+        return (currentProcessStep < 70 && currentExecStatus != 1);
     }
 
     public boolean isEditableEffectiveFromDate() {
@@ -262,6 +332,101 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         return (StringUtil.areEqual(getProcessStep(), "60"));
     }
 
+    public String getNextProcessStep() {
+
+        if (isPossibleNextProcessStep()) {
+            return getPossibleStepFor(true);
+        }
+
+        return null;
+    }
+
+    /**
+     * Next step is possible ONLY under following circumstances
+     * Either
+     *    ---PROCESS_STEP     = 10 (Apply prices to meters)
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     * Or
+     *    ---PROCESS_STEP     < 70 (Finalised)
+     *    ---STEP_EXEC_STATUS = 3  (Success)
+     *
+     * @return
+     */
+    public boolean isPossibleNextProcessStep() {
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+
+        if (currentProcessStep == -1 || currentExecStatus == -1) {
+            return false;
+        }
+
+        return ((currentProcessStep == 10 && currentExecStatus != 1) ||
+                (currentProcessStep < 70 && currentExecStatus == 3));
+    }
+
+    public String getPreviousProcessStep() {
+
+        if (isPossiblePreviousProcessStep()) {
+            return getPossibleStepFor(false);
+        }
+
+        return null;
+    }
+
+    /**
+     * Previous step is possible ONLY under following circumstances
+     * ---PROCESS_STEP     > 10 (Apply prices to meters)
+     *                     < 70 (Finalised)
+     * ---STEP_EXEC_STATUS != 1 (Running)
+     *
+     * @return
+     */
+    public boolean isPossiblePreviousProcessStep() {
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+
+        if (currentProcessStep == -1 || currentExecStatus == -1) {
+            return false;
+        }
+
+        return (currentProcessStep > 10 && currentProcessStep < 70 &&
+                currentExecStatus != 1);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
+
+    private int getIntegerProcessStep() {
+        try {
+            return Integer.parseInt(getProcessStep());
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    private int getIntegerStepExecStatus() {
+        try {
+            return Integer.parseInt(getStepExecStatus());
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    private String getPossibleStepFor(boolean forNext) {
+
+        TreeSet<String> vendor =
+            (StringUtil.areEqual(getMeterVendor(), "Duncan")) ?
+            DUNCAN_PROCESS_STEP : IPS_PROCESS_STEP;
+
+        String currentStep = getProcessStep();
+
+        String processStep =
+            (forNext) ? vendor.higher(currentStep) : vendor.lower(currentStep);
+
+        return processStep;
+    }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

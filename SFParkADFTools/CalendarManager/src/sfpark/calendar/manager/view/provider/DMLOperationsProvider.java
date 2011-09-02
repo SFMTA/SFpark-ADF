@@ -12,13 +12,13 @@ import sfpark.adf.tools.model.data.dO.dTable.DDateDO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.helper.CalendarStatus;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.CalendarDetailProvider;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.DDateProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
-import sfpark.adf.tools.model.status.OperationStatus;
 
 import sfpark.calendar.manager.view.provider.helper.CalendarDetailDDO;
 import sfpark.calendar.manager.view.provider.helper.CalendarDetailOperationType;
