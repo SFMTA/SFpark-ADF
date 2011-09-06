@@ -91,6 +91,11 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>deploymentDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.deployment.DeploymentDeleteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>errorsBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.common.ErrorsBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

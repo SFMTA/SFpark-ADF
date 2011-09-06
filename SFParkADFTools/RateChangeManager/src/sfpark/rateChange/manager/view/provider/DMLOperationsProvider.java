@@ -218,6 +218,19 @@ public class DMLOperationsProvider {
         return performOperation(tableRecords);
     }
 
+    public OperationStatus deleteRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
+        LOGGER.entering(CLASSNAME, "deleteRateChangeProcessControl");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
+                                         rateChangeProcessControlDTO));
+
+        LOGGER.exiting(CLASSNAME, "deleteRateChangeProcessControl");
+
+        return performOperation(tableRecords);
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -241,120 +254,3 @@ public class DMLOperationsProvider {
         return ADFContext.getCurrent().getSecurityContext().getUserName();
     }
 }
-
-/*
-
-
-    **
-     * Applies the necessary business logic for the Edit Mode of Calendar.
-     *
-     * This method returns NULL when no changes are made to the original data
-     *
-     * @param calendarHeaderDTO
-     * @param calendarDetailDDOs
-     * @return
-     *
-    public OperationStatus editCalendar(CalendarHeaderDTO calendarHeaderDTO,
-                                        List<CalendarDetailDDO> calendarDetailDDOs) {
-        LOGGER.entering(CLASSNAME, "editCalendar");
-
-        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
-
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // Calendar Detail
-
-        if (calendarDetailDDOs != null && !calendarDetailDDOs.isEmpty()) {
-            // Add/Delete the necessary Calendar Detail Records
-            for (CalendarDetailDDO DDO : calendarDetailDDOs) {
-
-                CalendarDetailDTO calendarDetailDTO =
-                    new CalendarDetailDTO(calendarHeaderDTO.getCalendarID(),
-                                          DDO.getDisplayDateDT());
-
-                switch (DDO.getOperationType()) {
-
-                case INSERT:
-                    {
-                        tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
-                                                         calendarDetailDTO));
-                    }
-                    break;
-
-                case DELETE:
-                    {
-                        tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
-                                                         calendarDetailDTO));
-                    }
-                    break;
-
-                default:
-                    {
-                        // Do nothing
-                    }
-                    break;
-                }
-
-            }
-        }
-
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // Calendar Header
-
-        CalendarHeaderDTO originalCalendarHeaderDTO =
-            CalendarHeaderProvider.INSTANCE.checkForCalendarID(calendarHeaderDTO.getCalendarID()).getDTO();
-
-        if (!calendarHeaderDTO.isSameAs(originalCalendarHeaderDTO)) {
-            tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
-                                             calendarHeaderDTO));
-        }
-
-        LOGGER.exiting(CLASSNAME, "editCalendar");
-
-        return performOperation(tableRecords);
-    }
-
-    **
-     * Applies the necessary business logic for the Delete Mode of Calendar.
-     *
-     * @param calendarHeaderDTO
-     * @return
-     *
-    public OperationStatus deleteCalendar(CalendarHeaderDTO calendarHeaderDTO) {
-        LOGGER.entering(CLASSNAME, "deleteCalendar");
-
-        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
-
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // Calendar Detail
-
-        List<CalendarDetailDTO> calendarDetailDTOs =
-            CalendarDetailProvider.INSTANCE.getCalendarDetailDTOs(calendarHeaderDTO.getCalendarID());
-
-        if (!calendarDetailDTOs.isEmpty()) {
-            // Delete all records
-            for (CalendarDetailDTO DTO : calendarDetailDTOs) {
-
-                tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
-                                                 DTO));
-            }
-        }
-
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++
-        // Calendar Header
-
-        tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
-                                         calendarHeaderDTO));
-
-        LOGGER.exiting(CLASSNAME, "deleteCalendar");
-
-        return performOperation(tableRecords);
-    }
- */

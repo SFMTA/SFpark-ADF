@@ -329,6 +329,9 @@ public final class ProviderWrapper {
         } else if (DTO instanceof CalendarDetailDTO) {
             return CalendarDetailProvider.INSTANCE.prepareDeleteStatement(connection,
                                                                           (CalendarDetailDTO)DTO);
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return RateChangeProcessControlProvider.INSTANCE.prepareDeleteStatement(connection,
+                                                                                    (RateChangeProcessControlDTO)DTO);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -341,6 +344,8 @@ public final class ProviderWrapper {
             return new CalendarHeaderDeleteException();
         } else if (DTO instanceof CalendarDetailDTO) {
             return new CalendarDetailDeleteException();
+        } else if (DTO instanceof RateChangeProcessControlDTO) {
+            return new RateChangeProcessControlDeleteException();
         }
 
         return new SQLUpdateException();

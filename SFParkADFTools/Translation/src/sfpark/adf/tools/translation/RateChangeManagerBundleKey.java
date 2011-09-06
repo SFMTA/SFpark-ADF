@@ -5,8 +5,7 @@ public enum RateChangeManagerBundleKey {
     string_application_name,
     string_rate_change_management,
 
-    string_hide_historic_data,
-    string_show_historic_data,
+    string_delete_rate_change_process_confirmation,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -28,6 +27,9 @@ public enum RateChangeManagerBundleKey {
 
     string_title_execute_operation_successful,
     string_message_execute_operation_successful,
+
+    string_title_delete_operation_successful,
+    string_message_delete_operation_successful,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

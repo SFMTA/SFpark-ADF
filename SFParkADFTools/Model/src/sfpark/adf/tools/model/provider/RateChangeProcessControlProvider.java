@@ -138,6 +138,17 @@ public class RateChangeProcessControlProvider {
         return preparedStatement;
     }
 
+    protected PreparedStatement prepareDeleteStatement(Connection connection,
+                                                       RateChangeProcessControlDTO DTO) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getDeleteStatement());
+
+        preparedStatement.setString(1, DTO.getProcessID());
+
+        return preparedStatement;
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -252,5 +263,22 @@ public class RateChangeProcessControlProvider {
     private int getUpdateIndexOf(String indexFor) {
         return (RateChangeProcessControlDTO.getAttributeListForUpdate().indexOf(indexFor) +
                 1);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // DELETE HELPERS
+
+    private String getDeleteStatement() {
+        LOGGER.entering(CLASSNAME, "getDeleteStatement");
+
+        String Where =
+            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_ID);
+
+        LOGGER.exiting(CLASSNAME, "getDeleteStatement");
+
+        return StatementGenerator.deleteStatement(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                                  Where);
     }
 }
