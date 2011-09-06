@@ -169,10 +169,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
-    private static final TreeSet<String> DUNCAN_PROCESS_STEP =
-        new TreeSet<String>(Arrays.asList("10", "20", "30", "70"));
-
-    private static final TreeSet<String> IPS_PROCESS_STEP =
+    private static final TreeSet<String> POSSIBLE_PROCESS_STEPS =
         new TreeSet<String>(Arrays.asList("10", "20", "30", "40", "50", "60",
                                           "70"));
 
@@ -293,7 +290,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     /**
      * Can be deleted ONLY when
-     *    ---STEP_EXEC_STATUS = 0  (Inactive)
+     *    ---STEP_EXEC_STATUS != 1 (Running)
      *    ---PROCESS_STEP     = 10 (Apply prices to meters)
      *
      * @return
@@ -302,7 +299,7 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         int currentProcessStep = getIntegerProcessStep();
         int currentExecStatus = getIntegerStepExecStatus();
 
-        return (currentProcessStep == 10 && currentExecStatus == 0);
+        return (currentProcessStep == 10 && currentExecStatus != 1);
     }
 
     /**
@@ -418,14 +415,11 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     private String getPossibleStepFor(boolean forNext) {
 
-        TreeSet<String> vendor =
-            (StringUtil.areEqual(getMeterVendor(), "Duncan")) ?
-            DUNCAN_PROCESS_STEP : IPS_PROCESS_STEP;
-
         String currentStep = getProcessStep();
 
         String processStep =
-            (forNext) ? vendor.higher(currentStep) : vendor.lower(currentStep);
+            (forNext) ? POSSIBLE_PROCESS_STEPS.higher(currentStep) :
+            POSSIBLE_PROCESS_STEPS.lower(currentStep);
 
         return processStep;
     }
