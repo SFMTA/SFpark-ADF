@@ -8,8 +8,10 @@ import java.util.List;
 import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.data.helper.CalendarStatus;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
@@ -17,6 +19,7 @@ import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
@@ -127,7 +130,7 @@ public class DMLOperationsProvider {
                     rateChangeHeaderDTO.setStatus(RateChangeStatus.SUBMITTED);
                     tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                                      rateChangeHeaderDTO));
-                    // TODO Change to Submitted
+
                 }
                 break;
 
@@ -136,7 +139,15 @@ public class DMLOperationsProvider {
                     rateChangeHeaderDTO.setStatus(RateChangeStatus.APPROVED);
                     tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                                      rateChangeHeaderDTO));
-                    // TODO Lock the calendar
+
+                    CalendarHeaderDTO calendarHeaderDTO =
+                        CalendarHeaderProvider.INSTANCE.checkForCalendarID(rateChangeHeaderDTO.getCalendarID()).getDTO();
+
+                    calendarHeaderDTO.setStatus(CalendarStatus.LOCKED);
+
+                    tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                     calendarHeaderDTO));
+
                 }
                 break;
 

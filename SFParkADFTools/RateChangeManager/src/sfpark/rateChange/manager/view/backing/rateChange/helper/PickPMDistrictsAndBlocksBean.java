@@ -86,13 +86,21 @@ public class PickPMDistrictsAndBlocksBean extends BaseBean implements Properties
             RowKeySet rowKeySet = table.getSelectedRowKeys();
             int numOfSelectedRows = rowKeySet.size();
 
+            List<Integer> pmDistrictIDList = new ArrayList<Integer>();
+
+            for (PMDistrictsDO pmDistrictsDO : pmDistrictDOs) {
+                pmDistrictIDList.add(new Integer(pmDistrictsDO.getPMDistrictID()));
+            }
+
             if (numOfSelectedRows > 0) {
                 for (Object rowKey : rowKeySet) {
                     table.setRowKey(rowKey);
 
                     BlocksDO DO = (BlocksDO)table.getRowData();
 
-                    if (DO != null) {
+                    if (DO != null &&
+                        pmDistrictIDList.contains(DO.getPMDistrictID())) {
+
                         selectedBlockList.add(DO);
                     }
                 }
