@@ -1,8 +1,13 @@
 package sfpark.rateChange.manager.view.backing.deployment;
 
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -20,6 +25,7 @@ import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
+import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -87,6 +93,45 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
         }
 
         return DTO;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // VALIDATORS
+
+    public void effectiveDateValidator(FacesContext facesContext,
+                                       UIComponent uiComponent,
+                                       Object object) {
+
+        if (getRateChangeProcessControlDTO().isValidateEffectiveFromDate()) {
+
+            int numOfDays = 16;
+            Date initialDate =
+                getRateChangeProcessControlDTO().getInitialEffectiveFromDate();
+
+            Date begRange =
+                SQLDateUtil.getPreviousDateFor(initialDate, numOfDays);
+            Date endRange = SQLDateUtil.getNextDateFor(initialDate, numOfDays);
+
+            Date selectedDate = (Date)object;
+
+            if (selectedDate.after(begRange) &&
+                selectedDate.before(endRange)) {
+                // Do nothing. Everything is fine
+
+            } else {
+                // Display warning information
+
+                FacesMessage facesMessage =
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                                     TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.warning_title_finalised_eff_date),
+                                     TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.warning_message_finalised_eff_date));
+
+                facesContext.addMessage(uiComponent.getClientId(facesContext),
+                                        facesMessage);
+            }
+        }
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -344,6 +389,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
     public String getDisplayProcessStep() {
         return ADFUIHelper.getDisplayableProcessStep(getRateChangeProcessControlDTO().getProcessStep());
+    }
+
+    public Date getMinimumEffectiveDate() {
+        return SQLDateUtil.getTodaysDate();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

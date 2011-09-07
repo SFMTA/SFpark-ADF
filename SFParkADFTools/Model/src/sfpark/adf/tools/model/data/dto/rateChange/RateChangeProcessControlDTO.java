@@ -48,7 +48,10 @@ public class RateChangeProcessControlDTO extends BaseDTO {
         this.setBlockSelection(resultSet.getString(BLOCK_SELECTION));
         this.setXMLOutputFileName(resultSet.getString(XML_OUTPUT_FILE_NAME));
         this.setXMLInputFileName(resultSet.getString(XML_INPUT_FILE_NAME));
+
+        this.setInitialEffectiveFromDate(resultSet.getDate(EFF_FROM_DT));
         this.setEffectiveFromDate(resultSet.getDate(EFF_FROM_DT));
+
         this.setTimeLimitOption(RateChangeProcessTimeLimitOption.extract(resultSet.getString(TIME_LIMIT_OPTION)));
         this.setProcessStep(resultSet.getString(PROCESS_STEP));
         this.setStepStartFlag(RateChangeProcessStepStartFlag.extract(resultSet.getString(STEP_START_FLAG)));
@@ -175,8 +178,17 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     private String LabelRateChangeReference;
     private String ValueRateChangeReference;
+    private Date InitialEffectiveFromDate;
     private List<PMDistrictsDO> PMDistrictDOs;
     private List<BlocksDO> BlockDOs;
+
+    private void setInitialEffectiveFromDate(Date InitialEffectiveFromDate) {
+        this.InitialEffectiveFromDate = InitialEffectiveFromDate;
+    }
+
+    public Date getInitialEffectiveFromDate() {
+        return InitialEffectiveFromDate;
+    }
 
     public void setLabelRateChangeReference(String LabelRateChangeReference) {
         this.LabelRateChangeReference = LabelRateChangeReference;
@@ -326,6 +338,10 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     public boolean isEditableEffectiveFromDate() {
         return (StringUtil.areEqual(getProcessStep(), "10") ||
                 StringUtil.areEqual(getProcessStep(), "70"));
+    }
+
+    public boolean isValidateEffectiveFromDate() {
+        return StringUtil.areEqual(getProcessStep(), "70");
     }
 
     public boolean isEditableXMLInputFileName() {

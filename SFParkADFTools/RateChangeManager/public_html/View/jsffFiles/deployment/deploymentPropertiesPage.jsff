@@ -56,7 +56,9 @@
                       readOnly="#{deploymentPropertiesBean.readOnlyEffectiveFromDate}"
                       label="#{labelBundle.label_effective_from_date}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.effectiveFromDate}"
-                      autoSubmit="true">
+                      validator="#{deploymentPropertiesBean.effectiveDateValidator}"
+                      autoSubmit="true"
+                      minValue="#{deploymentPropertiesBean.minimumEffectiveDate}">
           <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
         </af:inputDate>
         <af:spacer id="effDateSpacer" height="10"/>
