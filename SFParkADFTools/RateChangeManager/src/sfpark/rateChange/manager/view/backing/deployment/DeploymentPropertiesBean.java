@@ -94,11 +94,6 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL READ-ONLY INFORMATION
 
-    public boolean isReadOnly() {
-        return (getCurrentPageMode().isExecuteMode() ||
-                getCurrentPageMode().isReadOnlyMode());
-    }
-
     public boolean isReadOnlyEffectiveFromDate() {
         return (getCurrentPageMode().isExecuteMode() ||
                 !getRateChangeProcessControlDTO().isEditableEffectiveFromDate());
@@ -117,6 +112,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
     public boolean isRenderXMLInputFileName() {
         return (getCurrentPageMode().isEditMode() &&
                 getRateChangeProcessControlDTO().isEditableXMLInputFileName());
+    }
+
+    public boolean isRenderComments() {
+        return getCurrentPageMode().isEditMode();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -266,8 +265,7 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                 boolean webServiceStatus =
                     true; // TODO Some code to contact the web service
 
-                if (operationStatus.isSuccess() &&
-                    webServiceStatus) {
+                if (operationStatus.isSuccess() && webServiceStatus) {
                     // Move on to the next page
                     // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
 

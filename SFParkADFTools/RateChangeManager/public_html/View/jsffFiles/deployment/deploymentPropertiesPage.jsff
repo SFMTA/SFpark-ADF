@@ -81,9 +81,12 @@
                       rendered="#{deploymentPropertiesBean.renderXMLInputFileName}"
                       maximumLength="#{deploymentPropertiesBean.rateChangeProcessControlDTO.maximumLengthXMLInputFileName}"
                       label="#{labelBundle.label_input_xml_filename}"
-                      shortDesc="#{rateChangeManagerBundle.tooltip_input_xml_filename}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.XMLInputFileName}"
-                      autoSubmit="true"/>
+                      autoSubmit="true">
+          <af:validateRegExp pattern="#{globalBean.fileNamePattern}"
+                             hint="#{rateChangeManagerBundle.tooltip_input_xml_filename}"
+                             messageDetailNoMatch="#{rateChangeManagerBundle.tooltip_input_xml_filename}"/>
+        </af:inputText>
         <af:spacer id="inputXMLFilenameSpacer" height="10"/>
         <af:panelLabelAndMessage id="outputXMLFilenamePLM"
                                  inlineStyle="vertical-align: top;"
@@ -99,8 +102,15 @@
                       label="#{labelBundle.label_process_step}"
                       value="#{deploymentPropertiesBean.displayProcessStep}"/>
         <af:spacer id="processStepSpacer" height="10"/>
+        <af:panelLabelAndMessage id="commentsPLM"
+                                 rendered="#{!deploymentPropertiesBean.renderComments}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_comments}">
+          <af:outputText id="commentsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.comments}&lt;/div>'/>
+        </af:panelLabelAndMessage>
         <af:inputText id="commentsIT" columns="40" rows="5"
-                      readOnly="#{deploymentPropertiesBean.readOnly}"
+                      rendered="#{deploymentPropertiesBean.renderComments}"
                       maximumLength="#{deploymentPropertiesBean.rateChangeProcessControlDTO.maximumLengthComments}"
                       label="#{labelBundle.label_comments}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.comments}"

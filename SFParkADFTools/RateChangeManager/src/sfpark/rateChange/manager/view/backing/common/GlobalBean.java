@@ -2,6 +2,8 @@ package sfpark.rateChange.manager.view.backing.common;
 
 import sfpark.adf.tools.utilities.constants.PatternString;
 
+import sfpark.adf.tools.utilities.constants.RegularExpression;
+
 import sfpark.rateChange.manager.view.backing.BaseBean;
 
 public class GlobalBean extends BaseBean {
@@ -48,5 +50,9 @@ public class GlobalBean extends BaseBean {
 
     public String getDatePattern() {
         return PatternString.DATE.getPattern();
+    }
+
+    public String getFileNamePattern() {
+        return RegularExpression.FILE_NAME.getRegEx();
     }
 }
