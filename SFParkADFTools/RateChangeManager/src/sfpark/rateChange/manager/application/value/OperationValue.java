@@ -16,6 +16,9 @@ public enum OperationValue {
     EDIT,
     // DELETE (Already available from above)
 
+    // Used for BLOCK_RATE_SCHED
+    MODIFY,
+
     UNKNOWN;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -60,6 +63,10 @@ public enum OperationValue {
 
     public boolean isEdit() {
         return (this == EDIT);
+    }
+
+    public boolean isModify() {
+        return (this == MODIFY);
     }
 
     public boolean isUnknown() {

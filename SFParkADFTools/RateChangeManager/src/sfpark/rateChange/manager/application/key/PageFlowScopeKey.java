@@ -16,19 +16,11 @@ public enum PageFlowScopeKey {
     RATE_CHANGE_HEADER_DTO,
     RATE_CHANGE_PROCESS_CONTROL_DTO,
 
-    RCPC_PM_DISTRICTS_DO_LIST,
-
-    DEPLOY_PROCESS_ACTIVE_DTO_LIST,
-    DEPLOY_PROCESS_HISTORIC_DTO_LIST,
-    //  CALENDAR_HEADER_DTO,
-    //  CALENDAR_DETAIL_DDO_LIST,
+    BLOCK_RATE_SCHED_DTO,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    //  DATE_PICKER_CHOSEN_DATES_LIST,
-    //  DATE_PICKER_DISABLED_DATES_SET,
 
     NULL_NULL;
 

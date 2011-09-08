@@ -28,14 +28,13 @@ public class BlockRateScheduleDTO extends BaseDTO {
     private BlockRateScheduleDTO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
+        this.setBlockRateSchedID(resultSet.getString(BLOCK_RATE_SCHED_ID));
         this.setBlockID(resultSet.getString(BLOCK_ID));
         this.setMeterClass(resultSet.getString(METER_CLASS));
         this.setDateType(resultSet.getString(DATE_TYPE));
         this.setTimeBandID(resultSet.getInt(TIME_BAND_ID));
-
         this.setRateChangeReferenceID(resultSet.getString(RATE_CHG_REF_ID));
         this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
-        this.setPMDistrictID(resultSet.getInt(PM_DISTRICT_ID));
         this.setPlannedChangeEffectiveDate(resultSet.getDate(PLANNED_CHG_EFF_DT));
         this.setLastEffectiveFromDate(resultSet.getDate(LAST_EFF_FROM_DT));
         this.setLastFromTime(TimeDisplayUtil.extractFromTimeForDisplay(resultSet.getString(LAST_FROM_TIME)));
@@ -44,7 +43,6 @@ public class BlockRateScheduleDTO extends BaseDTO {
         this.setNewFromTime(TimeDisplayUtil.extractFromTimeForDisplay(resultSet.getString(NEW_FROM_TIME)));
         this.setNewToTime(TimeDisplayUtil.extractToTimeForDisplay(resultSet.getString(NEW_TO_TIME)));
         this.setOccupancyPercentage(resultSet.getInt(OCCUPANCY_PCT));
-        this.setOccupancyPeriod(resultSet.getString(OCCUPANCY_PERIOD));
         this.setProposedRateChange(resultSet.getFloat(PROPOSED_RATE_CHG));
         this.setNewRate(resultSet.getFloat(NEW_RATE));
         this.setAdjustedRate(resultSet.getFloat(ADJUSTED_RATE));
@@ -55,42 +53,13 @@ public class BlockRateScheduleDTO extends BaseDTO {
 
     }
 
-    private BlockRateScheduleDTO(BlockRateScheduleDTO DTO) {
-        super(DTO);
-
-        this.setBlockID(DTO.getBlockID());
-        this.setMeterClass(DTO.getMeterClass());
-        this.setDateType(DTO.getDateType());
-        this.setTimeBandID(DTO.getTimeBandID());
-        this.setRateChangeReferenceID(DTO.getRateChangeReferenceID());
-        this.setRateChangeReference(DTO.getRateChangeReference());
-        this.setPMDistrictID(DTO.getPMDistrictID());
-        this.setPlannedChangeEffectiveDate(DTO.getPlannedChangeEffectiveDate());
-        this.setLastEffectiveFromDate(DTO.getLastEffectiveFromDate());
-        this.setLastFromTime(DTO.getLastFromTime());
-        this.setLastToTime(DTO.getLastToTime());
-        this.setLastRate(DTO.getLastRate());
-        this.setNewFromTime(DTO.getNewFromTime());
-        this.setNewToTime(DTO.getNewToTime());
-        this.setOccupancyPercentage(DTO.getOccupancyPercentage());
-        this.setOccupancyPeriod(DTO.getOccupancyPeriod());
-        this.setProposedRateChange(DTO.getProposedRateChange());
-        this.setNewRate(DTO.getNewRate());
-        this.setAdjustedRate(DTO.getAdjustedRate());
-        this.setAdjustedReason(DTO.getAdjustedReason());
-        this.setFinalRate(DTO.getFinalRate());
-        this.setFinalRateEffectiveDate(DTO.getFinalRateEffectiveDate());
-        this.setFinalJustification(DTO.getFinalJustification());
-
-    }
-
+    public static final String BLOCK_RATE_SCHED_ID = "BLOCK_RATE_SCHED_ID";
     public static final String BLOCK_ID = "BLOCK_ID";
     public static final String METER_CLASS = "METER_CLASS";
     public static final String DATE_TYPE = "DATE_TYPE";
     public static final String TIME_BAND_ID = "TIME_BAND_ID";
     public static final String RATE_CHG_REF_ID = "RATE_CHG_REF_ID";
     public static final String RATE_CHG_REF = "RATE_CHG_REF";
-    public static final String PM_DISTRICT_ID = "PM_DISTRICT_ID";
     public static final String PLANNED_CHG_EFF_DT = "PLANNED_CHG_EFF_DT";
     public static final String LAST_EFF_FROM_DT = "LAST_EFF_FROM_DT";
     public static final String LAST_FROM_TIME = "LAST_FROM_TIME";
@@ -99,7 +68,6 @@ public class BlockRateScheduleDTO extends BaseDTO {
     public static final String NEW_FROM_TIME = "NEW_FROM_TIME";
     public static final String NEW_TO_TIME = "NEW_TO_TIME";
     public static final String OCCUPANCY_PCT = "OCCUPANCY_PCT";
-    public static final String OCCUPANCY_PERIOD = "OCCUPANCY_PERIOD";
     public static final String PROPOSED_RATE_CHG = "PROPOSED_RATE_CHG";
     public static final String NEW_RATE = "NEW_RATE";
     public static final String ADJUSTED_RATE = "ADJUSTED_RATE";
@@ -109,41 +77,21 @@ public class BlockRateScheduleDTO extends BaseDTO {
     public static final String FINAL_JUSTIFICATION = "FINAL_JUSTIFICATION";
 
     private static final List<String> AttributeListForSelect =
-        Arrays.asList(BLOCK_ID, METER_CLASS, DATE_TYPE, TIME_BAND_ID,
-                      RATE_CHG_REF_ID, RATE_CHG_REF, PM_DISTRICT_ID,
+        Arrays.asList(BLOCK_RATE_SCHED_ID, BLOCK_ID, METER_CLASS, DATE_TYPE,
+                      TIME_BAND_ID, RATE_CHG_REF_ID, RATE_CHG_REF,
                       PLANNED_CHG_EFF_DT, LAST_EFF_FROM_DT, LAST_FROM_TIME,
                       LAST_TO_TIME, LAST_RATE, NEW_FROM_TIME, NEW_TO_TIME,
-                      OCCUPANCY_PCT, OCCUPANCY_PERIOD, PROPOSED_RATE_CHG,
-                      NEW_RATE, ADJUSTED_RATE, ADJUSTMENT_REASON, FINAL_RATE,
+                      OCCUPANCY_PCT, PROPOSED_RATE_CHG, NEW_RATE,
+                      ADJUSTED_RATE, ADJUSTMENT_REASON, FINAL_RATE,
                       FINAL_RATE_EFF_DT, FINAL_JUSTIFICATION, CREATED_DT,
                       LAST_UPD_DT, LAST_UPD_USER, LAST_UPD_PGM);
 
-    private static final List<String> AttributeListForInsert =
-        Arrays.asList(BLOCK_ID, METER_CLASS, DATE_TYPE, TIME_BAND_ID,
-                      RATE_CHG_REF_ID, RATE_CHG_REF, PM_DISTRICT_ID,
-                      PLANNED_CHG_EFF_DT, LAST_EFF_FROM_DT, LAST_FROM_TIME,
-                      LAST_TO_TIME, LAST_RATE, NEW_FROM_TIME, NEW_TO_TIME,
-                      OCCUPANCY_PCT, OCCUPANCY_PERIOD, PROPOSED_RATE_CHG,
-                      NEW_RATE, ADJUSTED_RATE, ADJUSTMENT_REASON, FINAL_RATE,
-                      FINAL_RATE_EFF_DT, FINAL_JUSTIFICATION, LAST_UPD_USER,
-                      LAST_UPD_PGM);
-
     private static final List<String> AttributeListForUpdate =
-        Arrays.asList(BLOCK_ID, METER_CLASS, DATE_TYPE, TIME_BAND_ID,
-                      RATE_CHG_REF_ID, RATE_CHG_REF, PM_DISTRICT_ID,
-                      PLANNED_CHG_EFF_DT, LAST_EFF_FROM_DT, LAST_FROM_TIME,
-                      LAST_TO_TIME, LAST_RATE, NEW_FROM_TIME, NEW_TO_TIME,
-                      OCCUPANCY_PCT, OCCUPANCY_PERIOD, PROPOSED_RATE_CHG,
-                      NEW_RATE, ADJUSTED_RATE, ADJUSTMENT_REASON, FINAL_RATE,
-                      FINAL_RATE_EFF_DT, FINAL_JUSTIFICATION, LAST_UPD_USER,
-                      LAST_UPD_PGM);
+        Arrays.asList(ADJUSTED_RATE, ADJUSTMENT_REASON, FINAL_RATE,
+                      FINAL_JUSTIFICATION, LAST_UPD_USER, LAST_UPD_PGM);
 
     public static List<String> getAttributeListForSelect() {
         return AttributeListForSelect;
-    }
-
-    public static List<String> getAttributeListForInsert() {
-        return AttributeListForInsert;
     }
 
     public static List<String> getAttributeListForUpdate() {
@@ -163,23 +111,10 @@ public class BlockRateScheduleDTO extends BaseDTO {
         return new BlockRateScheduleDTO(resultSet);
     }
 
-    public static BlockRateScheduleDTO copy(BlockRateScheduleDTO DTO) {
-
-        if (DTO == null) {
-            return null;
-        }
-
-        return new BlockRateScheduleDTO(DTO);
-    }
-
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
-
-    public int getMaximumLengthOccupancyPeriod() {
-        return 100;
-    }
 
     public int getMaximumLengthAdjustedReason() {
         return 100;
@@ -193,13 +128,13 @@ public class BlockRateScheduleDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    private String BlockRateSchedID;
     private String BlockID;
     private String MeterClass;
     private String DateType;
     private int TimeBandID;
     private String RateChangeReferenceID;
     private String RateChangeReference;
-    private int PMDistrictID;
     private Date PlannedChangeEffectiveDate;
     private Date LastEffectiveFromDate;
     private String LastFromTime;
@@ -208,7 +143,6 @@ public class BlockRateScheduleDTO extends BaseDTO {
     private String NewFromTime;
     private String NewToTime;
     private int OccupancyPercentage;
-    private String OccupancyPeriod;
     private float ProposedRateChange;
     private float NewRate;
     private float AdjustedRate;
@@ -216,6 +150,14 @@ public class BlockRateScheduleDTO extends BaseDTO {
     private float FinalRate;
     private Date FinalRateEffectiveDate;
     private String FinalJustification;
+
+    public void setBlockRateSchedID(String BlockRateSchedID) {
+        this.BlockRateSchedID = BlockRateSchedID;
+    }
+
+    public String getBlockRateSchedID() {
+        return BlockRateSchedID;
+    }
 
     public void setBlockID(String BlockID) {
         this.BlockID = BlockID;
@@ -263,14 +205,6 @@ public class BlockRateScheduleDTO extends BaseDTO {
 
     public String getRateChangeReference() {
         return RateChangeReference;
-    }
-
-    public void setPMDistrictID(int PMDistrictID) {
-        this.PMDistrictID = PMDistrictID;
-    }
-
-    public int getPMDistrictID() {
-        return PMDistrictID;
     }
 
     public void setPlannedChangeEffectiveDate(Date PlannedChangeEffectiveDate) {
@@ -335,14 +269,6 @@ public class BlockRateScheduleDTO extends BaseDTO {
 
     public int getOccupancyPercentage() {
         return OccupancyPercentage;
-    }
-
-    public void setOccupancyPeriod(String OccupancyPeriod) {
-        this.OccupancyPeriod = OccupancyPeriod;
-    }
-
-    public String getOccupancyPeriod() {
-        return OccupancyPeriod;
     }
 
     public void setProposedRateChange(float ProposedRateChange) {

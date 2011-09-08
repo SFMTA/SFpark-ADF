@@ -30,7 +30,9 @@ public enum NavigationFlow {
     EditRateChangeProcessProperties("/View/jsffFiles/deployment/deploymentPropertiesPage.jsff"),
     AfterEditRateChangeProcessProperties("/View/jsffFiles/common/errorsPage.jsff"),
     DeleteRateChangeProcess("/View/jsffFiles/deployment/deploymentDeletePage.jsff"),
-    AfterDeleteRateChangeProcess("/View/jsffFiles/common/errorsPage.jsff");
+    AfterDeleteRateChangeProcess("/View/jsffFiles/common/errorsPage.jsff"),
+
+    ModifyBlockRateSched("/View/jsffFiles/common/errorsPage.jsff");
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
