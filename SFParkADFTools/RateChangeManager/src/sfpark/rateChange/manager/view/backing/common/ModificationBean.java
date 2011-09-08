@@ -13,6 +13,7 @@ import sfpark.adf.tools.helper.Logger;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.helper.dto.BlockRateScheduleDTOStatus;
+import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.BlockRateScheduleProvider;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
@@ -173,39 +174,65 @@ public class ModificationBean extends BaseBean {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
 
-                    if ( // MODIFY Mode
-                        operation.isModify()) {
+                    String rateChangeRefID =
+                        blockRateSchedule.getDTO().getRateChangeReferenceID();
+
+                    RateChangeHeaderDTOStatus rateChangeHeader =
+                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReferenceID(rateChangeRefID);
+
+                    if ( // Rate Change EXISTS
+                        rateChangeHeader.existsDTO()) {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
 
                         RateChangeHeaderDTO rateChangeHeaderDTO =
-                            RateChangeHeaderProvider.INSTANCE.checkForRateChangeReferenceID(blockRateSchedule.getDTO().getRateChangeReferenceID()).getDTO();
+                            rateChangeHeader.getDTO();
 
-                        if ( // NOT Approved
-                            !rateChangeHeaderDTO.getStatus().isApproved()) {
+                        if ( // MODIFY Mode
+                            operation.isModify()) {
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
-                            LOGGER.debug("MODIFY Mode");
-                            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                                  rateChangeHeaderDTO);
-                            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_RATE_SCHED_DTO.getKey(),
-                                                  blockRateSchedule.getDTO());
-                            setCurrentPageMode(NavigationMode.MODIFY);
-                            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                                 NavigationFlow.ModifyBlockRateSched.name());
+
+                            if ( // NOT Approved
+                                !rateChangeHeaderDTO.getStatus().isApproved()) {
+                                // ++++++++++++++++++++++++++++++++++
+                                // ++++++++++++++++++++++++++++++++++
+                                // ++++++++++++++++++++++++++++++++++
+                                LOGGER.debug("MODIFY Mode");
+                                setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                                      rateChangeHeaderDTO);
+                                setPageFlowScopeValue(PageFlowScopeKey.BLOCK_RATE_SCHED_DTO.getKey(),
+                                                      blockRateSchedule.getDTO());
+                                setCurrentPageMode(NavigationMode.MODIFY);
+                                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                     NavigationFlow.ModifyBlockRateSched.name());
+
+                            } else {
+                                // ++++++++++++++++++++++++++++++++++
+                                // ++++++++++++++++++++++++++++++++++
+                                // ++++++++++++++++++++++++++++++++++
+                                LOGGER.warning("Unsupported Operation - Can not modify, already approved");
+                                setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
+                                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
+                                setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+                                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_block_rate_sched_modify_operation,
+                                                                                           blockRateSchedID));
+                                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                     NavigationFlow.ERROR.name());
+                            }
 
                         } else {
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
-                            LOGGER.warning("Unsupported Operation - Can not modify, already approved");
+                            LOGGER.warning("Unsupported Operation");
                             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
                                                   TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
                             setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                                  TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_block_rate_sched_modify_operation,
-                                                                                       blockRateSchedID));
+                                                  TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_operation,
+                                                                                       operationStr));
                             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                                  NavigationFlow.ERROR.name());
                         }
@@ -214,12 +241,12 @@ public class ModificationBean extends BaseBean {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
-                        LOGGER.warning("Unsupported Operation");
+                        LOGGER.warning("Rate Change Reference does not exist");
                         setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
+                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_nonexistent_resource));
                         setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_operation,
-                                                                                   operationStr));
+                                              TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_nonexistent_rate_change_reference_id_resource,
+                                                                                   rateChangeRefID));
                         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                              NavigationFlow.ERROR.name());
                     }

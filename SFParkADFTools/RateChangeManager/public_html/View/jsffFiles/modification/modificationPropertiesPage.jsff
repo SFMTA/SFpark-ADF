@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="modificationPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="modificationPropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{modificationPropertiesBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{modificationPropertiesBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{modificationPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{modificationPropertiesBean.inlineMessageText}"
+                       styleClass="#{modificationPropertiesBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="blockRateSchedPanel" layout="horizontal"
+                         valign="top" inlineStyle="margin-left: 50px;"
+                         partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="blockRateSchedPanelSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsBRSFormPanel">
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefIDSpacer" height="10"/>
+        <af:inputText id="rateChgRefIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.rateChangeReference}"/>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputText id="newRateIT" readOnly="true"
+                      label="#{labelBundle.label_new_rate}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.newRate}">
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:spacer id="newRateSpacer" height="10"/>
+        <af:inputText id="adjustedRateIT" required="true" columns="7"
+                      readOnly="#{modificationPropertiesBean.readOnlyAdjustedInfo}"
+                      label="#{labelBundle.label_adjusted_rate}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.adjustedRate}"
+                      autoSubmit="true">
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="adjustmentReasonIT" rows="5" columns="40"
+                      required="true"
+                      maximumLength="#{modificationPropertiesBean.blockRateScheduleDTO.maximumLengthAdjustmentReason}"
+                      rendered="#{!modificationPropertiesBean.readOnlyAdjustedInfo}"
+                      label="#{labelBundle.label_adjustment_reason}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.adjustmentReason}"
+                      autoSubmit="true"/>
+        <af:panelLabelAndMessage id="adjustmentReasonPLM"
+                                 rendered="#{modificationPropertiesBean.readOnlyAdjustedInfo}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_adjustment_reason}">
+          <af:outputText id="adjustmentReasonOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{modificationPropertiesBean.blockRateScheduleDTO.adjustmentReason}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="adjustmentSpacer" height="20"/>
+        <af:inputText id="finalRateIT" required="true" columns="7"
+                      readOnly="#{modificationPropertiesBean.readOnlyFinalInfo}"
+                      label="#{labelBundle.label_final_rate}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.finalRate}"
+                      autoSubmit="true">
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+        <af:inputText id="finalJustificationIT" rows="5" columns="40"
+                      required="true"
+                      maximumLength="#{modificationPropertiesBean.blockRateScheduleDTO.maximumLengthFinalJustification}"
+                      rendered="#{!modificationPropertiesBean.readOnlyFinalInfo}"
+                      label="#{labelBundle.label_final_justification}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.finalJustification}"
+                      autoSubmit="true"/>
+        <af:panelLabelAndMessage id="finalJustificationPLM"
+                                 rendered="#{modificationPropertiesBean.readOnlyFinalInfo}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_final_justification}">
+          <af:outputText id="finalJustificationOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{modificationPropertiesBean.blockRateScheduleDTO.finalJustification}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="finalSpacer" height="20"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsBRSFormPanel">
+        <af:inputText id="blockRateSchedIDIT" readOnly="true"
+                      label="#{labelBundle.label_block_rate_sched_id}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.blockRateSchedID}"/>
+        <af:spacer id="blockRateSchedIDSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.createdDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.lastUpdatedDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

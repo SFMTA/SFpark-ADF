@@ -13,6 +13,7 @@ import java.util.List;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.garageOPHours.GarageOPHoursDTO;
@@ -284,6 +285,11 @@ public final class ProviderWrapper {
                                                                                     (RateChangeProcessControlDTO)DTO,
                                                                                     lastUpdatedUser,
                                                                                     lastUpdatedProgram);
+        } else if (DTO instanceof BlockRateScheduleDTO) {
+            return BlockRateScheduleProvider.INSTANCE.prepareUpdateStatement(connection,
+                                                                             (BlockRateScheduleDTO)DTO,
+                                                                             lastUpdatedUser,
+                                                                             lastUpdatedProgram);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -310,6 +316,8 @@ public final class ProviderWrapper {
             return new RateChangeHeaderUpdateException();
         } else if (DTO instanceof RateChangeProcessControlDTO) {
             return new RateChangeProcessControlUpdateException();
+        } else if (DTO instanceof BlockRateScheduleDTO) {
+            return new BlockRateScheduleUpdateException();
         }
 
         return new SQLUpdateException();

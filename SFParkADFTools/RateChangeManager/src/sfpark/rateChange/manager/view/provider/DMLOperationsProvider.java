@@ -8,6 +8,7 @@ import java.util.List;
 import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
@@ -161,6 +162,19 @@ public class DMLOperationsProvider {
         }
 
         LOGGER.exiting(CLASSNAME, "editRateChangeHeader");
+
+        return performOperation(tableRecords);
+    }
+
+    public OperationStatus modifyBlockRateSchedule(BlockRateScheduleDTO blockRateScheduleDTO) {
+        LOGGER.entering(CLASSNAME, "modifyBlockRateSchedule");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                         blockRateScheduleDTO));
+
+        LOGGER.exiting(CLASSNAME, "modifyBlockRateSchedule");
 
         return performOperation(tableRecords);
     }

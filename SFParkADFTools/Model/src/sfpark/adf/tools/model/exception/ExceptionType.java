@@ -15,6 +15,8 @@ public enum ExceptionType {
     RATE_CHANGE_HEADER_INSERT,
     RATE_CHANGE_HEADER_UPDATE,
 
+    BLOCK_RATE_SCHED_UPDATE,
+
     RATE_CHANGE_PROCESS_CONTROL_INSERT,
     RATE_CHANGE_PROCESS_CONTROL_UPDATE,
     RATE_CHANGE_PROCESS_CONTROL_DELETE,
@@ -111,6 +113,10 @@ public enum ExceptionType {
 
         if (exception instanceof RateChangeHeaderUpdateException) {
             return RATE_CHANGE_HEADER_UPDATE;
+        }
+
+        if (exception instanceof BlockRateScheduleUpdateException) {
+            return BLOCK_RATE_SCHED_UPDATE;
         }
 
         if (exception instanceof RateChangeProcessControlInsertException) {

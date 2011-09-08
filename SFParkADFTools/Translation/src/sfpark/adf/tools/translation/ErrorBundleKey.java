@@ -155,6 +155,8 @@ public enum ErrorBundleKey {
 
     error_exception_rate_change_update,
 
+    error_exception_block_rate_sched_update,
+
     error_exception_rate_change_process_control_update,
 
     error_exception_rate_change_process_control_execute,

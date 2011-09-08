@@ -46,7 +46,7 @@ public class BlockRateScheduleDTO extends BaseDTO {
         this.setProposedRateChange(resultSet.getFloat(PROPOSED_RATE_CHG));
         this.setNewRate(resultSet.getFloat(NEW_RATE));
         this.setAdjustedRate(resultSet.getFloat(ADJUSTED_RATE));
-        this.setAdjustedReason(resultSet.getString(ADJUSTMENT_REASON));
+        this.setAdjustmentReason(resultSet.getString(ADJUSTMENT_REASON));
         this.setFinalRate(resultSet.getFloat(FINAL_RATE));
         this.setFinalRateEffectiveDate(resultSet.getDate(FINAL_RATE_EFF_DT));
         this.setFinalJustification(resultSet.getString(FINAL_JUSTIFICATION));
@@ -116,7 +116,7 @@ public class BlockRateScheduleDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PURELY FOR DISPLAY PURPOSES
 
-    public int getMaximumLengthAdjustedReason() {
+    public int getMaximumLengthAdjustmentReason() {
         return 100;
     }
 
@@ -146,7 +146,7 @@ public class BlockRateScheduleDTO extends BaseDTO {
     private float ProposedRateChange;
     private float NewRate;
     private float AdjustedRate;
-    private String AdjustedReason;
+    private String AdjustmentReason;
     private float FinalRate;
     private Date FinalRateEffectiveDate;
     private String FinalJustification;
@@ -295,12 +295,12 @@ public class BlockRateScheduleDTO extends BaseDTO {
         return AdjustedRate;
     }
 
-    public void setAdjustedReason(String AdjustedReason) {
-        this.AdjustedReason = AdjustedReason;
+    public void setAdjustmentReason(String AdjustmentReason) {
+        this.AdjustmentReason = AdjustmentReason;
     }
 
-    public String getAdjustedReason() {
-        return AdjustedReason;
+    public String getAdjustmentReason() {
+        return AdjustmentReason;
     }
 
     public void setFinalRate(float FinalRate) {

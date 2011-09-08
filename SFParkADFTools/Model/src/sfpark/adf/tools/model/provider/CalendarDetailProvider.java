@@ -109,20 +109,6 @@ public class CalendarDetailProvider {
                                                   Where);
     }
 
-    /*
-SELECT CALENDAR_ID, CALENDAR_NAME
-FROM SFPARK_ODS.CALENDAR_HEADER
-WHERE CALENDAR_NAME LIKE '%'
-AND CALENDAR_TYPE = 'RateChg'
-AND to_date('2011-08-24', 'yyyy-mm-dd') > (
-                                            SELECT MAX (DATE_DT)
-                                            FROM SFPARK_ODS.CALENDAR_DETAIL
-                                            WHERE CALENDAR_HEADER.CALENDAR_ID = CALENDAR_ID
-                                          )
-ORDER BY CALENDAR_NAME;
-
- */
-
     protected PreparedStatement prepareInsertStatement(Connection connection,
                                                        CalendarDetailDTO DTO,
                                                        final String lastUpdatedUser,

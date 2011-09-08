@@ -91,7 +91,7 @@ public final class BlockRateScheduleProvider {
         preparedStatement.setFloat(getUpdateIndexOf(BlockRateScheduleDTO.ADJUSTED_RATE),
                                    DTO.getAdjustedRate());
         preparedStatement.setString(getUpdateIndexOf(BlockRateScheduleDTO.ADJUSTMENT_REASON),
-                                    DTO.getAdjustedReason());
+                                    DTO.getAdjustmentReason());
         preparedStatement.setFloat(getUpdateIndexOf(BlockRateScheduleDTO.FINAL_RATE),
                                    DTO.getFinalRate());
         preparedStatement.setString(getUpdateIndexOf(BlockRateScheduleDTO.FINAL_JUSTIFICATION),
