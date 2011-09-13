@@ -72,6 +72,11 @@
             <url n="sourceOwnerURL" path="../SFParkADFTools.jws"/>
             <url n="sourceURL" path="../Utilities/Utilities.jpr"/>
          </hash>
+         <hash>
+            <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
+            <url n="sourceOwnerURL" path="../SFParkADFTools.jws"/>
+            <url n="sourceURL" path="../WebServiceConnection/WebServiceConnection.jpr"/>
+         </hash>
       </list>
    </hash>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">

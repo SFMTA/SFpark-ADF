@@ -1,5 +1,12 @@
 package sfpark.rateChange.manager.view.helper;
 
+import com.sfmta.websvcs.pricingxml.MeterPricingWebService;
+import com.sfmta.websvcs.pricingxml.MeterPricingWebService_Service;
+
+import com.sfmta.xsd.mprequest.Mpresponse;
+
+import javax.xml.ws.BindingProvider;
+
 import sfpark.adf.tools.helper.DeveloperMode;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.provider.PropertyFileProvider;
@@ -31,20 +38,24 @@ public final class WebServiceHelper {
             return OperationStatus.failure(new NoSuchFieldException("Web Service URL was not found. "));
         }
 
-        // MeterPricingWebService_Service service = new MeterPricingWebService_Service();
-        // MeterPricingWebService webServiceSOAP = service.getMeterPricingWebServiceSOAP();
+        MeterPricingWebService_Service service =
+            new MeterPricingWebService_Service();
+        MeterPricingWebService webServiceSOAP =
+            service.getMeterPricingWebServiceSOAP();
 
-        // ((BindingProvider)webService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, webServiceURL);
+        ((BindingProvider)webServiceSOAP).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+                                                                  webServiceURL);
 
-        // Mpresponse mpResponse = webService.processMeterPricingXML(processID);
+        Mpresponse mpResponse =
+            webServiceSOAP.processMeterPricingXML(processID);
 
-        String response = ""; // mpResponse.getResponse();
+        String response = mpResponse.getResponse();
 
         if (StringUtil.areEqual(response, "success")) {
             return OperationStatus.success();
         }
 
-        return OperationStatus.failure(new Exception()); // mpResponse.getMessage()
+        return OperationStatus.failure(new Exception(mpResponse.getMessage()));
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
