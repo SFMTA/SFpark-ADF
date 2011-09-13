@@ -1,0 +1,4 @@
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <system systemId="http://lnxappdev1:8001/SFpark/ProxyServices/MeterPricingRequest?WSDL"
+          uri="http://lnxappdev1:8001/SFpark/ProxyServices/MeterPricingRequest?WSDL"/>
+</catalog>
