@@ -35,6 +35,7 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
+import sfpark.rateChange.manager.view.helper.WebServiceHelper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class DeploymentPropertiesBean extends BaseBean implements PropertiesBeanInterface,
@@ -307,10 +308,11 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.executeRateChangeProcessControl(currentDTO);
-                boolean webServiceStatus =
-                    true; // TODO Some code to contact the web service
+                OperationStatus webServiceStatus =
+                    WebServiceHelper.callWebService(currentDTO.getProcessID());
 
-                if (operationStatus.isSuccess() && webServiceStatus) {
+                if (operationStatus.isSuccess() &&
+                    webServiceStatus.isSuccess()) {
                     // Move on to the next page
                     // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
 
@@ -350,8 +352,14 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                 } else {
                     printLog("EXECUTE operation failed during the Web Service Call");
 
+                    String extraInfo =
+                        webServiceStatus.getException().getMessage();
+
+                    printLog(extraInfo);
+
                     String errorMessage =
-                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute);
+                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute,
+                                                             extraInfo);
 
                     setInlineMessageText(errorMessage);
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
