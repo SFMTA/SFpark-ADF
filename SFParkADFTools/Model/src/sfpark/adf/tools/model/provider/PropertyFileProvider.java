@@ -48,15 +48,15 @@ public final class PropertyFileProvider {
         try {
             propertyValue = getPropertiesConfiguration().getString(key);
 
-        } catch (ConfigurationException e) {
-            LOGGER.warning(PROPERTY_FILE +
-                           " file was not found in the weblogic domain directory. ",
-                           e);
-        }
+            if (StringUtil.isBlank(propertyValue)) {
+                LOGGER.info(PROPERTY_FILE + " file does not contain the " +
+                            key + " key. ");
+            }
 
-        if (StringUtil.isBlank(propertyValue)) {
-            LOGGER.error(PROPERTY_FILE + " file does not contain the " + key +
-                         " key. ");
+        } catch (ConfigurationException e) {
+            LOGGER.info(PROPERTY_FILE +
+                        " file was not found in the weblogic domain directory. ",
+                        e);
         }
 
         LOGGER.exiting(CLASSNAME, "getPropertyValue");

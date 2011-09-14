@@ -8,6 +8,7 @@ import com.sfmta.xsd.mprequest.Mpresponse;
 import javax.xml.ws.BindingProvider;
 
 import sfpark.adf.tools.helper.DeveloperMode;
+import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.provider.PropertyFileProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -18,6 +19,9 @@ public final class WebServiceHelper {
         "http://lnxappdev1:8001/SFpark/ProxyServices/MeterPricingRequest";
     private static final String WEB_SERVICE_URL_PROPERTY_KEY =
         "SFPARK.ADF.TOOLS.WEBSERVICE.URL";
+
+    private static final String CLASSNAME = WebServiceHelper.class.getName();
+    private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
     /**
      * To avoid instantiation
@@ -46,8 +50,15 @@ public final class WebServiceHelper {
         ((BindingProvider)webServiceSOAP).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
                                                                   webServiceURL);
 
-        Mpresponse mpResponse =
-            webServiceSOAP.processMeterPricingXML(processID);
+        Mpresponse mpResponse = null;
+
+        try {
+            mpResponse = webServiceSOAP.processMeterPricingXML(processID);
+        } catch (Exception e) {
+            LOGGER.error("Web Service URL is invalid and/or not working. ", e);
+
+            return OperationStatus.failure(new Exception("Web Service Error. Contact System Administrator. "));
+        }
 
         String response = mpResponse.getResponse();
 
@@ -68,37 +79,4 @@ public final class WebServiceHelper {
                PropertyFileProvider.getPropertyValue(WEB_SERVICE_URL_PROPERTY_KEY) :
                WEB_SERVICE_URL;
     }
-
-    /*
-    @WebServiceRef
-    private static MeterPricingWebService_Service meterPricingWebService_Service;
-
-    public static void main(String[] args) {
-        meterPricingWebService_Service = new MeterPricingWebService_Service();
-        MeterPricingWebService meterPricingWebService =
-            meterPricingWebService_Service.getMeterPricingWebServiceSOAP();
-        // Add your code to call the desired methods.
-
-        try {
-            MeterPricingWebService_Service service = new MeterPricingWebService_Service();
-            MeterPricingWebService webServiceSOAP = service.getMeterPricingWebServiceSOAP();
-
-            ((BindingProvider)webService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, webServiceURL);
-
-            Mpresponse mpResponse = webService.processMeterPricingXML(processID);
-
-            String response = mpResponse.getResponse();
-
-            if (response.equalsIgnoreCase("success")) {
-                System.out.println("Operation was successful");
-            } else {
-                System.out.println("Error Message  = " +
-                                   mpResponse.getMessage());
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-     */
 }

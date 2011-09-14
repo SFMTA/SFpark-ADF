@@ -24,6 +24,7 @@
       <hash><url n="URL" path="RateChangeManager/RateChangeManager.jpr"/></hash>
       <hash><url n="URL" path="Translation/Translation.jpr"/></hash>
       <hash><url n="URL" path="Utilities/Utilities.jpr"/></hash>
+      <hash><url n="URL" path="WebServiceConnection/WebServiceConnection.jpr"/></hash>
    </list>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="DefaultProfile">
