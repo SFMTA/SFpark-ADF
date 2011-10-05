@@ -55,7 +55,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     }
 
     public String getInlineMessageText() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
+        return (String)getPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
     }
 
     public void setInlineMessageClass(String inlineMessageClass) {
@@ -64,7 +64,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     }
 
     public String getInlineMessageClass() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
+        return (String)getPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -234,25 +234,22 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
 
                 if (addOperation.isSuccess()) {
 
+                    RateChangeHeaderDTO newRateChangeHeaderDTO =
+                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
+
+                    setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
+
+                    clearPageFlowScopeCache();
+                    setCurrentPageMode(NavigationMode.READ_ONLY);
+                    setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                          newRateChangeHeaderDTO);
+
                     OperationStatus generateOperation =
                         DMLOperationsProvider.INSTANCE.generateRateChange(currentDTO);
 
-                    if (generateOperation.isSuccess()) {
+                    if (!generateOperation.isSuccess()) {
 
-                        RateChangeHeaderDTO newRateChangeHeaderDTO =
-                            RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
-
-                        printLog("ADD and Generate operation was successful");
-
-                        setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
-                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
-
-                        clearPageFlowScopeCache();
-                        setCurrentPageMode(NavigationMode.READ_ONLY);
-                        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                              newRateChangeHeaderDTO);
-
-                    } else {
                         printLog("Generate operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_generate_rate_change_reference_details));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
