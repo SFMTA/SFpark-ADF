@@ -51,6 +51,11 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>thresholdBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.ThresholdBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>thresholdPropertiesBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.threshold.ThresholdPropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
@@ -68,6 +73,11 @@
   <managed-bean>
     <managed-bean-name>rateChangeUpdateBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangeUpdateBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>rateChangeDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangeDeleteBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>

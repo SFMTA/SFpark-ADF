@@ -13,6 +13,10 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    RATE_CHANGE_RULE_TYPE,
+    RATE_CHANGE_RULES_DTO_LIST,
+    THRESHOLD_PICKER_CHOSEN_LIST,
+
     RATE_CHANGE_HEADER_DTO,
     RATE_CHANGE_PROCESS_CONTROL_DTO,
 

@@ -25,6 +25,7 @@ import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 
+import sfpark.adf.tools.model.provider.StoredProcedureProvider;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 public class DMLOperationsProvider {
@@ -113,6 +114,19 @@ public class DMLOperationsProvider {
         LOGGER.exiting(CLASSNAME, "addRateChangeHeader");
 
         return performOperation(tableRecords);
+    }
+
+    public OperationStatus generateRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
+        LOGGER.in(CLASSNAME, "generateRateChange");
+
+        return StoredProcedureProvider.INSTANCE.generateRateChange(rateChangeHeaderDTO.getRateChangeReferenceID(),
+                                                                   getLoggedInUsername());
+    }
+
+    public OperationStatus deleteRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
+        LOGGER.in(CLASSNAME, "deleteRateChange");
+
+        return StoredProcedureProvider.INSTANCE.deleteRateChange(rateChangeHeaderDTO.getRateChangeReferenceID());
     }
 
     public OperationStatus updateRateChangeHeader(RateChangeHeaderDTO rateChangeHeaderDTO) {

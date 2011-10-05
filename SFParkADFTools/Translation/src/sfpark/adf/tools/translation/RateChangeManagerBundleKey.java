@@ -3,14 +3,21 @@ package sfpark.adf.tools.translation;
 public enum RateChangeManagerBundleKey {
 
     string_application_name,
+    string_rate_change_rules_management,
     string_rate_change_management,
 
+    string_rate_change_rules_to_apply,
+    string_rate_change_rules_to_replace,
+
+    string_delete_rate_change_confirmation,
     string_delete_rate_change_process_confirmation,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Title Strings
+
+    string_pick_thresholds,
 
     string_pick_calendar,
 
@@ -29,7 +36,8 @@ public enum RateChangeManagerBundleKey {
     string_message_execute_operation_successful,
 
     string_title_delete_operation_successful,
-    string_message_delete_operation_successful,
+    string_message_delete_rate_change_successful,
+    string_message_delete_rate_change_process_control_successful,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -52,6 +60,9 @@ public enum RateChangeManagerBundleKey {
     // Information Strings
 
     info_create_success,
+
+    info_empty_rate_change_rules_apply_list,
+    info_empty_rate_change_rules_replace_list,
 
     info_empty_meters_list,
 

@@ -229,17 +229,20 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
 
                 RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
 
-                OperationStatus operationStatus =
+                OperationStatus addOperation =
                     DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
 
-                if (operationStatus.isSuccess()) {
-                    RateChangeHeaderDTOStatus rateChangeHeaderStatus =
-                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
+                if (addOperation.isSuccess()) {
 
-                    if (rateChangeHeaderStatus.existsDTO()) {
-                        printLog("ADD operation was successful");
+                    OperationStatus generateOperation =
+                        DMLOperationsProvider.INSTANCE.generateRateChange(currentDTO);
 
-                        // TODO Call stored procedure
+                    if (generateOperation.isSuccess()) {
+
+                        RateChangeHeaderDTO newRateChangeHeaderDTO =
+                            RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
+
+                        printLog("ADD and Generate operation was successful");
 
                         setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
@@ -247,13 +250,15 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                         clearPageFlowScopeCache();
                         setCurrentPageMode(NavigationMode.READ_ONLY);
                         setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                              rateChangeHeaderStatus.getDTO());
+                                              newRateChangeHeaderDTO);
 
                     } else {
-                        printLog("ADD operation failed");
-                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
+                        printLog("Generate operation failed");
+                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_generate_rate_change_reference_details));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+
                     }
+
                 } else {
                     printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));

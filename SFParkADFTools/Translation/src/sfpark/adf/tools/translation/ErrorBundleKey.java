@@ -144,6 +144,7 @@ public enum ErrorBundleKey {
     error_exists_already_rate_change_reference,
 
     error_create_rate_change_reference_failure,
+    error_generate_rate_change_reference_details,
 
     error_invalid_calendar_id,
 

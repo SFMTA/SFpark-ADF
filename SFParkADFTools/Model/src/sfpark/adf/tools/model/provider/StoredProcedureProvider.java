@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
+import sfpark.adf.tools.model.exception.StoredProcedureReturnedFalseException;
+import sfpark.adf.tools.model.helper.OperationStatus;
 
 public final class StoredProcedureProvider {
 
@@ -30,6 +32,11 @@ public final class StoredProcedureProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
+    /**
+     * @deprecated
+     * @param calendarID
+     * @return
+     */
     public boolean isCalendarDeletable(String calendarID) {
         LOGGER.entering(CLASSNAME, "isCalendarDeletable");
 
@@ -65,44 +72,120 @@ public final class StoredProcedureProvider {
         return calendarDeletable;
     }
 
-    public boolean isRateChangeReferenceDeletable(String rateChgRefID) {
-        LOGGER.entering(CLASSNAME, "isRateChangeReferenceDeletable");
+    //    public OperationStatus isCalendarDeletable(String calendarID) {
+    //        LOGGER.in(CLASSNAME, "isCalendarDeletable");
+    //
+    //        return callStoredProcedure(StoredProcedure.IS_CALENDAR_DELETABLE,
+    //                                   calendarID);
+    //    }
 
-        boolean rateChangeReferenceDeletable = (rateChgRefID != null); // TODO
+    public OperationStatus generateRateChange(String rateChgRefID,
+                                              String lastUpdatedUser) {
+        LOGGER.in(CLASSNAME, "generateRateChange");
 
-        //        Connection connection = null;
-        //        PreparedStatement preparedStatement = null;
-        //        ResultSet resultSet = null;
-        //
-        //        try {
-        //            connection = OracleDBConnection.getConnection();
-        //
-        //            preparedStatement =
-        //                    connection.prepareStatement(getSelectStatement("IS_CALENDAR_DELETABLE(?)")); // TODO
-        //            preparedStatement.setString(1, rateChgRefID);
-        //
-        //            resultSet = preparedStatement.executeQuery();
-        //
-        //            while (resultSet.next()) {
-        //                rateChangeReferenceDeletable = (resultSet.getInt(1) == 1);
-        //            }
-        //
-        //        } catch (SQLException e) {
-        //            LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
-        //                           e);
-        //        } finally {
-        //            OracleDBConnection.closeAll(resultSet, preparedStatement, connection);
-        //        }
+        return callStoredProcedure(StoredProcedure.GENERATE_RATE_CHG,
+                                   rateChgRefID, lastUpdatedUser);
+    }
 
-        LOGGER.exiting(CLASSNAME, "isRateChangeReferenceDeletable");
+    public OperationStatus deleteRateChange(String rateChgRefID) {
+        LOGGER.in(CLASSNAME, "deleteRateChange");
 
-        return rateChangeReferenceDeletable;
+        return callStoredProcedure(StoredProcedure.DELETE_RATE_CHG,
+                                   rateChgRefID);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PRIVATE METHODS
+
+    private OperationStatus callStoredProcedure(StoredProcedure procedure,
+                                                Object... args) {
+        LOGGER.entering(CLASSNAME, "callStoredProcedure");
+
+        OperationStatus operationStatus = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = OracleDBConnection.getConnection();
+
+            preparedStatement =
+                    getPreparedStatement(connection, procedure, args);
+
+            resultSet = preparedStatement.executeQuery();
+
+            boolean result = false;
+
+            while (resultSet.next()) {
+                result = (resultSet.getInt(1) == 1);
+            }
+
+            operationStatus =
+                    (result) ? OperationStatus.success() : OperationStatus.failure(new StoredProcedureReturnedFalseException());
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
+                           e);
+
+            operationStatus = OperationStatus.failure(e);
+
+        } finally {
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "callStoredProcedure");
+
+        return operationStatus;
+    }
+
+    private PreparedStatement getPreparedStatement(Connection connection,
+                                                   StoredProcedure procedure,
+                                                   Object... args) throws SQLException {
+        LOGGER.entering(CLASSNAME, "getPreparedStatement");
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getSelectStatement(procedure.getName()));
+
+        for (int i = 1; i <= procedure.getNumOfArguments(); i++) {
+            preparedStatement.setString(i, (String)args[i - 1]);
+        }
+
+        LOGGER.exiting(CLASSNAME, "getPreparedStatement");
+
+        return preparedStatement;
+    }
+
+    private enum StoredProcedure {
+        IS_CALENDAR_DELETABLE("IS_CALENDAR_DELETABLE (?)", 1),
+
+        DELETE_RATE_CHG("DELETE_RATE_CHG (?)", 1),
+
+        GENERATE_RATE_CHG("GENERATE_RATE_CHG (?, ?)", 2);
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+
+        private final String Name;
+        private final int NumOfArguments;
+
+        private StoredProcedure(String Name, int NumOfArguments) {
+            this.Name = Name;
+            this.NumOfArguments = NumOfArguments;
+        }
+
+        public String getName() {
+            return Name;
+        }
+
+        public int getNumOfArguments() {
+            return NumOfArguments;
+        }
+    }
 
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++

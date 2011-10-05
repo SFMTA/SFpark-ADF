@@ -91,7 +91,7 @@ public class DeploymentDeleteBean extends BaseBean implements RequestScopeBeanIn
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
                                   TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_delete_operation_successful));
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                  TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_delete_operation_successful,
+                                  TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_delete_rate_change_process_control_successful,
                                                                                    DTO.getRateChangeReference()));
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.AfterDeleteRateChangeProcess.name());

@@ -14,7 +14,6 @@ import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
-import sfpark.adf.tools.model.provider.StoredProcedureProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.RequestParameter;
@@ -229,35 +228,12 @@ public class NavigationBean extends BaseBean {
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
-
-                            boolean isRateChangeHeaderDeletable =
-                                StoredProcedureProvider.INSTANCE.isRateChangeReferenceDeletable(rateChgRefID);
-
-                            if ( // Rate Change Header DELETABLE
-                                isRateChangeHeaderDeletable) {
-                                // ++++++++++++++++++++++++++++++++++
-                                // ++++++++++++++++++++++++++++++++++
-                                // ++++++++++++++++++++++++++++++++++
-                                LOGGER.debug("DELETE Mode");
-                                setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
-                                                      rateChangeHeaderDTO);
-                                setCurrentPageMode(NavigationMode.DELETE);
-                                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                                     NavigationFlow.DeleteRateChange.name());
-
-                            } else {
-                                // ++++++++++++++++++++++++++++++++++
-                                // ++++++++++++++++++++++++++++++++++
-                                // ++++++++++++++++++++++++++++++++++
-                                LOGGER.warning("Unsupported Operation - Can not delete, already in use");
-                                setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
-                                setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_rate_change_delete_operation,
-                                                                                           rateChgRefID));
-                                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                                     NavigationFlow.ERROR.name());
-                            }
+                            LOGGER.debug("DELETE Mode");
+                            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                                  rateChangeHeaderDTO);
+                            setCurrentPageMode(NavigationMode.DELETE);
+                            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                 NavigationFlow.DeleteRateChange.name());
 
                         } else if ( // DEPLOY Mode
                             operation.isDeploy()) {
