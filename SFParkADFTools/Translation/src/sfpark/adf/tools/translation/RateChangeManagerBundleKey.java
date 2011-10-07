@@ -35,6 +35,9 @@ public enum RateChangeManagerBundleKey {
     string_title_execute_operation_successful,
     string_message_execute_operation_successful,
 
+    string_title_edit_operation_successful,
+    string_message_edit_rate_change_rules_successful,
+
     string_title_delete_operation_successful,
     string_message_delete_rate_change_successful,
     string_message_delete_rate_change_process_control_successful,

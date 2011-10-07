@@ -11,6 +11,7 @@ public enum NavigationFlow {
     AddThreshold("/View/jsffFiles/threshold/thresholdAddPage.jsff"),
 
     EditThreshold("/View/jsffFiles/threshold/thresholdPropertiesPage.jsff"),
+    AfterEditThreshold("/View/jsffFiles/common/errorsPage.jsff"),
 
     PickThresholdValues("/View/jsffFiles/threshold/helper/pickThresholdValuesPage.jsff"),
 

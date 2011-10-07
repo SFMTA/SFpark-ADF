@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickThresholdValuesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickThresholdValuesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_rate_change_rules_management}"
+                                actionListener="#{pickThresholdValuesBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_thresholds}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarDoneAndCancel">
+        <af:spacer id="spaceBeforeDoneButton" width="30"/>
+        <af:commandButton id="doneButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_done}"
+                          actionListener="#{pickThresholdValuesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterDoneButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickThresholdValuesBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelGroupLayout id="thresholdPickerPGL" layout="horizontal"
+                         valign="top" inlineStyle="padding-left: 25px;">
+      <f:facet name="separator">
+        <af:spacer id="thresholdPickerPGLSpacer" width="40"/>
+      </f:facet>
+      <af:panelGroupLayout id="chooseThresholdsPGL" layout="vertical"
+                           valign="top">
+        <f:facet name="separator">
+          <af:spacer id="chooseThresholdsPGLSpacer" height="10"/>
+        </f:facet>
+        <af:panelGroupLayout id="enterThresholdsPGL" layout="horizontal">
+          <f:facet name="separator">
+            <af:spacer id="enterThresholdsPGLSpacer" width="10"/>
+          </f:facet>
+          <af:inputNumberSpinbox id="chooseThresholdINS" required="true"
+                                 label="#{labelBundle.label_threshold}"
+                                 value="#{pickThresholdValuesBean.chooseThreshold}"
+                                 minimum="1" maximum="99" stepSize="10"
+                                 autoSubmit="true"/>
+          <af:commandButton id="addButton" inlineStyle="width: 120px;"
+                            text="#{buttonBundle.button_add_to_list}"
+                            actionListener="#{pickThresholdValuesBean.addButtonHandler}"
+                            partialSubmit="true"/>
+        </af:panelGroupLayout>
+        <af:outputText id="displayOT" value="Generated rows shall be"/>
+        <af:iterator id="CTI" var="row" varStatus="rowStatus" rows="0"
+                     value="#{pickThresholdValuesBean.displayIteratorRows}"
+                     binding="#{pickThresholdValuesBean.iteratorUI}">
+          <af:outputText id="CTIRow" value="#{row}"/>
+        </af:iterator>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="chosenThresholdsPGL" layout="vertical"
+                           valign="top">
+        <f:facet name="separator">
+          <af:spacer id="chosenThresholdsPGLSpacer" height="10"/>
+        </f:facet>
+        <af:commandButton id="removeButton" disabled="true"
+                          inlineStyle="width: 120px;"
+                          text="#{buttonBundle.button_remove_from_list}"
+                          binding="#{pickThresholdValuesBean.removeButton}"
+                          actionListener="#{pickThresholdValuesBean.deleteButtonHandler}"
+                          partialSubmit="true"/>
+        <af:table id="CTTable" var="row" varStatus="rowStatus" width="120"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="single" rowBandingInterval="0"
+                  disableColumnReordering="true" columnSelection="none"
+                  columnStretching="last" summary="Chosen Threshold List"
+                  value="#{pickThresholdValuesBean.chosenThresholds}"
+                  binding="#{pickThresholdValuesBean.chosenThresholdsTable}"
+                  selectionListener="#{pickThresholdValuesBean.tableRowSelectionHandler}">
+          <af:column id="CTTableColChosenThreshold" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     headerText="#{columnBundle.column_thresholds}">
+            <af:outputText id="CTTableRowChosenThreshold" value="#{row}"/>
+          </af:column>
+        </af:table>
+        <af:inputText id="chosenDatesNoteIT" readOnly="true"
+                      label="#{labelBundle.label_note}"
+                      value="#{commonBundle.note_table_single_select}"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

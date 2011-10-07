@@ -12,6 +12,7 @@ import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
 import sfpark.adf.tools.model.data.helper.CalendarStatus;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
@@ -96,6 +97,40 @@ public class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Actual operations
+
+    public OperationStatus editRateChangeRules(String rateChangeType,
+                                               Date effectiveFromDate,
+                                               List<RateChangeRulesDTO> applyList,
+                                               List<RateChangeRulesDTO> replaceList) {
+        LOGGER.entering(CLASSNAME, "editRateChangeRules");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        for (RateChangeRulesDTO DTO : applyList) {
+            DTO.setRateChangeType(rateChangeType);
+            DTO.setEffectiveFromDate(effectiveFromDate);
+            DTO.setEffectiveToDate(SQLDateUtil.getMaximumDate());
+
+            tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
+                                             DTO));
+        }
+
+        if (replaceList != null && !replaceList.isEmpty()) {
+            Date effectiveToDate =
+                SQLDateUtil.getPreviousDateFor(effectiveFromDate);
+
+            for (RateChangeRulesDTO DTO : replaceList) {
+                DTO.setEffectiveToDate(effectiveToDate);
+
+                tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                 DTO));
+            }
+        }
+
+        LOGGER.exiting(CLASSNAME, "editRateChangeRules");
+
+        return performOperation(tableRecords);
+    }
 
     /**
      * Adds the Rate Change Header

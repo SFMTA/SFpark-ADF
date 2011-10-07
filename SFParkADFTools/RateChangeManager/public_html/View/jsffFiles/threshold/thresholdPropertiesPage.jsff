@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="thresholdPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="thresholdPropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_rules_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{thresholdPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{thresholdPropertiesBean.inlineMessageText}"
+                       styleClass="#{thresholdPropertiesBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="thresholdPanel" layout="vertical"
+                         inlineStyle="padding-left: 35px;">
+      <f:facet name="separator">
+        <af:spacer id="thresholdPanelSpacer" height="20"/>
+      </f:facet>
+      <af:panelFormLayout id="thresholdFormPanel">
+        <af:inputText id="rateChangeTypeIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_type}"
+                      value="#{thresholdPropertiesBean.rateChangeType}"/>
+        <af:spacer id="rateChangeTypeSpacer" height="10"/>
+        <af:inputDate id="effectiveFromDateID" columns="11" required="true"
+                      label="#{labelBundle.label_effective_from_date}"
+                      value="#{thresholdPropertiesBean.effectiveFromDate}"
+                      minValue="#{thresholdPropertiesBean.minimumDate}"
+                      autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="effectiveFromDateSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelGroupLayout id="applicablePanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="applicablePanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                       value="#{rateChangeManagerBundle.string_rate_change_rules_to_apply}"/>
+        <af:toolbar id="pickThresholdToolbar">
+          <af:group id="pickThresholdToolbarAdd">
+            <af:commandButton id="pickThresholdButton" immediate="true"
+                              inlineStyle="width: 130px;"
+                              text="Add / Edit Thresholds"
+                              actionListener="#{thresholdPropertiesBean.pickButtonHandler}"/>
+          </af:group>
+        </af:toolbar>
+        <af:table id="RCRATab" var="row" varStatus="rowStatus" width="400"
+                  inlineStyle="height: 200px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{rateChangeManagerBundle.info_empty_rate_change_rules_apply_list}"
+                  summary="Rate Change Rules Apply List"
+                  value="#{thresholdPropertiesBean.applicableRateChangeRules}"
+                  binding="#{thresholdPropertiesBean.rateChangeRulesTable}">
+          <af:column id="RCRATableColFromOccupancy" rowHeader="unstyled"
+                     align="center" width="100px" sortable="false"
+                     headerText="#{columnBundle.column_from_occupancy}">
+            <af:outputText id="RCRATableRowFromOccupancy"
+                           value="#{row.fromOccupancy}"/>
+          </af:column>
+          <af:column id="RCRATableColToOccupancy" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_occupancy}">
+            <af:outputText id="RCRATableRowToOccupancy"
+                           value="#{row.toOccupancy}"/>
+          </af:column>
+          <af:column id="RCRATableColChangeAmount" align="center" width="100px"
+                     sortable="false" showRequired="true"
+                     headerText="#{columnBundle.column_change_amount}">
+            <af:inputText id="RCRATableRowChangeAmount" required="true"
+                          simple="true" columns="7" value="#{row.changeAmount}"
+                          autoSubmit="true">
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:inputText>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="replaceablePanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="replaceablePanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT2" inlineStyle="font-size: 14px;"
+                       value="#{rateChangeManagerBundle.string_rate_change_rules_to_replace}"/>
+        <af:table id="RCRRTab" var="row" varStatus="rowStatus" width="600"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{rateChangeManagerBundle.info_empty_rate_change_rules_replace_list}"
+                  summary="Rate Change Rules Replace List"
+                  value="#{thresholdPropertiesBean.replaceableRateChangeRules}">
+          <af:column id="RCRRTableColFromOccupancy" rowHeader="unstyled"
+                     align="center" width="100px" sortable="false"
+                     headerText="#{columnBundle.column_from_occupancy}">
+            <af:outputText id="RCRRTableRowFromOccupancy"
+                           value="#{row.fromOccupancy}"/>
+          </af:column>
+          <af:column id="RCRRTableColToOccupancy" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_occupancy}">
+            <af:outputText id="RCRRTableRowToOccupancy"
+                           value="#{row.toOccupancy}"/>
+          </af:column>
+          <af:column id="RCRRTableColChangeAmount" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_change_amount}">
+            <af:outputText id="RCRRTableRowChangeAmount"
+                           value="#{row.changeAmount}">
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="RCRRTableColEffFromDate" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:outputText id="RCRRTableRowEffFromDate"
+                           value="#{row.effectiveFromDate}"/>
+          </af:column>
+          <af:column id="RCRRTableColEffToDate" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:outputText id="RCRRTableRowEffToDate"
+                           value="#{row.effectiveToDate}"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

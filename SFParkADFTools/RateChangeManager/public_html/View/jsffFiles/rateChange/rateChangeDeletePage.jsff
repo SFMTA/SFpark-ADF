@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="rateChangeDeletePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="rateChangeDeletePGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="sectionHeaderSeparator"/>
+    <af:outputText id="OT1" inlineStyle="font-size: 14px; margin-left: 35px;"
+                   value="#{rateChangeManagerBundle.string_delete_rate_change_confirmation}"/>
+    <af:panelFormLayout id="RCHFormPanel" inlineStyle="margin-left: 35px;">
+      <af:inputText id="rateChgRefIDIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference_id}"
+                    value="#{rateChangeDeleteBean.rateChangeHeaderDTO.rateChangeReferenceID}"/>
+      <af:spacer id="rateChgRefIDSpacer" height="10"/>
+      <af:inputText id="rateChgRefIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference}"
+                    value="#{rateChangeDeleteBean.rateChangeHeaderDTO.rateChangeReference}"/>
+      <af:spacer id="rateChgRefSpacer" height="10"/>
+      <af:inputText id="statusIT" readOnly="true"
+                    label="#{labelBundle.label_status}"
+                    value="#{rateChangeDeleteBean.rateChangeHeaderDTO.status.stringForDisplay}"/>
+      <af:spacer id="statusSpacer" height="10"/>
+    </af:panelFormLayout>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarDelete">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="deleteButton" blocking="true"
+                          inlineStyle="font-weight: bold;"
+                          text="#{buttonBundle.button_delete_rate_change}"
+                          actionListener="#{rateChangeDeleteBean.deleteButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="30"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{rateChangeDeleteBean.inlineMessageText}"
+                       styleClass="#{rateChangeDeleteBean.inlineMessageClass}"
+                       partialTriggers="deleteButton"/>
+      </af:group>
+    </af:toolbar>
+  </af:panelGroupLayout>
+</jsp:root>
