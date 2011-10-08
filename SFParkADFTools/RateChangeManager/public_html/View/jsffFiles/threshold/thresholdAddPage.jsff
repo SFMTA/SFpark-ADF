@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="thresholdAddPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="thresholdAddPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_rules_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          inlineStyle="width: 100px; font-weight: bold;"
+                          text="#{buttonBundle.button_continue}"
+                          actionListener="#{thresholdAddBean.saveButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:panelFormLayout id="thresholdAddFormPanel"
+                        inlineStyle="padding-left: 30px;">
+      <af:selectOneChoice id="rateChgTypeSOC" required="true"
+                          label="#{labelBundle.label_rate_change_type}"
+                          value="#{thresholdAddBean.rateChangeType}"
+                          autoSubmit="true">
+        <f:selectItems id="rateChgTypeSOCSI"
+                       value="#{thresholdAddBean.listRateChgType}"/>
+      </af:selectOneChoice>
+      <af:spacer id="rateChangeTypeSpacer" height="10"/>
+    </af:panelFormLayout>
+  </af:panelGroupLayout>
+</jsp:root>

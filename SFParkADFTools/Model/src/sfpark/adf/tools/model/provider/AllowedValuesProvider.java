@@ -22,6 +22,7 @@ import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -296,6 +297,29 @@ public class AllowedValuesProvider {
 
     public static String getCalendarTypeDefaultValue() {
         return getCalendarTypeList().get(0).getColumnValue();
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // RATE_CHG_TYPE HELPERS
+
+    private static long TimeOfLastRateChgTypeRetrieve = -1;
+    private static List<AllowedValuesDTO> rateChgTypeList = null;
+
+    public static synchronized List<AllowedValuesDTO> getRateChgTypeList() {
+
+        if (rateChgTypeList == null ||
+            ((System.currentTimeMillis() - TimeOfLastRateChgTypeRetrieve) >
+             TIME_TO_UPDATE)) {
+            rateChgTypeList =
+                    getAllowedValuesFor(RateChangeRulesDTO.getDatabaseTableName(),
+                                        RateChangeRulesDTO.RATE_CHG_TYPE);
+
+            TimeOfLastRateChgTypeRetrieve = System.currentTimeMillis();
+        }
+
+        return rateChgTypeList;
     }
 
     // ++++++++++++++++++++++++++++++++++

@@ -15,7 +15,6 @@ import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
-import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -261,10 +260,6 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS EXTRA
-
-    public Date getMinimumAllowedDate() {
-        return SQLDateUtil.getTodaysDate();
-    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
