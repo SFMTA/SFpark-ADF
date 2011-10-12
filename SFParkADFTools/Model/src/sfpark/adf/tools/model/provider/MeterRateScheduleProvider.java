@@ -16,7 +16,7 @@ import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
-import sfpark.adf.tools.model.data.helper.MeterRateType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -84,7 +84,7 @@ public class MeterRateScheduleProvider {
     }
 
     public Date getNextEffectiveFromDate(List<String> parkingSpaceIDs,
-                                         MeterRateType rateType) {
+                                         MeterRateScheduleType meterRateScheduleType) {
         LOGGER.entering(CLASSNAME, "getNextEffectiveFromDate");
 
         Date maxDate = SQLDateUtil.getYesterdaysDate();
@@ -97,8 +97,9 @@ public class MeterRateScheduleProvider {
             connection = OracleDBConnection.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForMaximumDate(rateType,
-                                                                                 parkingSpaceIDs));
+                    connection.prepareStatement(getSelectStatementForMaximumDate(parkingSpaceIDs));
+            preparedStatement.setString(1,
+                                        meterRateScheduleType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -125,12 +126,19 @@ public class MeterRateScheduleProvider {
                 SQLDateUtil.getNextDateFor(maxDate));
     }
 
-    public List<MeterRateScheduleDTO> getMeterBRateScheduleDTOs(List<String> parkingSpaceIDs) {
-        return getMeterRateScheduleDTOs(parkingSpaceIDs, MeterRateType.B);
+    public List<MeterRateScheduleDTO> getMeterBaseRateScheduleDTOs(List<String> parkingSpaceIDs) {
+        return getMeterRateScheduleDTOs(parkingSpaceIDs,
+                                        MeterRateScheduleType.BASE);
     }
 
-    public List<MeterRateScheduleDTO> getMeterHRateScheduleDTOs(List<String> parkingSpaceIDs) {
-        return getMeterRateScheduleDTOs(parkingSpaceIDs, MeterRateType.H);
+    public List<MeterRateScheduleDTO> getMeterHourlyRateScheduleDTOs(List<String> parkingSpaceIDs) {
+        return getMeterRateScheduleDTOs(parkingSpaceIDs,
+                                        MeterRateScheduleType.HOURLY);
+    }
+
+    public List<MeterRateScheduleDTO> getMeterSpecialRateScheduleDTOs(List<String> parkingSpaceIDs) {
+        return getMeterRateScheduleDTOs(parkingSpaceIDs,
+                                        MeterRateScheduleType.SPECIAL);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -150,7 +158,7 @@ public class MeterRateScheduleProvider {
                                     DTO.getParkingSpaceID());
 
         preparedStatement.setString(getInsertIndexOf(MeterRateScheduleDTO.RATE_TYPE),
-                                    DTO.getRateType().name());
+                                    DTO.getRateType().getStringForTable());
         preparedStatement.setInt(getInsertIndexOf(MeterRateScheduleDTO.SCHED_PRIORITY),
                                  DTO.getSchedulePriority());
         preparedStatement.setDate(getInsertIndexOf(MeterRateScheduleDTO.EFF_FROM_DT),
@@ -204,7 +212,7 @@ public class MeterRateScheduleProvider {
         preparedStatement.setString(getUpdateIndexOf(MeterRateScheduleDTO.PARKING_SPACE_ID),
                                     DTO.getParkingSpaceID());
         preparedStatement.setString(getUpdateIndexOf(MeterRateScheduleDTO.RATE_TYPE),
-                                    DTO.getRateType().name());
+                                    DTO.getRateType().getStringForTable());
         preparedStatement.setInt(getUpdateIndexOf(MeterRateScheduleDTO.SCHED_PRIORITY),
                                  DTO.getSchedulePriority());
         preparedStatement.setDate(getUpdateIndexOf(MeterRateScheduleDTO.EFF_FROM_DT),
@@ -295,7 +303,7 @@ public class MeterRateScheduleProvider {
     }
 
     private List<MeterRateScheduleDTO> getMeterRateScheduleDTOs(List<String> parkingSpaceIDs,
-                                                                MeterRateType rateType) {
+                                                                MeterRateScheduleType meterRateScheduleType) {
         LOGGER.entering(CLASSNAME, "getMeterRateScheduleDTOs");
 
         List<MeterRateScheduleDTO> meterRateScheduleDTOs =
@@ -309,8 +317,9 @@ public class MeterRateScheduleProvider {
             connection = OracleDBConnection.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForMeterRateScheduleDTOs(rateType,
-                                                                                           parkingSpaceIDs));
+                    connection.prepareStatement(getSelectStatementForMeterRateScheduleDTOs(parkingSpaceIDs));
+            preparedStatement.setString(1,
+                                        meterRateScheduleType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -369,6 +378,7 @@ public class MeterRateScheduleProvider {
         OrderBySB.append(" CASE " + MeterRateScheduleDTO.RATE_TYPE);
         OrderBySB.append(" WHEN 'B' THEN 1 ");
         OrderBySB.append(" WHEN 'H' THEN 2 ");
+        OrderBySB.append(" WHEN 'S' THEN 3 ");
         OrderBySB.append(" ELSE 99 END ");
         OrderBySB.append(" , ");
         OrderBySB.append(MeterRateScheduleDTO.SCHED_PRIORITY);
@@ -384,7 +394,8 @@ public class MeterRateScheduleProvider {
         String Attributes =
             StringUtil.convertListToString(MeterRateScheduleDTO.getAttributeListForSelect());
 
-        String Where = MeterRateScheduleDTO.METER_RATE_SCHED_ID + " = ?";
+        String Where =
+            StatementGenerator.equalToOperator(MeterRateScheduleDTO.METER_RATE_SCHED_ID);
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForMeterRateScheduleID");
 
@@ -393,16 +404,14 @@ public class MeterRateScheduleProvider {
                                                   Where);
     }
 
-    private String getSelectStatementForMaximumDate(MeterRateType rateType,
-                                                    List<String> parkingSpaceIDs) {
+    private String getSelectStatementForMaximumDate(List<String> parkingSpaceIDs) {
         LOGGER.entering(CLASSNAME, "getSelectStatementForMaximumDate");
 
         String Attributes =
             StatementGenerator.maxFunction(MeterRateScheduleDTO.EFF_FROM_DT);
 
         String string1 =
-            MeterRateScheduleDTO.RATE_TYPE + " = \'" + rateType.name() + "\'";
-
+            StatementGenerator.equalToOperator(MeterRateScheduleDTO.RATE_TYPE);
         String string2 =
             StatementGenerator.inOperator(MeterRateScheduleDTO.PARKING_SPACE_ID,
                                           StringUtil.convertListToString(parkingSpaceIDs));
@@ -416,8 +425,7 @@ public class MeterRateScheduleProvider {
                                                   Where);
     }
 
-    private String getSelectStatementForMeterRateScheduleDTOs(MeterRateType rateType,
-                                                              List<String> parkingSpaceIDs) {
+    private String getSelectStatementForMeterRateScheduleDTOs(List<String> parkingSpaceIDs) {
         LOGGER.entering(CLASSNAME,
                         "getSelectStatementForMeterRateScheduleDTOs");
 
@@ -425,20 +433,16 @@ public class MeterRateScheduleProvider {
             StringUtil.convertListToString(MeterRateScheduleDTO.getAttributeListForSelect());
 
         String string1 =
-            MeterRateScheduleDTO.RATE_TYPE + " = \'" + rateType.name() + "\'";
-
+            StatementGenerator.equalToOperator(MeterRateScheduleDTO.RATE_TYPE);
         String string2 =
             StatementGenerator.inOperator(MeterRateScheduleDTO.PARKING_SPACE_ID,
                                           StringUtil.convertListToString(parkingSpaceIDs));
 
         String Where = StatementGenerator.andOperator(string1, string2);
 
-        StringBuffer OrderBySB = new StringBuffer();
-        OrderBySB.append(MeterRateScheduleDTO.SCHED_PRIORITY);
-        OrderBySB.append(" , ");
-        OrderBySB.append(MeterRateScheduleDTO.EFF_FROM_DT);
-
-        String OrderBy = OrderBySB.toString();
+        String OrderBy =
+            StatementGenerator.commaOperator(MeterRateScheduleDTO.SCHED_PRIORITY,
+                                             MeterRateScheduleDTO.EFF_FROM_DT);
 
         LOGGER.exiting(CLASSNAME,
                        "getSelectStatementForMeterRateScheduleDTOs");

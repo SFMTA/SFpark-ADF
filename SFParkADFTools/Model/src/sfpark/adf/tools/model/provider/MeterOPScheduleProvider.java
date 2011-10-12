@@ -16,7 +16,7 @@ import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -83,7 +83,7 @@ public class MeterOPScheduleProvider {
     }
 
     public Date getNextEffectiveFromDate(List<String> parkingSpaceIDs,
-                                         MeterScheduleType scheduleType) {
+                                         MeterOPScheduleType meterOPScheduleType) {
         LOGGER.entering(CLASSNAME, "getNextEffectiveFromDate");
 
         Date maxDate = SQLDateUtil.getYesterdaysDate();
@@ -94,9 +94,11 @@ public class MeterOPScheduleProvider {
 
         try {
             connection = OracleDBConnection.getConnection();
+
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForMaximumDate(scheduleType,
-                                                                                 parkingSpaceIDs));
+                    connection.prepareStatement(getSelectStatementForMaximumDate(parkingSpaceIDs));
+            preparedStatement.setString(1,
+                                        meterOPScheduleType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -124,15 +126,17 @@ public class MeterOPScheduleProvider {
     }
 
     public List<MeterOPScheduleDTO> getMeterOPScheduleDTOs(List<String> parkingSpaceIDs) {
-        return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.OP);
+        return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterOPScheduleType.OP);
     }
 
     public List<MeterOPScheduleDTO> getMeterTOWScheduleDTOs(List<String> parkingSpaceIDs) {
-        return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.TOW);
+        return getMeterOPScheduleDTOs(parkingSpaceIDs,
+                                      MeterOPScheduleType.TOW);
     }
 
     public List<MeterOPScheduleDTO> getMeterALTScheduleDTOs(List<String> parkingSpaceIDs) {
-        return getMeterOPScheduleDTOs(parkingSpaceIDs, MeterScheduleType.ALT);
+        return getMeterOPScheduleDTOs(parkingSpaceIDs,
+                                      MeterOPScheduleType.ALT);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -151,7 +155,7 @@ public class MeterOPScheduleProvider {
         preparedStatement.setString(getInsertIndexOf(MeterOPScheduleDTO.PARKING_SPACE_ID),
                                     DTO.getParkingSpaceID());
         preparedStatement.setString(getInsertIndexOf(MeterOPScheduleDTO.SCHED_TYPE),
-                                    DTO.getScheduleType().name());
+                                    DTO.getScheduleType().getStringForTable());
         preparedStatement.setInt(getInsertIndexOf(MeterOPScheduleDTO.SCHED_PRIORITY),
                                  DTO.getSchedulePriority());
         preparedStatement.setDate(getInsertIndexOf(MeterOPScheduleDTO.EFF_FROM_DT),
@@ -200,7 +204,7 @@ public class MeterOPScheduleProvider {
         preparedStatement.setString(getUpdateIndexOf(MeterOPScheduleDTO.PARKING_SPACE_ID),
                                     DTO.getParkingSpaceID());
         preparedStatement.setString(getUpdateIndexOf(MeterOPScheduleDTO.SCHED_TYPE),
-                                    DTO.getScheduleType().name());
+                                    DTO.getScheduleType().getStringForTable());
         preparedStatement.setInt(getUpdateIndexOf(MeterOPScheduleDTO.SCHED_PRIORITY),
                                  DTO.getSchedulePriority());
         preparedStatement.setDate(getUpdateIndexOf(MeterOPScheduleDTO.EFF_FROM_DT),
@@ -286,7 +290,7 @@ public class MeterOPScheduleProvider {
     }
 
     private List<MeterOPScheduleDTO> getMeterOPScheduleDTOs(List<String> parkingSpaceIDs,
-                                                            MeterScheduleType scheduleType) {
+                                                            MeterOPScheduleType meterOPScheduleType) {
         LOGGER.entering(CLASSNAME, "getMeterOPScheduleDTOs");
 
         List<MeterOPScheduleDTO> meterOPScheduleDTOs =
@@ -298,9 +302,11 @@ public class MeterOPScheduleProvider {
 
         try {
             connection = OracleDBConnection.getConnection();
+
             preparedStatement =
-                    connection.prepareStatement(getSelectStatementForMeterOPScheduleDTOs(scheduleType,
-                                                                                         parkingSpaceIDs));
+                    connection.prepareStatement(getSelectStatementForMeterOPScheduleDTOs(parkingSpaceIDs));
+            preparedStatement.setString(1,
+                                        meterOPScheduleType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -323,62 +329,19 @@ public class MeterOPScheduleProvider {
         return meterOPScheduleDTOs;
     }
 
-    /*
-    private List<MeterOPScheduleDTO> getMeterOPScheduleDTOs(String parkingSpaceID,
-                                                            MeterScheduleType scheduleType) {
-        LOGGER.entering(CLASSNAME, "getMeterOPScheduleDTOs");
-
-        List<MeterOPScheduleDTO> meterOPScheduleDTOs =
-            new ArrayList<MeterOPScheduleDTO>();
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = OracleDBConnection.getConnection();
-
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatementForParkingSpaceID(scheduleType));
-            preparedStatement.setString(1, parkingSpaceID);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                MeterOPScheduleDTO meterOPScheduleDTO =
-                    MeterOPScheduleDTO.extract(resultSet);
-
-                meterOPScheduleDTOs.add(meterOPScheduleDTO);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
-        } finally {
-            OracleDBConnection.closeAll(resultSet, preparedStatement, connection);
-        }
-
-        LOGGER.exiting(CLASSNAME, "getMeterOPScheduleDTOs");
-
-        return meterOPScheduleDTOs;
-    }
-    */
-
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatementForMaximumDate(MeterScheduleType scheduleType,
-                                                    List<String> parkingSpaceIDs) {
+    private String getSelectStatementForMaximumDate(List<String> parkingSpaceIDs) {
         LOGGER.entering(CLASSNAME, "getSelectStatementForMaximumDate");
 
         String Attributes =
             StatementGenerator.maxFunction(MeterOPScheduleDTO.EFF_FROM_DT);
 
-        String RHS = "\'" + scheduleType.name() + "\'";
         String string1 =
-            StatementGenerator.equalToOperator(MeterOPScheduleDTO.SCHED_TYPE,
-                                               RHS);
+            StatementGenerator.equalToOperator(MeterOPScheduleDTO.SCHED_TYPE);
         String string2 =
             StatementGenerator.inOperator(MeterOPScheduleDTO.PARKING_SPACE_ID,
                                           StringUtil.convertListToString(parkingSpaceIDs));
@@ -392,17 +355,14 @@ public class MeterOPScheduleProvider {
                                                   Where);
     }
 
-    private String getSelectStatementForMeterOPScheduleDTOs(MeterScheduleType scheduleType,
-                                                            List<String> parkingSpaceIDs) {
+    private String getSelectStatementForMeterOPScheduleDTOs(List<String> parkingSpaceIDs) {
         LOGGER.entering(CLASSNAME, "getSelectStatementForMeterOPScheduleDTOs");
 
         String Attributes =
             StringUtil.convertListToString(MeterOPScheduleDTO.getAttributeListForSelect());
 
-        String RHS = "\'" + scheduleType.name() + "\'";
         String string1 =
-            StatementGenerator.equalToOperator(MeterOPScheduleDTO.SCHED_TYPE,
-                                               RHS);
+            StatementGenerator.equalToOperator(MeterOPScheduleDTO.SCHED_TYPE);
         String string2 =
             StatementGenerator.inOperator(MeterOPScheduleDTO.PARKING_SPACE_ID,
                                           StringUtil.convertListToString(parkingSpaceIDs));
@@ -410,7 +370,8 @@ public class MeterOPScheduleProvider {
         String Where = StatementGenerator.andOperator(string1, string2);
 
         String OrderBy =
-            MeterOPScheduleDTO.SCHED_PRIORITY + " , " + MeterOPScheduleDTO.EFF_FROM_DT;
+            StatementGenerator.commaOperator(MeterOPScheduleDTO.SCHED_PRIORITY,
+                                             MeterOPScheduleDTO.EFF_FROM_DT);
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForMeterOPScheduleDTOs");
 
@@ -418,30 +379,6 @@ public class MeterOPScheduleProvider {
                                                   MeterOPScheduleDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
-
-    /*
-    private String getSelectStatementForParkingSpaceID(MeterScheduleType scheduleType) {
-        LOGGER.entering(CLASSNAME, "getSelectStatementForParkingSpaceID");
-
-        String Attributes =
-            StringUtil.convertListToString(MeterOPScheduleDTO.getAttributeListForSelect());
-
-        String string1 =
-            MeterOPScheduleDTO.SCHED_TYPE + " = " + scheduleType.name();
-
-        String string2 = MeterOPScheduleDTO.PARKING_SPACE_ID + " = ?";
-
-        String Where = StatementGenerator.andOperator(string1, string2);
-
-        String OrderBy =
-            MeterOPScheduleDTO.SCHED_PRIORITY + " , " + MeterOPScheduleDTO.EFF_FROM_DT;
-
-        LOGGER.exiting(CLASSNAME, "getSelectStatementForParkingSpaceID");
-
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
-                                                  Where, OrderBy);
-    }
-    */
 
     private String getSelectStatementForMeterOPScheduleID() {
         LOGGER.entering(CLASSNAME, "getSelectStatementForMeterOPScheduleID");

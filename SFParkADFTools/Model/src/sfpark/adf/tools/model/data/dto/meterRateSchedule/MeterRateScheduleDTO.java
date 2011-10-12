@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.EffectiveDateBaseDTO;
-import sfpark.adf.tools.model.data.helper.MeterRateType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.utilities.constants.WeekDays;
 import sfpark.adf.tools.utilities.generic.CurrencyUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
@@ -57,7 +57,7 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
         this.setMeterRateSchedID(resultSet.getString(METER_RATE_SCHED_ID));
         this.setParkingSpaceID(resultSet.getString(PARKING_SPACE_ID));
         this.setOverride(override);
-        this.setRateType(MeterRateType.valueOf(resultSet.getString(RATE_TYPE)));
+        this.setRateType(MeterRateScheduleType.extract(resultSet.getString(RATE_TYPE)));
         this.setSchedulePriority(resultSet.getInt(SCHED_PRIORITY));
         this.setFromTime(TimeDisplayUtil.extractFromTimeForDisplay(resultSet.getString(FROM_TIME)));
         this.setToTime(TimeDisplayUtil.extractToTimeForDisplay(resultSet.getString(TO_TIME)));
@@ -80,6 +80,11 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
         //     ---FROM_TIME = 0
         //     ---TO_TIME = 0
         //     ---DAYS_APPLIED = blank
+
+        // S Rate
+        //     ---FROM_TIME = 0
+        //     ---TO_TIME = 0
+        //     ---DAYS_APPLIED = Special Events
 
     }
 
@@ -233,11 +238,11 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
     }
 
     public boolean isEditableFromTime() {
-        return getRateType().isRateTypeH();
+        return getRateType().isHourly();
     }
 
     public boolean isEditableToTime() {
-        return getRateType().isRateTypeH();
+        return getRateType().isHourly();
     }
 
     private String getActualDaysApplied() {
@@ -269,7 +274,7 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
 
     private String MeterRateSchedID;
     private String ParkingSpaceID;
-    private MeterRateType RateType;
+    private MeterRateScheduleType RateType;
     private int SchedulePriority;
     private String FromTime;
     private String ToTime;
@@ -296,11 +301,11 @@ public class MeterRateScheduleDTO extends EffectiveDateBaseDTO {
         return ParkingSpaceID;
     }
 
-    public void setRateType(MeterRateType RateType) {
+    public void setRateType(MeterRateScheduleType RateType) {
         this.RateType = RateType;
     }
 
-    public MeterRateType getRateType() {
+    public MeterRateScheduleType getRateType() {
         return RateType;
     }
 

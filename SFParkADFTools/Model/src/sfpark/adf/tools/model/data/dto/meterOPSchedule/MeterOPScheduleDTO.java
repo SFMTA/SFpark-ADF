@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.EffectiveDateBaseDTO;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.utilities.constants.WeekDays;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
@@ -56,7 +56,7 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
         this.setMeterOPSchedID(resultSet.getString(METER_OP_SCHED_ID));
         this.setParkingSpaceID(resultSet.getString(PARKING_SPACE_ID));
         this.setOverride(override);
-        this.setScheduleType(MeterScheduleType.valueOf(resultSet.getString(SCHED_TYPE)));
+        this.setScheduleType(MeterOPScheduleType.extract(resultSet.getString(SCHED_TYPE)));
         this.setSchedulePriority(resultSet.getInt(SCHED_PRIORITY));
         this.setColorRuleApplied(resultSet.getString(COLOR_RULE_APPLIED));
         this.setAlternateAddlDesc(resultSet.getString(ALT_ADDL_DESC));
@@ -263,12 +263,11 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
     }
 
     public boolean isEditableTimeLimit() {
-        return (getScheduleType().isScheduleOP() ||
-                getScheduleType().isScheduleALT());
+        return (getScheduleType().isOP() || getScheduleType().isALT());
     }
 
     public boolean isEditablePrePaymentTime() {
-        return getScheduleType().isScheduleOP();
+        return getScheduleType().isOP();
     }
 
     public boolean isAlternateAddlDescFixedToSpecificValues() {
@@ -334,7 +333,7 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
 
     private String MeterOPSchedID;
     private String ParkingSpaceID;
-    private MeterScheduleType ScheduleType;
+    private MeterOPScheduleType ScheduleType;
     private int SchedulePriority;
     private String ColorRuleApplied;
     private String AlternateAddlDesc;
@@ -358,6 +357,22 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
 
     public String getParkingSpaceID() {
         return ParkingSpaceID;
+    }
+
+    public void setScheduleType(MeterOPScheduleType ScheduleType) {
+        this.ScheduleType = ScheduleType;
+    }
+
+    public MeterOPScheduleType getScheduleType() {
+        return ScheduleType;
+    }
+
+    public void setSchedulePriority(int SchedulePriority) {
+        this.SchedulePriority = SchedulePriority;
+    }
+
+    public int getSchedulePriority() {
+        return SchedulePriority;
     }
 
     public void setColorRuleApplied(String ColorRuleApplied) {
@@ -414,21 +429,5 @@ public class MeterOPScheduleDTO extends EffectiveDateBaseDTO {
 
     public String getPrePaymentTime() {
         return PrePaymentTime;
-    }
-
-    public void setScheduleType(MeterScheduleType ScheduleType) {
-        this.ScheduleType = ScheduleType;
-    }
-
-    public MeterScheduleType getScheduleType() {
-        return ScheduleType;
-    }
-
-    public void setSchedulePriority(int SchedulePriority) {
-        this.SchedulePriority = SchedulePriority;
-    }
-
-    public int getSchedulePriority() {
-        return SchedulePriority;
     }
 }

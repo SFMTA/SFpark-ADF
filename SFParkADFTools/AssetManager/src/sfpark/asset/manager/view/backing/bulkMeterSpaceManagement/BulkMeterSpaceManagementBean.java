@@ -19,8 +19,8 @@ import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 
-import sfpark.adf.tools.model.data.helper.MeterRateType;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
@@ -277,17 +277,17 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
         String ID = event.getComponent().getId();
 
         if (ID.contains("Sched")) {
-            MeterScheduleType scheduleType = MeterScheduleType.OP;
+            MeterOPScheduleType meterOPScheduleType = MeterOPScheduleType.OP;
             if (ID.contains("ALT")) {
-                scheduleType = MeterScheduleType.ALT;
+                meterOPScheduleType = MeterOPScheduleType.ALT;
             } else if (ID.contains("TOW")) {
-                scheduleType = MeterScheduleType.TOW;
+                meterOPScheduleType = MeterOPScheduleType.TOW;
             } else {
-                scheduleType = MeterScheduleType.OP;
+                meterOPScheduleType = MeterOPScheduleType.OP;
             }
 
             setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey(),
-                                  scheduleType);
+                                  meterOPScheduleType);
 
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getMeterScheduleTable().getValue();
@@ -298,11 +298,14 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
                                  NavigationFlow.MeterScheduleTemplatePage.name());
 
         } else if (ID.contains("Rate")) {
-            MeterRateType rateType = MeterRateType.B;
+            MeterRateScheduleType meterRateScheduleType =
+                MeterRateScheduleType.BASE;
             if (ID.contains("Hourly")) {
-                rateType = MeterRateType.H;
+                meterRateScheduleType = MeterRateScheduleType.HOURLY;
+            } else if (ID.contains("Special")) {
+                meterRateScheduleType = MeterRateScheduleType.SPECIAL;
             } else {
-                rateType = MeterRateType.B;
+                meterRateScheduleType = MeterRateScheduleType.BASE;
             }
 
             List<MeterRateScheduleDTO> meterRateScheduleDTOs =
@@ -313,7 +316,8 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
             // ++++++++++++++++++++++++++++++++++
             // Set the checkboxes properly
 
-            getMeterRateScheduleBulkTO().setProperBoolean(rateType, true);
+            getMeterRateScheduleBulkTO().setProperBoolean(meterRateScheduleType,
+                                                          true);
 
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++
@@ -322,7 +326,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
 
             java.sql.Date nextEffectiveFromDate =
                 MeterRateScheduleProvider.INSTANCE.getNextEffectiveFromDate(getParkingSpaceInventoryBulkTO().getParkingSpaceIDList(),
-                                                                            rateType);
+                                                                            meterRateScheduleType);
 
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++
@@ -330,10 +334,10 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
             // Perform the addition
 
             MeterRateScheduleDTO meterRateScheduleDTO =
-                DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleDTO(rateType,
+                DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleDTO(meterRateScheduleType,
                                                                           null,
                                                                           getNextPriorityInt(meterRateScheduleDTOs,
-                                                                                             rateType),
+                                                                                             meterRateScheduleType),
                                                                           nextEffectiveFromDate,
                                                                           null);
 
@@ -396,11 +400,11 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
                 setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_LIST.getKey(),
                                       meterSchedules);
 
-                for (MeterScheduleType scheduleType :
-                     MeterScheduleType.values()) {
-                    getMeterOPScheduleBulkTO().setProperBoolean(scheduleType,
-                                                                this.containsScheduleType(meterSchedules,
-                                                                                          scheduleType));
+                for (MeterOPScheduleType meterOPScheduleType :
+                     MeterOPScheduleType.values()) {
+                    getMeterOPScheduleBulkTO().setProperBoolean(meterOPScheduleType,
+                                                                containsScheduleType(meterSchedules,
+                                                                                     meterOPScheduleType));
                 }
 
                 table.getSelectedRowKeys().clear();
@@ -439,10 +443,11 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
                 setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_RATE_LIST.getKey(),
                                       meterRates);
 
-                for (MeterRateType rateType : MeterRateType.values()) {
-                    getMeterRateScheduleBulkTO().setProperBoolean(rateType,
+                for (MeterRateScheduleType meterRateScheduleType :
+                     MeterRateScheduleType.values()) {
+                    getMeterRateScheduleBulkTO().setProperBoolean(meterRateScheduleType,
                                                                   containsRateType(meterRates,
-                                                                                   rateType));
+                                                                                   meterRateScheduleType));
                 }
 
                 table.getSelectedRowKeys().clear();
@@ -791,7 +796,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
                 Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(iDTO.getToTime()));
 
             if (toTime == 0) {
-                if (fromTime == 0 && iDTO.getScheduleType().isScheduleALT() &&
+                if (fromTime == 0 && iDTO.getScheduleType().isALT() &&
                     iDTO.isAlternateAddlDescFixedToSpecificValues()) {
                     // Valid
                     // Continue
@@ -822,7 +827,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
             //          ---COLOR_RULE_APPLIED should be same as CAP_COLOR
             //       ---Else
             //          ---COLOR_RULE_APPLIED should be NULL
-            if (iDTO.getScheduleType().isScheduleOP()) {
+            if (iDTO.getScheduleType().isOP()) {
                 if (bulkTO.isToBeUpdatedCapColor()) {
                     if (!StringUtil.areEqual(iDTO.getColorRuleApplied(),
                                              bulkTO.getCapColor())) {
@@ -921,7 +926,8 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
                 Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(iDTO.getToTime()));
 
             if (toTime == 0) {
-                if (fromTime == 0 && iDTO.getRateType().isRateTypeB()) {
+                if (fromTime == 0 &&
+                    (iDTO.getRateType().isBase() || iDTO.getRateType().isSpecial())) {
                     // Valid
                     // Continue
 
@@ -987,14 +993,14 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
     }
 
     private int getNextPriorityInt(List<MeterRateScheduleDTO> meterRateScheduleDTOs,
-                                   MeterRateType rateType) {
+                                   MeterRateScheduleType meterRateScheduleType) {
 
         int nextPriority = 0;
 
         if (meterRateScheduleDTOs != null &&
             !meterRateScheduleDTOs.isEmpty()) {
             for (MeterRateScheduleDTO DTO : meterRateScheduleDTOs) {
-                if (DTO.getRateType().equals(rateType)) {
+                if (DTO.getRateType().equals(meterRateScheduleType)) {
                     if (DTO.getSchedulePriority() > nextPriority) {
                         nextPriority = DTO.getSchedulePriority();
                     }
@@ -1005,33 +1011,15 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
         return (nextPriority + 1);
     }
 
-    /*
-    private void preserveTableData() {
-        // TODO: Figure out the best way
-
-        List<MeterOPScheduleDTO> meterSchedules =
-            (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
-        setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_SCHEDULE_LIST.getKey(),
-                              meterSchedules);
-
-        List<MeterRateScheduleDTO> meterRates =
-            (List<MeterRateScheduleDTO>)getActiveMeterRateTable().getValue();
-        setPageFlowScopeValue(PageFlowScopeKey.ACTIVE_METER_RATE_LIST.getKey(),
-                              meterRates);
-
-    }
-
-     */
-
     private boolean containsScheduleType(List<MeterOPScheduleDTO> meterSchedules,
-                                         MeterScheduleType scheduleType) {
+                                         MeterOPScheduleType meterOPScheduleType) {
 
         if (meterSchedules == null || meterSchedules.isEmpty()) {
             return false;
         }
 
         for (MeterOPScheduleDTO DTO : meterSchedules) {
-            if (DTO.getScheduleType().equals(scheduleType)) {
+            if (DTO.getScheduleType().equals(meterOPScheduleType)) {
                 return true;
             }
         }
@@ -1040,14 +1028,14 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
     }
 
     private boolean containsRateType(List<MeterRateScheduleDTO> meterRates,
-                                     MeterRateType rateType) {
+                                     MeterRateScheduleType meterRateScheduleType) {
 
         if (meterRates == null || meterRates.isEmpty()) {
             return false;
         }
 
         for (MeterRateScheduleDTO DTO : meterRates) {
-            if (DTO.getRateType().equals(rateType)) {
+            if (DTO.getRateType().equals(meterRateScheduleType)) {
                 return true;
             }
         }

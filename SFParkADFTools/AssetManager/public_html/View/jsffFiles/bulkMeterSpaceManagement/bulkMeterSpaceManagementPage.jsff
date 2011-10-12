@@ -398,6 +398,7 @@
                                     actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
                 <af:commandMenuItem id="addHourlyRate" text="Hourly Rate"
                                     actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addSpecialRate" text="Special Rate" actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
               </af:menu>
             </f:facet>
           </af:commandToolbarButton>

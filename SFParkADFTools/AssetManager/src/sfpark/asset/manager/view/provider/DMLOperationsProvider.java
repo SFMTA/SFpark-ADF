@@ -14,7 +14,7 @@ import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
-import sfpark.adf.tools.model.data.helper.MeterRateType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.meterRateSchedule.MeterRateScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
@@ -168,7 +168,7 @@ public final class DMLOperationsProvider {
 
             DTO.setEditableColorRuleApplied(false);
 
-            if (meterSchedValidationsDO.getScheduleType().isScheduleOP()) {
+            if (meterSchedValidationsDO.getScheduleType().isOP()) {
                 DTO.setColorRuleApplied(colorRuleAppliedForOP);
             } else {
                 DTO.setColorRuleApplied(meterSchedValidationsDO.getColorRuleApplied());
@@ -190,7 +190,7 @@ public final class DMLOperationsProvider {
         return DTO;
     }
 
-    public MeterRateScheduleDTO getNewMeterRateScheduleDTO(MeterRateType rateType,
+    public MeterRateScheduleDTO getNewMeterRateScheduleDTO(MeterRateScheduleType meterRateScheduleType,
                                                            String parkingSpaceID,
                                                            int priority,
                                                            Date effectiveFromDate,
@@ -203,7 +203,7 @@ public final class DMLOperationsProvider {
         DTO.setParkingSpaceID(parkingSpaceID);
         DTO.setOverride(false);
 
-        DTO.setRateType(rateType);
+        DTO.setRateType(meterRateScheduleType);
         DTO.setSchedulePriority(priority);
 
         DTO.setEffectiveFromDate(effectiveFromDate);
@@ -226,9 +226,12 @@ public final class DMLOperationsProvider {
             DTO.setBlockID(CommonUtils.extractBlockIDFromBlockfaceID(blockfaceID));
         }
 
-        if (rateType.isRateTypeH()) {
+        if (meterRateScheduleType.isHourly()) {
             DTO.setEditableDaysApplied(true);
             DTO.setWeekDaysApplied(DayUI.DAYS_APPLIED_SINGLE_STRING_LIST);
+        } else if (meterRateScheduleType.isSpecial()) {
+            DTO.setEditableDaysApplied(false);
+            DTO.setDaysApplied("Special Events");
         } else {
             DTO.setEditableDaysApplied(false);
             DTO.setDaysApplied(" ");
@@ -607,7 +610,7 @@ public final class DMLOperationsProvider {
             ParkingSpaceInventoryProvider.INSTANCE.getParkingSpaceInventoryDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
         if (parkingSpaceInventoryDTOs.isEmpty()) {
-            return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_could_not_load_parking_spaces))); 
+            return OperationStatus.failure(new Exception(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_bulk_could_not_load_parking_spaces)));
         }
 
         // ++++++++++++++++++++++++++++++++++
@@ -806,7 +809,7 @@ public final class DMLOperationsProvider {
 
                     meterOPScheduleDTO.setParkingSpaceID(parkingSpaceInventoryDTO.getParkingSpaceID());
 
-                    if (meterOPScheduleDTO.getScheduleType().isScheduleOP()) {
+                    if (meterOPScheduleDTO.getScheduleType().isOP()) {
 
                         String colorRuleApplied =
                             (parkingSpaceInventoryBulkTO.isToBeUpdatedCapColor()) ?
@@ -842,7 +845,7 @@ public final class DMLOperationsProvider {
         if (meterRateScheduleBulkTO.isDeleteAllBaseRates()) {
             // All previous meter base rates should be deleted
             List<MeterRateScheduleDTO> originalMeterBaseRates =
-                MeterRateScheduleProvider.INSTANCE.getMeterBRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
+                MeterRateScheduleProvider.INSTANCE.getMeterBaseRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
             deleteMeterRates.addAll(originalMeterBaseRates);
         }
@@ -855,9 +858,22 @@ public final class DMLOperationsProvider {
         if (meterRateScheduleBulkTO.isDeleteAllHourlyRates()) {
             // All previous meter hourly rates should be deleted
             List<MeterRateScheduleDTO> originalMeterHourlyRates =
-                MeterRateScheduleProvider.INSTANCE.getMeterHRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
+                MeterRateScheduleProvider.INSTANCE.getMeterHourlyRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
 
             deleteMeterRates.addAll(originalMeterHourlyRates);
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // Meter Special Rates
+
+        if (meterRateScheduleBulkTO.isDeleteAllSpecialRates()) {
+            // All previous meter special rates should be deleted
+            List<MeterRateScheduleDTO> originalMeterSpecialRates =
+                MeterRateScheduleProvider.INSTANCE.getMeterSpecialRateScheduleDTOs(parkingSpaceInventoryBulkTO.getParkingSpaceIDList());
+
+            deleteMeterRates.addAll(originalMeterSpecialRates);
         }
 
         // ++++++++++++++++++++++++++++++++++

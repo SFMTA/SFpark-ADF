@@ -1,6 +1,6 @@
 package sfpark.adf.tools.model.data.tO.meterOPSchedule;
 
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.model.data.tO.BaseTO;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 
@@ -77,15 +77,15 @@ public class MeterOPScheduleBulkTO extends BaseTO {
         setDisableDeleteAllTOWSchedules(value);
     }
 
-    public void setProperBoolean(MeterScheduleType scheduleType,
+    public void setProperBoolean(MeterOPScheduleType scheduleType,
                                  boolean value) {
-        if (scheduleType.isScheduleOP()) {
+        if (scheduleType.isOP()) {
             setDeleteAllOPSchedules(value);
             setDisableDeleteAllOPSchedules(value);
-        } else if (scheduleType.isScheduleALT()) {
+        } else if (scheduleType.isALT()) {
             setDeleteAllALTSchedules(value);
             setDisableDeleteAllALTSchedules(value);
-        } else if (scheduleType.isScheduleTOW()) {
+        } else if (scheduleType.isTOW()) {
             setDeleteAllTOWSchedules(value);
             setDisableDeleteAllTOWSchedules(value);
         }

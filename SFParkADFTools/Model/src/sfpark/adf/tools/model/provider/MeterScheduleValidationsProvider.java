@@ -15,7 +15,7 @@ import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.meterSchedValidations.MeterSchedValidationsDO;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class MeterScheduleValidationsProvider {
@@ -23,8 +23,6 @@ public final class MeterScheduleValidationsProvider {
     private static final String CLASSNAME =
         MeterScheduleValidationsProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
-
-    private static final String TABLE_NAME = "METER_SCHED_VALIDATIONS";
 
     private MeterScheduleValidationsProvider() {
         super();
@@ -38,7 +36,7 @@ public final class MeterScheduleValidationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    public List<MeterSchedValidationsDO> getMeterSchedValidationDOs(MeterScheduleType scheduleType) {
+    public List<MeterSchedValidationsDO> getMeterSchedValidationDOs(MeterOPScheduleType meterOPScheduleType) {
         LOGGER.entering(CLASSNAME, "getMeterSchedValidationDOs");
 
         List<MeterSchedValidationsDO> meterSchedValidationsDOs =
@@ -53,7 +51,8 @@ public final class MeterScheduleValidationsProvider {
 
             preparedStatement =
                     connection.prepareStatement(getSelectStatement());
-            preparedStatement.setString(1, scheduleType.name());
+            preparedStatement.setString(1,
+                                        meterOPScheduleType.getStringForTable());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -94,7 +93,8 @@ public final class MeterScheduleValidationsProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  MeterSchedValidationsDO.getDatabaseTableName(),
                                                   Where);
     }
 }

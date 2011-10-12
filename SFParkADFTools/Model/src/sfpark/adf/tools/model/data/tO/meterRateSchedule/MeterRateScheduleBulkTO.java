@@ -1,6 +1,6 @@
 package sfpark.adf.tools.model.data.tO.meterRateSchedule;
 
-import sfpark.adf.tools.model.data.helper.MeterRateType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.model.data.tO.BaseTO;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 
@@ -33,6 +33,7 @@ public class MeterRateScheduleBulkTO extends BaseTO {
 
     private boolean DisableDeleteAllBaseRates;
     private boolean DisableDeleteAllHourlyRates;
+    private boolean DisableDeleteAllSpecialRates;
 
     public void setDisableDeleteAllBaseRates(boolean DisableDeleteAllBaseRates) {
         this.DisableDeleteAllBaseRates = DisableDeleteAllBaseRates;
@@ -50,6 +51,14 @@ public class MeterRateScheduleBulkTO extends BaseTO {
         return DisableDeleteAllHourlyRates;
     }
 
+    public void setDisableDeleteAllSpecialRates(boolean DisableDeleteAllSpecialRates) {
+        this.DisableDeleteAllSpecialRates = DisableDeleteAllSpecialRates;
+    }
+
+    public boolean isDisableDeleteAllSpecialRates() {
+        return DisableDeleteAllSpecialRates;
+    }
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -61,15 +70,22 @@ public class MeterRateScheduleBulkTO extends BaseTO {
 
         setDeleteAllHourlyRates(value);
         setDisableDeleteAllHourlyRates(value);
+
+        setDeleteAllSpecialRates(value);
+        setDisableDeleteAllSpecialRates(value);
     }
 
-    public void setProperBoolean(MeterRateType rateType, boolean value) {
-        if (rateType.isRateTypeB()) {
+    public void setProperBoolean(MeterRateScheduleType rateType,
+                                 boolean value) {
+        if (rateType.isBase()) {
             setDeleteAllBaseRates(value);
             setDisableDeleteAllBaseRates(value);
-        } else if (rateType.isRateTypeH()) {
+        } else if (rateType.isHourly()) {
             setDeleteAllHourlyRates(value);
             setDisableDeleteAllHourlyRates(value);
+        } else if (rateType.isSpecial()) {
+            setDeleteAllSpecialRates(value);
+            setDisableDeleteAllSpecialRates(value);
         }
     }
 
@@ -79,6 +95,7 @@ public class MeterRateScheduleBulkTO extends BaseTO {
 
     private boolean DeleteAllBaseRates;
     private boolean DeleteAllHourlyRates;
+    private boolean DeleteAllSpecialRates;
 
     public void setDeleteAllBaseRates(boolean DeleteAllBaseRates) {
         this.DeleteAllBaseRates = DeleteAllBaseRates;
@@ -94,5 +111,13 @@ public class MeterRateScheduleBulkTO extends BaseTO {
 
     public boolean isDeleteAllHourlyRates() {
         return DeleteAllHourlyRates;
+    }
+
+    public void setDeleteAllSpecialRates(boolean DeleteAllSpecialRates) {
+        this.DeleteAllSpecialRates = DeleteAllSpecialRates;
+    }
+
+    public boolean isDeleteAllSpecialRates() {
+        return DeleteAllSpecialRates;
     }
 }

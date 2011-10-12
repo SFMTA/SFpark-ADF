@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
+import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
@@ -347,6 +348,52 @@ public class AllowedValuesProvider {
 
     public static String getRateChgPolicyDefaultValue() {
         return getRateChgPolicyList().get(0).getColumnValue();
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // METER_CLASS HELPERS
+
+    private static long TimeOfLastMeterClassRetrieve = -1;
+    private static List<AllowedValuesDTO> meterClassList = null;
+
+    public static synchronized List<AllowedValuesDTO> getMeterClassList() {
+
+        if (meterClassList == null ||
+            ((System.currentTimeMillis() - TimeOfLastMeterClassRetrieve) >
+             TIME_TO_UPDATE)) {
+            meterClassList =
+                    getAllowedValuesFor(TimeBandModelDO.getDatabaseTableName(),
+                                        TimeBandModelDO.METER_CLASS);
+
+            TimeOfLastMeterClassRetrieve = System.currentTimeMillis();
+        }
+
+        return meterClassList;
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // DATE_TYPE HELPERS
+
+    private static long TimeOfLastDateTypeRetrieve = -1;
+    private static List<AllowedValuesDTO> dateTypeList = null;
+
+    public static synchronized List<AllowedValuesDTO> getDateTypeList() {
+
+        if (dateTypeList == null ||
+            ((System.currentTimeMillis() - TimeOfLastDateTypeRetrieve) >
+             TIME_TO_UPDATE)) {
+            dateTypeList =
+                    getAllowedValuesFor(TimeBandModelDO.getDatabaseTableName(),
+                                        TimeBandModelDO.DATE_TYPE);
+
+            TimeOfLastDateTypeRetrieve = System.currentTimeMillis();
+        }
+
+        return dateTypeList;
     }
 
     // ++++++++++++++++++++++++++++++++++

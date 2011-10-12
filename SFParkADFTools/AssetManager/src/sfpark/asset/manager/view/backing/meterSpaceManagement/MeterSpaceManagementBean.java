@@ -24,8 +24,8 @@ import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.meterRateSchedule.MeterRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
-import sfpark.adf.tools.model.data.helper.MeterRateType;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
@@ -560,17 +560,17 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         String ID = event.getComponent().getId();
 
         if (ID.contains("Sched")) {
-            MeterScheduleType scheduleType = MeterScheduleType.OP;
+            MeterOPScheduleType meterOPScheduleType = MeterOPScheduleType.OP;
             if (ID.contains("ALT")) {
-                scheduleType = MeterScheduleType.ALT;
+                meterOPScheduleType = MeterOPScheduleType.ALT;
             } else if (ID.contains("TOW")) {
-                scheduleType = MeterScheduleType.TOW;
+                meterOPScheduleType = MeterOPScheduleType.TOW;
             } else {
-                scheduleType = MeterScheduleType.OP;
+                meterOPScheduleType = MeterOPScheduleType.OP;
             }
 
             setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey(),
-                                  scheduleType);
+                                  meterOPScheduleType);
 
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
@@ -581,21 +581,24 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                  NavigationFlow.MeterScheduleTemplatePage.name());
 
         } else if (ID.contains("Rate")) {
-            MeterRateType rateType = MeterRateType.B;
+            MeterRateScheduleType meterRateScheduleType =
+                MeterRateScheduleType.BASE;
             if (ID.contains("Hourly")) {
-                rateType = MeterRateType.H;
+                meterRateScheduleType = MeterRateScheduleType.HOURLY;
+            } else if (ID.contains("Special")) {
+                meterRateScheduleType = MeterRateScheduleType.SPECIAL;
             } else {
-                rateType = MeterRateType.B;
+                meterRateScheduleType = MeterRateScheduleType.BASE;
             }
 
             List<MeterRateScheduleDTO> meterRateScheduleDTOs =
                 (List<MeterRateScheduleDTO>)getActiveMeterRateTable().getValue();
 
             MeterRateScheduleDTO meterRateScheduleDTO =
-                DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleDTO(rateType,
+                DMLOperationsProvider.INSTANCE.getNewMeterRateScheduleDTO(meterRateScheduleType,
                                                                           getCurrentParkingSpaceInventoryDTO().getParkingSpaceID(),
                                                                           getNextPriorityInt(meterRateScheduleDTOs,
-                                                                                             rateType),
+                                                                                             meterRateScheduleType),
                                                                           SQLDateUtil.getTodaysDate(),
                                                                           getCurrentParkingSpaceInventoryDTO().getBlockfaceID());
 
@@ -1290,7 +1293,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(iDTO.getToTime()));
 
             if (toTime == 0) {
-                if (fromTime == 0 && iDTO.getScheduleType().isScheduleALT() &&
+                if (fromTime == 0 && iDTO.getScheduleType().isALT() &&
                     iDTO.isAlternateAddlDescFixedToSpecificValues()) {
                     // Valid
                     // Continue
@@ -1317,7 +1320,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             //         ---SCHED_TYPE = OP
             //         ---EFF_TO_DT after Today
             //       Then, COLOR_RULE_APPLIED should be same as CAP_COLOR
-            if (iDTO.getScheduleType().isScheduleOP()) {
+            if (iDTO.getScheduleType().isOP()) {
                 if (iDTO.getEffectiveToDate().after(SQLDateUtil.getTodaysDate())) {
                     if (!StringUtil.areEqual(iDTO.getColorRuleApplied(),
                                              capColor)) {
@@ -1405,7 +1408,8 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(iDTO.getToTime()));
 
             if (toTime == 0) {
-                if (fromTime == 0 && iDTO.getRateType().isRateTypeB()) {
+                if (fromTime == 0 &&
+                    (iDTO.getRateType().isBase() || iDTO.getRateType().isSpecial())) {
                     // Valid
                     // Continue
 
@@ -1451,8 +1455,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
     private void endDateAllSchedules() {
 
-        // TODO
-
         RichTable table = getActiveMeterScheduleTable();
 
         List<MeterOPScheduleDTO> currentMeterSchedules =
@@ -1489,8 +1491,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     }
 
     private void endDateAllRates() {
-
-        // TODO
 
         RichTable table = getActiveMeterRateTable();
 
@@ -1531,14 +1531,14 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     }
 
     private int getNextPriorityInt(List<MeterRateScheduleDTO> meterRateScheduleDTOs,
-                                   MeterRateType rateType) {
+                                   MeterRateScheduleType meterRateScheduleType) {
 
         int nextPriority = 0;
 
         if (meterRateScheduleDTOs != null &&
             !meterRateScheduleDTOs.isEmpty()) {
             for (MeterRateScheduleDTO DTO : meterRateScheduleDTOs) {
-                if (DTO.getRateType().equals(rateType)) {
+                if (DTO.getRateType().equals(meterRateScheduleType)) {
                     if (DTO.getSchedulePriority() > nextPriority) {
                         nextPriority = DTO.getSchedulePriority();
                     }

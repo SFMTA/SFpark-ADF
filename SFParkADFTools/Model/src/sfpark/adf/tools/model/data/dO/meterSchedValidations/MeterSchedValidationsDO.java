@@ -8,11 +8,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.BaseDO;
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class MeterSchedValidationsDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "METER_SCHED_VALIDATIONS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public MeterSchedValidationsDO() {
         super();
     }
@@ -20,7 +29,7 @@ public class MeterSchedValidationsDO extends BaseDO {
     public MeterSchedValidationsDO(ResultSet resultSet) throws SQLException {
         super(resultSet);
 
-        this.setScheduleType(MeterScheduleType.valueOf(resultSet.getString(SCHED_TYPE)));
+        this.setScheduleType(MeterOPScheduleType.extract(resultSet.getString(SCHED_TYPE)));
         this.setColorRuleApplied(resultSet.getString(COLOR_RULE_APPLIED));
         this.setAltAddlDesc(resultSet.getString(ALT_ADDL_DESC));
         this.setDaysAppliedTxt(resultSet.getString(DAYS_APPLIED_TXT));
@@ -59,8 +68,7 @@ public class MeterSchedValidationsDO extends BaseDO {
     // PURELY FOR DISPLAY PURPOSES
 
     public boolean isColorRuleAppliedEditable() {
-        if (this.getScheduleType().isScheduleTOW() ||
-            this.getScheduleType().isScheduleOP()) {
+        if (this.getScheduleType().isTOW() || this.getScheduleType().isOP()) {
 
             return false;
         }
@@ -70,12 +78,12 @@ public class MeterSchedValidationsDO extends BaseDO {
 
     public String getDisplayColorRuleApplied() {
 
-        if (this.getScheduleType().isScheduleTOW()) {
+        if (this.getScheduleType().isTOW()) {
             // No color for TOW
             return "--";
         }
 
-        if (this.getScheduleType().isScheduleOP()) {
+        if (this.getScheduleType().isOP()) {
 
             return "Meter Cap Color";
         }
@@ -115,16 +123,16 @@ public class MeterSchedValidationsDO extends BaseDO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private MeterScheduleType ScheduleType;
+    private MeterOPScheduleType ScheduleType;
     private String ColorRuleApplied;
     private String AltAddlDesc;
     private String DaysAppliedTxt;
 
-    public void setScheduleType(MeterScheduleType ScheduleType) {
+    public void setScheduleType(MeterOPScheduleType ScheduleType) {
         this.ScheduleType = ScheduleType;
     }
 
-    public MeterScheduleType getScheduleType() {
+    public MeterOPScheduleType getScheduleType() {
         return ScheduleType;
     }
 

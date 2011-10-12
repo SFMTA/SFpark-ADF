@@ -17,7 +17,7 @@ import sfpark.adf.tools.model.data.dO.parkingSpaceGroups.ParkingSpaceGroupsDO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
 import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInventoryDTO;
 
-import sfpark.adf.tools.model.data.helper.MeterScheduleType;
+import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 
 import sfpark.adf.tools.model.data.tO.meterOPSchedule.MeterOPScheduleBulkTO;
 import sfpark.adf.tools.model.data.tO.parkingSpaceInventory.ParkingSpaceInventoryBulkTO;
@@ -114,7 +114,8 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
             MeterOPScheduleBulkTO meterOPScheduleBulkTO =
                 (MeterOPScheduleBulkTO)getPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey());
 
-            meterOPScheduleBulkTO.setProperBoolean(meterSchedValidationsDO.getScheduleType(), true);
+            meterOPScheduleBulkTO.setProperBoolean(meterSchedValidationsDO.getScheduleType(),
+                                                   true);
 
             setPageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey(),
                                   meterOPScheduleBulkTO);
@@ -175,13 +176,13 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
     // HELPER METHODS
 
     private int getNextPriorityInt(List<MeterOPScheduleDTO> meterScheduleDTOs,
-                                   MeterScheduleType scheduleType) {
+                                   MeterOPScheduleType meterOPScheduleType) {
 
         int nextPriority = 0;
 
         if (!meterScheduleDTOs.isEmpty()) {
             for (MeterOPScheduleDTO DTO : meterScheduleDTOs) {
-                if (DTO.getScheduleType().equals(scheduleType)) {
+                if (DTO.getScheduleType().equals(meterOPScheduleType)) {
                     if (DTO.getSchedulePriority() > nextPriority) {
                         nextPriority = DTO.getSchedulePriority();
                     }
@@ -192,15 +193,15 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
         return (nextPriority + 1);
     }
 
-    private MeterScheduleType getMeterScheduleType() {
-        MeterScheduleType meterScheduleType =
-            (MeterScheduleType)getPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey());
+    private MeterOPScheduleType getMeterOPScheduleType() {
+        MeterOPScheduleType meterOPScheduleType =
+            (MeterOPScheduleType)getPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey());
 
-        if (meterScheduleType == null) {
-            meterScheduleType = MeterScheduleType.OP;
+        if (meterOPScheduleType == null) {
+            meterOPScheduleType = MeterOPScheduleType.OP;
         }
 
-        return meterScheduleType;
+        return meterOPScheduleType;
     }
 
     private void moveOn() {
@@ -246,11 +247,11 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
     }
 
     public String getBreadCrumbPageTitle() {
-        MeterScheduleType templateType = getMeterScheduleType();
+        MeterOPScheduleType templateType = getMeterOPScheduleType();
 
-        if (templateType.isScheduleTOW()) {
+        if (templateType.isTOW()) {
             return "TOW Schedule Templates";
-        } else if (templateType.isScheduleALT()) {
+        } else if (templateType.isALT()) {
             return "ALT Schedule Templates";
         }
 
@@ -258,7 +259,7 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
     }
 
     public List<MeterSchedValidationsDO> getSchedTemplates() {
-        return MeterScheduleValidationsProvider.INSTANCE.getMeterSchedValidationDOs(getMeterScheduleType());
+        return MeterScheduleValidationsProvider.INSTANCE.getMeterSchedValidationDOs(getMeterOPScheduleType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
