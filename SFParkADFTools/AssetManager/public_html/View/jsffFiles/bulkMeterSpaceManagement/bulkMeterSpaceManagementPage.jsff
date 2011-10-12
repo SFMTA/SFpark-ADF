@@ -250,7 +250,8 @@
         <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="scheduleType"
                    headerText="#{columnBundle.column_schedule_type}">
-          <af:outputText id="MSTableRowSchedType" value="#{row.scheduleType}"/>
+          <af:outputText id="MSTableRowSchedType"
+                         value="#{row.scheduleType.stringForDisplay}"/>
         </af:column>
         <af:column id="MSTableColEffFromDate" align="center" width="100px"
                    showRequired="true" sortable="false"
@@ -377,12 +378,17 @@
                                   disabled="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.disableDeleteAllBaseRates}"
                                   text="#{assetManagerBundle.string_delete_all_base_rates}"
                                   value="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.deleteAllBaseRates}"
-                                  partialTriggers="MRTable addBaseRate addHourlyRate"/>
+                                  partialTriggers="MRTable addBaseRate addHourlyRate addSpecialRate"/>
         <af:selectBooleanCheckbox id="deleteAllHourlyRatesSBCB"
                                   disabled="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.disableDeleteAllHourlyRates}"
                                   text="#{assetManagerBundle.string_delete_all_hourly_rates}"
                                   value="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.deleteAllHourlyRates}"
-                                  partialTriggers="MRTable addBaseRate addHourlyRate"/>
+                                  partialTriggers="MRTable addBaseRate addHourlyRate addSpecialRate"/>
+        <af:selectBooleanCheckbox id="deleteAllSpecialRatesSBCB"
+                                  disabled="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.disableDeleteAllSpecialRates}"
+                                  text="#{assetManagerBundle.string_delete_all_special_rates}"
+                                  value="#{bulkMeterSpaceManagementBean.meterRateScheduleBulkTO.deleteAllSpecialRates}"
+                                  partialTriggers="MRTable addBaseRate addHourlyRate addSpecialRate"/>
       </af:panelFormLayout>
       <af:toolbar id="meterRateToolbar">
         <af:group id="meterRateToolbarAddAndDelete">
@@ -398,7 +404,8 @@
                                     actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
                 <af:commandMenuItem id="addHourlyRate" text="Hourly Rate"
                                     actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
-                <af:commandMenuItem id="addSpecialRate" text="Special Rate" actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addSpecialRate" text="Special Rate"
+                                    actionListener="#{bulkMeterSpaceManagementBean.addButtonHandler}"/>
               </af:menu>
             </f:facet>
           </af:commandToolbarButton>
@@ -423,7 +430,8 @@
         <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="rateType"
                    headerText="#{columnBundle.column_rate_type}">
-          <af:outputText id="MRTableRowRateType" value="#{row.rateType}"/>
+          <af:outputText id="MRTableRowRateType"
+                         value="#{row.rateType.stringForDisplay}"/>
         </af:column>
         <af:column id="MRTableColEffFromDate" align="center" width="100px"
                    showRequired="true" sortable="false"

@@ -361,7 +361,7 @@
                      sortProperty="scheduleType"
                      headerText="#{columnBundle.column_schedule_type}">
             <af:outputText id="HMSTableRowSchedType"
-                           value="#{row.scheduleType}"/>
+                           value="#{row.scheduleType.stringForDisplay}"/>
           </af:column>
           <af:column id="HMSTableColEffFromDate" align="center" width="100px"
                      showRequired="true" sortable="false"
@@ -533,7 +533,8 @@
         <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="scheduleType"
                    headerText="#{columnBundle.column_schedule_type}">
-          <af:outputText id="MSTableRowSchedType" value="#{row.scheduleType}"/>
+          <af:outputText id="MSTableRowSchedType"
+                         value="#{row.scheduleType.stringForDisplay}"/>
         </af:column>
         <!--
         <af:column id="MSTableColSchedPriority" align="center" width="80px"
@@ -691,7 +692,8 @@
                      align="center" width="80px" sortable="false"
                      sortProperty="rateType"
                      headerText="#{columnBundle.column_rate_type}">
-            <af:outputText id="HMRTableRowRateType" value="#{row.rateType}"/>
+            <af:outputText id="HMRTableRowRateType"
+                           value="#{row.rateType.stringForDisplay}"/>
           </af:column>
           <af:column id="HMRTableColEffFromDate" align="center" width="100px"
                      showRequired="true" sortable="false"
@@ -809,6 +811,8 @@
                                     actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
                 <af:commandMenuItem id="addHourlyRate" text="Hourly Rate"
                                     actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addSpecialRate" text="Special Rate"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
               </af:menu>
             </f:facet>
           </af:commandToolbarButton>
@@ -842,7 +846,8 @@
         <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="rateType"
                    headerText="#{columnBundle.column_rate_type}">
-          <af:outputText id="MRTableRowRateType" value="#{row.rateType}"/>
+          <af:outputText id="MRTableRowRateType"
+                         value="#{row.rateType.stringForDisplay}"/>
         </af:column>
         <af:column id="MRTableColEffFromDate" align="center" width="100px"
                    showRequired="true" sortable="false"
