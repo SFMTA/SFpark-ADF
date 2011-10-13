@@ -9,21 +9,27 @@ public final class TimeDisplayUtil {
     private TimeDisplayUtil() {
     }
 
-    public static String extractFromTimeForDisplay(String timeStr) {
-        return extractTimeForDisplay(timeStr, true);
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // DISPLAY HELPERS
+
+    public static String extractAnyTimeForDisplay(int timeInt) {
+        return extractTimeForDisplay(timeInt);
     }
 
-    public static String extractFromTimeForDisplay(int timeInt) {
-        return extractTimeForDisplay(timeInt);
+    public static String extractFromTimeForDisplay(String timeStr) {
+        return extractTimeForDisplay(timeStr, true);
     }
 
     public static String extractToTimeForDisplay(String timeStr) {
         return extractTimeForDisplay(timeStr, false);
     }
 
-    public static String extractToTimeForDisplay(int timeInt) {
-        return extractTimeForDisplay(timeInt);
-    }
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // UPDATE HELPERS
 
     public static String extractAnyTimeForUpdate(String timeStr) {
         return extractTimeForUpdate(timeStr, RegularExpression.TIME_REGEX);
@@ -37,6 +43,11 @@ public final class TimeDisplayUtil {
     public static String extractToTimeForUpdate(String timeStr) {
         return extractTimeForUpdate(timeStr, RegularExpression.TO_TIME_REGEX);
     }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // HUMAN HELPERS
 
     public static String extractFromTimeForHumans(String timeStr) {
         return extractTimeForHumans(timeStr,

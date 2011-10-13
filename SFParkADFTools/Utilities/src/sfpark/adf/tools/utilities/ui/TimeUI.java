@@ -21,7 +21,7 @@ public final class TimeUI {
         Collections.unmodifiableList(new ArrayList<SelectItem>() {
             {
                 for (int i = 0, time = 0; i < 48; i++) {
-                    add(new SelectItem(TimeDisplayUtil.extractFromTimeForDisplay(time)));
+                    add(new SelectItem(TimeDisplayUtil.extractAnyTimeForDisplay(time)));
                     time += (i % 2 == 0) ? 30 : 70;
                 }
             }
@@ -31,7 +31,7 @@ public final class TimeUI {
         Collections.unmodifiableList(new ArrayList<SelectItem>() {
             {
                 for (int i = 0, time = 30; i < 48; i++) {
-                    add(new SelectItem(TimeDisplayUtil.extractToTimeForDisplay(time)));
+                    add(new SelectItem(TimeDisplayUtil.extractAnyTimeForDisplay(time)));
                     time += (i % 2 == 0) ? 70 : 30;
                 }
             }

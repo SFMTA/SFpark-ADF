@@ -189,8 +189,8 @@ public final class DMLOperationsProvider {
         DTO.setFromDay(WeekDays.Mo.getWeekDayName());
         DTO.setToDay(null);
 
-        DTO.setFromTime(TimeDisplayUtil.extractFromTimeForDisplay(0));
-        DTO.setToTime(TimeDisplayUtil.extractToTimeForDisplay(30));
+        DTO.setFromTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
+        DTO.setToTime(TimeDisplayUtil.extractAnyTimeForDisplay(30));
 
         LOGGER.exiting(CLASSNAME, "getNewGarageOPHoursDTO");
 

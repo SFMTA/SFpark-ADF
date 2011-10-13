@@ -149,11 +149,11 @@ public final class DMLOperationsProvider {
         DTO.setMinimumEffectiveFromDateForBulk(effectiveFromDate);
         DTO.setEffectiveToDate(SQLDateUtil.getMaximumDate());
 
-        DTO.setFromTime(TimeDisplayUtil.extractFromTimeForDisplay(0));
+        DTO.setFromTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         if (DTO.isEditableToTime()) {
-            DTO.setToTime(TimeDisplayUtil.extractToTimeForDisplay(30));
+            DTO.setToTime(TimeDisplayUtil.extractAnyTimeForDisplay(30));
         } else {
-            DTO.setToTime(TimeDisplayUtil.extractToTimeForDisplay(0));
+            DTO.setToTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         }
 
         DTO.setTimeLimit(0);
@@ -210,11 +210,11 @@ public final class DMLOperationsProvider {
         DTO.setMinimumEffectiveFromDateForBulk(effectiveFromDate);
         DTO.setEffectiveToDate(SQLDateUtil.getMaximumDate());
 
-        DTO.setFromTime(TimeDisplayUtil.extractFromTimeForDisplay(0));
+        DTO.setFromTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         if (DTO.isEditableToTime()) {
-            DTO.setToTime(TimeDisplayUtil.extractToTimeForDisplay(30));
+            DTO.setToTime(TimeDisplayUtil.extractAnyTimeForDisplay(30));
         } else {
-            DTO.setToTime(TimeDisplayUtil.extractToTimeForDisplay(0));
+            DTO.setToTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         }
 
         DTO.setRate(0f);
