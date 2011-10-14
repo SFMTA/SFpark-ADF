@@ -27,10 +27,10 @@ import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
-public class AllowedValuesProvider {
+public final class AllowedValuesRetriever {
 
     private static final String CLASSNAME =
-        AllowedValuesProvider.class.getName();
+        AllowedValuesRetriever.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
     private static final long TIME_TO_UPDATE =
@@ -39,7 +39,7 @@ public class AllowedValuesProvider {
     /**
      * To avoid instantiation
      */
-    private AllowedValuesProvider() {
+    private AllowedValuesRetriever() {
         super();
     }
 

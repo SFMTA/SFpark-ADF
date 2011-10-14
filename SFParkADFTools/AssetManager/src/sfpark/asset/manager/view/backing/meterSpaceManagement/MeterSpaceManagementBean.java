@@ -32,7 +32,7 @@ import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
 import sfpark.adf.tools.model.helper.dto.ParkingSpaceInventoryDTOStatus;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.BlockfacesProvider;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
@@ -1255,7 +1255,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             endDateAllRates();
 
         } else if (ID.equals("undeleteParkingSpaceButton")) {
-            getCurrentParkingSpaceInventoryDTO().setCapColor(AllowedValuesProvider.getCapColorDefaultValue());
+            getCurrentParkingSpaceInventoryDTO().setCapColor(AllowedValuesRetriever.getCapColorDefaultValue());
 
         }
 

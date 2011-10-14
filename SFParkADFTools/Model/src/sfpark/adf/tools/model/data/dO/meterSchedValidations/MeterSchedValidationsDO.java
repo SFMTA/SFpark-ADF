@@ -9,7 +9,7 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.BaseDO;
 import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class MeterSchedValidationsDO extends BaseDO {
@@ -94,7 +94,7 @@ public class MeterSchedValidationsDO extends BaseDO {
             return "[define color]";
         }
 
-        return AllowedValuesProvider.getDisplayDescriptionForColorRuleApplied(colorRuleApplied);
+        return AllowedValuesRetriever.getDisplayDescriptionForColorRuleApplied(colorRuleApplied);
     }
 
     public String getDisplayAltAddlDesc() {

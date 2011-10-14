@@ -20,7 +20,7 @@ import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
@@ -62,7 +62,7 @@ public class DMLOperationsProvider {
 
         DTO.setAreaType(PMDistrictAreaType.PILOT);
         DTO.setCalendarID("0");
-        DTO.setRateChangePolicy(AllowedValuesProvider.getRateChgPolicyDefaultValue());
+        DTO.setRateChangePolicy(AllowedValuesRetriever.getRateChgPolicyDefaultValue());
 
         Date minimumAllowedDate = SQLDateUtil.getNumOfDaysAfterToday(7);
         DTO.setPlannedChangeEffectiveDate(minimumAllowedDate);
@@ -84,9 +84,9 @@ public class DMLOperationsProvider {
         DTO.setRateChangeReferenceID(rateChangeHeaderDTO.getRateChangeReferenceID());
         DTO.setEffectiveFromDate(rateChangeHeaderDTO.getPlannedChangeEffectiveDate());
         DTO.setTimeLimitOption(RateChangeProcessTimeLimitOption.YES);
-        DTO.setProcessStep(AllowedValuesProvider.getProcessStepDefaultValue());
+        DTO.setProcessStep(AllowedValuesRetriever.getProcessStepDefaultValue());
         DTO.setStepStartFlag(RateChangeProcessStepStartFlag.HOLD);
-        DTO.setStepExecStatus(AllowedValuesProvider.getProcessStepExecStatusDefaultValue());
+        DTO.setStepExecStatus(AllowedValuesRetriever.getProcessStepExecStatusDefaultValue());
 
         LOGGER.exiting(CLASSNAME, "getNewRateChangeProcessControlDTO");
 

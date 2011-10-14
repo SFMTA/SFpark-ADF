@@ -12,7 +12,7 @@ import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 
 import sfpark.adf.tools.translation.ErrorBundleKey;
@@ -121,7 +121,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         List<SelectItem> listRateChgPolicy = new ArrayList<SelectItem>();
 
         for (AllowedValuesDTO allowedValuesDTO :
-             AllowedValuesProvider.getRateChgPolicyList()) {
+             AllowedValuesRetriever.getRateChgPolicyList()) {
             listRateChgPolicy.add(new SelectItem(allowedValuesDTO.getColumnValue(),
                                                  allowedValuesDTO.getDescription()));
         }

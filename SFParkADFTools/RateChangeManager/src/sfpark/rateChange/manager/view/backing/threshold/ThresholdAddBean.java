@@ -9,7 +9,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
@@ -40,7 +40,7 @@ public class ThresholdAddBean extends BaseBean implements PropertiesBeanInterfac
         List<SelectItem> listRateChgType = new ArrayList<SelectItem>();
 
         for (AllowedValuesDTO allowedValuesDTO :
-             AllowedValuesProvider.getRateChgTypeList()) {
+             AllowedValuesRetriever.getRateChgTypeList()) {
             String label =
                 allowedValuesDTO.getColumnValue() + " - " + allowedValuesDTO.getDescription();
             listRateChgType.add(new SelectItem(allowedValuesDTO.getColumnValue(),

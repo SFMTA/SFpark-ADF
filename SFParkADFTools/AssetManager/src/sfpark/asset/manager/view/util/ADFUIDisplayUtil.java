@@ -8,7 +8,7 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dO.ospInventory.OSPInventoryDO;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 public final class ADFUIDisplayUtil {
@@ -48,7 +48,7 @@ public final class ADFUIDisplayUtil {
     // Jurisdiction Util
 
     public static List<SelectItem> getJurisdictionDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getJurisdictionList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getJurisdictionList(),
                                            false);
     }
 
@@ -58,7 +58,7 @@ public final class ADFUIDisplayUtil {
     // Sensor Status Util
 
     public static List<SelectItem> getSensorFlagDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getSensorFlagList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getSensorFlagList(),
                                            true);
     }
 
@@ -68,7 +68,7 @@ public final class ADFUIDisplayUtil {
     // Cap Color Util
 
     public static List<SelectItem> getCapColorDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getCapColorList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getCapColorList(),
                                            true);
     }
 
@@ -78,7 +78,7 @@ public final class ADFUIDisplayUtil {
     // Color Rule Applied Util
 
     public static List<SelectItem> getColorRuleAppliedDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getColorRuleAppliedList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getColorRuleAppliedList(),
                                            true);
     }
 
@@ -88,12 +88,12 @@ public final class ADFUIDisplayUtil {
     // Active Meter Status Util
 
     public static List<SelectItem> getActiveMeterFlagDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getActiveMeterFlagList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getActiveMeterFlagList(),
                                            true);
     }
 
     public static List<SelectItem> getActiveMeterFlagBulkDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getActiveMeterFlagBulkList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getActiveMeterFlagBulkList(),
                                            true);
     }
 
@@ -103,7 +103,7 @@ public final class ADFUIDisplayUtil {
     // Reason Code Util
 
     public static List<SelectItem> getReasonCodeDisplayList() {
-        return getAllowedValuesDisplayList(AllowedValuesProvider.getReasonCodeList(),
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getReasonCodeList(),
                                            true);
     }
 
@@ -167,7 +167,7 @@ public final class ADFUIDisplayUtil {
         prepaymentTimeList.add(new SelectItem("", "--"));
 
         for (AllowedValuesDTO allowedValue :
-             AllowedValuesProvider.getPrepaymentTimeList()) {
+             AllowedValuesRetriever.getPrepaymentTimeList()) {
 
             prepaymentTimeList.add(new SelectItem(TimeDisplayUtil.extractFromTimeForDisplay(allowedValue.getColumnValue())));
 

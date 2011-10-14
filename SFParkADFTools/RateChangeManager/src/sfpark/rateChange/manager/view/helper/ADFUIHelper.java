@@ -1,6 +1,6 @@
 package sfpark.rateChange.manager.view.helper;
 
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class ADFUIHelper {
@@ -32,8 +32,8 @@ public final class ADFUIHelper {
         }
 
         String displayString =
-            (forProcessStep) ? AllowedValuesProvider.getProcessStepTreeMap().get(forString) :
-            AllowedValuesProvider.getProcessStepExecStatusTreeMap().get(forString);
+            (forProcessStep) ? AllowedValuesRetriever.getProcessStepTreeMap().get(forString) :
+            AllowedValuesRetriever.getProcessStepExecStatusTreeMap().get(forString);
 
         if (StringUtil.isBlank(displayString)) {
             displayString = "";

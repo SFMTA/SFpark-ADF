@@ -22,7 +22,7 @@ import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.helper.dO.PCOBeatsDOStatus;
 import sfpark.adf.tools.model.helper.dO.RateAreasDOStatus;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.provider.PCOBeatsProvider;
@@ -82,14 +82,14 @@ public final class DMLOperationsProvider {
 
         DTO.setPostID(tempPostID);
 
-        DTO.setSensorFlag(AllowedValuesProvider.getSensorFlagDefaultValue());
+        DTO.setSensorFlag(AllowedValuesRetriever.getSensorFlagDefaultValue());
         DTO.setOnOffStreetType("ON");
         DTO.setOSPID("0");
-        DTO.setJurisdiction(AllowedValuesProvider.getJurisdictionDefaultValue());
-        DTO.setCapColor(AllowedValuesProvider.getCapColorDefaultValue());
+        DTO.setJurisdiction(AllowedValuesRetriever.getJurisdictionDefaultValue());
+        DTO.setCapColor(AllowedValuesRetriever.getCapColorDefaultValue());
 
-        DTO.setActiveMeterFlag(AllowedValuesProvider.getActiveMeterFlagDefaultValue());
-        DTO.setReasonCode(AllowedValuesProvider.getReasonCodeDefaultValue());
+        DTO.setActiveMeterFlag(AllowedValuesRetriever.getActiveMeterFlagDefaultValue());
+        DTO.setReasonCode(AllowedValuesRetriever.getReasonCodeDefaultValue());
 
         DTO.setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
 
@@ -162,7 +162,7 @@ public final class DMLOperationsProvider {
         if (meterSchedValidationsDO.isColorRuleAppliedEditable()) {
 
             DTO.setEditableColorRuleApplied(true);
-            DTO.setColorRuleApplied(AllowedValuesProvider.getColorRuleAppliedDefaultValue());
+            DTO.setColorRuleApplied(AllowedValuesRetriever.getColorRuleAppliedDefaultValue());
 
         } else {
 
@@ -249,11 +249,11 @@ public final class DMLOperationsProvider {
 
         TO.setAllBoolean(false);
 
-        TO.setSensorFlag(AllowedValuesProvider.getSensorFlagDefaultValue());
-        TO.setCapColor(AllowedValuesProvider.getCapColorDefaultValue());
+        TO.setSensorFlag(AllowedValuesRetriever.getSensorFlagDefaultValue());
+        TO.setCapColor(AllowedValuesRetriever.getCapColorDefaultValue());
 
-        TO.setActiveMeterFlag(AllowedValuesProvider.getActiveMeterFlagBulkDefaultValue());
-        TO.setReasonCode(AllowedValuesProvider.getReasonCodeDefaultValue());
+        TO.setActiveMeterFlag(AllowedValuesRetriever.getActiveMeterFlagBulkDefaultValue());
+        TO.setReasonCode(AllowedValuesRetriever.getReasonCodeDefaultValue());
         TO.setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
 
         LOGGER.exiting(CLASSNAME, "getNewParkingSpaceInventoryBulkTO");

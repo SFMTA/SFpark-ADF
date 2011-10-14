@@ -28,7 +28,7 @@ import sfpark.adf.tools.model.exception.DTOInsertException;
 import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
-import sfpark.adf.tools.model.provider.AllowedValuesProvider;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
@@ -747,7 +747,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
         } else {
 
             getParkingSpaceInventoryBulkTO().setToBeUpdatedActiveMeterFlag(false);
-            getParkingSpaceInventoryBulkTO().setActiveMeterFlag(AllowedValuesProvider.getActiveMeterFlagBulkDefaultValue());
+            getParkingSpaceInventoryBulkTO().setActiveMeterFlag(AllowedValuesRetriever.getActiveMeterFlagBulkDefaultValue());
 
             getParkingSpaceInventoryBulkTO().setToBeUpdatedMeterDetails(false);
             getParkingSpaceInventoryBulkTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
