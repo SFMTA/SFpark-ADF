@@ -5,7 +5,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import sfpark.adf.tools.helper.Logger;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -46,7 +45,8 @@ public final class PropertyFileProvider {
         String propertyValue = null;
 
         try {
-            propertyValue = getPropertiesConfiguration().getString(key);
+            propertyValue =
+                    (new PropertiesConfiguration(PROPERTY_FILE)).getString(key);
 
             if (StringUtil.isBlank(propertyValue)) {
                 LOGGER.info(PROPERTY_FILE + " file does not contain the " +
@@ -62,23 +62,5 @@ public final class PropertyFileProvider {
         LOGGER.exiting(CLASSNAME, "getPropertyValue");
 
         return propertyValue;
-    }
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // PRIVATE METHODS
-
-    private static PropertiesConfiguration propertiesConfiguration = null;
-
-    private static PropertiesConfiguration getPropertiesConfiguration() throws ConfigurationException {
-
-        if (propertiesConfiguration == null) {
-            propertiesConfiguration =
-                    new PropertiesConfiguration(PROPERTY_FILE);
-            propertiesConfiguration.setReloadingStrategy(new FileChangedReloadingStrategy());
-        }
-
-        return propertiesConfiguration;
     }
 }

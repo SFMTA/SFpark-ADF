@@ -318,10 +318,12 @@ public class RateChangeProcessControlDTO extends BaseDTO {
      * Can be edited ONLY when
      * Either
      *    ---STEP_EXEC_STATUS != 1 (Running)
+     *    ---STEP_START_FLAG  != 'Y'
      *    ---PROCESS_STEP     < 70 (Finalised)
      * Or
      *    ---STEP_EXEC_STATUS != 1 (Running)
      *                        != 3 (Success)
+     *    ---STEP_START_FLAG  != 'Y'
      *    ---PROCESS_STEP     = 70 (Finalised)
      *
      * @return
@@ -329,10 +331,12 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     public boolean isEditable() {
         int currentProcessStep = getIntegerProcessStep();
         int currentExecStatus = getIntegerStepExecStatus();
+        RateChangeProcessStepStartFlag startFlag = getStepStartFlag();
 
-        return ((currentProcessStep < 70 && currentExecStatus != 1) ||
+        return ((currentProcessStep < 70 && currentExecStatus != 1 &&
+                 !startFlag.isInitiate()) ||
                 (currentProcessStep == 70 && currentExecStatus != 1 &&
-                 currentExecStatus != 3));
+                 currentExecStatus != 3 && !startFlag.isInitiate()));
     }
 
     public boolean isEditableEffectiveFromDate() {

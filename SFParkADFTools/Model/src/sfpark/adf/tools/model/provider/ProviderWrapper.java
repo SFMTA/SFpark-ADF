@@ -364,14 +364,14 @@ public final class ProviderWrapper {
     private SQLException deleteException(BaseDTO DTO) {
 
         if (DTO instanceof CalendarHeaderDTO) {
-            return new CalendarHeaderDeleteException();
+            return new DTODeleteException(CalendarHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof CalendarDetailDTO) {
-            return new CalendarDetailDeleteException();
+            return new DTODeleteException(CalendarDetailDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeProcessControlDTO) {
-            return new RateChangeProcessControlDeleteException();
+            return new DTODeleteException(RateChangeProcessControlDTO.getDatabaseTableName());
         }
 
-        return new SQLUpdateException();
+        return new DTODeleteException();
     }
 
 }

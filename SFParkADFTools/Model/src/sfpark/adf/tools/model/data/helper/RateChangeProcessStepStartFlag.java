@@ -27,6 +27,18 @@ public enum RateChangeProcessStepStartFlag {
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
 
+    public boolean isHold() {
+        return (this == HOLD);
+    }
+
+    public boolean isInitiate() {
+        return (this == INITIATE);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++
+
     private final String StringForTable;
     private final String StringForDisplay;
 

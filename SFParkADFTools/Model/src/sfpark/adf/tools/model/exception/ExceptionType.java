@@ -7,10 +7,8 @@ public enum ExceptionType {
 
     CALENDAR_HEADER_INSERT,
     CALENDAR_HEADER_UPDATE,
-    CALENDAR_HEADER_DELETE,
 
     CALENDAR_DETAIL_INSERT,
-    CALENDAR_DETAIL_DELETE,
 
     RATE_CHANGE_HEADER_INSERT,
     RATE_CHANGE_HEADER_UPDATE,
@@ -19,7 +17,6 @@ public enum ExceptionType {
 
     RATE_CHANGE_PROCESS_CONTROL_INSERT,
     RATE_CHANGE_PROCESS_CONTROL_UPDATE,
-    RATE_CHANGE_PROCESS_CONTROL_DELETE,
 
     OSP_INVENTORY_INSERT,
     OSP_INVENTORY_UPDATE,
@@ -43,7 +40,6 @@ public enum ExceptionType {
 
     SQL_INSERT,
     SQL_UPDATE,
-    SQL_DELETE,
 
     SQL,
     GENERAL;
@@ -95,16 +91,8 @@ public enum ExceptionType {
             return CALENDAR_HEADER_UPDATE;
         }
 
-        if (exception instanceof CalendarHeaderDeleteException) {
-            return CALENDAR_HEADER_DELETE;
-        }
-
         if (exception instanceof CalendarDetailInsertException) {
             return CALENDAR_DETAIL_INSERT;
-        }
-
-        if (exception instanceof CalendarDetailDeleteException) {
-            return CALENDAR_DETAIL_DELETE;
         }
 
         if (exception instanceof RateChangeHeaderInsertException) {
@@ -125,10 +113,6 @@ public enum ExceptionType {
 
         if (exception instanceof RateChangeProcessControlUpdateException) {
             return RATE_CHANGE_PROCESS_CONTROL_UPDATE;
-        }
-
-        if (exception instanceof RateChangeProcessControlDeleteException) {
-            return RATE_CHANGE_PROCESS_CONTROL_DELETE;
         }
 
         if (exception instanceof OSPInventoryInsertException) {
@@ -161,10 +145,6 @@ public enum ExceptionType {
 
         if (exception instanceof SQLUpdateException) {
             return SQL_UPDATE;
-        }
-
-        if (exception instanceof SQLDeleteException) {
-            return SQL_DELETE;
         }
 
         if (exception instanceof SQLException) {
