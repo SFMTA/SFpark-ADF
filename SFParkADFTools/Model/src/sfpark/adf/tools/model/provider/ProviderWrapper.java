@@ -312,30 +312,30 @@ public final class ProviderWrapper {
     private SQLException updateException(BaseDTO DTO) {
 
         if (DTO instanceof OSPInventoryDTO) {
-            return new OSPInventoryUpdateException();
+            return new DTOUpdateException(); // TODO
         } else if (DTO instanceof GarageOPHoursDTO) {
-            return new GarageOPHoursUpdateException();
+            return new DTOUpdateException(); // TODO
         } else if (DTO instanceof GarageRatesDTO) {
-            return new GarageRatesUpdateException();
+            return new DTOUpdateException(); // TODO
         } else if (DTO instanceof CalendarHeaderDTO) {
-            return new CalendarHeaderUpdateException();
+            return new DTOUpdateException(CalendarHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
-            return new ParkingSpaceInventoryUpdateException();
+            return new DTOUpdateException(ParkingSpaceInventoryDTO.getDatabaseTableName());
         } else if (DTO instanceof MeterOPScheduleDTO) {
-            return new MeterOPScheduleUpdateException();
+            return new DTOUpdateException(MeterOPScheduleDTO.getDatabaseTableName());
         } else if (DTO instanceof MeterRateScheduleDTO) {
-            return new MeterRateScheduleUpdateException();
+            return new DTOUpdateException(MeterRateScheduleDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeHeaderDTO) {
-            return new RateChangeHeaderUpdateException();
+            return new DTOUpdateException(RateChangeHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeProcessControlDTO) {
-            return new RateChangeProcessControlUpdateException();
+            return new DTOUpdateException(RateChangeProcessControlDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockRateScheduleDTO) {
-            return new BlockRateScheduleUpdateException();
+            return new DTOUpdateException(BlockRateScheduleDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeRulesDTO) {
-            return new RateChangeRulesUpdateException();
+            return new DTOUpdateException(RateChangeRulesDTO.getDatabaseTableName());
         }
 
-        return new SQLUpdateException();
+        return new DTOUpdateException();
     }
 
     // ++++++++++++++++++++++++++++++++++
