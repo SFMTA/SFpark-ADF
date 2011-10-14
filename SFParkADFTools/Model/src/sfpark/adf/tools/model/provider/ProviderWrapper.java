@@ -212,30 +212,30 @@ public final class ProviderWrapper {
     private SQLException insertException(BaseDTO DTO) {
 
         if (DTO instanceof OSPInventoryDTO) {
-            return new OSPInventoryInsertException();
+            return new DTOInsertException(OSPInventoryDTO.getDatabaseTableName());
         } else if (DTO instanceof GarageOPHoursDTO) {
-            return new GarageOPHoursInsertException();
+            return new DTOInsertException(GarageOPHoursDTO.getDatabaseTableName());
         } else if (DTO instanceof GarageRatesDTO) {
-            return new GarageRatesInsertException();
+            return new DTOInsertException(GarageRatesDTO.getDatabaseTableName());
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {
-            return new ParkingSpaceInventoryInsertException();
+            return new DTOInsertException(ParkingSpaceInventoryDTO.getDatabaseTableName());
         } else if (DTO instanceof MeterOPScheduleDTO) {
-            return new MeterOPScheduleInsertException();
+            return new DTOInsertException(MeterOPScheduleDTO.getDatabaseTableName());
         } else if (DTO instanceof MeterRateScheduleDTO) {
-            return new MeterRateScheduleInsertException();
+            return new DTOInsertException(MeterRateScheduleDTO.getDatabaseTableName());
         } else if (DTO instanceof CalendarHeaderDTO) {
-            return new CalendarHeaderInsertException();
+            return new DTOInsertException(CalendarHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof CalendarDetailDTO) {
-            return new CalendarDetailInsertException();
+            return new DTOInsertException(CalendarDetailDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeHeaderDTO) {
-            return new RateChangeHeaderInsertException();
+            return new DTOInsertException(RateChangeHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeProcessControlDTO) {
-            return new RateChangeProcessControlInsertException();
+            return new DTOInsertException(RateChangeProcessControlDTO.getDatabaseTableName());
         } else if (DTO instanceof RateChangeRulesDTO) {
-            return new RateChangeRulesInsertException();
+            return new DTOInsertException(RateChangeRulesDTO.getDatabaseTableName());
         }
 
-        return new SQLInsertException();
+        return new DTOInsertException();
     }
 
     // ++++++++++++++++++++++++++++++++++
