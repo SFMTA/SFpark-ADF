@@ -15,6 +15,7 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
@@ -26,6 +27,7 @@ import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -278,14 +280,27 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                        case RATE_CHANGE_PROCESS_CONTROL_UPDATE:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                        case DTO_UPDATE:
+                            {
+                                String tableName =
+                                    ((DTOUpdateException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        RateChangeProcessControlDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                                } else {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                                }
+                            }
                             break;
 
                         default:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            }
                             break;
 
                         }
@@ -334,14 +349,27 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                     switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                    case RATE_CHANGE_PROCESS_CONTROL_UPDATE:
-                        errorMessage =
-                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                    case DTO_UPDATE:
+                        {
+                            String tableName =
+                                ((DTOUpdateException)operationStatus.getException()).getTableName();
+
+                            if (StringUtil.areEqual(tableName,
+                                                    RateChangeProcessControlDTO.getDatabaseTableName())) {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_update);
+                            } else {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            }
+                        }
                         break;
 
                     default:
-                        errorMessage =
-                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                        {
+                            errorMessage =
+                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                        }
                         break;
 
                     }

@@ -26,6 +26,8 @@ import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInvento
 import sfpark.adf.tools.model.data.helper.EffectiveDateCalculator;
 import sfpark.adf.tools.model.data.helper.MeterOPScheduleType;
 import sfpark.adf.tools.model.data.helper.MeterRateScheduleType;
+import sfpark.adf.tools.model.exception.DTOInsertException;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dO.BlockfaceDOStatus;
@@ -1138,38 +1140,61 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
                         case UNIQUE_CONTRAINT:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_unique_constraint);
+                            {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_unique_constraint);
+                            }
                             break;
 
-                        case METER_OP_SCHEDULE_INSERT:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_insert);
+                        case DTO_INSERT:
+                            {
+                                String tableName =
+                                    ((DTOInsertException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        MeterOPScheduleDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_insert);
+                                } else if (StringUtil.areEqual(tableName,
+                                                               MeterRateScheduleDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_insert);
+                                } else {
+                                    errorMessage =
+                                            operationStatus.getException().getMessage();
+                                }
+                            }
                             break;
 
-                        case METER_RATE_SCHEDULE_INSERT:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_insert);
-                            break;
+                        case DTO_UPDATE:
+                            {
+                                String tableName =
+                                    ((DTOUpdateException)operationStatus.getException()).getTableName();
 
-                        case METER_OP_SCHEDULE_UPDATE:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_update);
-                            break;
-
-                        case METER_RATE_SCHEDULE_UPDATE:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_update);
-                            break;
-
-                        case PARKING_SPACE_INVENTORY_UPDATE:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_inventory_update);
+                                if (StringUtil.areEqual(tableName,
+                                                        MeterOPScheduleDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_schedule_update);
+                                } else if (StringUtil.areEqual(tableName,
+                                                               MeterRateScheduleDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_rate_update);
+                                } else if (StringUtil.areEqual(tableName,
+                                                               ParkingSpaceInventoryDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_inventory_update);
+                                } else {
+                                    errorMessage =
+                                            operationStatus.getException().getMessage();
+                                }
+                            }
                             break;
 
                         default:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            }
                             break;
 
                         }

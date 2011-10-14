@@ -14,7 +14,11 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
+import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
+import sfpark.adf.tools.model.exception.DTODeleteException;
+import sfpark.adf.tools.model.exception.DTOInsertException;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
@@ -334,24 +338,51 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
                             }
                             break;
 
-                        case CALENDAR_HEADER_UPDATE:
+                        case DTO_UPDATE:
                             {
-                                errorMessage =
-                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_header_update);
+                                String tableName =
+                                    ((DTOUpdateException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        CalendarHeaderDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_header_update);
+                                } else {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                                }
                             }
                             break;
 
-                        case CALENDAR_DETAIL_INSERT:
+                        case DTO_INSERT:
                             {
-                                errorMessage =
-                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_detail_insert);
+                                String tableName =
+                                    ((DTOInsertException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        CalendarDetailDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_detail_insert);
+                                } else {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                                }
                             }
                             break;
 
-                        case CALENDAR_DETAIL_DELETE:
+                        case DTO_DELETE:
                             {
-                                errorMessage =
-                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_detail_delete);
+                                String tableName =
+                                    ((DTODeleteException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        CalendarDetailDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_calendar_detail_delete);
+                                } else {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                                }
                             }
                             break;
 

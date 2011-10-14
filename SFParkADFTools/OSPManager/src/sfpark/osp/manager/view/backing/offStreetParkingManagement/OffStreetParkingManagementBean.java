@@ -22,6 +22,8 @@ import sfpark.adf.tools.model.data.dto.garageRates.GarageRatesDTO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
+import sfpark.adf.tools.model.exception.DTOInsertException;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.OSPInventoryDTOStatus;
@@ -711,38 +713,61 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
                         case UNIQUE_CONTRAINT:
-                            errorMessage =
-                                    "Failed due to invalid rates and/or op hours during archiving. Try overriding.";
+                            {
+                                errorMessage =
+                                        "Failed due to invalid rates and/or op hours during archiving. Try overriding.";
+                            }
                             break;
 
-                        case GARAGE_RATES_INSERT:
-                            errorMessage =
-                                    "Failed due to invalid new rates. Try overriding or removing.";
+                        case DTO_INSERT:
+                            {
+                                String tableName =
+                                    ((DTOInsertException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        GarageRatesDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            "Failed due to invalid new rates. Try overriding or removing.";
+                                } else if (StringUtil.areEqual(tableName,
+                                                               GarageOPHoursDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            "Failed due to invalid new op hours. Try overriding or removing.";
+                                } else {
+                                    errorMessage =
+                                            "Failed to save details due to unknown reasons.";
+                                }
+                            }
                             break;
 
-                        case GARAGE_RATES_UPDATE:
-                            errorMessage =
-                                    "Failed due to invalid existing rates. Try overriding.";
-                            break;
+                        case DTO_UPDATE:
+                            {
+                                String tableName =
+                                    ((DTOUpdateException)operationStatus.getException()).getTableName();
 
-                        case GARAGE_OP_HOURS_INSERT:
-                            errorMessage =
-                                    "Failed due to invalid new op hours. Try overriding or removing.";
-                            break;
-
-                        case GARAGE_OP_HOURS_UPDATE:
-                            errorMessage =
-                                    "Failed due to invalid existing op hours. Try overriding.";
-                            break;
-
-                        case OSP_INVENTORY_UPDATE:
-                            errorMessage =
-                                    "Failed due to invalid OSP details.";
+                                if (StringUtil.areEqual(tableName,
+                                                        GarageRatesDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            "Failed due to invalid existing rates. Try overriding.";
+                                } else if (StringUtil.areEqual(tableName,
+                                                               GarageOPHoursDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            "Failed due to invalid existing op hours. Try overriding.";
+                                } else if (StringUtil.areEqual(tableName,
+                                                               OSPInventoryDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            "Failed due to invalid OSP details.";
+                                } else {
+                                    errorMessage =
+                                            "Failed to save details due to unknown reasons.";
+                                }
+                            }
                             break;
 
                         default:
-                            errorMessage =
-                                    "Failed to save details due to unknown reasons.";
+                            {
+                                errorMessage =
+                                        "Failed to save details due to unknown reasons.";
+                            }
                             break;
                         }
 

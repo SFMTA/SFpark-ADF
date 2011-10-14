@@ -6,6 +6,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
@@ -15,6 +16,7 @@ import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -217,14 +219,27 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                        case RATE_CHANGE_HEADER_UPDATE:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_update);
+                        case DTO_UPDATE:
+                            {
+                                String tableName =
+                                    ((DTOUpdateException)operationStatus.getException()).getTableName();
+
+                                if (StringUtil.areEqual(tableName,
+                                                        RateChangeHeaderDTO.getDatabaseTableName())) {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_update);
+                                } else {
+                                    errorMessage =
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                                }
+                            }
                             break;
 
                         default:
-                            errorMessage =
-                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            }
                             break;
 
                         }

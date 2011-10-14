@@ -5,6 +5,12 @@ import java.sql.SQLException;
 public enum ExceptionType {
     UNIQUE_CONTRAINT,
 
+    DTO_INSERT,
+    DTO_UPDATE,
+    DTO_DELETE,
+
+    DTO_SQL,
+
     SQL,
     GENERAL;
 
@@ -19,52 +25,26 @@ public enum ExceptionType {
             return UNIQUE_CONTRAINT;
         }
 
+        if (exception instanceof DTOInsertException) {
+            return DTO_INSERT;
+        }
+
+        if (exception instanceof DTOUpdateException) {
+            return DTO_UPDATE;
+        }
+
+        if (exception instanceof DTODeleteException) {
+            return DTO_DELETE;
+        }
+
+        if (exception instanceof DTOSQLException) {
+            return DTO_SQL;
+        }
+
         if (exception instanceof SQLException) {
             return SQL;
         }
 
         return GENERAL;
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    /*
-     * public static ExceptionType getExceptionType(Exception exception) {
-     *
-     *      if (exception.getMessage().indexOf("ORA-00001: unique constraint") != -1) {
-     *            return UNIQUE_CONTRAINT;
-     *      }
-     *
-     *      for (ExceptionType exceptionType : ExceptionType.values()) {
-     *
-     *            switch (exceptionType) {
-     *
-     *            case UNIQUE_CONSTRAINT:
-     *                  // Do Nothing
-     *                  break;
-     *
-     *            default:
-     *                  if (exception.getClass().isAssignableFrom(exceptionType.getExceptionClass())) {
-     *                        return exceptionType;
-     *                  }
-     *                  break;
-     *            }
-     *      }
-     *
-     *      return ExceptionType.GENERAL;
-     * }
-     *
-     *
-     * private final Class exceptionClass;
-     *
-     * private ExceptionType(Class exceptionClass) {
-     *      this.exceptionClass = exceptionClass;
-     * }
-     *
-     * private Class getExceptionClass() {
-     *      return exceptionClass;
-     * }
-     */
 }

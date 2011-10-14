@@ -5,6 +5,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.BlockRateScheduleDTOStatus;
@@ -13,6 +14,7 @@ import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -192,9 +194,20 @@ public class ModificationPropertiesBean extends BaseBean implements PropertiesBe
 
                     switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                    case BLOCK_RATE_SCHED_UPDATE:
-                        errorMessage =
-                                TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_block_rate_sched_update);
+                    case DTO_UPDATE:
+                        {
+                            String tableName =
+                                ((DTOUpdateException)operationStatus.getException()).getTableName();
+
+                            if (StringUtil.areEqual(tableName,
+                                                    BlockRateScheduleDTO.getDatabaseTableName())) {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_block_rate_sched_update);
+                            } else {
+                                errorMessage =
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
+                            }
+                        }
                         break;
 
                     default:
