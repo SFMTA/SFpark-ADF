@@ -1,7 +1,5 @@
 package sfpark.adf.tools.model.exception;
 
-import java.sql.SQLException;
-
 public enum ExceptionType {
     UNIQUE_CONTRAINT,
 
@@ -39,10 +37,6 @@ public enum ExceptionType {
 
         if (exception instanceof DTOSQLException) {
             return DTO_SQL;
-        }
-
-        if (exception instanceof SQLException) {
-            return SQL;
         }
 
         return GENERAL;

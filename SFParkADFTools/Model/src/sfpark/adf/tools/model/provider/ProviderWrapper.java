@@ -46,7 +46,7 @@ public final class ProviderWrapper {
         LOGGER.entering(CLASSNAME, "performOperationOnRecords");
 
         if (tableRecords.isEmpty()) {
-            return OperationStatus.failure(new EmptyArgumentsException());
+            return OperationStatus.failure(new IllegalArgumentException("Empty arguments received."));
         }
 
         OperationStatus operationStatus = null;

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
-import sfpark.adf.tools.model.exception.StoredProcedureReturnedFalseException;
 import sfpark.adf.tools.model.helper.OperationStatus;
 
 public final class StoredProcedureProvider {
@@ -124,7 +123,7 @@ public final class StoredProcedureProvider {
             }
 
             operationStatus =
-                    (result) ? OperationStatus.success() : OperationStatus.failure(new StoredProcedureReturnedFalseException());
+                    (result) ? OperationStatus.success() : OperationStatus.failure(new SQLException("Stored procedure returned false."));
 
         } catch (SQLException e) {
             LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
