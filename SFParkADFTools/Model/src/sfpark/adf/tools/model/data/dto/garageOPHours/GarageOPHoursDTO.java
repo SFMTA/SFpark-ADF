@@ -13,6 +13,15 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 public class GarageOPHoursDTO extends EffectiveDateBaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "GARAGE_OP_HOURS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public GarageOPHoursDTO() {
         super();
     }

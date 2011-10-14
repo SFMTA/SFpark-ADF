@@ -18,6 +18,8 @@ public abstract class DTOSQLException extends SQLException {
 
     public DTOSQLException(String Operation) {
         super(getFormattedMessage(Operation));
+
+        this.TableName = null;
     }
 
     public DTOSQLException(String Operation, String Preposition,
@@ -42,9 +44,9 @@ public abstract class DTOSQLException extends SQLException {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
-    private String getFormattedMessage(String... strings) {
-        int length = strings.length;
+    private static String getFormattedMessage(Object... objects) {
+        int length = objects.length;
 
-        return MessageFormat.format(MESSAGE[length], strings);
+        return MessageFormat.format(MESSAGE[length], objects);
     }
 }

@@ -20,6 +20,15 @@ import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 
 public class GarageRatesDTO extends EffectiveDateBaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "GARAGE_RATES";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public GarageRatesDTO() {
         super();
     }

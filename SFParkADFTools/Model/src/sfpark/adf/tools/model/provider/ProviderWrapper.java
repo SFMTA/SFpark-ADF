@@ -312,11 +312,11 @@ public final class ProviderWrapper {
     private SQLException updateException(BaseDTO DTO) {
 
         if (DTO instanceof OSPInventoryDTO) {
-            return new DTOUpdateException(); // TODO
+            return new DTOUpdateException(OSPInventoryDTO.getDatabaseTableName());
         } else if (DTO instanceof GarageOPHoursDTO) {
-            return new DTOUpdateException(); // TODO
+            return new DTOUpdateException(GarageOPHoursDTO.getDatabaseTableName());
         } else if (DTO instanceof GarageRatesDTO) {
-            return new DTOUpdateException(); // TODO
+            return new DTOUpdateException(GarageRatesDTO.getDatabaseTableName());
         } else if (DTO instanceof CalendarHeaderDTO) {
             return new DTOUpdateException(CalendarHeaderDTO.getDatabaseTableName());
         } else if (DTO instanceof ParkingSpaceInventoryDTO) {

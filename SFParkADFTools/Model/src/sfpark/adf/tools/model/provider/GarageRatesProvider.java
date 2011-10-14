@@ -24,8 +24,6 @@ public class GarageRatesProvider {
         GarageRatesProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "GARAGE_RATES";
-
     private GarageRatesProvider() {
         super();
     }
@@ -256,7 +254,8 @@ public class GarageRatesProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForOSPID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  GarageRatesDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 
@@ -269,7 +268,8 @@ public class GarageRatesProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForGarageRatesID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  GarageRatesDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -289,7 +289,8 @@ public class GarageRatesProvider {
 
         LOGGER.exiting(CLASSNAME, "getInsertStatement");
 
-        return StatementGenerator.insertStatement(TABLE_NAME, Columns, Values);
+        return StatementGenerator.insertStatement(GarageRatesDTO.getDatabaseTableName(),
+                                                  Columns, Values);
     }
 
     private int getInsertIndexOf(String indexFor) {
@@ -314,8 +315,8 @@ public class GarageRatesProvider {
 
         LOGGER.exiting(CLASSNAME, "getUpdateStatementForOSPID");
 
-        return StatementGenerator.updateStatement(TABLE_NAME, SetColumnValues,
-                                                  Where);
+        return StatementGenerator.updateStatement(GarageRatesDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
     }
 
     private int getUpdateIndexOf(String indexFor) {

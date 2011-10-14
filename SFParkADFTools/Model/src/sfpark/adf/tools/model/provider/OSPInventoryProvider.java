@@ -26,8 +26,6 @@ public class OSPInventoryProvider {
         OSPInventoryProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "OSP_INVENTORY";
-
     private OSPInventoryProvider() {
         super();
     }
@@ -232,8 +230,9 @@ public class OSPInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME, null,
-                                                  OrderBy);
+        return StatementGenerator.selectStatement(Attributes,
+                                                  OSPInventoryDTO.getDatabaseTableName(),
+                                                  null, OrderBy);
     }
 
     private String getSelectStatementForOSPID() {
@@ -245,7 +244,8 @@ public class OSPInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForOSPID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  OSPInventoryDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -265,8 +265,8 @@ public class OSPInventoryProvider {
 
         LOGGER.exiting(CLASSNAME, "getUpdateStatementForOSPID");
 
-        return StatementGenerator.updateStatement(TABLE_NAME, SetColumnValues,
-                                                  Where);
+        return StatementGenerator.updateStatement(OSPInventoryDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
     }
 
     private int getUpdateIndexOf(String indexFor) {

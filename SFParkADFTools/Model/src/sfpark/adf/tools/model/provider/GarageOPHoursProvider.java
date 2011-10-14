@@ -24,8 +24,6 @@ public class GarageOPHoursProvider {
         GarageOPHoursProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "GARAGE_OP_HOURS";
-
     private GarageOPHoursProvider() {
         super();
     }
@@ -226,7 +224,8 @@ public class GarageOPHoursProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForOSPID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  GarageOPHoursDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 
@@ -239,7 +238,8 @@ public class GarageOPHoursProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForGarageOPHoursID");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  GarageOPHoursDTO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -259,7 +259,8 @@ public class GarageOPHoursProvider {
 
         LOGGER.exiting(CLASSNAME, "getInsertStatement");
 
-        return StatementGenerator.insertStatement(TABLE_NAME, Columns, Values);
+        return StatementGenerator.insertStatement(GarageOPHoursDTO.getDatabaseTableName(),
+                                                  Columns, Values);
     }
 
     private int getInsertIndexOf(String indexFor) {
@@ -285,8 +286,8 @@ public class GarageOPHoursProvider {
 
         LOGGER.exiting(CLASSNAME, "getUpdateStatementForGarageOPHoursID");
 
-        return StatementGenerator.updateStatement(TABLE_NAME, SetColumnValues,
-                                                  Where);
+        return StatementGenerator.updateStatement(GarageOPHoursDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
     }
 
     private int getUpdateIndexOf(String indexFor) {

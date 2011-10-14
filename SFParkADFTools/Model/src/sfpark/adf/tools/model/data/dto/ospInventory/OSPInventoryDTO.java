@@ -14,6 +14,15 @@ import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class OSPInventoryDTO extends BaseDTO {
+
+    public static String getDatabaseTableName() {
+        return "OSP_INVENTORY";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public OSPInventoryDTO() {
         super();
     }
