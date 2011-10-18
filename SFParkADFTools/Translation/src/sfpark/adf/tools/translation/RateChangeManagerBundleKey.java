@@ -5,9 +5,13 @@ public enum RateChangeManagerBundleKey {
     string_application_name,
     string_rate_change_rules_management,
     string_rate_change_management,
+    string_block_time_bands_management,
 
     string_rate_change_rules_to_apply,
     string_rate_change_rules_to_replace,
+
+    string_block_time_bands_to_apply,
+    string_block_time_bands_to_delete,
 
     string_delete_rate_change_confirmation,
     string_delete_rate_change_process_confirmation,
@@ -18,6 +22,10 @@ public enum RateChangeManagerBundleKey {
     // Title Strings
 
     string_pick_thresholds,
+
+    string_pick_time_band_type,
+    string_pick_time_band_options,
+    string_pick_time_band_values,
 
     string_pick_calendar,
 
@@ -66,6 +74,9 @@ public enum RateChangeManagerBundleKey {
 
     info_empty_rate_change_rules_apply_list,
     info_empty_rate_change_rules_replace_list,
+
+    info_empty_block_time_bands_apply_list,
+    info_empty_block_time_bands_delete_list,
 
     info_empty_meters_list,
 

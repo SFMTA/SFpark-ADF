@@ -19,8 +19,6 @@ public final class PCOBeatsProvider {
     private static final String CLASSNAME = PCOBeatsProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = PCOBeatsDO.getDatabaseTableName();
-
     private PCOBeatsProvider() {
         super();
     }
@@ -95,7 +93,8 @@ public final class PCOBeatsProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForLongitudeAndLatitude");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  PCOBeatsDO.getDatabaseTableName(),
                                                   Where);
     }
 }

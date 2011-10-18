@@ -11,6 +11,8 @@ import oracle.adf.view.rich.model.RegionModel;
 
 import sfpark.adf.tools.helper.Logger;
 
+import sfpark.adf.tools.model.helper.dO.BlocksDOStatus;
+import sfpark.adf.tools.model.provider.BlocksProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.RequestParameter;
@@ -20,14 +22,13 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.ParameterKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.application.value.OperationValue;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
-public class ThresholdBean extends BaseBean {
+public class TimebandBean extends BaseBean {
 
-    private static final String CLASSNAME = ThresholdBean.class.getName();
+    private static final String CLASSNAME = TimebandBean.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
     private RichRegion ContentRichRegion;
@@ -37,7 +38,7 @@ public class ThresholdBean extends BaseBean {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
 
-    public ThresholdBean() {
+    public TimebandBean() {
         super();
     }
 
@@ -136,63 +137,46 @@ public class ThresholdBean extends BaseBean {
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
             // Retrieve the parameters
 
-            String operationStr =
-                getRequestParameterValue(ParameterKey.OPERATION.getKey());
-            String rateChgType =
-                getRequestParameterValue(ParameterKey.RATE_CHG_TYPE.getKey());
-
-            // Interpret NULL calendar ID as ZERO
-            if (StringUtil.isBlank(rateChgType)) {
-                rateChgType = "ON";
-            }
-
-            // Convert operation String into OperationValue
-            OperationValue operation = OperationValue.extract(operationStr);
+            String blockID =
+                getRequestParameterValue(ParameterKey.BLOCK_ID.getKey());
 
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
             if ( // VALID Parameters
-                !operation.isUnknown() && StringUtil.isNotBlank(rateChgType)) {
+                StringUtil.isDigitsONLY(blockID)) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
 
-                if ( // ADD Operation
-                    operation.isAdd()) {
-                    // ++++++++++++++++++++++++++++++++++
-                    // ++++++++++++++++++++++++++++++++++
-                    // ++++++++++++++++++++++++++++++++++
-                    LOGGER.debug("ADD Mode");
+                BlocksDOStatus blocksDOStatus =
+                    BlocksProvider.INSTANCE.checkForBlock(blockID);
 
-                    setCurrentPageMode(NavigationMode.ADD);
-                    setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                         NavigationFlow.AddThreshold.name());
-
-                } else if ( // EDIT Mode
-                    operation.isEdit()) {
+                if ( // Block EXISTS
+                    blocksDOStatus.existsDO()) {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
                     LOGGER.debug("EDIT Mode");
 
-                    setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULE_TYPE.getKey(),
-                                          rateChgType);
+                    setPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey(),
+                                          blockID);
                     setCurrentPageMode(NavigationMode.EDIT);
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                         NavigationFlow.EditThreshold.name());
+                                         NavigationFlow.EditTimeband.name());
 
                 } else {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++
-                    LOGGER.warning("Unsupported Operation");
+                    LOGGER.warning("Block does not exist");
+
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
+                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_nonexistent_resource));
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_operation,
-                                                                               operationStr));
+                                          TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_nonexistent_block_id_resource,
+                                                                               blockID));
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.ERROR.name());
                 }
@@ -206,16 +190,14 @@ public class ThresholdBean extends BaseBean {
                                       TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_invalid_parameters));
 
                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_threshold_parameters,
-                                                                           operationStr,
-                                                                           rateChgType));
+                                      TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_timeband_parameters,
+                                                                           blockID));
                 setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                      NavigationFlow.ERROR.name());
             }
 
         } else if ( // HTTP Method is POST
             httpMethod.equalsIgnoreCase("POST")) {
-
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++
             // ++++++++++++++++++++++++++++++++++

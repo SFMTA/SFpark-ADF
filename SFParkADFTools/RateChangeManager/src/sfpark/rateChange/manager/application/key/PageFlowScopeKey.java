@@ -13,6 +13,10 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    BLOCK_ID,
+    BLOCK_TIME_BANDS_DTO_LIST,
+    DELETABLE_TIME_BANDS_LIST,
+
     RATE_CHANGE_RULE_TYPE,
     RATE_CHANGE_RULES_DTO_LIST,
     THRESHOLD_PICKER_CHOSEN_LIST,

@@ -6,6 +6,7 @@ public enum ParameterKey {
     RATE_CHG_REF_ID("rateChgRefID"),
     PROCESS_ID("processID"),
     BLOCK_RATE_SCHED_ID("blockRateSchedID"),
+    BLOCK_ID("blockID"),
 
     RATE_CHG_TYPE("rateChgType");
 
