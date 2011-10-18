@@ -68,7 +68,6 @@
                           binding="#{pickTimebandValuesBean.removeButton}"
                           actionListener="#{pickTimebandValuesBean.deleteButtonHandler}"
                           partialSubmit="true"/>
-        <!--
         <af:table id="CTTable" var="row" varStatus="rowStatus" width="120"
                   inlineStyle="height: 150px;" contentDelivery="immediate"
                   rowSelection="single" rowBandingInterval="0"
@@ -79,14 +78,13 @@
                   selectionListener="#{pickTimebandValuesBean.tableRowSelectionHandler}">
           <af:column id="CTTableColChosenTimeband" rowHeader="unstyled"
                      align="center" width="80px" sortable="false"
-                     headerText="#{columnBundle.column_Timebands}">
+                     headerText="#{columnBundle.column_timebands}">
             <af:outputText id="CTTableRowChosenTimeband" value="#{row}"/>
           </af:column>
         </af:table>
         <af:inputText id="chosenDatesNoteIT" readOnly="true"
                       label="#{labelBundle.label_note}"
                       value="#{commonBundle.note_table_single_select}"/>
-        -->
       </af:panelGroupLayout>
     </af:panelGroupLayout>
   </af:panelGroupLayout>

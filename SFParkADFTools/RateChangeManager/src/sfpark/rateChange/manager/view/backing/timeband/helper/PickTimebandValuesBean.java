@@ -16,7 +16,11 @@ import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
+import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
+import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
+import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.helper.TimebandDDO;
 
 public class PickTimebandValuesBean extends BaseBean implements ListBeanInterface,
                                                                 PropertiesBeanInterface,
@@ -43,7 +47,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        // TODO removePageFlowScopeValue(PageFlowScopeKey.THRESHOLD_PICKER_CHOSEN_LIST.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -65,20 +69,18 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    /*
-    public List<Integer> getChosenThresholds() {
-        List<Integer> chosenThresholds =
-            (List<Integer>)getPageFlowScopeValue(PageFlowScopeKey.THRESHOLD_PICKER_CHOSEN_LIST.getKey());
+    public List<TimebandDDO> getChosenTimebands() {
+        List<TimebandDDO> chosenTimebands =
+            (List<TimebandDDO>)getPageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
 
-        if (chosenThresholds == null) {
-            chosenThresholds = new ArrayList<Integer>();
-            setPageFlowScopeValue(PageFlowScopeKey.THRESHOLD_PICKER_CHOSEN_LIST.getKey(),
-                                  chosenThresholds);
+        if (chosenTimebands == null) {
+            chosenTimebands = new ArrayList<TimebandDDO>();
+            setPageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey(),
+                                  chosenTimebands);
         }
 
-        return chosenThresholds;
+        return chosenTimebands;
     }
- */
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -86,7 +88,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // EVENT HANDLERS
 
     public void addButtonHandler(ActionEvent event) {
-
+        // TODO
         /*
         int chosenThreshold = getChooseThreshold();
 
@@ -106,7 +108,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void deleteButtonHandler(ActionEvent event) {
-
+        // TODO
         /*
         if (getChosenThresholdsTable().getSelectedRowKeys().size() == 1) {
             Integer integer =
@@ -143,6 +145,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void tableRowSelectionHandler(SelectionEvent event) {
+        // TODO
         /*
         boolean disable =
             (getChosenThresholdsTable().getSelectedRowKeys().size() != 1);
@@ -153,7 +156,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void saveButtonHandler(ActionEvent event) {
-
+        // TODO
         /*
         // Clear out old values
         removePageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULES_DTO_LIST.getKey());
@@ -180,9 +183,7 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        /*
         moveOn();
-         */
     }
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
@@ -194,13 +195,14 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
-    /*
     private void moveOn() {
         clearPageFlowScopeCache();
 
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditThreshold.name());
+                             NavigationFlow.EditTimeband.name());
     }
+
+    /*
 
     private List<Integer> getThresholds() {
         List<Integer> thresholds = new ArrayList<Integer>();
