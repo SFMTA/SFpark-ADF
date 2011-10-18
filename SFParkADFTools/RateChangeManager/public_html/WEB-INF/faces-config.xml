@@ -67,7 +67,7 @@
   </managed-bean>
   <managed-bean>
     <managed-bean-name>pickTimebandValuesBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.PickTimebandValuesBean</managed-bean-class>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.add.PickTimebandValuesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
@@ -78,6 +78,11 @@
   <managed-bean>
     <managed-bean-name>thresholdPropertiesBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.threshold.ThresholdPropertiesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickTimebandTypeBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.PickTimebandTypeBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>

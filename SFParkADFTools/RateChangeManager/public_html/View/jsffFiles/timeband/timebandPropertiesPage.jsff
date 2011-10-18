@@ -11,11 +11,26 @@
                    inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
     <af:toolbar id="mainToolbar">
       <af:group id="mainToolbarValidateAndSave">
-        <af:spacer id="spaceBeforeButton" width="30"/>
-        <af:commandButton id="validateAndSaveButton" blocking="true"
-                          inlineStyle="width: 150px; font-weight: bold;"
-                          text="#{buttonBundle.button_validate_and_save}"
+        <af:spacer id="spaceBeforeSaveButton" width="30"/>
+        <af:commandButton id="saveButton" blocking="true"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_save}"
                           actionListener="#{timebandPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarAddDelete">
+        <af:spacer id="spaceBeforeButton" width="10"/>
+        <af:commandToolbarButton id="addDeleteButton" actionDelivery="none"
+                                 text="Timeband Options">
+          <f:facet name="popup">
+            <af:menu id="addDeleteButtonMenu">
+              <af:commandMenuItem id="addTimeband" text="Add Timeband"
+                                  actionListener="#{timebandPropertiesBean.pickButtonHandler}"/>
+              <af:commandMenuItem id="deleteTimeband" text="Delete Timebands"
+                                  actionListener="#{timebandPropertiesBean.pickButtonHandler}"/>
+            </af:menu>
+          </f:facet>
+        </af:commandToolbarButton>
         <af:spacer id="spaceAfterButton" width="10"/>
       </af:group>
       <af:group id="mainToolbarInlineMessage">
@@ -23,7 +38,7 @@
         <af:outputText id="inlineMessage" noWrap="true"
                        value="#{timebandPropertiesBean.inlineMessageText}"
                        styleClass="#{timebandPropertiesBean.inlineMessageClass}"
-                       partialTriggers="validateAndSaveButton"/>
+                       partialTriggers="saveButton"/>
       </af:group>
     </af:toolbar>
     <af:separator id="Separator"/>
@@ -38,167 +53,72 @@
                       value="#{timebandPropertiesBean.blockID}"/>
         <af:spacer id="blockIDSpacer" height="10"/>
       </af:panelFormLayout>
-      <af:panelGroupLayout id="applicablePanel" layout="vertical">
-        <f:facet name="separator">
-          <af:spacer id="applicablePanelSpacer" height="10"/>
-        </f:facet>
-        <af:outputText id="OT1" inlineStyle="font-size: 14px;"
-                       value="#{rateChangeManagerBundle.string_block_time_bands_to_apply}"/>
-        <af:toolbar id="timebandToolbar">
-          <af:group id="timebandToolbarAdd">
-            <af:commandButton id="addTimebandButton" immediate="true"
-                              inlineStyle="width: 130px;" text="Add Timebands"
-                              actionListener="#{timebandPropertiesBean.pickButtonHandler}"/>
-            <af:spacer id="spaceAfterAddButton" width="10"/>
-          </af:group>
-          <af:group id="timebandToolbarDelete" rendered="false">
-            <af:spacer id="spaceBeforeDeleteButton" width="10"/>
-            <af:commandButton id="deleteTimebandButton" immediate="true"
-                              inlineStyle="width: 130px;"
-                              text="Delete Timebands"
-                              actionListener="#{timebandPropertiesBean.pickButtonHandler}"/>
-          </af:group>
-        </af:toolbar>
-        <af:table id="TBTable" var="row" varStatus="rowStatus" width="700"
-                  inlineStyle="height: 300px;" contentDelivery="immediate"
-                  rowSelection="none" rowBandingInterval="0"
-                  columnSelection="none" disableColumnReordering="true"
-                  columnStretching="last"
-                  emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_apply_list}"
-                  summary="Block Time Bands List"
-                  value="#{timebandPropertiesBean.blockTimeBands}"
-                  binding="#{timebandPropertiesBean.blockTimeBandsTable}">
-          <af:column id="TBTableColMeterClass" rowHeader="unstyled"
-                     align="center" width="80px" sortable="false"
-                     headerText="#{columnBundle.column_meter_class}">
-            <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
-          </af:column>
-          <af:column id="TBTableColDateType" align="center" width="80px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_date_type}">
-            <af:outputText id="TBTableRowDateType" value="#{row.dateType}"/>
-          </af:column>
-          <af:column id="TBTableColTimeBandID" align="center" width="50px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_id}">
-            <af:outputText id="TBTableRowTimeBandID" value="#{row.timeBandID}"/>
-          </af:column>
-          <af:column id="TBTableColTimeBandFrom" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_from}">
-            <af:outputText id="TBTableRowTimeBandFrom"
-                           value="#{row.displayTimeBandFrom}"/>
-          </af:column>
-          <af:column id="TBTableColTimeBandTo" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_to}">
-            <af:outputText id="TBTableRowTimeBandTo"
-                           value="#{row.displayTimeBandTo}"/>
-          </af:column>
-          <af:column id="TBTableColFromTime" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_from_time}">
-            <af:outputText id="TBTableRowFromTime"
-                           value="#{row.displayFromTime}"/>
-          </af:column>
-          <af:column id="TBTableColToTime" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_to_time}">
-            <af:outputText id="TBTableRowToTime" value="#{row.displayToTime}"/>
-          </af:column>
-          <af:column id="TBTableColCurrentRate" align="center" width="80px"
-                     sortable="false" showRequired="true"
-                     headerText="#{columnBundle.column_current_rate}">
-            <af:inputText id="TBTableRowCurrentRate" simple="true"
-                          required="true" columns="6" value="#{row.currentRate}"
-                          autoSubmit="true">
-              <af:convertNumber type="currency" locale="en-US"
-                                maxFractionDigits="2"/>
-            </af:inputText>
-          </af:column>
-          <af:column id="TBTableColLastRateChgDate" align="center" width="80px"
-                     sortable="false" showRequired="true"
-                     headerText="#{columnBundle.column_last_rate_change_date}">
-            <af:inputDate id="TBTableRowLastRateChgDate" simple="true"
-                          required="true" columns="10"
-                          value="#{row.lastRateChangeDate}" autoSubmit="true">
-              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
-            </af:inputDate>
-          </af:column>
-        </af:table>
-      </af:panelGroupLayout>
-      <af:panelGroupLayout id="replaceablePanel" layout="vertical">
-        <f:facet name="separator">
-          <af:spacer id="replaceablePanelSpacer" height="10"/>
-        </f:facet>
-        <af:outputText id="OT2" inlineStyle="font-size: 14px;"
-                       value="#{rateChangeManagerBundle.string_block_time_bands_to_delete}"/>
-        <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="700"
-                  inlineStyle="height: 200px;" contentDelivery="immediate"
-                  rowSelection="none" rowBandingInterval="0"
-                  columnSelection="none" disableColumnReordering="true"
-                  columnStretching="last"
-                  emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_delete_list}"
-                  summary="Block Time Bands Delete List"
-                  value="#{timebandPropertiesBean.deletableTimeBands}"
-                  binding="#{timebandPropertiesBean.deletableTimeBandsTable}">
-          <af:column id="DTBTablColMeterClass" rowHeader="unstyled"
-                     align="center" width="80px" sortable="false"
-                     headerText="#{columnBundle.column_meter_class}">
-            <af:outputText id="DTBTablRowMeterClass" value="#{row.meterClass}"/>
-          </af:column>
-          <af:column id="DTBTablColDateType" align="center" width="80px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_date_type}">
-            <af:outputText id="DTBTablRowDateType" value="#{row.dateType}"/>
-          </af:column>
-          <af:column id="DTBTablColTimeBandID" align="center" width="50px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_id}">
-            <af:outputText id="DTBTablRowTimeBandID" value="#{row.timeBandID}"/>
-          </af:column>
-          <af:column id="DTBTablColTimeBandFrom" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_from}">
-            <af:outputText id="DTBTablRowTimeBandFrom"
-                           value="#{row.displayTimeBandFrom}"/>
-          </af:column>
-          <af:column id="DTBTablColTimeBandTo" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_time_band_to}">
-            <af:outputText id="DTBTablRowTimeBandTo"
-                           value="#{row.displayTimeBandTo}"/>
-          </af:column>
-          <af:column id="DTBTablColFromTime" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_from_time}">
-            <af:outputText id="DTBTablRowFromTime"
-                           value="#{row.displayFromTime}"/>
-          </af:column>
-          <af:column id="DTBTablColToTime" align="center" width="60px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_to_time}">
-            <af:outputText id="DTBTablRowToTime" value="#{row.displayToTime}"/>
-          </af:column>
-          <af:column id="DTBTablColCurrentRate" align="center" width="80px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_current_rate}">
-            <af:outputText id="DTBTablRowCurrentRate"
-                           value="#{row.currentRate}">
-              <af:convertNumber type="currency" locale="en-US"
-                                maxFractionDigits="2"/>
-            </af:outputText>
-          </af:column>
-          <af:column id="DTBTablColLastRateChgDate" align="center" width="80px"
-                     sortable="false"
-                     headerText="#{columnBundle.column_last_rate_change_date}">
-            <af:inputDate id="DTBTablRowLastRateChgDate" simple="true"
-                          readOnly="true" value="#{row.lastRateChangeDate}">
-              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
-            </af:inputDate>
-          </af:column>
-        </af:table>
-      </af:panelGroupLayout>
+      <af:table id="TBTable" var="row" varStatus="rowStatus" width="700"
+                inlineStyle="height: 300px;" contentDelivery="immediate"
+                rowSelection="none" rowBandingInterval="0"
+                columnSelection="none" disableColumnReordering="true"
+                columnStretching="last"
+                emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_apply_list}"
+                summary="Block Time Bands List"
+                value="#{timebandPropertiesBean.blockTimeBands}"
+                binding="#{timebandPropertiesBean.blockTimeBandsTable}">
+        <af:column id="TBTableColMeterClass" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false"
+                   headerText="#{columnBundle.column_meter_class}">
+          <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
+        </af:column>
+        <af:column id="TBTableColDateType" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_date_type}">
+          <af:outputText id="TBTableRowDateType" value="#{row.dateType}"/>
+        </af:column>
+        <af:column id="TBTableColTimeBandID" align="center" width="50px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_band_id}">
+          <af:outputText id="TBTableRowTimeBandID" value="#{row.timeBandID}"/>
+        </af:column>
+        <af:column id="TBTableColTimeBandFrom" align="center" width="60px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_band_from}">
+          <af:outputText id="TBTableRowTimeBandFrom"
+                         value="#{row.displayTimeBandFrom}"/>
+        </af:column>
+        <af:column id="TBTableColTimeBandTo" align="center" width="60px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_band_to}">
+          <af:outputText id="TBTableRowTimeBandTo"
+                         value="#{row.displayTimeBandTo}"/>
+        </af:column>
+        <af:column id="TBTableColFromTime" align="center" width="60px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:outputText id="TBTableRowFromTime"
+                         value="#{row.displayFromTime}"/>
+        </af:column>
+        <af:column id="TBTableColToTime" align="center" width="60px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:outputText id="TBTableRowToTime" value="#{row.displayToTime}"/>
+        </af:column>
+        <af:column id="TBTableColCurrentRate" align="center" width="80px"
+                   sortable="false" showRequired="true"
+                   headerText="#{columnBundle.column_current_rate}">
+          <af:inputText id="TBTableRowCurrentRate" simple="true" required="true"
+                        columns="6" value="#{row.currentRate}"
+                        autoSubmit="true">
+            <af:convertNumber type="currency" locale="en-US"
+                              maxFractionDigits="2"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="TBTableColLastRateChgDate" align="center" width="80px"
+                   sortable="false" showRequired="true"
+                   headerText="#{columnBundle.column_last_rate_change_date}">
+          <af:inputDate id="TBTableRowLastRateChgDate" simple="true"
+                        required="true" columns="10"
+                        value="#{row.lastRateChangeDate}" autoSubmit="true">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+      </af:table>
     </af:panelGroupLayout>
   </af:panelGroupLayout>
 </jsp:root>

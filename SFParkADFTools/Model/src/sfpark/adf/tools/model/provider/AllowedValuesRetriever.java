@@ -25,6 +25,7 @@ import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
+import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class AllowedValuesRetriever {
@@ -297,7 +298,7 @@ public final class AllowedValuesRetriever {
     }
 
     public static String getCalendarTypeDefaultValue() {
-        return getCalendarTypeList().get(0).getColumnValue();
+        return ObjectUtil.getNullSafe(getCalendarTypeList().get(0).getColumnValue());
     }
 
     // ++++++++++++++++++++++++++++++++++
@@ -347,7 +348,7 @@ public final class AllowedValuesRetriever {
     }
 
     public static String getRateChgPolicyDefaultValue() {
-        return getRateChgPolicyList().get(0).getColumnValue();
+        return ObjectUtil.getNullSafe(getRateChgPolicyList().get(0).getColumnValue());
     }
 
     // ++++++++++++++++++++++++++++++++++
@@ -373,6 +374,10 @@ public final class AllowedValuesRetriever {
         return meterClassList;
     }
 
+    public static String getMeterClassDefaultValue() {
+        return ObjectUtil.getNullSafe(getMeterClassList().get(0).getColumnValue());
+    }
+
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
@@ -394,6 +399,10 @@ public final class AllowedValuesRetriever {
         }
 
         return dateTypeList;
+    }
+
+    public static String getDateTypeDefaultValue() {
+        return ObjectUtil.getNullSafe(getDateTypeList().get(0).getColumnValue());
     }
 
     // ++++++++++++++++++++++++++++++++++

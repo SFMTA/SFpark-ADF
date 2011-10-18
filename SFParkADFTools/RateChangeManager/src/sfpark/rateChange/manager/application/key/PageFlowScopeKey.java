@@ -15,8 +15,16 @@ public enum PageFlowScopeKey {
 
     BLOCK_ID,
     BLOCK_TIME_BANDS_DTO_LIST,
+
+    BLOCK_TIME_BANDS_TO,
+    TIME_BAND_MODEL_DO_LIST,
+
     DELETABLE_TIME_BANDS_LIST,
     TIMEBAND_PICKER_CHOSEN_LIST,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     RATE_CHANGE_RULE_TYPE,
     RATE_CHANGE_RULES_DTO_LIST,

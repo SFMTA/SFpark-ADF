@@ -1,2 +1,59 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"></jsp:root>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickTimebandTypePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickTimebandTypePGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_block_time_bands_management}"
+                                actionListener="#{pickTimebandTypeBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_time_band_type}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarContinueAndCancel">
+        <af:spacer id="spaceBeforeContinueButton" width="30"/>
+        <af:commandButton id="continueButton"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_continue}"
+                          actionListener="#{pickTimebandTypeBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterContinueButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickTimebandTypeBean.cancelButtonHandler}"/>
+        <af:spacer id="spaceAfterCancelButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{pickTimebandTypeBean.inlineMessageText}"
+                       styleClass="#{pickTimebandTypeBean.inlineMessageClass}"
+                       partialTriggers="continueButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelFormLayout id="pickTimebandTypePFL"
+                        inlineStyle="padding-left: 25px;">
+      <af:selectOneChoice id="meterClassSOC" required="true"
+                          label="#{labelBundle.label_meter_class}"
+                          value="#{pickTimebandTypeBean.blockTimeBandsTypeTO.meterClass}"
+                          autoSubmit="true">
+        <f:selectItems id="meterClassSOCSI"
+                       value="#{pickTimebandTypeBean.listMeterClass}"/>
+      </af:selectOneChoice>
+      <af:spacer id="meterClassSpacer" height="10"/>
+      <af:selectOneChoice id="dateTypeSOC" required="true"
+                          label="#{labelBundle.label_date_type}"
+                          value="#{pickTimebandTypeBean.blockTimeBandsTypeTO.dateType}"
+                          autoSubmit="true">
+        <f:selectItems id="dateTypeSOCSI"
+                       value="#{pickTimebandTypeBean.listDateType}"/>
+      </af:selectOneChoice>
+      <af:spacer id="dateTypeSpacer" height="10"/>
+    </af:panelFormLayout>
+  </af:panelGroupLayout>
+</jsp:root>

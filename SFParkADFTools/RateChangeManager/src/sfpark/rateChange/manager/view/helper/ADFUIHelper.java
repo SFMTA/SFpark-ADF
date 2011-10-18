@@ -1,5 +1,11 @@
 package sfpark.rateChange.manager.view.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.model.SelectItem;
+
+import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
@@ -23,10 +29,28 @@ public final class ADFUIHelper {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Meter Class
+
+    public static List<SelectItem> getMeterClassDisplayList() {
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getMeterClassList());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Date Type
+
+    public static List<SelectItem> getDateTypeDisplayList() {
+        return getAllowedValuesDisplayList(AllowedValuesRetriever.getDateTypeList());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
     private static String getDisplayableString(boolean forProcessStep,
-                                              String forString) {
+                                               String forString) {
         if (StringUtil.isBlank(forString)) {
             return "N/A";
         }
@@ -40,5 +64,21 @@ public final class ADFUIHelper {
         }
 
         return displayString;
+    }
+
+    private static List<SelectItem> getAllowedValuesDisplayList(List<AllowedValuesDTO> allowedValuesList) {
+        List<SelectItem> displayList = new ArrayList<SelectItem>();
+
+        for (AllowedValuesDTO allowedValue : allowedValuesList) {
+
+            StringBuffer label =
+                new StringBuffer(allowedValue.getColumnValue());
+
+            displayList.add(new SelectItem(allowedValue.getColumnValue(),
+                                           label.toString()));
+
+        }
+
+        return displayList;
     }
 }
