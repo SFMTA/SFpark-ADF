@@ -10,8 +10,6 @@ import javax.faces.model.SelectItem;
 import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
-import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
-import sfpark.adf.tools.utilities.ui.TimeUI;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -21,6 +19,8 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInterface,
                                                               RequestScopeBeanInterface {
@@ -39,7 +39,7 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_TO.getKey());
+        removePageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -65,18 +65,18 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL TO INFORMATION
 
-//    public BlockTimeBandsTypeTO getBlockTimeBandsTypeTO() {
-//        BlockTimeBandsTypeTO TO =
-//            (BlockTimeBandsTypeTO)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_TO.getKey());
-//
-//        if (TO == null) {
-//            TO = new BlockTimeBandsTypeTO(); // TODO
-//            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_TO.getKey(),
-//                                  TO);
-//        }
-//
-//        return TO;
-//    }
+    public BlockTimeBandTypeTO getBlockTimeBandsTypeTO() {
+        BlockTimeBandTypeTO TO =
+            (BlockTimeBandTypeTO)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
+
+        if (TO == null) {
+            TO = DMLOperationsProvider.INSTANCE.getNewBlockTimeBandTypeTO();
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey(),
+                                  TO);
+        }
+
+        return TO;
+    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -100,14 +100,6 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
         return ADFUIHelper.getDateTypeDisplayList();
     }
 
-    public List<SelectItem> getListOpenTime() {
-        return TimeUI.FROM_TIME_LIST;
-    }
-
-    public List<SelectItem> getListCloseTime() {
-        return TimeUI.TO_TIME_LIST;
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -120,21 +112,6 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
         boolean allValid = true;
         NavigationMode currentPageMode = getCurrentPageMode();
 
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        if (allValid && currentPageMode.isAddMode()) {
-            int openTime =
-                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(getBlockTimeBandsTypeTO().getOpenTime()));
-            int closeTime =
-                Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(getBlockTimeBandsTypeTO().getCloseTime()));
-
-            if (openTime >= closeTime) {
-                setInlineMessageText("Close Time has to be after Open Time"); // TODO
-                allValid = false;
-            }
-        }
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -190,7 +167,6 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
                                      NavigationFlow.DeleteTimeband.name());
 
             }
-
 
         } else {
             setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);

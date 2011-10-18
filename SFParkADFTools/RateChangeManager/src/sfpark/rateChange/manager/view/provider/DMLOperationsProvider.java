@@ -29,6 +29,8 @@ import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 import sfpark.adf.tools.model.provider.StoredProcedureProvider;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
+import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
+
 public class DMLOperationsProvider {
 
     private static final String CLASSNAME =
@@ -49,6 +51,19 @@ public class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Methods to create new DTOs
+
+    public BlockTimeBandTypeTO getNewBlockTimeBandTypeTO() {
+        LOGGER.entering(CLASSNAME, "getNewBlockTimeBandTypeTO");
+
+        BlockTimeBandTypeTO TO = new BlockTimeBandTypeTO();
+
+        TO.setMeterClass(AllowedValuesRetriever.getMeterClassDefaultValue());
+        TO.setDateType(AllowedValuesRetriever.getDateTypeDefaultValue());
+
+        LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandTypeTO");
+
+        return TO;
+    }
 
     /**
      * Generates a new Rate Change Header DTO with the necessary defaults

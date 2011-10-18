@@ -17,6 +17,7 @@ import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.flow.NavigationMode;
 
 public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                 RequestScopeBeanInterface {
@@ -116,12 +117,14 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
         String ID = event.getComponent().getId();
 
         if (ID.contains("addTimeband")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 "") /* NavigationFlow.PickThresholdValues.name() */; // TODO
+            setCurrentPageMode(NavigationMode.ADD);
         } else if (ID.contains("deleteTimeband")) {
-            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 "") /* NavigationFlow.PickThresholdValues.name() */; // TODO
+            setCurrentPageMode(NavigationMode.DELETE);
         }
+
+        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                             NavigationFlow.PickTimebandType.name());
+
     }
 
     public void saveButtonHandler(ActionEvent event) {
