@@ -29,6 +29,8 @@ import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 import sfpark.adf.tools.model.provider.StoredProcedureProvider;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
+import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
+
 import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
 
 public class DMLOperationsProvider {
@@ -59,6 +61,8 @@ public class DMLOperationsProvider {
 
         TO.setMeterClass(AllowedValuesRetriever.getMeterClassDefaultValue());
         TO.setDateType(AllowedValuesRetriever.getDateTypeDefaultValue());
+        TO.setOpenTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
+        TO.setCloseTime(TimeDisplayUtil.extractAnyTimeForDisplay(2400));
 
         LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandTypeTO");
 

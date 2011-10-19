@@ -177,6 +177,7 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
     public void cancelButtonHandler(ActionEvent event) {
         clearPageFlowScopeCache();
 
+        setCurrentPageMode(NavigationMode.EDIT);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                              NavigationFlow.EditTimeband.name());
     }
