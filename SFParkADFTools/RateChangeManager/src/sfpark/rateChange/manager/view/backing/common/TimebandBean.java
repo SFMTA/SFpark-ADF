@@ -25,6 +25,8 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class TimebandBean extends BaseBean {
 
@@ -160,8 +162,11 @@ public class TimebandBean extends BaseBean {
                     // ++++++++++++++++++++++++++++++++++
                     LOGGER.debug("EDIT Mode");
 
-                    setPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey(),
-                                          blockID);
+                    BlockTimeBandDetail detail =
+                        DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail(blockID);
+
+                    setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
+                                          detail);
                     setCurrentPageMode(NavigationMode.EDIT);
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.EditTimeband.name());

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -43,13 +44,18 @@ public class BlockTimeBandsDTO extends BaseDTO {
 
     }
 
-    /*
-    private BlockTimeBandsDTO(BlockTimeBandsDTO DTO) {
-        super(DTO);
+    private BlockTimeBandsDTO(String blockID,
+                              TimeBandModelDO timeBandModelDO) {
+        super();
 
-        // TODO
+        this.setBlockID(blockID);
+        this.setMeterClass(timeBandModelDO.getMeterClass());
+        this.setDateType(timeBandModelDO.getDateType());
+        this.setTimeBandID(timeBandModelDO.getTimeBandID());
+        this.setTimeBandFrom(timeBandModelDO.getTimeBandFrom());
+        this.setTimeBandTo(timeBandModelDO.getTimeBandTo());
+
     }
-    */
 
     public static final String BLOCK_TIME_BAND_ID = "BLOCK_TIME_BAND_ID";
     public static final String BLOCK_ID = "BLOCK_ID";
@@ -102,6 +108,16 @@ public class BlockTimeBandsDTO extends BaseDTO {
         }
 
         return new BlockTimeBandsDTO(resultSet);
+    }
+
+    public static BlockTimeBandsDTO extract(String blockID,
+                                            TimeBandModelDO timeBandModelDO) {
+
+        if (timeBandModelDO == null) {
+            return null;
+        }
+
+        return new BlockTimeBandsDTO(blockID, timeBandModelDO);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -1,6 +1,5 @@
 package sfpark.rateChange.manager.view.backing.timeband;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -9,7 +8,12 @@ import javax.faces.event.ValueChangeEvent;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
 import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.provider.BlockTimeBandsProvider;
+import sfpark.adf.tools.translation.CommonBundleKey;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
@@ -18,12 +22,13 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                 RequestScopeBeanInterface {
 
     private RichTable BlockTimeBandsTable;
-    private RichTable DeletableTimeBandsTable;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -64,43 +69,32 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    public String getBlockID() {
-        String blockID =
-            (String)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey());
+    public BlockTimeBandDetail getBlockTimeBandDetail() {
+        BlockTimeBandDetail detail =
+            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
 
-        if (blockID == null) {
-            blockID = "0";
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey(), blockID);
+        if (detail == null) {
+            detail =
+                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
+                                  detail);
         }
 
-        return blockID;
+        return detail;
     }
 
     public List<BlockTimeBandsDTO> getBlockTimeBands() {
 
         List<BlockTimeBandsDTO> blockTimeBandsDTOs =
-            (List<BlockTimeBandsDTO>)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_DTO_LIST.getKey());
+            (List<BlockTimeBandsDTO>)getPageFlowScopeValue(PageFlowScopeKey.EDIT_BLOCK_TIME_BANDS_DTO_LIST.getKey());
 
         if (blockTimeBandsDTOs == null) {
             blockTimeBandsDTOs =
-                    BlockTimeBandsProvider.INSTANCE.getAllBlockTimeBandsDTOs(getBlockID());
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_DTO_LIST.getKey(),
+                    BlockTimeBandsProvider.INSTANCE.getAllBlockTimeBandsDTOs(getBlockTimeBandDetail().getBlockID());
+            setPageFlowScopeValue(PageFlowScopeKey.EDIT_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
                                   blockTimeBandsDTOs);
         }
         return blockTimeBandsDTOs;
-    }
-
-    public List<BlockTimeBandsDTO> getDeletableTimeBands() {
-
-        List<BlockTimeBandsDTO> deletableTimeBandDTOs =
-            (List<BlockTimeBandsDTO>)getPageFlowScopeValue(PageFlowScopeKey.DELETABLE_TIME_BANDS_LIST.getKey());
-
-        if (deletableTimeBandDTOs == null) {
-            deletableTimeBandDTOs = new ArrayList<BlockTimeBandsDTO>();
-            setPageFlowScopeValue(PageFlowScopeKey.DELETABLE_TIME_BANDS_LIST.getKey(),
-                                  deletableTimeBandDTOs);
-        }
-        return deletableTimeBandDTOs;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -128,98 +122,61 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
     }
 
     public void saveButtonHandler(ActionEvent event) {
-        // TODO
-        /*
-        //*
-         * Validates the Form and Saves if all entries are valid
-         *
-         * Common Validity Tests:
-         * =====================
-         *    1. Table should not be empty
-         *
-         * @param event
-         //
-        public void saveButtonHandler(ActionEvent event) {
-            boolean allValid = true;
-            NavigationMode currentPageMode = getCurrentPageMode();
+        boolean allValid = true;
+        NavigationMode currentPageMode = getCurrentPageMode();
 
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-            if (allValid) {
-                List<RateChangeRulesDTO> checkList =
-                    (List<RateChangeRulesDTO>)getRateChangeRulesTable().getValue();
+        //        allValid = false;
+        //        String tttt =
+        //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
+        //            getInlineMessageText();
+        //        setInlineMessageText(tttt);
 
-                if (checkList == null || checkList.isEmpty()) {
-                    allValid = false;
-                    setInlineMessageText("There are no thresholds to save."); // TODO
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        if (allValid) {
+            printLog("All entries are Valid. Proceed");
+
+            if (currentPageMode.isEditMode()) {
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // EDIT Mode
+                printLog("EDIT Mode");
+
+                List<BlockTimeBandsDTO> blockTimeBandsDTOs =
+                    (List<BlockTimeBandsDTO>)getBlockTimeBandsTable().getValue();
+
+                OperationStatus operationStatus =
+                    DMLOperationsProvider.INSTANCE.editBlockTimeBands(blockTimeBandsDTOs);
+
+                if (operationStatus.isSuccess()) {
+                    printLog("EDIT operation was successful");
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
+
+                    setCurrentPageMode(NavigationMode.EDIT);
+
+                    clearPageFlowScopeCache();
+
+                    getBlockTimeBandsTable().setValue(null);
+
+                } else {
+                    printLog("EDIT operation failed");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_edit_failure));
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
             }
 
-            printLog("After check list = " + allValid);
-
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-            //        allValid = false;
-            //        String tttt =
-            //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
-            //            getInlineMessageText();
-            //        setInlineMessageText(tttt);
-
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-            if (allValid) {
-                printLog("All entries are Valid. Proceed");
-
-                if (currentPageMode.isEditMode()) {
-                    // ++++++++++++++++++++++++++++++++++
-                    // ++++++++++++++++++++++++++++++++++
-                    // ++++++++++++++++++++++++++++++++++
-                    // EDIT Mode
-                    printLog("EDIT Mode");
-
-                    String rateChangeType = getRateChangeType();
-                    Date effectiveFromDate = getEffectiveFromDate();
-                    List<RateChangeRulesDTO> applyList =
-                        (List<RateChangeRulesDTO>)getRateChangeRulesTable().getValue();
-                    List<RateChangeRulesDTO> replaceList =
-                        getReplaceableRateChangeRules();
-
-                    OperationStatus operationStatus =
-                        DMLOperationsProvider.INSTANCE.editRateChangeRules(rateChangeType,
-                                                                           effectiveFromDate,
-                                                                           applyList,
-                                                                           replaceList);
-
-                    if (operationStatus.isSuccess()) {
-                        // Move on to the next page
-                        // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
-                        setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                              TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_edit_operation_successful));
-                        setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                              TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_edit_rate_change_rules_successful,
-                                                                                               getRateChangeType()));
-                        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                             NavigationFlow.AfterEditThreshold.name());
-
-                    } else {
-                        printLog("ADD operation failed");
-                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_edit_failure));
-                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-                    }
-
-                }
-
-            } else {
-                setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-            }
+        } else {
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
-         */
+
     }
 
     public void cancelButtonHandler(ActionEvent event) {
@@ -246,13 +203,5 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
 
     public RichTable getBlockTimeBandsTable() {
         return BlockTimeBandsTable;
-    }
-
-    public void setDeletableTimeBandsTable(RichTable DeletableTimeBandsTable) {
-        this.DeletableTimeBandsTable = DeletableTimeBandsTable;
-    }
-
-    public RichTable getDeletableTimeBandsTable() {
-        return DeletableTimeBandsTable;
     }
 }

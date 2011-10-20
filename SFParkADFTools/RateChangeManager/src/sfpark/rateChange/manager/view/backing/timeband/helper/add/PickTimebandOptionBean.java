@@ -9,6 +9,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
+import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
 import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -20,7 +21,7 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanInterface,
@@ -40,8 +41,6 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
-        removePageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_DO_LIST.getKey());
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -63,32 +62,23 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    public BlockTimeBandTypeTO getBlockTimeBandsTypeTO() {
-        BlockTimeBandTypeTO TO =
-            (BlockTimeBandTypeTO)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
+    public BlockTimeBandDetail getBlockTimeBandsTypeTO() {
+        BlockTimeBandDetail detail =
+            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
 
-        if (TO == null) {
-            TO = DMLOperationsProvider.INSTANCE.getNewBlockTimeBandTypeTO();
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey(),
-                                  TO);
+        if (detail == null) {
+            detail =
+                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
+                                  detail);
         }
 
-        return TO;
+        return detail;
     }
 
     public List<TimeBandModelDO> getTimeBandModelDOs() {
-        List<TimeBandModelDO> timeBandModelDOs =
-            (List<TimeBandModelDO>)getPageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_DO_LIST.getKey());
-
-        if (timeBandModelDOs == null) {
-            timeBandModelDOs =
-                    TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsTypeTO().getMeterClass(),
-                                                                          getBlockTimeBandsTypeTO().getDateType());
-            setPageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_DO_LIST.getKey(),
-                                  timeBandModelDOs);
-        }
-
-        return timeBandModelDOs;
+        return TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsTypeTO().getMeterClass(),
+                                                                     getBlockTimeBandsTypeTO().getDateType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -99,10 +89,9 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     public List<SelectItem> getListOpenTime() {
         List<SelectItem> list = new ArrayList<SelectItem>();
 
-        int openTime =
-            Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(getLatestOpenTime()));
+        int latestOpenTime = Integer.parseInt(getLatestOpenTime());
 
-        for (int i = 0, time = 0; time < openTime; i++) {
+        for (int i = 0, time = 0; time < latestOpenTime; i++) {
             list.add(new SelectItem(TimeDisplayUtil.extractAnyTimeForDisplay(time)));
             time += (i % 2 == 0) ? 30 : 70;
         }
@@ -113,10 +102,10 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     public List<SelectItem> getListCloseTime() {
         List<SelectItem> list = new ArrayList<SelectItem>();
 
-        int closeTime =
-            Integer.parseInt(TimeDisplayUtil.extractAnyTimeForUpdate(getEarliestCloseTime()));
+        int earliestCloseTime = Integer.parseInt(getEarliestCloseTime());
 
-        int startTime = closeTime + (((closeTime % 100) == 30) ? 70 : 30);
+        int startTime =
+            earliestCloseTime + (((earliestCloseTime % 100) == 30) ? 70 : 30);
 
         int increment1 = ((startTime % 100) == 30) ? 70 : 30;
         int increment2 = 100 - increment1;
@@ -139,19 +128,48 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
         // Reuse as 'Pick' button
         //
 
+        // Clear out old values
+        removePageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey());
+
         String ID = event.getComponent().getId();
 
         if (ID.contains("pickValues")) {
-          removePageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_DO_LIST.getKey());
+
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.PickTimebandValues.name());
-            
+
         } else if (ID.contains("pickTemplate")) {
-            // TODO
-            // Get the Open and Close values
-            // Generate the DTOs
-            
-            
+            // Define the list
+            List<BlockTimeBandsDTO> DTOs = new ArrayList<BlockTimeBandsDTO>();
+
+            // Get the Time Band Model
+            List<TimeBandModelDO> timeBandModel = getTimeBandModelDOs();
+
+            // Get the Open and Close time
+            int openTime =
+                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(getBlockTimeBandsTypeTO().getOpenTime()));
+            int closeTime =
+                Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(getBlockTimeBandsTypeTO().getCloseTime()));
+
+            for (TimeBandModelDO DO : timeBandModel) {
+                BlockTimeBandsDTO DTO =
+                    BlockTimeBandsDTO.extract(getBlockTimeBandsTypeTO().getBlockID(),
+                                              DO);
+
+                int fromTime =
+                    (isStringOpen(DO.getTimeBandFrom())) ? openTime :
+                    Integer.parseInt(DO.getTimeBandFrom());
+                DTO.setFromTime(fromTime);
+
+                int toTime =
+                    (isStringClose(DO.getTimeBandTo())) ? closeTime : Integer.parseInt(DO.getTimeBandTo());
+                DTO.setToTime(toTime);
+
+                DTOs.add(DTO);
+            }
+
+            setPageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
+                                  DTOs);
 
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.AddTimeband.name());
@@ -179,151 +197,30 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     private String getLatestOpenTime() {
 
         for (TimeBandModelDO DO : getTimeBandModelDOs()) {
-            if (StringUtil.areEqual("Open", DO.getTimeBandFrom())) {
+            if (isStringOpen(DO.getTimeBandFrom())) {
                 return DO.getTimeBandTo();
             }
         }
 
-        return "2330"; // Maximum allowed value for Open time
+        return "2400"; // Maximum allowed value
     }
 
     private String getEarliestCloseTime() {
 
         for (TimeBandModelDO DO : getTimeBandModelDOs()) {
-            if (StringUtil.areEqual("Close", DO.getTimeBandTo())) {
+            if (isStringClose(DO.getTimeBandTo())) {
                 return DO.getTimeBandFrom();
             }
         }
 
-        return "30"; // Minimum allowed value for Close time
+        return "0"; // Minimum allowed value
     }
 
+    private boolean isStringOpen(String string) {
+        return StringUtil.areEqual("Open", string);
+    }
+
+    private boolean isStringClose(String string) {
+        return StringUtil.areEqual("Close", string);
+    }
 }
-
-/*
-    private int ChooseTimeband;
-
-    private UIComponent IteratorUI;
-
-    private RichCommandButton RemoveButton;
-    private RichTable ChosenTimebandsTable;
-
-    public void saveButtonHandler(ActionEvent event) {
-        //
-        // Clear out old values
-        removePageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULES_DTO_LIST.getKey());
-
-        // Define the list
-        List<RateChangeRulesDTO> DTOs = new ArrayList<RateChangeRulesDTO>();
-
-        // Get the thresholds
-        List<Integer> thresholds = getThresholds();
-
-        for (int i = 0; i < thresholds.size() - 1; i++) {
-            RateChangeRulesDTO DTO = new RateChangeRulesDTO();
-            DTO.setFromOccupancy(thresholds.get(i));
-            DTO.setToOccupancy(thresholds.get(i + 1));
-            DTOs.add(DTO);
-        }
-
-        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULES_DTO_LIST.getKey(),
-                              DTOs);
-
-        moveOn();
-         //
-
-    }
-
-
-
-    private void moveOn() {
-        clearPageFlowScopeCache();
-
-        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
-    }
-
-    private List<Integer> getTimebands() {
-        List<Integer> timebands = new ArrayList<Integer>();
-
-        timebands.add(new Integer(0));
-
-        List<Integer> pickedTimebands =
-            (List<Integer>)getChosenTimebandsTable().getValue();
-
-        if (pickedTimebands != null && !pickedTimebands.isEmpty()) {
-            for (Integer timeband : pickedTimebands) {
-                timebands.add(timeband);
-            }
-        }
-
-        timebands.add(new Integer(2400));
-
-        return timebands;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS EXTRA
-
-    public List<SelectItem> getListTimeband() {
-        List<SelectItem> timebandList = new ArrayList<SelectItem>();
-
-
-        return timebandList;
-    }
-
-    public List<String> getDisplayIteratorRows() {
-        List<String> rows = new ArrayList<String>();
-
-        List<Integer> timebands = getTimebands();
-
-        for (int i = 0; i < timebands.size() - 1; i++) {
-            rows.add(String.format("%s - %s",
-                                   TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i)),
-                                   TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i +
-                                                                                          1))));
-        }
-
-        return rows;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS
-
-    public void setChooseTimeband(int ChooseTimeband) {
-        this.ChooseTimeband = ChooseTimeband;
-    }
-
-    public int getChooseTimeband() {
-        return ChooseTimeband;
-    }
-
-    public void setIteratorUI(UIComponent IteratorUI) {
-        this.IteratorUI = IteratorUI;
-    }
-
-    public UIComponent getIteratorUI() {
-        return IteratorUI;
-    }
-
-    public void setRemoveButton(RichCommandButton RemoveButton) {
-        this.RemoveButton = RemoveButton;
-    }
-
-    public RichCommandButton getRemoveButton() {
-        return RemoveButton;
-    }
-
-    public void setChosenTimebandsTable(RichTable ChosenTimebandsTable) {
-        this.ChosenTimebandsTable = ChosenTimebandsTable;
-    }
-
-    public RichTable getChosenTimebandsTable() {
-        return ChosenTimebandsTable;
-    }
-
- */

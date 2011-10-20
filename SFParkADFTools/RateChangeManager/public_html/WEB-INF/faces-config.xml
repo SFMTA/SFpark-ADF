@@ -81,6 +81,16 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>timebandAddBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.TimebandAddBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>timebandDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.TimebandDeleteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>thresholdAddBean</managed-bean-name>
     <managed-bean-class>sfpark.rateChange.manager.view.backing.threshold.ThresholdAddBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

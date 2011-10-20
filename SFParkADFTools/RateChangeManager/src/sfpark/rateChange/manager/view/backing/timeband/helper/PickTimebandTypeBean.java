@@ -19,7 +19,7 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInterface,
@@ -39,25 +39,20 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
     }
 
     public void setInlineMessageText(String inlineMessageText) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(),
-                                   inlineMessageText);
     }
 
     public String getInlineMessageText() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
+        return null;
     }
 
     public void setInlineMessageClass(String inlineMessageClass) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(),
-                                   inlineMessageClass);
     }
 
     public String getInlineMessageClass() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
+        return null;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -65,26 +60,18 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL TO INFORMATION
 
-    public BlockTimeBandTypeTO getBlockTimeBandsTypeTO() {
-        BlockTimeBandTypeTO TO =
-            (BlockTimeBandTypeTO)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey());
+    public BlockTimeBandDetail getBlockTimeBandsTypeTO() {
+        BlockTimeBandDetail detail =
+            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
 
-        if (TO == null) {
-            TO = DMLOperationsProvider.INSTANCE.getNewBlockTimeBandTypeTO();
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_TYPE_TO.getKey(),
-                                  TO);
+        if (detail == null) {
+            detail =
+                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
+                                  detail);
         }
 
-        return TO;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL RENDER INFORMATION
-
-    public boolean isRenderTimeValue() {
-        return (getCurrentPageMode().isAddMode());
+        return detail;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -143,10 +130,8 @@ public class PickTimebandTypeBean extends BaseBean implements PropertiesBeanInte
                 if (timeBandModelDOs != null && !timeBandModelDOs.isEmpty()) {
                     // Template exists
                     // Go to Options page
-                    setPageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_DO_LIST.getKey(),
-                                          timeBandModelDOs);
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                         NavigationFlow.PickTimebandOptions.name());
+                                         NavigationFlow.PickTimebandOption.name());
 
                 } else {
                     // NO Template exists

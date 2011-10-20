@@ -9,6 +9,7 @@ import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
+import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
@@ -31,7 +32,7 @@ import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
-import sfpark.rateChange.manager.view.helper.BlockTimeBandTypeTO;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
 
 public class DMLOperationsProvider {
 
@@ -54,17 +55,18 @@ public class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Methods to create new DTOs
 
-    public BlockTimeBandTypeTO getNewBlockTimeBandTypeTO() {
-        LOGGER.entering(CLASSNAME, "getNewBlockTimeBandTypeTO");
+    public BlockTimeBandDetail getNewBlockTimeBandDetail(String blockID) {
+        LOGGER.entering(CLASSNAME, "getNewBlockTimeBandDetail");
 
-        BlockTimeBandTypeTO TO = new BlockTimeBandTypeTO();
+        BlockTimeBandDetail TO = new BlockTimeBandDetail();
 
+        TO.setBlockID(blockID);
         TO.setMeterClass(AllowedValuesRetriever.getMeterClassDefaultValue());
         TO.setDateType(AllowedValuesRetriever.getDateTypeDefaultValue());
         TO.setOpenTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         TO.setCloseTime(TimeDisplayUtil.extractAnyTimeForDisplay(2400));
 
-        LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandTypeTO");
+        LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandDetail");
 
         return TO;
     }
@@ -149,6 +151,19 @@ public class DMLOperationsProvider {
         LOGGER.exiting(CLASSNAME, "editRateChangeRules");
 
         return performOperation(tableRecords);
+    }
+
+    public OperationStatus addBlockTimeBands(List<BlockTimeBandsDTO> toBeAddedBlockTimeBandsDTOs,
+                                             List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
+        return null; // TODO
+    }
+
+    public OperationStatus editBlockTimeBands(List<BlockTimeBandsDTO> toBeEditedBlockTimeBandsDTOs) {
+        return null; // TODO
+    }
+
+    public OperationStatus deleteTimeBands(List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
+        return null; // TODO
     }
 
     /**

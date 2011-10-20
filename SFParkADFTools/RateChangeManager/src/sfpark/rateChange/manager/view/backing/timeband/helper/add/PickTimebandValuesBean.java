@@ -16,7 +16,10 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
+import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
+import sfpark.adf.tools.utilities.ui.TimeUI;
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -25,6 +28,9 @@ import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.flow.NavigationMode;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class PickTimebandValuesBean extends BaseBean implements ListBeanInterface,
                                                                 PropertiesBeanInterface,
@@ -55,17 +61,21 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void setInlineMessageText(String inlineMessageText) {
+        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(),
+                                   inlineMessageText);
     }
 
     public String getInlineMessageText() {
-        return null;
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
     }
 
     public void setInlineMessageClass(String inlineMessageClass) {
+        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(),
+                                   inlineMessageClass);
     }
 
     public String getInlineMessageClass() {
-        return null;
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -89,17 +99,26 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // LIST VALUES
+
+    public List<SelectItem> getListTime() {
+        return TimeUI.ANY_TIME_LIST;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
     public void addButtonHandler(ActionEvent event) {
 
-        int chosenThreshold = getChooseTimeband();
+        int chosenTimeband = getChooseTimeband();
 
-        // Add the chosen threshold to the Table
-        TreeSet<Integer> chosenThresholdTreeSet =
+        // Add the chosen Timeband to the Table
+        TreeSet<Integer> chosenTimebandTreeSet =
             new TreeSet<Integer>((List<Integer>)getChosenTimebandsTable().getValue());
-        chosenThresholdTreeSet.add(chosenThreshold);
-        getChosenTimebandsTable().setValue(new ArrayList<Integer>(chosenThresholdTreeSet));
+        chosenTimebandTreeSet.add(chosenTimeband);
+        getChosenTimebandsTable().setValue(new ArrayList<Integer>(chosenTimebandTreeSet));
         addPartialTarget(getChosenTimebandsTable());
         addPartialTarget(getIteratorUI());
 
@@ -115,23 +134,23 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
             Integer integer =
                 (Integer)getChosenTimebandsTable().getSelectedRowData();
 
-            // Remove the chosen threshold from the Table
-            TreeSet<Integer> chosenThresholdTreeSet =
+            // Remove the chosen Timeband from the Table
+            TreeSet<Integer> chosenTimebandTreeSet =
                 new TreeSet<Integer>((List<Integer>)getChosenTimebandsTable().getValue());
-            chosenThresholdTreeSet.remove(integer);
-            getChosenTimebandsTable().setValue(new ArrayList<Integer>(chosenThresholdTreeSet));
+            chosenTimebandTreeSet.remove(integer);
+            getChosenTimebandsTable().setValue(new ArrayList<Integer>(chosenTimebandTreeSet));
 
         }
 
-        // To update the table of chosen thresholds
+        // Update the table of chosen Timebands
         getChosenTimebandsTable().getSelectedRowKeys().clear();
         addPartialTarget(getChosenTimebandsTable());
 
-        // To disable the button
+        // Disable the button
         getRemoveButton().setDisabled(true);
         addPartialTarget(getRemoveButton());
 
-        // To update the iterator display
+        // Update the iterator display
         addPartialTarget(getIteratorUI());
 
     }
@@ -153,34 +172,120 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void saveButtonHandler(ActionEvent event) {
-        // TODO
-        /*
-        // Clear out old values
-        removePageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULES_DTO_LIST.getKey());
+        boolean allValid = true;
+        NavigationMode currentPageMode = getCurrentPageMode();
 
-        // Define the list
-        List<RateChangeRulesDTO> DTOs = new ArrayList<RateChangeRulesDTO>();
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        // Get the thresholds
-        List<Integer> thresholds = getThresholds();
+        if (allValid) {
+            List<Integer> list =
+                (List<Integer>)getChosenTimebandsTable().getValue();
 
-        for (int i = 0; i < thresholds.size() - 1; i++) {
-            RateChangeRulesDTO DTO = new RateChangeRulesDTO();
-            DTO.setFromOccupancy(thresholds.get(i));
-            DTO.setToOccupancy(thresholds.get(i + 1));
-            DTOs.add(DTO);
+            if (list == null || list.isEmpty() || list.size() <= 2) {
+                setInlineMessageText("Minimum THREE time band values required!");
+                allValid = false;
+            }
         }
 
-        setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_RULES_DTO_LIST.getKey(),
-                              DTOs);
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        moveOn();
-         */
+        //        allValid = false;
+        //        String tttt =
+        //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
+        //            getInlineMessageText();
+        //        setInlineMessageText(tttt);
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        if (allValid) {
+            printLog("All entries are Valid. Proceed");
+
+            if (currentPageMode.isAddMode()) {
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // EDIT Mode
+                printLog("ADD Mode");
+
+                // Clear out old values
+                removePageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey());
+
+                // Retrieve Chosen Timebands
+                List<Integer> chosenTimebands =
+                    (List<Integer>)getChosenTimebandsTable().getValue();
+
+                // Retrieve Transfer Object
+                BlockTimeBandDetail BlockTimeBandDetail =
+                    getBlockTimeBandDetail();
+
+                // Create empty list
+                List<BlockTimeBandsDTO> DTOs =
+                    new ArrayList<BlockTimeBandsDTO>();
+
+                int lastIndex = chosenTimebands.size() - 1;
+
+                // Insert into DTOs
+                for (int i = 0; i < lastIndex; i++) {
+
+                    BlockTimeBandsDTO DTO = new BlockTimeBandsDTO();
+
+                    DTO.setBlockID(BlockTimeBandDetail.getBlockID());
+                    DTO.setMeterClass(BlockTimeBandDetail.getMeterClass());
+                    DTO.setDateType(BlockTimeBandDetail.getDateType());
+
+                    DTO.setBlockTimeBandID(Integer.toString(i + 1));
+
+                    DTO.setTimeBandFrom((i == 0) ? "Open" :
+                                        chosenTimebands.get(i).toString());
+                    DTO.setTimeBandTo((i < lastIndex - 1) ?
+                                      chosenTimebands.get(i + 1).toString() :
+                                      "Close");
+
+                    DTO.setFromTime(chosenTimebands.get(i));
+                    DTO.setToTime(chosenTimebands.get(i + 1));
+
+                    DTOs.add(DTO);
+                }
+
+                // TODO Remove
+                for (BlockTimeBandsDTO DTO : DTOs) {
+                    printLog(DTO.getBlockID() + "\t" + DTO.getMeterClass() +
+                             "\t" + DTO.getDateType() + "\t" +
+                             DTO.getTimeBandID() + "\t" +
+                             DTO.getTimeBandFrom() + "\t" +
+                             DTO.getTimeBandTo() + "\t" + DTO.getFromTime() +
+                             "\t" + DTO.getToTime());
+                }
+
+                setCurrentPageMode(NavigationMode.ADD);
+
+                removePageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
+
+                setPageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
+                                      DTOs);
+
+                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                     NavigationFlow.AddTimeband.name());
+
+            }
+        } else {
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+        }
 
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        moveOn();
+        clearPageFlowScopeCache();
+
+        setCurrentPageMode(NavigationMode.EDIT);
+        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                             NavigationFlow.EditTimeband.name());
     }
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
@@ -192,30 +297,18 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
-    private void moveOn() {
-        clearPageFlowScopeCache();
+    private BlockTimeBandDetail getBlockTimeBandDetail() {
+        BlockTimeBandDetail detail =
+            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
 
-        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
-    }
-
-    private List<Integer> getTimebands() {
-        List<Integer> timebands = new ArrayList<Integer>();
-
-        timebands.add(new Integer(0)); // TODO Get OPEN value
-
-        List<Integer> pickedTimebands =
-            (List<Integer>)getChosenTimebandsTable().getValue();
-
-        if (pickedTimebands != null && !pickedTimebands.isEmpty()) {
-            for (Integer timeband : pickedTimebands) {
-                timebands.add(timeband);
-            }
+        if (detail == null) {
+            detail =
+                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
+                                  detail);
         }
 
-        timebands.add(new Integer(2400)); // TODO Get CLOSE value
-
-        return timebands;
+        return detail;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -223,24 +316,22 @@ public class PickTimebandValuesBean extends BaseBean implements ListBeanInterfac
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS EXTRA
 
-    public List<SelectItem> getListTimeband() {
-        List<SelectItem> timebandList = new ArrayList<SelectItem>();
-
-        // TODO
-
-        return timebandList;
-    }
-
     public List<String> getDisplayIteratorRows() {
         List<String> rows = new ArrayList<String>();
 
-        List<Integer> timebands = getTimebands();
+        List<Integer> timebands =
+            (List<Integer>)getChosenTimebandsTable().getValue();
 
-        for (int i = 0; i < timebands.size() - 1; i++) {
-            rows.add(String.format("%s - %s",
-                                   TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i)),
-                                   TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i +
-                                                                                          1))));
+        if (timebands != null && !timebands.isEmpty() &&
+            timebands.size() > 2) {
+            for (int i = 0; i < timebands.size() - 1; i++) {
+                rows.add(String.format("%3d - %3d",
+                                       TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i)),
+                                       TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i +
+                                                                                              1))));
+            }
+        } else {
+            rows.add("Minimum THREE time band values required!");
         }
 
         return rows;

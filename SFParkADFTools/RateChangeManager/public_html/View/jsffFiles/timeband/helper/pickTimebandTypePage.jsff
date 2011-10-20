@@ -16,7 +16,7 @@
     <af:separator id="Separator"/>
     <af:toolbar id="mainToolbar">
       <af:group id="mainToolbarContinueAndCancel">
-        <af:spacer id="spaceBeforeContinueButton" width="30"/>
+        <af:spacer id="spaceBeforeContinueButton" width="50"/>
         <af:commandButton id="continueButton"
                           inlineStyle="#{globalBean.generalButtonInlineStyle}"
                           text="#{buttonBundle.button_continue}"
@@ -27,13 +27,6 @@
                           text="#{buttonBundle.button_cancel}"
                           actionListener="#{pickTimebandTypeBean.cancelButtonHandler}"/>
         <af:spacer id="spaceAfterCancelButton" width="10"/>
-      </af:group>
-      <af:group id="mainToolbarInlineMessage">
-        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
-        <af:outputText id="inlineMessage" noWrap="true"
-                       value="#{pickTimebandTypeBean.inlineMessageText}"
-                       styleClass="#{pickTimebandTypeBean.inlineMessageClass}"
-                       partialTriggers="continueButton"/>
       </af:group>
     </af:toolbar>
     <af:panelFormLayout id="pickTimebandTypePFL"

@@ -27,6 +27,9 @@ public enum RateChangeManagerBundleKey {
     string_pick_time_band_options,
     string_pick_time_band_values,
 
+    string_add_time_bands,
+    string_delete_time_bands,
+
     string_pick_calendar,
 
     string_pick_area_type,

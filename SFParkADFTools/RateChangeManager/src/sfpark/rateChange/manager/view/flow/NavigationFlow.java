@@ -24,11 +24,11 @@ public enum NavigationFlow {
 
     PickTimebandType("/View/jsffFiles/timeband/helper/pickTimebandTypePage.jsff"),
 
-    PickTimebandOptions("/View/jsffFiles/timeband/helper/add/pickTimebandOptionsPage.jsff"),
+    PickTimebandOption("/View/jsffFiles/timeband/helper/add/pickTimebandOptionPage.jsff"),
     PickTimebandValues("/View/jsffFiles/timeband/helper/add/pickTimebandValuesPage.jsff"),
-    AddTimeband("/View/jsffFiles/timeband/helper/add/timebandAddPage.jsff"),
+    AddTimeband("/View/jsffFiles/timeband/timebandAddPage.jsff"),
 
-    DeleteTimeband("/View/jsffFiles/timeband/helper/delete/timebandDeletePage.jsff"),
+    DeleteTimeband("/View/jsffFiles/timeband/timebandDeletePage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
