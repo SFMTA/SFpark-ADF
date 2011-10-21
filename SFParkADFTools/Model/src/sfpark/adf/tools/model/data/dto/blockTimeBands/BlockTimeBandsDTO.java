@@ -10,6 +10,9 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.utilities.generic.CurrencyUtil;
+import sfpark.adf.tools.utilities.generic.ObjectUtil;
+import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
@@ -44,11 +47,9 @@ public class BlockTimeBandsDTO extends BaseDTO {
 
     }
 
-    private BlockTimeBandsDTO(String blockID,
-                              TimeBandModelDO timeBandModelDO) {
+    private BlockTimeBandsDTO(TimeBandModelDO timeBandModelDO) {
         super();
 
-        this.setBlockID(blockID);
         this.setMeterClass(timeBandModelDO.getMeterClass());
         this.setDateType(timeBandModelDO.getDateType());
         this.setTimeBandID(timeBandModelDO.getTimeBandID());
@@ -110,14 +111,44 @@ public class BlockTimeBandsDTO extends BaseDTO {
         return new BlockTimeBandsDTO(resultSet);
     }
 
-    public static BlockTimeBandsDTO extract(String blockID,
-                                            TimeBandModelDO timeBandModelDO) {
+    public static BlockTimeBandsDTO extract(TimeBandModelDO timeBandModelDO) {
 
         if (timeBandModelDO == null) {
             return null;
         }
 
-        return new BlockTimeBandsDTO(blockID, timeBandModelDO);
+        return new BlockTimeBandsDTO(timeBandModelDO);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public boolean isSameAs(BlockTimeBandsDTO originalDTO) {
+
+        if (StringUtil.areEqual(this.getBlockID(), originalDTO.getBlockID()) &&
+            StringUtil.areEqual(this.getMeterClass(),
+                                originalDTO.getMeterClass()) &&
+            StringUtil.areEqual(this.getDateType(),
+                                originalDTO.getDateType()) &&
+            (this.getTimeBandID() == originalDTO.getTimeBandID()) &&
+            StringUtil.areEqual(this.getTimeBandFrom(),
+                                originalDTO.getTimeBandFrom()) &&
+            StringUtil.areEqual(this.getTimeBandTo(),
+                                originalDTO.getTimeBandTo()) &&
+            (ObjectUtil.getNullSafe(this.getFromTime()) ==
+             ObjectUtil.getNullSafe(originalDTO.getFromTime())) &&
+            (ObjectUtil.getNullSafe(this.getToTime()) ==
+             ObjectUtil.getNullSafe(originalDTO.getToTime())) &&
+            CurrencyUtil.areEqual(this.getCurrentRate(),
+                                  originalDTO.getCurrentRate()) &&
+            SQLDateUtil.areEqual(this.getLastRateChangeDate(),
+                                 originalDTO.getLastRateChangeDate())) {
+
+            return true;
+        }
+
+        return false;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

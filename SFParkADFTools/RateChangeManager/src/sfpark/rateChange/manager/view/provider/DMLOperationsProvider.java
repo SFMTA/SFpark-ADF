@@ -22,6 +22,7 @@ import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
+import sfpark.adf.tools.model.provider.BlockTimeBandsProvider;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.ProviderWrapper;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
@@ -32,7 +33,7 @@ import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
-import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 
 public class DMLOperationsProvider {
 
@@ -55,20 +56,19 @@ public class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Methods to create new DTOs
 
-    public BlockTimeBandDetail getNewBlockTimeBandDetail(String blockID) {
-        LOGGER.entering(CLASSNAME, "getNewBlockTimeBandDetail");
+    public BlockTimeBandsWrapper getNewBlockTimeBandsWrapper(String blockID) {
+        LOGGER.entering(CLASSNAME, "getNewBlockTimeBandsWrapper");
 
-        BlockTimeBandDetail TO = new BlockTimeBandDetail();
+        BlockTimeBandsWrapper wrapper = new BlockTimeBandsWrapper(blockID);
 
-        TO.setBlockID(blockID);
-        TO.setMeterClass(AllowedValuesRetriever.getMeterClassDefaultValue());
-        TO.setDateType(AllowedValuesRetriever.getDateTypeDefaultValue());
-        TO.setOpenTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
-        TO.setCloseTime(TimeDisplayUtil.extractAnyTimeForDisplay(2400));
+        wrapper.setMeterClass(AllowedValuesRetriever.getMeterClassDefaultValue());
+        wrapper.setDateType(AllowedValuesRetriever.getDateTypeDefaultValue());
+        wrapper.setOpenTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
+        wrapper.setCloseTime(TimeDisplayUtil.extractAnyTimeForDisplay(2400));
 
-        LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandDetail");
+        LOGGER.exiting(CLASSNAME, "getNewBlockTimeBandsWrapper");
 
-        return TO;
+        return wrapper;
     }
 
     /**
@@ -155,15 +155,86 @@ public class DMLOperationsProvider {
 
     public OperationStatus addBlockTimeBands(List<BlockTimeBandsDTO> toBeAddedBlockTimeBandsDTOs,
                                              List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
-        return null; // TODO
+        LOGGER.entering(CLASSNAME, "addBlockTimeBands");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // DELETE old DTOs
+        // Old rows need to be deleted before new rows can be added to avoid
+        // unique constraint exception
+
+        if (toBeDeletedBlockTimeBandsDTOs != null &&
+            !toBeDeletedBlockTimeBandsDTOs.isEmpty()) {
+
+            for (BlockTimeBandsDTO deleteDTO : toBeDeletedBlockTimeBandsDTOs) {
+                tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
+                                                 deleteDTO));
+            }
+        }
+
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++
+        // ADD new DTOs
+
+        if (toBeAddedBlockTimeBandsDTOs != null &&
+            !toBeAddedBlockTimeBandsDTOs.isEmpty()) {
+            for (BlockTimeBandsDTO addDTO : toBeAddedBlockTimeBandsDTOs) {
+                tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
+                                                 addDTO));
+            }
+        }
+
+        LOGGER.exiting(CLASSNAME, "addBlockTimeBands");
+
+        return performOperation(tableRecords);
     }
 
     public OperationStatus editBlockTimeBands(List<BlockTimeBandsDTO> toBeEditedBlockTimeBandsDTOs) {
-        return null; // TODO
+        LOGGER.entering(CLASSNAME, "editBlockTimeBands");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        if (toBeEditedBlockTimeBandsDTOs != null &&
+            !toBeEditedBlockTimeBandsDTOs.isEmpty()) {
+            for (BlockTimeBandsDTO DTO : toBeEditedBlockTimeBandsDTOs) {
+
+                BlockTimeBandsDTO originalDTO =
+                    BlockTimeBandsProvider.INSTANCE.getBlockTimeBandsDTO(DTO.getBlockTimeBandID());
+
+                if (!DTO.isSameAs(originalDTO)) {
+                    tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                                     DTO));
+                }
+
+            }
+        }
+
+        LOGGER.exiting(CLASSNAME, "editBlockTimeBands");
+
+        return performOperation(tableRecords);
     }
 
     public OperationStatus deleteTimeBands(List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
-        return null; // TODO
+        LOGGER.entering(CLASSNAME, "deleteTimeBands");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        if (toBeDeletedBlockTimeBandsDTOs != null &&
+            !toBeDeletedBlockTimeBandsDTOs.isEmpty()) {
+
+            for (BlockTimeBandsDTO deleteDTO : toBeDeletedBlockTimeBandsDTOs) {
+                tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
+                                                 deleteDTO));
+            }
+        }
+
+        LOGGER.exiting(CLASSNAME, "deleteTimeBands");
+
+        return performOperation(tableRecords);
     }
 
     /**

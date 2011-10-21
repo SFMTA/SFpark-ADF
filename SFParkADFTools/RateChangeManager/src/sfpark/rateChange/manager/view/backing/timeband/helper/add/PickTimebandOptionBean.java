@@ -18,14 +18,12 @@ import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.backing.BaseBean;
+import sfpark.rateChange.manager.view.backing.timeband.TimebandAbstractBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
-import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
-public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanInterface,
-                                                                RequestScopeBeanInterface {
+public class PickTimebandOptionBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                            RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -41,6 +39,7 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
+        super.clearPageFlowScopeCache();
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -62,23 +61,23 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    public BlockTimeBandDetail getBlockTimeBandsTypeTO() {
-        BlockTimeBandDetail detail =
-            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
-
-        if (detail == null) {
-            detail =
-                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
-                                  detail);
-        }
-
-        return detail;
-    }
+    //    public BlockTimeBandsWrapper getBlockTimeBandsWrapper() {
+    //        BlockTimeBandsWrapper wrapper =
+    //            (BlockTimeBandsWrapper)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey());
+    //
+    //        if (wrapper == null) {
+    //            wrapper =
+    //                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandsWrapper(getBlockID());
+    //            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey(),
+    //                                  wrapper);
+    //        }
+    //
+    //        return wrapper;
+    //    }
 
     public List<TimeBandModelDO> getTimeBandModelDOs() {
-        return TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsTypeTO().getMeterClass(),
-                                                                     getBlockTimeBandsTypeTO().getDateType());
+        return TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsWrapper().getMeterClass(),
+                                                                     getBlockTimeBandsWrapper().getDateType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -147,14 +146,13 @@ public class PickTimebandOptionBean extends BaseBean implements PropertiesBeanIn
 
             // Get the Open and Close time
             int openTime =
-                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(getBlockTimeBandsTypeTO().getOpenTime()));
+                Integer.parseInt(TimeDisplayUtil.extractFromTimeForUpdate(getBlockTimeBandsWrapper().getOpenTime()));
             int closeTime =
-                Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(getBlockTimeBandsTypeTO().getCloseTime()));
+                Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(getBlockTimeBandsWrapper().getCloseTime()));
 
             for (TimeBandModelDO DO : timeBandModel) {
-                BlockTimeBandsDTO DTO =
-                    BlockTimeBandsDTO.extract(getBlockTimeBandsTypeTO().getBlockID(),
-                                              DO);
+                BlockTimeBandsDTO DTO = BlockTimeBandsDTO.extract(DO);
+                DTO.setBlockID(getBlockTimeBandsWrapper().getBlockID());
 
                 int fromTime =
                     (isStringOpen(DO.getTimeBandFrom())) ? openTime :

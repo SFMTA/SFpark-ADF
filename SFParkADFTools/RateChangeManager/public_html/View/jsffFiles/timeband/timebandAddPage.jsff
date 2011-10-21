@@ -107,6 +107,7 @@
             <af:inputText id="ITBTableRowCurrentRate" simple="true"
                           required="true" columns="6" value="#{row.currentRate}"
                           autoSubmit="true">
+              <af:validateDoubleRange minimum="0"/>
               <af:convertNumber type="currency" locale="en-US"
                                 maxFractionDigits="2"/>
             </af:inputText>
@@ -133,7 +134,7 @@
                   rowSelection="none" rowBandingInterval="0"
                   columnSelection="none" disableColumnReordering="true"
                   columnStretching="last"
-                  emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_apply_list}"
+                  emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_delete_list}"
                   summary="Block Time Bands List"
                   value="#{timebandAddBean.deletableBlockTimeBands}">
           <af:column id="DTBTableColBlockID" rowHeader="unstyled" align="center"

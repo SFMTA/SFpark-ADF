@@ -52,6 +52,7 @@
           </f:facet>
           <af:selectOneChoice id="chooseTimebandsSOC" required="true"
                               label="#{labelBundle.label_time_limit}"
+                              value="#{pickTimebandValuesBean.chooseTimeband}"
                               autoSubmit="true">
             <f:selectItems id="chooseTimebandsSOCSI"
                            value="#{pickTimebandValuesBean.listTime}"/>

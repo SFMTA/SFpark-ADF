@@ -42,8 +42,8 @@
       </af:group>
     </af:toolbar>
     <af:separator id="Separator"/>
-    <af:table id="TBTable" var="row" varStatus="rowStatus" width="700"
-              inlineStyle="height: 300px; margin-left: 35px;"
+    <af:table id="TBTable" var="row" varStatus="rowStatus" width="800"
+              inlineStyle="height: 450px; margin-left: 35px;"
               contentDelivery="immediate" rowSelection="none"
               rowBandingInterval="0" columnSelection="none"
               disableColumnReordering="true" columnStretching="last"
@@ -51,8 +51,13 @@
               summary="Block Time Bands List"
               value="#{timebandPropertiesBean.blockTimeBands}"
               binding="#{timebandPropertiesBean.blockTimeBandsTable}">
-      <af:column id="TBTableColMeterClass" rowHeader="unstyled" align="center"
-                 width="80px" sortable="false"
+      <af:column id="TBTableColBlockID" rowHeader="unstyled" align="center"
+                 width="80px;" sortable="false"
+                 headerText="#{columnBundle.column_block_id}">
+        <af:outputText id="ITBTableRowBlockID" value="#{row.blockID}"/>
+      </af:column>
+      <af:column id="TBTableColMeterClass" align="center" width="80px"
+                 sortable="false"
                  headerText="#{columnBundle.column_meter_class}">
         <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
       </af:column>
@@ -90,6 +95,7 @@
                  headerText="#{columnBundle.column_current_rate}">
         <af:inputText id="TBTableRowCurrentRate" simple="true" required="true"
                       columns="6" value="#{row.currentRate}" autoSubmit="true">
+          <af:validateDoubleRange minimum="0"/>
           <af:convertNumber type="currency" locale="en-US"
                             maxFractionDigits="2"/>
         </af:inputText>

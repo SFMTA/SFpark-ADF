@@ -43,7 +43,7 @@
               contentDelivery="immediate" rowSelection="none"
               rowBandingInterval="0" columnSelection="none"
               disableColumnReordering="true" columnStretching="last"
-              emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_apply_list}"
+              emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_delete_list}"
               summary="Block Time Bands List"
               value="#{timebandDeleteBean.deletableBlockTimeBands}">
       <af:column id="DTBTableColBlockID" rowHeader="unstyled" align="center"

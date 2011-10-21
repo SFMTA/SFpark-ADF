@@ -16,14 +16,13 @@ import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
-public class TimebandDeleteBean extends BaseBean implements PropertiesBeanInterface,
-                                                            RequestScopeBeanInterface {
+public class TimebandDeleteBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                        RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -39,6 +38,7 @@ public class TimebandDeleteBean extends BaseBean implements PropertiesBeanInterf
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
+        super.clearPageFlowScopeCache();
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -157,20 +157,6 @@ public class TimebandDeleteBean extends BaseBean implements PropertiesBeanInterf
                              NavigationFlow.EditTimeband.name());
     }
 
-    private BlockTimeBandDetail getBlockTimeBandDetail() {
-        BlockTimeBandDetail detail =
-            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
-
-        if (detail == null) {
-            detail =
-                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
-                                  detail);
-        }
-
-        return detail;
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -178,10 +164,10 @@ public class TimebandDeleteBean extends BaseBean implements PropertiesBeanInterf
 
     public List<BlockTimeBandsDTO> getDeletableBlockTimeBands() {
 
-        BlockTimeBandDetail detail = getBlockTimeBandDetail();
+        BlockTimeBandsWrapper wrapper = getBlockTimeBandsWrapper();
 
-        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(detail.getBlockID(),
-                                                                                detail.getMeterClass(),
-                                                                                detail.getDateType());
+        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(wrapper.getBlockID(),
+                                                                                wrapper.getMeterClass(),
+                                                                                wrapper.getDateType());
     }
 }

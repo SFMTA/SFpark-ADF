@@ -22,7 +22,6 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanInterface,
@@ -69,20 +68,6 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    public BlockTimeBandDetail getBlockTimeBandDetail() {
-        BlockTimeBandDetail detail =
-            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
-
-        if (detail == null) {
-            detail =
-                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
-                                  detail);
-        }
-
-        return detail;
-    }
-
     public List<BlockTimeBandsDTO> getBlockTimeBands() {
 
         List<BlockTimeBandsDTO> blockTimeBandsDTOs =
@@ -90,7 +75,7 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
 
         if (blockTimeBandsDTOs == null) {
             blockTimeBandsDTOs =
-                    BlockTimeBandsProvider.INSTANCE.getAllBlockTimeBandsDTOs(getBlockTimeBandDetail().getBlockID());
+                    BlockTimeBandsProvider.INSTANCE.getAllBlockTimeBandsDTOs(getBlockID());
             setPageFlowScopeValue(PageFlowScopeKey.EDIT_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
                                   blockTimeBandsDTOs);
         }
@@ -185,6 +170,23 @@ public class TimebandPropertiesBean extends BaseBean implements PropertiesBeanIn
 
     public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // HELPER METHODS
+
+    private String getBlockID() {
+        String blockID =
+            (String)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey());
+
+        if (blockID == null) {
+            blockID = "0";
+            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_ID.getKey(), blockID);
+        }
+
+        return blockID;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

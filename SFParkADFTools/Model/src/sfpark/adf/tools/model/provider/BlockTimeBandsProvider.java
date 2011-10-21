@@ -33,6 +33,40 @@ public class BlockTimeBandsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
+    public BlockTimeBandsDTO getBlockTimeBandsDTO(String blockTimeBandID) {
+        LOGGER.entering(CLASSNAME, "getBlockTimeBandsDTO");
+
+        BlockTimeBandsDTO blockTimeBandsDTO = new BlockTimeBandsDTO();
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = OracleDBConnection.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement());
+            preparedStatement.setString(1, blockTimeBandID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                blockTimeBandsDTO = BlockTimeBandsDTO.extract(resultSet);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
+        } finally {
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "getBlockTimeBandsDTO");
+
+        return blockTimeBandsDTO;
+    }
+
     public List<BlockTimeBandsDTO> getAllBlockTimeBandsDTOs(String blockID) {
         LOGGER.in(CLASSNAME, "getAllBlockTimeBandsDTOs");
         return getBlockTimeBandsDTOs(false, blockID);
@@ -171,6 +205,22 @@ public class BlockTimeBandsProvider {
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
+
+    private String getSelectStatement() {
+        LOGGER.entering(CLASSNAME, "getSelectStatement");
+
+        String Attributes =
+            StringUtil.convertListToString(BlockTimeBandsDTO.getAttributeListForSelect());
+
+        String Where =
+            StatementGenerator.equalToOperator(BlockTimeBandsDTO.BLOCK_TIME_BAND_ID);
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  BlockTimeBandsDTO.getDatabaseTableName(),
+                                                  Where);
+    }
 
     private String getSelectStatement(boolean toBeDeleted) {
         LOGGER.entering(CLASSNAME, "getSelectStatement");

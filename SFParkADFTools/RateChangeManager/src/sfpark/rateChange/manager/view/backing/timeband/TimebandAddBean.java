@@ -19,14 +19,13 @@ import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandDetail;
+import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
-public class TimebandAddBean extends BaseBean implements PropertiesBeanInterface,
-                                                         RequestScopeBeanInterface {
+public class TimebandAddBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                     RequestScopeBeanInterface {
     private RichTable InsertBlockTimeBandsTable;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,8 +42,7 @@ public class TimebandAddBean extends BaseBean implements PropertiesBeanInterface
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void clearPageFlowScopeCache() {
-        removePageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
-        removePageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey());
+        super.clearPageFlowScopeCache();
     }
 
     public void setInlineMessageText(String inlineMessageText) {
@@ -181,20 +179,6 @@ public class TimebandAddBean extends BaseBean implements PropertiesBeanInterface
                              NavigationFlow.EditTimeband.name());
     }
 
-    private BlockTimeBandDetail getBlockTimeBandDetail() {
-        BlockTimeBandDetail detail =
-            (BlockTimeBandDetail)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey());
-
-        if (detail == null) {
-            detail =
-                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandDetail("0");
-            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BAND_DETAIL.getKey(),
-                                  detail);
-        }
-
-        return detail;
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -202,11 +186,11 @@ public class TimebandAddBean extends BaseBean implements PropertiesBeanInterface
 
     public List<BlockTimeBandsDTO> getDeletableBlockTimeBands() {
 
-        BlockTimeBandDetail TO = getBlockTimeBandDetail();
+        BlockTimeBandsWrapper wrapper = getBlockTimeBandsWrapper();
 
-        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(TO.getBlockID(),
-                                                                                TO.getMeterClass(),
-                                                                                TO.getDateType());
+        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(wrapper.getBlockID(),
+                                                                                wrapper.getMeterClass(),
+                                                                                wrapper.getDateType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

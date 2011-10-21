@@ -13,12 +13,11 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    BLOCK_TIME_BAND_DETAIL,
-
+    BLOCK_ID,
     EDIT_BLOCK_TIME_BANDS_DTO_LIST,
 
+    BLOCK_TIME_BANDS_WRAPPER,
     TIMEBAND_PICKER_CHOSEN_LIST,
-
     ADD_BLOCK_TIME_BANDS_DTO_LIST,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

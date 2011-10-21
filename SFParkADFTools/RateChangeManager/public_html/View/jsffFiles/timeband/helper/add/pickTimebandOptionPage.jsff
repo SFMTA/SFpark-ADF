@@ -24,13 +24,14 @@
         <f:facet name="separator">
           <af:spacer id="lhsTBOPGLSpacer" height="10"/>
         </f:facet>
-        <af:commandButton id="pickTemplateButton" inlineStyle="width: 200px;"
+        <af:commandButton id="pickTemplateButton"
+                          inlineStyle="width: 200px; font-size: 14px;"
                           text="Pick the template below"
                           actionListener="#{pickTimebandOptionBean.saveButtonHandler}"/>
         <af:panelFormLayout id="pickTimebandForm">
           <af:selectOneChoice id="openTimeSOC" required="true"
                               label="#{labelBundle.label_open_time}"
-                              value="#{pickTimebandOptionBean.blockTimeBandsTypeTO.openTime}"
+                              value="#{pickTimebandOptionBean.blockTimeBandsWrapper.openTime}"
                               autoSubmit="true">
             <f:selectItems id="openTimeSOCSI"
                            value="#{pickTimebandOptionBean.listOpenTime}"/>
@@ -38,7 +39,7 @@
           <af:spacer id="openTimeSpacer" height="10"/>
           <af:selectOneChoice id="closeTimeSOC" required="true"
                               label="#{labelBundle.label_close_time}"
-                              value="#{pickTimebandOptionBean.blockTimeBandsTypeTO.closeTime}"
+                              value="#{pickTimebandOptionBean.blockTimeBandsWrapper.closeTime}"
                               autoSubmit="true">
             <f:selectItems id="closeTimeSOCSI"
                            value="#{pickTimebandOptionBean.listCloseTime}"/>
@@ -89,7 +90,7 @@
       <af:panelGroupLayout id="centerTBOPGL" layout="vertical" valign="top"
                            halign="center">
         <af:commandButton id="pickValuesButton" immediate="true"
-                          inlineStyle="width: 200px;"
+                          inlineStyle="width: 200px; font-size: 14px;"
                           text="Pick timeband values"
                           actionListener="#{pickTimebandOptionBean.saveButtonHandler}"/>
       </af:panelGroupLayout>
@@ -102,7 +103,8 @@
       <af:panelGroupLayout id="rhsTBOPGL" layout="vertical" valign="top"
                            halign="center">
         <af:commandButton id="cancelButton" immediate="true"
-                          inlineStyle="width: 200px;" text="Cancel operation"
+                          inlineStyle="width: 200px; font-size: 14px;"
+                          text="Cancel operation"
                           actionListener="#{pickTimebandOptionBean.cancelButtonHandler}"/>
       </af:panelGroupLayout>
     </af:panelGroupLayout>
