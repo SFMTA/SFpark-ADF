@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="errorsPagePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="errorsPagePGLSpacer" height="20"/>
+    </f:facet>
+    <af:outputText id="errorTitleOT" inlineStyle="font-size: 20px;"
+                   value="#{errorsBean.errorTitle}"/>
+    <af:outputText id="errorMessageOT" inlineStyle="font-size: 16px;"
+                   value="#{errorsBean.errorMessage}"/>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -17,6 +17,7 @@
       <value n="oracle.mds.internal.dt.ide.migrator.MDSConfigMigratorHelper" v="11.1.1.0.5313"/>
    </hash>
    <list n="listOfChildren">
+      <hash><url n="URL" path="AdminConsole/AdminConsole.jpr"/></hash>
       <hash><url n="URL" path="AssetManager/AssetManager.jpr"/></hash>
       <hash><url n="URL" path="CalendarManager/CalendarManager.jpr"/></hash>
       <hash><url n="URL" path="Model/Model.jpr"/></hash>
@@ -74,6 +75,11 @@
                      <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
                      <url n="ownerURL" path="RateChangeManager/RateChangeManager.jpr"/>
                      <value n="profileName" v="SFParkADFTools_RateChangeManager_webapp1"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="AdminConsole/AdminConsole.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_AdminConsole_webapp1"/>
                   </hash>
                </list>
             </hash>
