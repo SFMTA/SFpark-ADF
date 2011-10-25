@@ -2,8 +2,7 @@ package sfpark.admin.console.view.flow;
 
 public enum NavigationMode {
     ADD,
-    EDIT,
-    DELETE,
+    SHOW_DETAILS,
 
     READ_ONLY;
 
@@ -15,12 +14,8 @@ public enum NavigationMode {
         return (this == ADD);
     }
 
-    public boolean isDeleteMode() {
-        return (this == DELETE);
-    }
-
-    public boolean isEditMode() {
-        return (this == EDIT);
+    public boolean isShowDetailsMode() {
+        return (this == SHOW_DETAILS);
     }
 
     public boolean isReadOnlyMode() {

@@ -1,0 +1,1148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+<af:panelGroupLayout id="allowedValuesPropertiesPGL" layout="vertical">
+<f:facet name="separator">
+<af:spacer id="allowedValuesPropertiesPGLSpacer" height="10"/>
+</f:facet>
+<af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+<af:commandNavigationItem id="cni" immediate="true" text="#{adminConsoleBundle.string_allowed_values_management}" actionListener="#{allowedValuesPropertiesBean.cancelButtonHandler}"/>
+<af:outputText id="bcOT" value="#{adminConsoleBundle.string_allowed_values_details}"/>
+</af:breadCrumbs>
+<af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+</af:toolbar>
+</af:panelGroupLayout>
+</jsp:root>
+
+<!--
+<af:group id="mainToolbarSaveAndCancel">
+<af:spacer id="spaceBeforeSaveButton" width="30"/>
+        <af:commandButton id="saveButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_save}"
+                          actionListener="#{allowedValuesPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+
+<af:group id="mainToolbarSaveAndCancel">
+<af:spacer id="spaceBeforeSaveButton" width="30"/>
+        <af:commandButton id="saveButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_save}"
+                          actionListener="#{allowedValuesPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{allowedValuesPropertiesBean.cancelButtonHandler}"/>
+        <af:spacer id="spaceAfterCancelButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{allowedValuesPropertiesBean.inlineMessageText}"
+                       styleClass="#{allowedValuesPropertiesBean.inlineMessageClass}"
+                       partialTriggers="saveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="timebandAddPanel" layout="vertical"
+                         inlineStyle="padding-left: 35px;">
+      <f:facet name="separator">
+        <af:spacer id="timebandAddPanelSpacer" height="20"/>
+      </f:facet>
+      <af:panelGroupLayout id="addPanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="addPanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                       value="#{adminConsoleBundle.string_block_time_bands_to_insert}"/>
+        <af:table id="ITBTabl" var="row" varStatus="rowStatus" width="800"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{adminConsoleBundle.info_empty_block_time_bands_apply_list}"
+                  summary="Block Time Bands List"
+                  value="#{allowedValuesPropertiesBean.insertableBlockTimeBands}"
+                  binding="#{allowedValuesPropertiesBean.insertBlockTimeBandsTable}">
+          <af:column id="ITBTableColBlockID" rowHeader="unstyled" align="center"
+                     width="80px;" sortable="false"
+                     headerText="#{columnBundle.column_block_id}">
+            <af:outputText id="ITBTableRowBlockID" value="#{row.blockID}"/>
+          </af:column>
+          <af:column id="ITBTableColMeterClass" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_meter_class}">
+            <af:outputText id="ITBTableRowMeterClass"
+                           value="#{row.meterClass}"/>
+          </af:column>
+          <af:column id="ITBTableColDateType" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_date_type}">
+            <af:outputText id="ITBTableRowDateType" value="#{row.dateType}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandID" align="center" width="50px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_id}">
+            <af:outputText id="ITBTableRowTimeBandID"
+                           value="#{row.timeBandID}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandFrom" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_from}">
+            <af:outputText id="ITBTableRowTimeBandFrom"
+                           value="#{row.displayTimeBandFrom}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandTo" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_to}">
+            <af:outputText id="ITBTableRowTimeBandTo"
+                           value="#{row.displayTimeBandTo}"/>
+          </af:column>
+          <af:column id="ITBTableColFromTime" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:outputText id="ITBTableRowFromTime"
+                           value="#{row.displayFromTime}"/>
+          </af:column>
+          <af:column id="ITBTableColToTime" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:outputText id="ITBTableRowToTime" value="#{row.displayToTime}"/>
+          </af:column>
+          <af:column id="ITBTableColCurrentRate" align="center" width="80px"
+                     sortable="false" showRequired="true"
+                     headerText="#{columnBundle.column_current_rate}">
+            <af:inputText id="ITBTableRowCurrentRate" simple="true"
+                          required="true" columns="6" value="#{row.currentRate}"
+                          autoSubmit="true">
+              <af:validateDoubleRange minimum="0"/>
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:inputText>
+          </af:column>
+          <af:column id="ITBTableColLastRateChgDate" align="center" width="80px"
+                     sortable="false" showRequired="true"
+                     headerText="#{columnBundle.column_last_rate_change_date}">
+            <af:inputDate id="ITBTableRowLastRateChgDate" simple="true"
+                          required="true" columns="10"
+                          value="#{row.lastRateChangeDate}" autoSubmit="true">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="deletePanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="deletePanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT2" inlineStyle="font-size: 14px;"
+                       value="#{adminConsoleBundle.string_block_time_bands_to_delete}"/>
+        <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="800"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{adminConsoleBundle.info_empty_block_time_bands_delete_list}"
+                  summary="Block Time Bands List"
+                  value="#{allowedValuesPropertiesBean.deletableBlockTimeBands}">
+          <af:column id="DTBTableColBlockID" rowHeader="unstyled" align="center"
+                     width="80px;" sortable="false"
+                     headerText="#{columnBundle.column_block_id}">
+            <af:outputText id="DTBTableRowBlockID" value="#{row.blockID}"/>
+          </af:column>
+          <af:column id="DTBTableColMeterClass" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_meter_class}">
+            <af:outputText id="DTBTableRowMeterClass"
+                           value="#{row.meterClass}"/>
+          </af:column>
+          <af:column id="DTBTableColDateType" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_date_type}">
+            <af:outputText id="DTBTableRowDateType" value="#{row.dateType}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandID" align="center" width="50px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_id}">
+            <af:outputText id="DTBTableRowTimeBandID"
+                           value="#{row.timeBandID}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandFrom" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_from}">
+            <af:outputText id="DTBTableRowTimeBandFrom"
+                           value="#{row.displayTimeBandFrom}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandTo" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_to}">
+            <af:outputText id="DTBTableRowTimeBandTo"
+                           value="#{row.displayTimeBandTo}"/>
+          </af:column>
+          <af:column id="DTBTableColFromTime" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:outputText id="DTBTableRowFromTime"
+                           value="#{row.displayFromTime}"/>
+          </af:column>
+          <af:column id="DTBTableColToTime" align="center" width="60px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:outputText id="DTBTableRowToTime" value="#{row.displayToTime}"/>
+          </af:column>
+          <af:column id="DTBTableColCurrentRate" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_current_rate}">
+            <af:outputText id="DTBTableRowCurrentRate"
+                           value="#{row.currentRate}">
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="DTBTableColLastRateChgDate" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_last_rate_change_date}">
+            <af:outputText id="DTBTableRowLastRateChgDate"
+                           value="#{row.lastRateChangeDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
+
+
+
+
+
+
+
+
+<af:panelGroupLayout id="allowedValuesPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="meterSpaceManagementPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{assetManagerBundle.string_parking_space_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{meterSpaceManagementBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{meterSpaceManagementBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{meterSpaceManagementBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{meterSpaceManagementBean.inlineMessageText}"
+                       styleClass="#{meterSpaceManagementBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="parkingSpaceInventoryPanel" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="parkingSpaceInventoryPanelSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsPSIFormPanel">
+        <af:panelLabelAndMessage id="postIDPLM" for="postIDIT"
+                                 label="#{labelBundle.label_post_id}">
+          <af:inputText id="postIDIT" required="true"
+                        maximumLength="#{meterSpaceManagementBean.postIDITMaximumLength}"
+                        columns="#{meterSpaceManagementBean.postIDITColumns}"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        label="#{meterSpaceManagementBean.postIDITLabel}"
+                        value="#{meterSpaceManagementBean.postIDITValue}"
+                        autoSubmit="true"
+                        validator="#{meterSpaceManagementBean.postIDValidator}"
+                        partialTriggers="activeMeterStatusSOC"/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="postIDSpacer" height="10"/>
+        <af:panelLabelAndMessage id="streetTypePLM"
+                                 rendered="#{meterSpaceManagementBean.renderStreetTypePLM}"
+                                 for="streetTypeSOR"
+                                 label="#{labelBundle.label_street_type}"
+                                 labelStyle="vertical-align: top;">
+          <af:selectOneRadio id="streetTypeSOR" layout="horizontal"
+                             value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.onOffStreetType}"
+                             autoSubmit="true"
+                             valueChangeListener="#{meterSpaceManagementBean.streetTypeValueChangeHandler}"
+                             binding="#{meterSpaceManagementBean.streetTypeSOR}">
+            <f:selectItems id="streetTypeSORSI"
+                           value="#{meterSpaceManagementBean.listStreetType}"/>
+          </af:selectOneRadio>
+          <af:selectOneChoice id="ospIDSOC" partialTriggers="streetTypeSOR"
+                              disabled="#{meterSpaceManagementBean.disableOSPIDSOC}"
+                              label="#{labelBundle.label_osp_id}"
+                              value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.OSPID}"
+                              autoSubmit="true"
+                              valueChangeListener="#{meterSpaceManagementBean.ospIDValueChangeHandler}">
+            <f:selectItems id="ospIDSOCSI"
+                           value="#{meterSpaceManagementBean.listOSPInventory}"/>
+          </af:selectOneChoice>
+        </af:panelLabelAndMessage>
+        <af:selectOneChoice id="jurisdictionSOC"
+                            rendered="#{meterSpaceManagementBean.renderStreetTypePLM}"
+                            label="#{labelBundle.label_jurisdiction}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.jurisdiction}"
+                            autoSubmit="true">
+          <f:selectItems id="jurisdictionSOCSI"
+                         value="#{meterSpaceManagementBean.listJurisdiction}"/>
+        </af:selectOneChoice>
+        <af:spacer id="streetTypePLMSpacer" height="10"
+                   rendered="#{meterSpaceManagementBean.renderStreetTypePLM}"/>
+        <af:selectOneChoice id="sensorStatusSOC"
+                            readOnly="#{meterSpaceManagementBean.readOnly}"
+                            label="#{labelBundle.label_sensor_status}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.sensorFlag}"
+                            autoSubmit="true">
+          <f:selectItems id="sensorStatusSOCSI"
+                         value="#{meterSpaceManagementBean.listSensorStatus}"/>
+        </af:selectOneChoice>
+        <af:spacer id="sensorStatusSOCSpacer" height="10"/>
+        <af:selectOneChoice id="capColorSOC"
+                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton"
+                            disabled="#{meterSpaceManagementBean.disableCapColorSOC}"
+                            readOnly="#{meterSpaceManagementBean.readOnly}"
+                            label="#{labelBundle.label_cap_color}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.capColor}"
+                            autoSubmit="true">
+          <f:selectItems id="capColorSOCSI"
+                         value="#{meterSpaceManagementBean.listCapColorSOC}"/>
+        </af:selectOneChoice>
+        <af:spacer id="capColorSOCSpacer" height="10"/>
+        <af:selectOneChoice id="activeMeterStatusSOC"
+                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton"
+                            disabled="#{meterSpaceManagementBean.disableActiveMeterStatusSOC}"
+                            readOnly="#{meterSpaceManagementBean.readOnly}"
+                            label="#{labelBundle.label_active_meter_status}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.activeMeterFlag}"
+                            autoSubmit="true"
+                            valueChangeListener="#{meterSpaceManagementBean.activeMeterStatusValueChangeHandler}">
+          <f:selectItems id="activeMeterStatusSOCSI"
+                         value="#{meterSpaceManagementBean.listActiveMeterStatus}"/>
+        </af:selectOneChoice>
+        <af:spacer id="activeMeterStatusSOCSpacer" height="10"/>
+        <af:selectOneChoice id="reasonCodeSOC"
+                            readOnly="#{meterSpaceManagementBean.readOnly}"
+                            label="#{labelBundle.label_reason_code}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.reasonCode}"
+                            autoSubmit="true">
+          <f:selectItems id="reasonCodeSOCSI"
+                         value="#{meterSpaceManagementBean.listReasonCode}"/>
+        </af:selectOneChoice>
+        <af:spacer id="reasonCodeSOCSpacer" height="10"/>
+        <af:inputText id="legislationRefIT" columns="11" maximumLength="10"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_legislation_reference}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.legislationReference}"
+                      autoSubmit="true"/>
+        <af:inputDate id="legislationDateID" columns="11"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_legislation_date}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.legislationDate}"
+                      autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="legislationSpacer" height="10"/>
+        <af:inputText id="workOrderIT" columns="8" maximumLength="7"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_work_order}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.workOrder}"
+                      autoSubmit="true"/>
+        <af:spacer id="workOrderITSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centerPSIFormPanel"
+                          styleClass="centerPanelFormLayout">
+        <af:commandButton id="meterModelsButton"
+                          rendered="#{meterSpaceManagementBean.renderButtons}"
+                          disabled="#{meterSpaceManagementBean.disableMeterModelsButton}"
+                          inlineStyle="width: 150px;"
+                          text="#{buttonBundle.button_change_meter_model}"
+                          actionListener="#{meterSpaceManagementBean.editButtonHandler}"
+                          partialTriggers="activeMeterStatusSOC"
+                          immediate="true"/>
+        <af:inputText id="meterVendorIT" readOnly="true"
+                      label="#{labelBundle.label_meter_vendor}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.meterVendor}"
+                      binding="#{meterSpaceManagementBean.meterVendorIT}"/>
+        <af:inputText id="meterModelIT" readOnly="true"
+                      label="#{labelBundle.label_meter_model}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.meterModel}"
+                      binding="#{meterSpaceManagementBean.meterModelIT}"/>
+        <af:inputText id="smartMeterIT" readOnly="true"
+                      label="#{labelBundle.label_smart_meter}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.smartMeterFlag.stringForDisplay}"
+                      binding="#{meterSpaceManagementBean.smartMeterIT}"/>
+        <af:inputText id="meterTypeIT" readOnly="true"
+                      label="#{labelBundle.label_meter_type}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.meterType.stringForDisplay}"
+                      binding="#{meterSpaceManagementBean.meterTypeIT}"/>
+        <af:inputText id="msPayStationIDIT" maximumLength="9" columns="10"
+                      required="true" showRequired="false"
+                      disabled="#{meterSpaceManagementBean.disableMSPayStationIDIT}"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_ms_pay_station_id}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.MSPayStationID}"
+                      binding="#{meterSpaceManagementBean.msPayStationIDIT}">
+          <af:validateRegExp pattern="#{globalBean.postIDPattern}"
+                             messageDetailNoMatch="#{assetManagerBundle.info_ms_pay_station_id_validator}"/>
+        </af:inputText>
+        <af:inputText id="msNumberIT" maximumLength="2" columns="3"
+                      required="true" showRequired="false"
+                      disabled="#{meterSpaceManagementBean.disableMSNumberIT}"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_ms_number}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.MSSpaceNum}"
+                      binding="#{meterSpaceManagementBean.msNumberIT}">
+          <af:validateLongRange minimum="1" maximum="99"/>
+        </af:inputText>
+        <af:spacer id="msNumberITSpacer" height="10"/>
+        <af:commandButton id="cnnIDButton"
+                          rendered="#{meterSpaceManagementBean.renderButtons}"
+                          disabled="#{meterSpaceManagementBean.disableCNNIDButton}"
+                          inlineStyle="width: 100px;"
+                          text="#{buttonBundle.button_change_cnn_id}"
+                          actionListener="#{meterSpaceManagementBean.editButtonHandler}"
+                          partialTriggers="activeMeterStatusSOC streetTypeSOR"
+                          immediate="true"/>
+        <af:inputText id="cnnIDIT" required="true" readOnly="true"
+                      label="#{labelBundle.label_cnn_id}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.CNNID}"
+                      binding="#{meterSpaceManagementBean.cnnIDIT}"/>
+        <af:spacer id="cnnIDITSpacer" height="10"/>
+        <af:inputText id="streetNumberIT" columns="6" required="true"
+                      showRequired="false"
+                      partialTriggers="validateAndSaveButton streetTypeSOR"
+                      disabled="#{meterSpaceManagementBean.disableStreetNumberIT}"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_street_number}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.streetNum}">
+          <af:validateLongRange minimum="0"/>
+        </af:inputText>
+        <af:spacer id="streetNumberITSpacer" height="10"/>
+        <af:inputText id="commentsIT" columns="40" maximumLength="50" rows="5"
+                      readOnly="#{meterSpaceManagementBean.readOnly}"
+                      label="#{labelBundle.label_comments}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.comments}"
+                      autoSubmit="true"/>
+        <af:spacer id="commentsITSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:panelLabelAndMessage id="blockfaceIDPLM" for="blockfaceIDIT"
+                                 label="#{labelBundle.label_blockface_id}">
+          <af:inputText id="blockfaceIDIT" columns="2" required="true"
+                        partialTriggers="activeMeterStatusSOC"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        label="#{meterSpaceManagementBean.blockfaceIDITLabel}"
+                        value="#{meterSpaceManagementBean.blockfaceIDITValue}">
+            <af:validateRegExp pattern="#{globalBean.singleDigitPattern}"
+                               messageDetailNoMatch="#{commonBundle.info_only_digits_allowed}"/>
+          </af:inputText>
+        </af:panelLabelAndMessage>
+        <af:inputText id="streetIDIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_street_id}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.streetID}"/>
+        <af:inputText id="streetNameIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_street_name}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.streetName}"/>
+        <af:inputText id="pmDistrictIDIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_pm_district_id}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.PMDistrictID}"/>
+        <af:inputText id="orientationIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_orientation}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.orientation}"/>
+        <af:spacer id="blockfaceIDITSpacer" height="10"/>
+        <af:selectOneChoice id="parityDigitPositionSOC"
+                            partialTriggers="streetTypeSOR"
+                            contentStyle="width: 40px;"
+                            readOnly="#{meterSpaceManagementBean.readOnly}"
+                            disabled="#{meterSpaceManagementBean.disableParityDigitPositionSOC}"
+                            value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.parityDigitPosition}"
+                            label="#{labelBundle.label_parity_digit_position}"
+                            shortDesc="#{assetManagerBundle.info_parity_digit_position}">
+          <f:selectItems id="parityDigitPositionSOCSI"
+                         value="#{meterSpaceManagementBean.listParityDigitPosition}"/>
+        </af:selectOneChoice>
+        <af:spacer id="parityDigitPositionSOCSpacer" height="10"/>
+        <af:inputText id="oldRateAreaIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_old_rate_area}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.oldRateArea}"/>
+        <af:inputText id="pcoBeatIT" readOnly="true"
+                      partialTriggers="validateAndSaveButton"
+                      label="#{labelBundle.label_pco_beat}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.PCOBeat}"/>
+        <af:spacer id="oldRateAreaANDpcoBeatSpacer" height="10"/>
+        <af:inputText id="longitudeIT" readOnly="true"
+                      label="#{labelBundle.label_longitude}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.longitude}"/>
+        <af:inputText id="latitudeIT" readOnly="true"
+                      label="#{labelBundle.label_latitude}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.latitude}"/>
+        <af:spacer id="latLongSpacer" height="10"/>
+        <af:inputText id="parkingSpaceIDIT" readOnly="true"
+                      rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_parking_space_id}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.parkingSpaceID}"/>
+        <af:spacer id="parkingSpaceIDITSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.createdDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.lastUpdatedDate}">
+          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+        <af:panelLabelAndMessage id="deleteParkingSpacePLM"
+                                 rendered="#{meterSpaceManagementBean.renderDeleteParkingSpacePLM}"
+                                 label="#{labelBundle.label_delete_parking_space}">
+          <af:commandButton id="deleteParkingSpaceButton"
+                            rendered="#{meterSpaceManagementBean.renderButtons}"
+                            visible="#{meterSpaceManagementBean.visibleDeleteParkingSpaceButton}"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_delete_parking_space}"
+                            actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
+                            partialTriggers="undeleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_delete_parking_space}"/>
+          <af:commandButton id="undeleteParkingSpaceButton"
+                            rendered="#{meterSpaceManagementBean.renderButtons}"
+                            visible="#{meterSpaceManagementBean.visibleUndeleteParkingSpaceButton}"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_undelete_parking_space}"
+                            actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
+                            partialTriggers="deleteParkingSpaceButton"
+                            shortDesc="#{assetManagerBundle.info_undelete_parking_space}"/>
+        </af:panelLabelAndMessage>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+    <af:spacer id="psiANDschedSpacer" height="30"/>
+    <af:panelGroupLayout id="meterSchedPanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{meterSpaceManagementBean.renderMeterSchedPanel}">
+      <f:facet name="separator">
+        <af:spacer id="meterSchedPanelSpacer" height="10"/>
+      </f:facet>
+      <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                     value="#{assetManagerBundle.string_meter_operating_schedules}"/>
+      <af:showDetail id="historicalSchedulesSD" disclosed="false"
+                     disclosedText="#{assetManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{assetManagerBundle.string_show_historic_data}">
+        <af:table id="HMSTabl" var="row" varStatus="rowStatus"
+                  styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                  contentDelivery="immediate" rowSelection="none"
+                  rowBandingInterval="0" columnSelection="none"
+                  disableColumnReordering="true" columnStretching="last"
+                  emptyText="#{assetManagerBundle.info_empty_historic_meter_schedule_list}"
+                  summary="Historic Meter Schedule List"
+                  value="#{meterSpaceManagementBean.historicMeterSchedules}"
+                  binding="#{meterSpaceManagementBean.historicMeterScheduleTable}">
+          <af:column id="HMSTableColSchedType" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     sortProperty="scheduleType"
+                     headerText="#{columnBundle.column_schedule_type}">
+            <af:outputText id="HMSTableRowSchedType"
+                           value="#{row.scheduleType.stringForDisplay}"/>
+          </af:column>
+          <af:column id="HMSTableColEffFromDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:inputDate id="HMSTableRowEffFromDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          value="#{row.effectiveFromDate}"
+                          maxValue="#{meterSpaceManagementBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMSTableColEffToDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:inputDate id="HMSTableRowEffToDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          value="#{row.effectiveToDate}"
+                          maxValue="#{meterSpaceManagementBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMSTableColColorApplied" align="center" width="220px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_color_rule_applied}">
+            <af:selectOneChoice id="HMSTableRowColorAppliedSOC" simple="true"
+                                rendered="#{row.editableColorRuleApplied}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.colorRuleApplied}">
+              <f:selectItems id="HMSTableRowColorAppliedSOCSI"
+                             value="#{meterSpaceManagementBean.listColorRuleAppliedSOC}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowColorAppliedOT"
+                           rendered="#{!row.editableColorRuleApplied}"
+                           value="#{row.colorRuleApplied}"/>
+          </af:column>
+          <af:column id="HMSTableColAddlDesc" align="center" width="110px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_addl_desc}">
+            <af:outputText id="HMSTableRowAddlDesc"
+                           value="#{row.alternateAddlDesc}"/>
+          </af:column>
+          <af:column id="HMSTableColFromTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:selectOneChoice id="HMSTableRowFromTimeSOC" simple="true"
+                                rendered="#{row.editableFromTime}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.fromTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowFromTimeSI"
+                             value="#{meterSpaceManagementBean.listFromTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowFromTimeOT"
+                           rendered="#{!row.editableFromTime}"
+                           value="#{row.fromTime}"/>
+          </af:column>
+          <af:column id="HMSTableColToTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:selectOneChoice id="HMSTableRowToTimeSOC" simple="true"
+                                rendered="#{row.editableToTime}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.toTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowToTimeSI"
+                             value="#{meterSpaceManagementBean.listToTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowToTimeOT"
+                           rendered="#{!row.editableToTime}"
+                           value="#{row.toTime}"/>
+          </af:column>
+          <af:column id="HMSTableColDaysApplied" align="center" width="200px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_days_applied}">
+            <af:selectManyChoice id="HMSTableRowDaysAppliedSMC" simple="true"
+                                 required="true"
+                                 rendered="#{row.editableDaysApplied}"
+                                 readOnly="#{meterSpaceManagementBean.readOnly}"
+                                 value="#{row.weekDaysApplied}">
+              <f:selectItems id="HMSTableRowDaysAppliedSMCSI"
+                             value="#{meterSpaceManagementBean.listWeekDaysApplied}"/>
+            </af:selectManyChoice>
+            <af:outputText id="HMSTableRowDaysAppliedOT"
+                           rendered="#{!row.editableDaysApplied}"
+                           value="#{row.daysApplied}"/>
+          </af:column>
+          <af:column id="HMSTableColTimeLimit" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_limit}">
+            <af:selectOneChoice id="HMSTableRowTimeLimit" required="true"
+                                simple="true"
+                                rendered="#{row.editableTimeLimit}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.timeLimit}"
+                                contentStyle="width: 50px;">
+              <f:selectItems id="HMSTableRowTimeLimitSI"
+                             value="#{meterSpaceManagementBean.listTimeLimit}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowTimeLimitOT"
+                           rendered="#{!row.editableTimeLimit}"
+                           value="#{row.timeLimit}"/>
+          </af:column>
+          <af:column id="HMSTableColPrepaymentTime" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_prepayment_time}">
+            <af:selectOneChoice id="HMSTableRowPrepaymentTime" simple="true"
+                                rendered="#{row.editablePrePaymentTime}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.prePaymentTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMSTableRowPrepaymentTimeSI"
+                             value="#{meterSpaceManagementBean.listPrePaymentTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMSTableRowPrepaymentTimeOT"
+                           rendered="#{!row.editablePrePaymentTime}"
+                           value="#{row.prePaymentTime}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:toolbar id="meterSchedToolbar"
+                  rendered="#{meterSpaceManagementBean.renderButtons}">
+        <af:group id="meterSchedToolbarAddAndDelete">
+          <af:commandToolbarButton id="addSchedButton"
+                                   inlineStyle="width: 130px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_schedule}">
+            <f:facet name="popup">
+              <af:menu id="addSchedButtonMenu">
+                <af:commandMenuItem id="addOPSched" text="OP Schedule"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addALTSched" text="ALT Schedule"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addTOWSched" text="TOW Schedule"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="meterSchedToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="endSchedButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_end_schedule}"
+                            binding="#{meterSpaceManagementBean.deleteSchedButton}"
+                            actionListener="#{meterSpaceManagementBean.deleteButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:table id="MSTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate"
+                rowSelection="#{meterSpaceManagementBean.rowSelectionValue}"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{assetManagerBundle.info_empty_meter_schedule_list}"
+                summary="Meter Schedule List"
+                value="#{meterSpaceManagementBean.activeMeterSchedules}"
+                binding="#{meterSpaceManagementBean.activeMeterScheduleTable}"
+                selectionListener="#{meterSpaceManagementBean.tableRowSelectionHandler}">
+        <af:column id="MSTableColOverride" align="center" width="100px"
+                   sortable="false"
+                   rendered="#{!meterSpaceManagementBean.readOnly}"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="MSTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false" sortProperty="scheduleType"
+                   headerText="#{columnBundle.column_schedule_type}">
+          <af:outputText id="MSTableRowSchedType"
+                         value="#{row.scheduleType.stringForDisplay}"/>
+        </af:column>
+        <af:column id="MSTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="MSTableRowEffFromDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="MSTableRowEffToDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MSTableColColorApplied" align="center" width="220px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_color_rule_applied}">
+          <af:selectOneChoice id="MSTableRowColorAppliedSOC" simple="true"
+                              rendered="#{row.editableColorRuleApplied}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.colorRuleApplied}">
+            <f:selectItems id="MSTableRowColorAppliedSOCSI"
+                           value="#{meterSpaceManagementBean.listColorRuleAppliedSOC}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowColorAppliedOT"
+                         rendered="#{!row.editableColorRuleApplied}"
+                         value="#{row.colorRuleApplied}"/>
+        </af:column>
+        <af:column id="MSTableColAddlDesc" align="center" width="110px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_addl_desc}">
+          <af:outputText id="MSTableRowAddlDesc"
+                         value="#{row.alternateAddlDesc}"/>
+        </af:column>
+        <af:column id="MSTableColFromTime" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:selectOneChoice id="MSTableRowFromTimeSOC" simple="true"
+                              rendered="#{row.editableFromTime}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.fromTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowFromTimeSI"
+                           value="#{meterSpaceManagementBean.listFromTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowFromTimeOT"
+                         rendered="#{!row.editableFromTime}"
+                         value="#{row.fromTime}"/>
+        </af:column>
+        <af:column id="MSTableColToTime" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:selectOneChoice id="MSTableRowToTimeSOC" simple="true"
+                              rendered="#{row.editableToTime}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.toTime}" contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowToTimeSI"
+                           value="#{meterSpaceManagementBean.listToTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowToTimeOT"
+                         rendered="#{!row.editableToTime}"
+                         value="#{row.toTime}"/>
+        </af:column>
+        <af:column id="MSTableColDaysApplied" align="center" width="200px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_days_applied}">
+          <af:selectManyChoice id="MSTableRowDaysAppliedSMC" simple="true"
+                               required="true"
+                               rendered="#{row.editableDaysApplied}"
+                               readOnly="#{meterSpaceManagementBean.readOnly}"
+                               value="#{row.weekDaysApplied}">
+            <f:selectItems id="MSTableRowDaysAppliedSMCSI"
+                           value="#{meterSpaceManagementBean.listWeekDaysApplied}"/>
+          </af:selectManyChoice>
+          <af:outputText id="MSTableRowDaysAppliedOT"
+                         rendered="#{!row.editableDaysApplied}"
+                         value="#{row.daysApplied}"/>
+        </af:column>
+        <af:column id="MSTableColTimeLimit" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_time_limit}">
+          <af:selectOneChoice id="MSTableRowTimeLimit" required="true"
+                              simple="true" rendered="#{row.editableTimeLimit}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.timeLimit}"
+                              contentStyle="width: 50px;">
+            <f:selectItems id="MSTableRowTimeLimitSI"
+                           value="#{meterSpaceManagementBean.listTimeLimit}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowTimeLimitOT"
+                         rendered="#{!row.editableTimeLimit}"
+                         value="#{row.timeLimit}"/>
+        </af:column>
+        <af:column id="MSTableColPrepaymentTime" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_prepayment_time}">
+          <af:selectOneChoice id="MSTableRowPrepaymentTime" simple="true"
+                              rendered="#{row.editablePrePaymentTime}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.prePaymentTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MSTableRowPrepaymentTimeSI"
+                           value="#{meterSpaceManagementBean.listPrePaymentTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MSTableRowPrepaymentTimeOT"
+                         rendered="#{!row.editablePrePaymentTime}"
+                         value="#{row.prePaymentTime}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+    <af:spacer id="schedANDrateSpacer" height="30"/>
+    <af:panelGroupLayout id="meterRatePanel" layout="vertical"
+                         inlineStyle="padding: 5px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{meterSpaceManagementBean.renderMeterRatePanel}">
+      <f:facet name="separator">
+        <af:spacer id="meterRatePanelSpacer" height="10"/>
+      </f:facet>
+      <af:outputText id="OT2" inlineStyle="font-size: 14px;"
+                     value="#{assetManagerBundle.string_meter_rate_schedules}"/>
+      <af:showDetail id="historicalRatesSD" disclosed="false"
+                     disclosedText="#{assetManagerBundle.string_hide_historic_data}"
+                     undisclosedText="#{assetManagerBundle.string_show_historic_data}">
+        <af:table id="HMRTabl" var="row" varStatus="rowStatus"
+                  styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                  contentDelivery="immediate" rowSelection="none"
+                  rowBandingInterval="0" columnSelection="none"
+                  disableColumnReordering="true" columnStretching="last"
+                  emptyText="#{assetManagerBundle.info_empty_historic_meter_rate_list}"
+                  summary="Historic Meter Rate List"
+                  value="#{meterSpaceManagementBean.historicMeterRates}"
+                  binding="#{meterSpaceManagementBean.historicMeterRateTable}">
+          <af:column id="HMRTableColRateType" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     sortProperty="rateType"
+                     headerText="#{columnBundle.column_rate_type}">
+            <af:outputText id="HMRTableRowRateType"
+                           value="#{row.rateType.stringForDisplay}"/>
+          </af:column>
+          <af:column id="HMRTableColEffFromDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveFromDate"
+                     headerText="#{columnBundle.column_effective_from_date}">
+            <af:inputDate id="HMRTableRowEffFromDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          value="#{row.effectiveFromDate}"
+                          maxValue="#{meterSpaceManagementBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMRTableColEffToDate" align="center" width="100px"
+                     showRequired="true" sortable="false"
+                     sortProperty="effectiveToDate"
+                     headerText="#{columnBundle.column_effective_to_date}">
+            <af:inputDate id="HMRTableRowEffToDate" required="true"
+                          simple="true" columns="10"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          value="#{row.effectiveToDate}"
+                          maxValue="#{meterSpaceManagementBean.maximumEffectiveToDate}">
+              <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+            </af:inputDate>
+          </af:column>
+          <af:column id="HMRTableColFromTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_from_time}">
+            <af:selectOneChoice id="HMRTableRowFromTimeSOC" simple="true"
+                                rendered="#{row.editableFromTime}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.fromTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMRTableRowFromTimeSI"
+                             value="#{meterSpaceManagementBean.listFromTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMRTableRowFromTimeOT"
+                           rendered="#{!row.editableFromTime}"
+                           value="#{row.fromTime}"/>
+          </af:column>
+          <af:column id="HMRTableColToTime" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_to_time}">
+            <af:selectOneChoice id="HMRTableRowToTimeSOC" simple="true"
+                                rendered="#{row.editableToTime}"
+                                readOnly="#{meterSpaceManagementBean.readOnly}"
+                                value="#{row.toTime}"
+                                contentStyle="width: 60px;">
+              <f:selectItems id="HMRTableRowToTimeSI"
+                             value="#{meterSpaceManagementBean.listToTime}"/>
+            </af:selectOneChoice>
+            <af:outputText id="HMRTableRowToTimeOT"
+                           rendered="#{!row.editableToTime}"
+                           value="#{row.toTime}"/>
+          </af:column>
+          <af:column id="HMRTableColDaysApplied" align="center" width="200px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_days_applied}">
+            <af:selectManyChoice id="HMRTableColDaysAppliedSMC" simple="true"
+                                 required="true"
+                                 rendered="#{row.editableDaysApplied}"
+                                 readOnly="#{meterSpaceManagementBean.readOnly}"
+                                 value="#{row.weekDaysApplied}">
+              <f:selectItems id="HMRTableColDaysAppliedSI"
+                             value="#{meterSpaceManagementBean.listWeekDaysApplied}"/>
+            </af:selectManyChoice>
+            <af:outputText id="HMRTableColDaysAppliedOT"
+                           rendered="#{!row.editableDaysApplied}"
+                           value="#{row.daysApplied}"/>
+          </af:column>
+          <af:column id="HMRTableColRate" align="center" width="80px"
+                     sortable="false" headerText="#{columnBundle.column_rate}">
+            <af:inputText id="HMRTableRowRate" simple="true" required="true"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          columns="6" value="#{row.rate}">
+              <af:validateDoubleRange minimum="0"/>
+              <af:convertNumber type="currency" locale="en-US"
+                                maxFractionDigits="2"/>
+            </af:inputText>
+          </af:column>
+          <af:column id="HMRTableColRateChgRef" align="center" sortable="false"
+                     headerText="#{columnBundle.column_rate_change_ref}">
+            <af:inputText id="HMRTableRowRateChgRef" maximumLength="20"
+                          simple="true" columns="21"
+                          readOnly="#{meterSpaceManagementBean.readOnly}"
+                          value="#{row.rateChangeReference}"/>
+          </af:column>
+          <af:column id="HMRTableColPSGroupID" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_parking_space_group_id}">
+            <af:outputText id="HMRTableRowPSGroupID" value="#{row.PSGroupID}"/>
+          </af:column>
+          <af:column id="HMRTableColEventID" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_event_id}">
+            <af:outputText id="HMRTableRowEventID" value="#{row.eventID}"/>
+          </af:column>
+          <af:column id="HMRTableColBlockID" align="center" width="80px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_block_id}">
+            <af:outputText id="HMRTableRowBlockID" value="#{row.blockID}"/>
+          </af:column>
+        </af:table>
+      </af:showDetail>
+      <af:toolbar id="meterRateToolbar"
+                  rendered="#{meterSpaceManagementBean.renderButtons}">
+        <af:group id="meterRateToolbarAddAndDelete">
+          <af:commandToolbarButton id="addRateButton"
+                                   inlineStyle="width: 110px;"
+                                   actionDelivery="none"
+                                   text="#{buttonBundle.button_add_rate}">
+            <f:facet name="popup">
+              <af:menu id="addRateButtonMenu">
+                <af:commandMenuItem id="addBaseRate" text="Base Rate"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addHourlyRate" text="Hourly Rate"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+                <af:commandMenuItem id="addSpecialRate" text="Special Rate"
+                                    actionListener="#{meterSpaceManagementBean.addButtonHandler}"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer id="meterRateToolbarAddAndDeleteSpacer" width="5"/>
+          <af:commandButton id="endRateButton" disabled="true"
+                            inlineStyle="width: 100px;"
+                            text="#{buttonBundle.button_end_rate}"
+                            binding="#{meterSpaceManagementBean.deleteRateButton}"
+                            actionListener="#{meterSpaceManagementBean.deleteButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:table id="MRTable" var="row" varStatus="rowStatus"
+                styleClass="AFStretchWidth" inlineStyle="height: 200px;"
+                contentDelivery="immediate"
+                rowSelection="#{meterSpaceManagementBean.rowSelectionValue}"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{assetManagerBundle.info_empty_meter_rate_list}"
+                summary="Meter Rate List"
+                value="#{meterSpaceManagementBean.activeMeterRates}"
+                binding="#{meterSpaceManagementBean.activeMeterRateTable}"
+                selectionListener="#{meterSpaceManagementBean.tableRowSelectionHandler}">
+        <af:column id="MRTableColOverride" align="center" width="100px"
+                   sortable="false"
+                   rendered="#{!meterSpaceManagementBean.readOnly}"
+                   headerText="#{columnBundle.column_override}">
+          <af:selectBooleanCheckbox id="MRTableRowOverride" simple="true"
+                                    disabled="#{row.newRecord}"
+                                    value="#{row.override}"/>
+        </af:column>
+        <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
+                   width="80px" sortable="false" sortProperty="rateType"
+                   headerText="#{columnBundle.column_rate_type}">
+          <af:outputText id="MRTableRowRateType"
+                         value="#{row.rateType.stringForDisplay}"/>
+        </af:column>
+        <af:column id="MRTableColEffFromDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveFromDate"
+                   headerText="#{columnBundle.column_effective_from_date}">
+          <af:inputDate id="MRTableRowEffFromDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        value="#{row.effectiveFromDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MRTableColEffToDate" align="center" width="100px"
+                   showRequired="true" sortable="false"
+                   sortProperty="effectiveToDate"
+                   headerText="#{columnBundle.column_effective_to_date}">
+          <af:inputDate id="MRTableRowEffToDate" required="true" simple="true"
+                        columns="10"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        value="#{row.effectiveToDate}">
+            <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+          </af:inputDate>
+        </af:column>
+        <af:column id="MRTableColFromTime" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_from_time}">
+          <af:selectOneChoice id="MRTableRowFromTimeSOC" simple="true"
+                              rendered="#{row.editableFromTime}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.fromTime}"
+                              contentStyle="width: 60px;">
+            <f:selectItems id="MRTableRowFromTimeSI"
+                           value="#{meterSpaceManagementBean.listFromTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MRTableRowFromTimeOT"
+                         rendered="#{!row.editableFromTime}"
+                         value="#{row.fromTime}"/>
+        </af:column>
+        <af:column id="MRTableColToTime" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_to_time}">
+          <af:selectOneChoice id="MRTableRowToTimeSOC" simple="true"
+                              rendered="#{row.editableToTime}"
+                              readOnly="#{meterSpaceManagementBean.readOnly}"
+                              value="#{row.toTime}" contentStyle="width: 60px;">
+            <f:selectItems id="MRTableRowToTimeSI"
+                           value="#{meterSpaceManagementBean.listToTime}"/>
+          </af:selectOneChoice>
+          <af:outputText id="MRTableRowToTimeOT"
+                         rendered="#{!row.editableToTime}"
+                         value="#{row.toTime}"/>
+        </af:column>
+        <af:column id="MRTableColDaysApplied" align="center" width="200px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_days_applied}">
+          <af:selectManyChoice id="MRTableColDaysAppliedSMC" simple="true"
+                               required="true"
+                               rendered="#{row.editableDaysApplied}"
+                               readOnly="#{meterSpaceManagementBean.readOnly}"
+                               value="#{row.weekDaysApplied}">
+            <f:selectItems id="MRTableColDaysAppliedSI"
+                           value="#{meterSpaceManagementBean.listWeekDaysApplied}"/>
+          </af:selectManyChoice>
+          <af:outputText id="MRTableColDaysAppliedOT"
+                         rendered="#{!row.editableDaysApplied}"
+                         value="#{row.daysApplied}"/>
+        </af:column>
+        <af:column id="MRTableColRate" align="center" width="80px"
+                   sortable="false" headerText="#{columnBundle.column_rate}">
+          <af:inputText id="MRTableRowRate" simple="true" required="true"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        columns="6" value="#{row.rate}">
+            <af:validateDoubleRange minimum="0"/>
+            <af:convertNumber type="currency" locale="en-US"
+                              maxFractionDigits="2"/>
+          </af:inputText>
+        </af:column>
+        <af:column id="MRTableColRateChgRef" align="center" sortable="false"
+                   headerText="#{columnBundle.column_rate_change_ref}">
+          <af:inputText id="MRTableRowRateChgRef" maximumLength="20"
+                        simple="true" columns="21"
+                        readOnly="#{meterSpaceManagementBean.readOnly}"
+                        value="#{row.rateChangeReference}"/>
+        </af:column>
+        <af:column id="MRTableColPSGroupID" align="center" width="100px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_parking_space_group_id}">
+          <af:outputText id="MRTableRowPSGroupID" value="#{row.PSGroupID}"/>
+        </af:column>
+        <af:column id="MRTableColEventID" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_event_id}">
+          <af:outputText id="MRTableRowEventID" value="#{row.eventID}"/>
+        </af:column>
+        <af:column id="MRTableColBlockID" align="center" width="80px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_block_id}">
+          <af:outputText id="MRTableRowBlockID" value="#{row.blockID}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
+
+-->
