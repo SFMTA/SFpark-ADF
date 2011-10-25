@@ -2,6 +2,42 @@ package sfpark.adf.tools.translation;
 
 public enum CommonBundleKey {
 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Title Strings
+
+    string_title_delete_operation_successful,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Message Strings
+
+    string_title_execute_operation_successful,
+    string_message_delete_operation_successful,
+    string_title_edit_operation_successful,
+
+    string_message_execute_operation_successful,
+
+    string_message_delete_calendar_successful,
+    string_message_delete_rate_change_successful,
+    string_message_delete_rate_change_process_control_successful,
+
+    string_message_edit_rate_change_rules_successful,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Warning Strings
+
+    warning_title_finalised_eff_date,
+    warning_message_finalised_eff_date,
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     info_only_digits_allowed,
     info_from_time,
     info_to_time,
@@ -15,6 +51,8 @@ public enum CommonBundleKey {
 
     info_success_save,
 
+    info_success_create,
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,22 +63,6 @@ public enum CommonBundleKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    dialog_title_warning,
-    dialog_title_error,
-    dialog_title_alert,
-    dialog_title_info,
-    dialog_title_confirmation,
-
-    dialog_title_default,
-
-    dialog_text_default,
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    wizard_stop_title,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

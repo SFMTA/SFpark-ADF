@@ -24,7 +24,6 @@ import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 
-import sfpark.adf.tools.translation.CalendarManagerBundleKey;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
@@ -268,7 +267,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
 
                     if (calendarHeaderStatus.existsDTO()) {
                         printLog("ADD operation was successful");
-                        setInlineMessageText(TranslationUtil.getCalendarManagerBundleString(CalendarManagerBundleKey.info_create_success));
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();

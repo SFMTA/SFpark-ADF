@@ -5,7 +5,7 @@ import javax.faces.event.ActionEvent;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 
 import sfpark.adf.tools.model.helper.OperationStatus;
-import sfpark.adf.tools.translation.CalendarManagerBundleKey;
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
@@ -85,10 +85,10 @@ public class CalendarDeleteBean extends BaseBean implements RequestScopeBeanInte
             // Move on to the next page
             // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                  TranslationUtil.getCalendarManagerBundleString(CalendarManagerBundleKey.string_title_delete_operation_successful));
+                                  TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_delete_operation_successful));
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                  TranslationUtil.getCalendarManagerBundleString(CalendarManagerBundleKey.string_message_delete_operation_successful,
-                                                                                 calendarHeaderDTO.getCalendarName()));
+                                  TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_delete_calendar_successful,
+                                                                        calendarHeaderDTO.getCalendarName()));
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.AfterDeleteCalendar.name());
 

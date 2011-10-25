@@ -23,7 +23,6 @@ import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
@@ -128,8 +127,8 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                 FacesMessage facesMessage =
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                     TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.warning_title_finalised_eff_date),
-                                     TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.warning_message_finalised_eff_date));
+                                     TranslationUtil.getCommonBundleString(CommonBundleKey.warning_title_finalised_eff_date),
+                                     TranslationUtil.getCommonBundleString(CommonBundleKey.warning_message_finalised_eff_date));
 
                 facesContext.addMessage(uiComponent.getClientId(facesContext),
                                         facesMessage);
@@ -334,10 +333,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     clearPageFlowScopeCache();
 
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_execute_operation_successful));
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_execute_operation_successful));
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_execute_operation_successful,
-                                                                                           currentDTO.getRateChangeReference()));
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_execute_operation_successful,
+                                                                                currentDTO.getRateChangeReference()));
 
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.AfterEditRateChangeProcessProperties.name());

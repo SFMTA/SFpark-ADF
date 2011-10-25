@@ -18,34 +18,16 @@ public final class TranslationUtil {
         super();
     }
 
-    public static String getAssetManagerBundleString(AssetManagerBundleKey Key,
-                                                     Object... args) {
-        return getTranslatedString(TranslationBundle.AssetManagerBundle.getBaseName(),
-                                   Key.name(), args);
-    }
-
-    public static String getCalendarManagerBundleString(CalendarManagerBundleKey Key,
-                                                        Object... args) {
-        return getTranslatedString(TranslationBundle.CalendarManagerBundle.getBaseName(),
-                                   Key.name(), args);
-    }
-
-    public static String getRateChangeManagerBundleString(RateChangeManagerBundleKey Key,
-                                                          Object... args) {
-        return getTranslatedString(TranslationBundle.RateChangeManagerBundle.getBaseName(),
-                                   Key.name(), args);
-    }
-
     public static String getCommonBundleString(CommonBundleKey Key,
                                                Object... args) {
-        return getTranslatedString(TranslationBundle.CommonBundle.getBaseName(),
-                                   Key.name(), args);
+        return getTranslatedString(getBaseName("CommonBundle"), Key.name(),
+                                   args);
     }
 
     public static String getErrorBundleString(ErrorBundleKey Key,
                                               Object... args) {
-        return getTranslatedString(TranslationBundle.ErrorBundle.getBaseName(),
-                                   Key.name(), args);
+        return getTranslatedString(getBaseName("ErrorBundle"), Key.name(),
+                                   args);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -71,5 +53,9 @@ public final class TranslationUtil {
                                  args);
 
         return result.replaceAll(QUOTE_REPLACEMENT, "'");
+    }
+
+    private static String getBaseName(String fileName) {
+        return "sfpark.adf.tools.translation." + fileName;
     }
 }

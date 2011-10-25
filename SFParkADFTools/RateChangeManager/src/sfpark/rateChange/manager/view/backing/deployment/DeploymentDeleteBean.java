@@ -4,8 +4,8 @@ import javax.faces.event.ActionEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -89,10 +89,10 @@ public class DeploymentDeleteBean extends BaseBean implements RequestScopeBeanIn
             // Move on to the next page
             // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                  TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_delete_operation_successful));
+                                  TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_delete_operation_successful));
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                  TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_delete_rate_change_process_control_successful,
-                                                                                   DTO.getRateChangeReference()));
+                                  TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_delete_rate_change_process_control_successful,
+                                                                        DTO.getRateChangeReference()));
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.AfterDeleteRateChangeProcess.name());
 

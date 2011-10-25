@@ -13,8 +13,8 @@ import oracle.adf.view.rich.component.rich.data.RichTable;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.provider.RateChangeRulesProvider;
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
@@ -190,10 +190,10 @@ public class ThresholdPropertiesBean extends BaseBean implements PropertiesBeanI
                     // Move on to the next page
                     // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_title_edit_operation_successful));
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_edit_operation_successful));
                     setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                          TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.string_message_edit_rate_change_rules_successful,
-                                                                                           getRateChangeType()));
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_edit_rate_change_rules_successful,
+                                                                                getRateChangeType()));
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.AfterEditThreshold.name());
 

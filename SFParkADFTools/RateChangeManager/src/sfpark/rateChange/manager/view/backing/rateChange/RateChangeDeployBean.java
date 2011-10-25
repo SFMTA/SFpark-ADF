@@ -9,8 +9,8 @@ import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
 import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -234,7 +234,7 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                     if (rateChangeProcessControlStatus.existsDTO()) {
                         printLog("ADD operation was successful");
 
-                        setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();

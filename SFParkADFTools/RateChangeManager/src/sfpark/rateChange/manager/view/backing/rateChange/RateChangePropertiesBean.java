@@ -15,8 +15,8 @@ import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 
+import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
-import sfpark.adf.tools.translation.RateChangeManagerBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -237,7 +237,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                     RateChangeHeaderDTO newRateChangeHeaderDTO =
                         RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
 
-                    setInlineMessageText(TranslationUtil.getRateChangeManagerBundleString(RateChangeManagerBundleKey.info_create_success));
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                     clearPageFlowScopeCache();

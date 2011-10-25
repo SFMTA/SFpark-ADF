@@ -38,7 +38,6 @@ import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
 
-import sfpark.adf.tools.translation.AssetManagerBundleKey;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
@@ -1028,7 +1027,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
                     if (parkingSpaceStatus.existsDTO()) {
                         // System.out.println("ADD operation was successful");
-                        setInlineMessageText(TranslationUtil.getAssetManagerBundleString(AssetManagerBundleKey.info_create_success));
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         clearPageFlowScopeCache();
