@@ -13,6 +13,7 @@ import java.util.List;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarDetailDTO;
@@ -210,6 +211,11 @@ public final class ProviderWrapper {
                                                                           (BlockTimeBandsDTO)DTO,
                                                                           lastUpdatedUser,
                                                                           lastUpdatedProgram);
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return AllowedValuesProvider.INSTANCE.prepareInsertStatement(connection,
+                                                                         (AllowedValuesDTO)DTO,
+                                                                         lastUpdatedUser,
+                                                                         lastUpdatedProgram);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -241,6 +247,8 @@ public final class ProviderWrapper {
             return new DTOInsertException(RateChangeRulesDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return new DTOInsertException(BlockTimeBandsDTO.getDatabaseTableName());
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return new DTOInsertException(AllowedValuesDTO.getDatabaseTableName());
         }
 
         return new DTOInsertException();
@@ -316,6 +324,11 @@ public final class ProviderWrapper {
                                                                           (BlockTimeBandsDTO)DTO,
                                                                           lastUpdatedUser,
                                                                           lastUpdatedProgram);
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return AllowedValuesProvider.INSTANCE.prepareUpdateStatement(connection,
+                                                                         (AllowedValuesDTO)DTO,
+                                                                         lastUpdatedUser,
+                                                                         lastUpdatedProgram);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -348,6 +361,8 @@ public final class ProviderWrapper {
             return new DTOUpdateException(RateChangeRulesDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return new DTOUpdateException(BlockTimeBandsDTO.getDatabaseTableName());
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return new DTOUpdateException(AllowedValuesDTO.getDatabaseTableName());
         }
 
         return new DTOUpdateException();
@@ -373,6 +388,9 @@ public final class ProviderWrapper {
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return BlockTimeBandsProvider.INSTANCE.prepareDeleteStatement(connection,
                                                                           (BlockTimeBandsDTO)DTO);
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return AllowedValuesProvider.INSTANCE.prepareDeleteStatement(connection,
+                                                                         (AllowedValuesDTO)DTO);
         } else {
             throw new SQLException("Requested DTO operation has not yet been implemented");
         }
@@ -389,6 +407,8 @@ public final class ProviderWrapper {
             return new DTODeleteException(RateChangeProcessControlDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return new DTODeleteException(BlockTimeBandsDTO.getDatabaseTableName());
+        } else if (DTO instanceof AllowedValuesDTO) {
+            return new DTODeleteException(AllowedValuesDTO.getDatabaseTableName());
         }
 
         return new DTODeleteException();

@@ -46,8 +46,7 @@ public class AllowedValuesDTO extends BaseDTO {
                       LAST_UPD_USER, LAST_UPD_PGM);
 
     private static final List<String> AttributeListForUpdate =
-        Arrays.asList(TABLE_NAME, COLUMN_NAME, COLUMN_VALUE, DESCRIPTION,
-                      LAST_UPD_USER, LAST_UPD_PGM);
+        Arrays.asList(DESCRIPTION, LAST_UPD_USER, LAST_UPD_PGM);
 
     public static List<String> getAttributeListForSelect() {
         return AttributeListForSelect;
