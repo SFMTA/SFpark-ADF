@@ -738,41 +738,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         }
     }
 
-    public void selectAllButtonHandler(ActionEvent event) {
-
-        /*
-        // System.out.println("Inside Select All");
-        RichTable table = getMeterScheduleTable();
-
-        int rowCount = table.getRowCount();
-        // System.out.println("Row Count = " + rowCount);
-
-        if (rowCount > 0) {
-            RowKeySet rowKeySet = new RowKeySetImpl();
-
-            for (int i = 0; i < rowCount; i++) {
-
-                table.setRowIndex(i);
-                Object key = table.getRowKey();
-                rowKeySet.add(key);
-            }
-
-            table.setSelectedRowKeys(rowKeySet);
-            addPartialTarget(table);
-
-            setAllMeterScheduleTableButtons();
-        }
-        */
-    }
-
-    public void unselectAllButtonHandler(ActionEvent event) {
-        /*
-        getMeterScheduleTable().getSelectedRowKeys().clear();
-        addPartialTarget(getMeterScheduleTable());
-        resetAllMeterScheduleTableButtons();
-        */
-    }
-
     public void tableRowSelectionHandler(SelectionEvent event) {
 
         String ID = event.getComponent().getId();

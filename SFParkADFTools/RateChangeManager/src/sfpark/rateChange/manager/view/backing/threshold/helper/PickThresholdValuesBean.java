@@ -134,14 +134,6 @@ public class PickThresholdValuesBean extends BaseBean implements ListBeanInterfa
 
     }
 
-    public void selectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void unselectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
     public void tableRowSelectionHandler(SelectionEvent event) {
         boolean disable =
             (getChosenThresholdsTable().getSelectedRowKeys().size() != 1);

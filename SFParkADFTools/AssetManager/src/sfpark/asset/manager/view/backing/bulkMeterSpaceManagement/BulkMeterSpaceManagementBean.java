@@ -462,14 +462,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
 
     }
 
-    public void selectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void unselectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
     public void tableRowSelectionHandler(SelectionEvent event) {
 
         String ID = event.getComponent().getId();

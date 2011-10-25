@@ -34,20 +34,6 @@ public interface ListBeanInterface {
     public void deleteButtonHandler(ActionEvent event);
 
     /**
-     * To be called when Select All Button is clicked in the Listing Page
-     *
-     * @param event
-     */
-    public void selectAllButtonHandler(ActionEvent event);
-
-    /**
-     * To be called when Unselect All Button is clicked in the Listing Page
-     *
-     * @param event
-     */
-    public void unselectAllButtonHandler(ActionEvent event);
-
-    /**
      * To be called when Table row is Selected in the Listing Page
      *
      * @param event

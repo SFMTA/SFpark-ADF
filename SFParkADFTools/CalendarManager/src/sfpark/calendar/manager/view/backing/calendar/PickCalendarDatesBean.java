@@ -137,14 +137,6 @@ public class PickCalendarDatesBean extends BaseBean implements ListBeanInterface
         addPartialTarget(getCalendarDisplay());
     }
 
-    public void selectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void unselectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
     public void tableRowSelectionHandler(SelectionEvent event) {
         boolean disable =
             (getChosenDatesTable().getSelectedRowKeys().size() != 1);

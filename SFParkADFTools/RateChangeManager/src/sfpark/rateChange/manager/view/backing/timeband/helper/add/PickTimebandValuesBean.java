@@ -154,14 +154,6 @@ public class PickTimebandValuesBean extends TimebandAbstractBean implements List
 
     }
 
-    public void selectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void unselectAllButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
     public void tableRowSelectionHandler(SelectionEvent event) {
         boolean disable =
             (getChosenTimebandsTable().getSelectedRowKeys().size() != 1);
