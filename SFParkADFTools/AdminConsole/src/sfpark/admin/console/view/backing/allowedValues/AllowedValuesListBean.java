@@ -8,7 +8,6 @@ import oracle.adf.view.rich.component.rich.data.RichTable;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.provider.AllowedValuesProvider;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.admin.console.application.key.PageFlowScopeKey;
 import sfpark.admin.console.application.key.SessionScopeKey;
@@ -16,7 +15,7 @@ import sfpark.admin.console.view.backing.BaseBean;
 import sfpark.admin.console.view.flow.NavigationFlow;
 import sfpark.admin.console.view.flow.NavigationMode;
 
-public class AllowedValuesListBean extends BaseBean implements RequestScopeBeanInterface {
+public class AllowedValuesListBean extends BaseBean {
 
     private RichTable AllowedValuesTable;
 
@@ -27,27 +26,6 @@ public class AllowedValuesListBean extends BaseBean implements RequestScopeBeanI
 
     public AllowedValuesListBean() {
         super();
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    public void clearPageFlowScopeCache() {
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -90,25 +68,18 @@ public class AllowedValuesListBean extends BaseBean implements RequestScopeBeanI
         } else if (ID.contains("show")) {
 
             if (getAllowedValuesTable().getSelectedRowKeys().size() == 1) {
-                // TODO
-                // Get the selection
+
+                AllowedValuesDTO selectedDTO =
+                    (AllowedValuesDTO)getAllowedValuesTable().getSelectedRowData();
+                setPageFlowScopeValue(PageFlowScopeKey.SELECTED_ALLOWED_VALUES_DTO.getKey(),
+                                      selectedDTO);
+
                 setCurrentPageMode(NavigationMode.SHOW_DETAILS);
                 setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                      NavigationFlow.ALLOWED_VALUES_PROPERTIES.name());
-
             }
         }
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // HELPER METHODS
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS EXTRA
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,62 +94,3 @@ public class AllowedValuesListBean extends BaseBean implements RequestScopeBeanI
         return AllowedValuesTable;
     }
 }
-/*
-    public void saveButtonHandler(ActionEvent event) {
-        boolean allValid = true;
-        NavigationMode currentPageMode = getCurrentPageMode();
-
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //        allValid = false;
-        //        String tttt =
-        //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
-        //            getInlineMessageText();
-        //        setInlineMessageText(tttt);
-
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        if (allValid) {
-            printLog("All entries are Valid. Proceed");
-
-            if (currentPageMode.isEditMode()) {
-                // ++++++++++++++++++++++++++++++++++
-                // ++++++++++++++++++++++++++++++++++
-                // ++++++++++++++++++++++++++++++++++
-                // EDIT Mode
-                printLog("EDIT Mode");
-
-                List<BlockTimeBandsDTO> blockTimeBandsDTOs =
-                    (List<BlockTimeBandsDTO>)getBlockTimeBandsTable().getValue();
-
-                OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.editBlockTimeBands(blockTimeBandsDTOs);
-
-                if (operationStatus.isSuccess()) {
-                    printLog("EDIT operation was successful");
-                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
-                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
-
-                    setCurrentPageMode(NavigationMode.EDIT);
-
-                    clearPageFlowScopeCache();
-
-                    getBlockTimeBandsTable().setValue(null);
-
-                } else {
-                    printLog("EDIT operation failed");
-                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_edit_failure));
-                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-                }
-            }
-
-        } else {
-            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-        }
-
-    }
- */

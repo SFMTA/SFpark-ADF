@@ -76,6 +76,27 @@ public class AllowedValuesDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PURELY FOR DISPLAY PURPOSES
+
+    public int getMaximumLengthTableName() {
+        return 30;
+    }
+
+    public int getMaximumLengthColumnName() {
+        return 30;
+    }
+
+    public int getMaximumLengthColumnValue() {
+        return 30;
+    }
+
+    public int getMaximumLengthDescription() {
+        return 100;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private String TableName;
     private String ColumnName;
