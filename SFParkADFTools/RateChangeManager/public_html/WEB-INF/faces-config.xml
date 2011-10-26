@@ -56,38 +56,38 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>timebandBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.TimebandBean</managed-bean-class>
+    <managed-bean-name>blockTimebandBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.common.BlockTimebandBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>timebandPropertiesBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.TimebandPropertiesBean</managed-bean-class>
+    <managed-bean-name>blockTimebandPropertiesBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandPropertiesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
     <managed-bean-name>pickTimebandTypeBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.PickTimebandTypeBean</managed-bean-class>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.helper.PickTimebandTypeBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
     <managed-bean-name>pickTimebandOptionBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.add.PickTimebandOptionBean</managed-bean-class>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.helper.add.PickTimebandOptionBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
     <managed-bean-name>pickTimebandValuesBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.helper.add.PickTimebandValuesBean</managed-bean-class>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.helper.add.PickTimebandValuesBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>timebandAddBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.TimebandAddBean</managed-bean-class>
+    <managed-bean-name>blockTimebandAddBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandAddBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>timebandDeleteBean</managed-bean-name>
-    <managed-bean-class>sfpark.rateChange.manager.view.backing.timeband.TimebandDeleteBean</managed-bean-class>
+    <managed-bean-name>blockTimebandDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandDeleteBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
