@@ -178,10 +178,6 @@
             <value n="id" v="Commons-configuration-1.5.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
-         <hash>
-            <value n="id" v="Commons-lang-2.3.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
@@ -192,15 +188,6 @@
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Commons-configuration-1.5.jar"/>
                <value n="id" v="Commons-configuration-1.5.jar"/>
-               <value n="locked" v="true"/>
-            </hash>
-            <hash>
-               <list n="classPath">
-                  <url path="../../../../../../../../../../Oracle/Middleware/oracle_common/modules/oracle.owasp_11.1.1/commons-lang-2.3.jar" jar-entry=""/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Commons-lang-2.3.jar"/>
-               <value n="id" v="Commons-lang-2.3.jar"/>
                <value n="locked" v="true"/>
             </hash>
          </list>
@@ -240,10 +227,6 @@
          </hash>
          <hash>
             <value n="id" v="Commons-configuration-1.5.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="Commons-lang-2.3.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
