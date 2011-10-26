@@ -31,52 +31,12 @@ public final class StoredProcedureProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    /**
-     * @deprecated
-     * @param calendarID
-     * @return
-     */
-    public boolean isCalendarDeletable(String calendarID) {
-        LOGGER.entering(CLASSNAME, "isCalendarDeletable");
+    public OperationStatus isCalendarDeletable(String calendarID) {
+        LOGGER.in(CLASSNAME, "isCalendarDeletable");
 
-        boolean calendarDeletable = false;
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = OracleDBConnection.getConnection();
-
-            preparedStatement =
-                    connection.prepareStatement(getSelectStatement("IS_CALENDAR_DELETABLE(?)"));
-            preparedStatement.setString(1, calendarID);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                calendarDeletable = (resultSet.getInt(1) == 1);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.warning(ErrorMessage.SELECT_STORED_PROCEDURE.getMessage(),
-                           e);
-        } finally {
-            OracleDBConnection.closeAll(resultSet, preparedStatement,
-                                        connection);
-        }
-
-        LOGGER.exiting(CLASSNAME, "isCalendarDeletable");
-
-        return calendarDeletable;
+        return callStoredProcedure(StoredProcedure.IS_CALENDAR_DELETABLE,
+                                   calendarID);
     }
-
-    //    public OperationStatus isCalendarDeletable(String calendarID) {
-    //        LOGGER.in(CLASSNAME, "isCalendarDeletable");
-    //
-    //        return callStoredProcedure(StoredProcedure.IS_CALENDAR_DELETABLE,
-    //                                   calendarID);
-    //    }
 
     public OperationStatus generateRateChange(String rateChgRefID,
                                               String lastUpdatedUser) {

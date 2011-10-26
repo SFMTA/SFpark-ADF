@@ -35,8 +35,68 @@ public class TimeBandModelProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
+    public List<TimeBandModelDTO> getAllTimeBandModelDTOs() {
+        LOGGER.in(CLASSNAME, "getAllTimeBandModelDTOs");
+        return getTimeBandModelDTOs(false);
+    }
+
     public List<TimeBandModelDTO> getTimeBandModelDTOsFor(String meterClass,
                                                           String dateType) {
+        LOGGER.in(CLASSNAME, "getToBeDeletedTimeBandModelDTOs");
+        return getTimeBandModelDTOs(true, meterClass, dateType);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PROTECTED METHODS
+
+    protected PreparedStatement prepareInsertStatement(Connection connection,
+                                                       TimeBandModelDTO DTO,
+                                                       final String lastUpdatedUser,
+                                                       final String lastUpdatedProgram) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getInsertStatement());
+
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.METER_CLASS),
+                                    DTO.getMeterClass());
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.DATE_TYPE),
+                                    DTO.getDateType());
+        preparedStatement.setInt(getInsertIndexOf(TimeBandModelDTO.TIME_BAND_ID),
+                                 DTO.getTimeBandID());
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.TIME_BAND_FROM),
+                                    DTO.getTimeBandFrom());
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.TIME_BAND_TO),
+                                    DTO.getTimeBandTo());
+
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.LAST_UPD_PGM),
+                                    lastUpdatedProgram);
+        preparedStatement.setString(getInsertIndexOf(TimeBandModelDTO.LAST_UPD_USER),
+                                    lastUpdatedUser);
+
+        return preparedStatement;
+    }
+
+    protected PreparedStatement prepareDeleteStatement(Connection connection,
+                                                       TimeBandModelDTO DTO) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getDeleteStatement());
+
+        preparedStatement.setString(1, DTO.getMeterClass());
+        preparedStatement.setString(2, DTO.getDateType());
+
+        return preparedStatement;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PRIVATE METHODS
+
+    private List<TimeBandModelDTO> getTimeBandModelDTOs(boolean toBeDeleted,
+                                                        String... strings) {
         LOGGER.entering(CLASSNAME, "getTimeBandModelDTOsFor");
 
         List<TimeBandModelDTO> TimeBandModelDTOs =
@@ -50,9 +110,12 @@ public class TimeBandModelProvider {
             connection = OracleDBConnection.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatement());
-            preparedStatement.setString(1, meterClass);
-            preparedStatement.setString(2, dateType);
+                    connection.prepareStatement(getSelectStatement(toBeDeleted));
+
+            if (toBeDeleted) {
+                preparedStatement.setString(1, strings[0]);
+                preparedStatement.setString(2, strings[1]);
+            }
 
             resultSet = preparedStatement.executeQuery();
 
@@ -75,28 +138,27 @@ public class TimeBandModelProvider {
         return TimeBandModelDTOs;
     }
 
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // PRIVATE METHODS
-
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++
     // SELECT HELPERS
 
-    private String getSelectStatement() {
+    private String getSelectStatement(boolean toBeDeleted) {
         LOGGER.entering(CLASSNAME, "getSelectStatement");
 
         String Attributes =
             StringUtil.convertListToString(TimeBandModelDTO.getAttributeListForSelect());
 
-        String string1 =
-            StatementGenerator.equalToOperator(TimeBandModelDTO.METER_CLASS);
-        String string2 =
-            StatementGenerator.equalToOperator(TimeBandModelDTO.DATE_TYPE);
+        String Where = null;
 
-        String Where = StatementGenerator.andOperator(string1, string2);
+        if (toBeDeleted) {
+            String string1 =
+                StatementGenerator.equalToOperator(TimeBandModelDTO.METER_CLASS);
+            String string2 =
+                StatementGenerator.equalToOperator(TimeBandModelDTO.DATE_TYPE);
+
+            Where = StatementGenerator.andOperator(string1, string2);
+        }
 
         String OrderBy =
             StatementGenerator.commaOperator(TimeBandModelDTO.METER_CLASS,
@@ -108,5 +170,51 @@ public class TimeBandModelProvider {
         return StatementGenerator.selectStatement(Attributes,
                                                   TimeBandModelDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // INSERT HELPERS
+
+    private String getInsertStatement() {
+        LOGGER.entering(CLASSNAME, "getInsertStatement");
+
+        String Columns =
+            StringUtil.convertListToString(TimeBandModelDTO.getAttributeListForInsert());
+
+        String Values =
+            StringUtil.generateStringWithRepetition("?", TimeBandModelDTO.getAttributeListForInsert().size());
+
+        LOGGER.exiting(CLASSNAME, "getInsertStatement");
+
+        return StatementGenerator.insertStatement(TimeBandModelDTO.getDatabaseTableName(),
+                                                  Columns, Values);
+    }
+
+    private int getInsertIndexOf(String indexFor) {
+        return (TimeBandModelDTO.getAttributeListForInsert().indexOf(indexFor) +
+                1);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // DELETE HELPERS
+
+    private String getDeleteStatement() {
+        LOGGER.entering(CLASSNAME, "getDeleteStatement");
+
+        String string1 =
+            StatementGenerator.equalToOperator(TimeBandModelDTO.METER_CLASS);
+        String string2 =
+            StatementGenerator.equalToOperator(TimeBandModelDTO.DATE_TYPE);
+
+        String Where = StatementGenerator.andOperator(string1, string2);
+
+        LOGGER.exiting(CLASSNAME, "getDeleteStatement");
+
+        return StatementGenerator.deleteStatement(TimeBandModelDTO.getDatabaseTableName(),
+                                                  Where);
     }
 }

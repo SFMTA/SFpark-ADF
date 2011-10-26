@@ -27,6 +27,7 @@ import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInvento
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.exception.*;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
@@ -211,6 +212,11 @@ public final class ProviderWrapper {
                                                                           (BlockTimeBandsDTO)DTO,
                                                                           lastUpdatedUser,
                                                                           lastUpdatedProgram);
+        } else if (DTO instanceof TimeBandModelDTO) {
+            return TimeBandModelProvider.INSTANCE.prepareInsertStatement(connection,
+                                                                         (TimeBandModelDTO)DTO,
+                                                                         lastUpdatedUser,
+                                                                         lastUpdatedProgram);
         } else if (DTO instanceof AllowedValuesDTO) {
             return AllowedValuesProvider.INSTANCE.prepareInsertStatement(connection,
                                                                          (AllowedValuesDTO)DTO,
@@ -247,6 +253,8 @@ public final class ProviderWrapper {
             return new DTOInsertException(RateChangeRulesDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return new DTOInsertException(BlockTimeBandsDTO.getDatabaseTableName());
+        } else if (DTO instanceof TimeBandModelDTO) {
+            return new DTOInsertException(TimeBandModelDTO.getDatabaseTableName());
         } else if (DTO instanceof AllowedValuesDTO) {
             return new DTOInsertException(AllowedValuesDTO.getDatabaseTableName());
         }
@@ -388,6 +396,9 @@ public final class ProviderWrapper {
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return BlockTimeBandsProvider.INSTANCE.prepareDeleteStatement(connection,
                                                                           (BlockTimeBandsDTO)DTO);
+        } else if (DTO instanceof TimeBandModelDTO) {
+            return TimeBandModelProvider.INSTANCE.prepareDeleteStatement(connection,
+                                                                         (TimeBandModelDTO)DTO);
         } else if (DTO instanceof AllowedValuesDTO) {
             return AllowedValuesProvider.INSTANCE.prepareDeleteStatement(connection,
                                                                          (AllowedValuesDTO)DTO);
@@ -407,6 +418,8 @@ public final class ProviderWrapper {
             return new DTODeleteException(RateChangeProcessControlDTO.getDatabaseTableName());
         } else if (DTO instanceof BlockTimeBandsDTO) {
             return new DTODeleteException(BlockTimeBandsDTO.getDatabaseTableName());
+        } else if (DTO instanceof TimeBandModelDTO) {
+            return new DTODeleteException(TimeBandModelDTO.getDatabaseTableName());
         } else if (DTO instanceof AllowedValuesDTO) {
             return new DTODeleteException(AllowedValuesDTO.getDatabaseTableName());
         }

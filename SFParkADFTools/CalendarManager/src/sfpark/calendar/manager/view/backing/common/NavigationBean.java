@@ -12,6 +12,7 @@ import oracle.adf.view.rich.model.RegionModel;
 import sfpark.adf.tools.helper.Logger;
 
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
+import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.CalendarHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.StoredProcedureProvider;
@@ -225,11 +226,11 @@ public class NavigationBean extends BaseBean {
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
 
-                            boolean isCalendarDeletable =
+                            OperationStatus isCalendarDeletable =
                                 StoredProcedureProvider.INSTANCE.isCalendarDeletable(calendarID);
 
                             if ( // Calendar DELETABLE
-                                isCalendarDeletable) {
+                                isCalendarDeletable.isSuccess()) {
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
                                 // ++++++++++++++++++++++++++++++++++
