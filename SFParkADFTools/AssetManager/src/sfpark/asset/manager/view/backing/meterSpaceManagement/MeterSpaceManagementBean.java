@@ -1185,10 +1185,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         // Do nothing
     }
 
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
-    }
-
     /**
      * Deletes/Undeletes the Parking Space by setting the appropriate values
      *

@@ -1,7 +1,6 @@
 package sfpark.admin.console.view.backing.allowedValues;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
@@ -108,10 +107,6 @@ public class AllowedValuesPropertiesBean extends BaseBean implements PropertiesB
 
     public void cancelButtonHandler(ActionEvent event) {
         moveOn();
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

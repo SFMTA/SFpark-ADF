@@ -9,7 +9,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
@@ -401,10 +400,6 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 

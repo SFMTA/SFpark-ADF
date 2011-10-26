@@ -3,7 +3,6 @@ package sfpark.rateChange.manager.view.backing.timeband.helper;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
@@ -141,9 +140,5 @@ public class PickTimebandTypeBean extends TimebandAbstractBean implements Proper
         setCurrentPageMode(NavigationMode.EDIT);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                              NavigationFlow.EditTimeband.name());
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
     }
 }

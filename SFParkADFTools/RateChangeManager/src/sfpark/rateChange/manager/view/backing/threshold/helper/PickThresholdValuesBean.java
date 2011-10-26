@@ -7,7 +7,6 @@ import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
@@ -168,10 +167,6 @@ public class PickThresholdValuesBean extends BaseBean implements ListBeanInterfa
 
     public void cancelButtonHandler(ActionEvent event) {
         moveOn();
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // DO nothing
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

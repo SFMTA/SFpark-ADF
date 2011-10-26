@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
@@ -415,10 +414,6 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 

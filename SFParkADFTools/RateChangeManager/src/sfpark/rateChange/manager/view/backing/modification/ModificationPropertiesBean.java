@@ -1,7 +1,6 @@
 package sfpark.rateChange.manager.view.backing.modification;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.blockRateSchedule.BlockRateScheduleDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
@@ -228,10 +227,6 @@ public class ModificationPropertiesBean extends BaseBean implements PropertiesBe
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 

@@ -1,7 +1,6 @@
 package sfpark.rateChange.manager.view.backing.rateChange;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
@@ -262,10 +261,6 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 }

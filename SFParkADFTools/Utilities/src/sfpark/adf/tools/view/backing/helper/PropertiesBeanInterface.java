@@ -1,7 +1,6 @@
 package sfpark.adf.tools.view.backing.helper;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  * To be implemented by those Bean Classes which display a Properties UI with
@@ -22,12 +21,5 @@ public interface PropertiesBeanInterface {
      * @param event
      */
     public void cancelButtonHandler(ActionEvent event);
-
-    /**
-     * To be called when Any Value is changed in the Properties Page
-     *
-     * @param event
-     */
-    public void anyValueChangeHandler(ValueChangeEvent event);
 
 }

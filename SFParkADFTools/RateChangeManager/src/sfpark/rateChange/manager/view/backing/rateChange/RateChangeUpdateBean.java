@@ -262,10 +262,6 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
         // Do nothing
     }
 
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

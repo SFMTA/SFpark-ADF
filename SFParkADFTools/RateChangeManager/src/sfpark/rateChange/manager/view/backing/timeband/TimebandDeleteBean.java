@@ -3,7 +3,6 @@ package sfpark.rateChange.manager.view.backing.timeband;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
@@ -138,10 +137,6 @@ public class TimebandDeleteBean extends TimebandAbstractBean implements Properti
 
     public void cancelButtonHandler(ActionEvent event) {
         moveOn();
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

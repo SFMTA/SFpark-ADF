@@ -1,7 +1,6 @@
 package sfpark.rateChange.manager.view.backing.deployment;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessStepStartFlag;
@@ -119,10 +118,6 @@ public class DeploymentEditBean extends BaseBean implements PropertiesBeanInterf
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 

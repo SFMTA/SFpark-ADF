@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
@@ -211,10 +210,6 @@ public class ThresholdPropertiesBean extends BaseBean implements PropertiesBeanI
     }
 
     public void cancelButtonHandler(ActionEvent event) {
-        // Do nothing
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
         // Do nothing
     }
 

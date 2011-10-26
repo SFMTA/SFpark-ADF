@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
@@ -180,10 +179,6 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
         setCurrentPageMode(NavigationMode.EDIT);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                              NavigationFlow.EditTimeband.name());
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

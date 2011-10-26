@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
@@ -72,10 +71,6 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
 
     public void cancelButtonHandler(ActionEvent event) {
         moveOn();
-    }
-
-    public void anyValueChangeHandler(ValueChangeEvent event) {
-        // Do nothing
     }
 
     public void tableRowSelectionHandler(SelectionEvent event) {
