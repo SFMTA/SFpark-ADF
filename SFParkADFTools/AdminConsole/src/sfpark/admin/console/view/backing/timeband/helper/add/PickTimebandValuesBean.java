@@ -1,3 +1,58 @@
+package sfpark.admin.console.view.backing.timeband.helper.add;
+
+import javax.faces.event.ActionEvent;
+
+import org.apache.myfaces.trinidad.event.SelectionEvent;
+
+import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
+import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
+
+public class PickTimebandValuesBean extends TimebandAbstractBean implements ListBeanInterface,
+                                                                            PropertiesBeanInterface,
+                                                                            RequestScopeBeanInterface {
+    public PickTimebandValuesBean() {
+        super();
+    }
+
+    public void addButtonHandler(ActionEvent event) {
+    }
+
+    public void editButtonHandler(ActionEvent event) {
+    }
+
+    public void deleteButtonHandler(ActionEvent event) {
+    }
+
+    public void tableRowSelectionHandler(SelectionEvent event) {
+    }
+
+    public void saveButtonHandler(ActionEvent event) {
+    }
+
+    public void cancelButtonHandler(ActionEvent event) {
+    }
+
+    public void clearPageFlowScopeCache() {
+    }
+
+    public void setInlineMessageText(String inlineMessageText) {
+    }
+
+    public String getInlineMessageText() {
+        return null;
+    }
+
+    public void setInlineMessageClass(String inlineMessageClass) {
+    }
+
+    public String getInlineMessageClass() {
+        return null;
+    }
+}
+/*
 package sfpark.rateChange.manager.view.backing.blockTimeband.helper.add;
 
 import java.util.ArrayList;
@@ -31,8 +86,8 @@ import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 
 public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements ListBeanInterface,
-                                                                                 PropertiesBeanInterface,
-                                                                                 RequestScopeBeanInterface {
+                                                                            PropertiesBeanInterface,
+                                                                            RequestScopeBeanInterface {
 
     private int ChooseTimeband;
 
@@ -340,3 +395,5 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
         return ChosenTimebandsTable;
     }
 }
+
+ */

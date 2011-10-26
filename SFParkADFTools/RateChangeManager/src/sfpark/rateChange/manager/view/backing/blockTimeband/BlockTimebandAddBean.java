@@ -24,7 +24,7 @@ import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                     RequestScopeBeanInterface {
+                                                                               RequestScopeBeanInterface {
     private RichTable InsertBlockTimeBandsTable;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

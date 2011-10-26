@@ -1,3 +1,42 @@
+package sfpark.admin.console.view.backing.timeband;
+
+import javax.faces.event.ActionEvent;
+
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
+import sfpark.admin.console.view.backing.BaseBean;
+
+public class TimebandListBean extends BaseBean implements PropertiesBeanInterface,
+                                                                RequestScopeBeanInterface {
+    public TimebandListBean() {
+        super();
+    }
+
+    public void saveButtonHandler(ActionEvent event) {
+    }
+
+    public void cancelButtonHandler(ActionEvent event) {
+    }
+
+    public void clearPageFlowScopeCache() {
+    }
+
+    public void setInlineMessageText(String inlineMessageText) {
+    }
+
+    public String getInlineMessageText() {
+        return null;
+    }
+
+    public void setInlineMessageClass(String inlineMessageClass) {
+    }
+
+    public String getInlineMessageClass() {
+        return null;
+    }
+}
+/*
 package sfpark.rateChange.manager.view.backing.blockTimeband;
 
 import java.util.List;
@@ -24,7 +63,7 @@ import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class BlockTimebandPropertiesBean extends BaseBean implements PropertiesBeanInterface,
-                                                                     RequestScopeBeanInterface {
+                                                                RequestScopeBeanInterface {
 
     private RichTable BlockTimeBandsTable;
 
@@ -202,3 +241,5 @@ public class BlockTimebandPropertiesBean extends BaseBean implements PropertiesB
         return BlockTimeBandsTable;
     }
 }
+
+ */

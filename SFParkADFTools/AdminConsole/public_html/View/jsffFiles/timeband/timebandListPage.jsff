@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="timebandPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="timebandPropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_block_time_bands_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeSaveButton" width="30"/>
+        <af:commandButton id="saveButton" blocking="true"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_save}"
+                          actionListener="#{blockTimebandPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarAddDelete">
+        <af:spacer id="spaceBeforeButton" width="10"/>
+        <af:commandToolbarButton id="addDeleteButton" actionDelivery="none"
+                                 text="Timeband Options">
+          <f:facet name="popup">
+            <af:menu id="addDeleteButtonMenu">
+              <af:commandMenuItem id="addTimeband" text="Add Timeband"
+                                  actionListener="#{blockTimebandPropertiesBean.pickButtonHandler}"/>
+              <af:commandMenuItem id="deleteTimeband" text="Delete Timebands"
+                                  actionListener="#{blockTimebandPropertiesBean.pickButtonHandler}"/>
+            </af:menu>
+          </f:facet>
+        </af:commandToolbarButton>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{blockTimebandPropertiesBean.inlineMessageText}"
+                       styleClass="#{blockTimebandPropertiesBean.inlineMessageClass}"
+                       partialTriggers="saveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:table id="TBTable" var="row" varStatus="rowStatus" width="800"
+              inlineStyle="height: 450px; margin-left: 35px;"
+              contentDelivery="immediate" rowSelection="none"
+              rowBandingInterval="0" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_apply_list}"
+              summary="Block Time Bands List"
+              value="#{blockTimebandPropertiesBean.blockTimeBands}"
+              binding="#{blockTimebandPropertiesBean.blockTimeBandsTable}">
+      <af:column id="TBTableColBlockID" rowHeader="unstyled" align="center"
+                 width="80px;" sortable="false"
+                 headerText="#{columnBundle.column_block_id}">
+        <af:outputText id="ITBTableRowBlockID" value="#{row.blockID}"/>
+      </af:column>
+      <af:column id="TBTableColMeterClass" align="center" width="80px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_meter_class}">
+        <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
+      </af:column>
+      <af:column id="TBTableColDateType" align="center" width="80px"
+                 sortable="false" headerText="#{columnBundle.column_date_type}">
+        <af:outputText id="TBTableRowDateType" value="#{row.dateType}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandID" align="center" width="50px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_id}">
+        <af:outputText id="TBTableRowTimeBandID" value="#{row.timeBandID}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandFrom" align="center" width="60px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_from}">
+        <af:outputText id="TBTableRowTimeBandFrom"
+                       value="#{row.displayTimeBandFrom}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandTo" align="center" width="60px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_to}">
+        <af:outputText id="TBTableRowTimeBandTo"
+                       value="#{row.displayTimeBandTo}"/>
+      </af:column>
+      <af:column id="TBTableColFromTime" align="center" width="60px"
+                 sortable="false" headerText="#{columnBundle.column_from_time}">
+        <af:outputText id="TBTableRowFromTime" value="#{row.displayFromTime}"/>
+      </af:column>
+      <af:column id="TBTableColToTime" align="center" width="60px"
+                 sortable="false" headerText="#{columnBundle.column_to_time}">
+        <af:outputText id="TBTableRowToTime" value="#{row.displayToTime}"/>
+      </af:column>
+      <af:column id="TBTableColCurrentRate" align="center" width="80px"
+                 sortable="false" showRequired="true"
+                 headerText="#{columnBundle.column_current_rate}">
+        <af:inputText id="TBTableRowCurrentRate" simple="true" required="true"
+                      columns="6" value="#{row.currentRate}" autoSubmit="true">
+          <af:validateDoubleRange minimum="0"/>
+          <af:convertNumber type="currency" locale="en-US"
+                            maxFractionDigits="2"/>
+        </af:inputText>
+      </af:column>
+      <af:column id="TBTableColLastRateChgDate" align="center" width="80px"
+                 sortable="false" showRequired="true"
+                 headerText="#{columnBundle.column_last_rate_change_date}">
+        <af:inputDate id="TBTableRowLastRateChgDate" simple="true"
+                      required="true" columns="10"
+                      value="#{row.lastRateChangeDate}" autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>

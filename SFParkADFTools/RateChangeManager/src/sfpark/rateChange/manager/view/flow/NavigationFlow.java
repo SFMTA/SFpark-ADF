@@ -18,17 +18,17 @@ public enum NavigationFlow {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // TIMEBAND related
+    // BLOCKTIMEBAND related
 
-    EditTimeband("/View/jsffFiles/timeband/timebandPropertiesPage.jsff"),
+    EditTimeband("/View/jsffFiles/blockTimeband/blockTimebandPropertiesPage.jsff"),
 
-    PickTimebandType("/View/jsffFiles/timeband/helper/pickTimebandTypePage.jsff"),
+    PickTimebandType("/View/jsffFiles/blockTimeband/helper/pickTimebandTypePage.jsff"),
 
-    PickTimebandOption("/View/jsffFiles/timeband/helper/add/pickTimebandOptionPage.jsff"),
-    PickTimebandValues("/View/jsffFiles/timeband/helper/add/pickTimebandValuesPage.jsff"),
-    AddTimeband("/View/jsffFiles/timeband/timebandAddPage.jsff"),
+    PickTimebandOption("/View/jsffFiles/blockTimeband/helper/add/pickTimebandOptionPage.jsff"),
+    PickTimebandValues("/View/jsffFiles/blockTimeband/helper/add/pickTimebandValuesPage.jsff"),
+    AddTimeband("/View/jsffFiles/blockTimeband/blockTimebandAddPage.jsff"),
 
-    DeleteTimeband("/View/jsffFiles/timeband/timebandDeletePage.jsff"),
+    DeleteTimeband("/View/jsffFiles/blockTimeband/blockTimebandDeletePage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

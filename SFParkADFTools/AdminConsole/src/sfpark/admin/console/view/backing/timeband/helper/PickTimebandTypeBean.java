@@ -1,3 +1,42 @@
+package sfpark.admin.console.view.backing.timeband.helper;
+
+import javax.faces.event.ActionEvent;
+
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
+import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
+
+public class PickTimebandTypeBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                          RequestScopeBeanInterface {
+    public PickTimebandTypeBean() {
+        super();
+    }
+
+    public void saveButtonHandler(ActionEvent event) {
+    }
+
+    public void cancelButtonHandler(ActionEvent event) {
+    }
+
+    public void clearPageFlowScopeCache() {
+    }
+
+    public void setInlineMessageText(String inlineMessageText) {
+    }
+
+    public String getInlineMessageText() {
+        return null;
+    }
+
+    public void setInlineMessageClass(String inlineMessageClass) {
+    }
+
+    public String getInlineMessageClass() {
+        return null;
+    }
+}
+/*
 package sfpark.rateChange.manager.view.backing.blockTimeband.helper;
 
 import java.util.List;
@@ -18,7 +57,7 @@ import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
 
 public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                               RequestScopeBeanInterface {
+                                                                          RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -142,3 +181,5 @@ public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements P
                              NavigationFlow.EditTimeband.name());
     }
 }
+
+ */

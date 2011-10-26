@@ -22,7 +22,7 @@ import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
 public class PickTimebandOptionBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                            RequestScopeBeanInterface {
+                                                                                 RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

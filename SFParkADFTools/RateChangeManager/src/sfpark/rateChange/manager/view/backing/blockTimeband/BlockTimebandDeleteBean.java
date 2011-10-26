@@ -21,7 +21,7 @@ import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
 public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                        RequestScopeBeanInterface {
+                                                                                  RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
