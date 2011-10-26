@@ -7,7 +7,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
-import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
@@ -103,11 +103,11 @@ public class PickTimebandTypeBean extends TimebandAbstractBean implements Proper
             // ADD Mode
             printLog("ADD Mode");
 
-            List<TimeBandModelDO> timeBandModelDOs =
-                TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsWrapper().getMeterClass(),
-                                                                      getBlockTimeBandsWrapper().getDateType());
+            List<TimeBandModelDTO> TimeBandModelDTOs =
+                TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(getBlockTimeBandsWrapper().getMeterClass(),
+                                                                       getBlockTimeBandsWrapper().getDateType());
 
-            if (timeBandModelDOs != null && !timeBandModelDOs.isEmpty()) {
+            if (TimeBandModelDTOs != null && !TimeBandModelDTOs.isEmpty()) {
                 // Template exists
                 // Go to Options page
                 setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),

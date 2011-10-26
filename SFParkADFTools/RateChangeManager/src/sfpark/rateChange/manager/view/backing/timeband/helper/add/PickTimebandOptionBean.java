@@ -8,8 +8,8 @@ import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
-import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
@@ -75,9 +75,9 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
     //        return wrapper;
     //    }
 
-    public List<TimeBandModelDO> getTimeBandModelDOs() {
-        return TimeBandModelProvider.INSTANCE.getTimeBandModelDOsFor(getBlockTimeBandsWrapper().getMeterClass(),
-                                                                     getBlockTimeBandsWrapper().getDateType());
+    public List<TimeBandModelDTO> getTimeBandModelDTOs() {
+        return TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(getBlockTimeBandsWrapper().getMeterClass(),
+                                                                      getBlockTimeBandsWrapper().getDateType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -142,7 +142,7 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
             List<BlockTimeBandsDTO> DTOs = new ArrayList<BlockTimeBandsDTO>();
 
             // Get the Time Band Model
-            List<TimeBandModelDO> timeBandModel = getTimeBandModelDOs();
+            List<TimeBandModelDTO> timeBandModel = getTimeBandModelDTOs();
 
             // Get the Open and Close time
             int openTime =
@@ -150,7 +150,7 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
             int closeTime =
                 Integer.parseInt(TimeDisplayUtil.extractToTimeForUpdate(getBlockTimeBandsWrapper().getCloseTime()));
 
-            for (TimeBandModelDO DO : timeBandModel) {
+            for (TimeBandModelDTO DO : timeBandModel) {
                 BlockTimeBandsDTO DTO = BlockTimeBandsDTO.extract(DO);
                 DTO.setBlockID(getBlockTimeBandsWrapper().getBlockID());
 
@@ -194,7 +194,7 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
 
     private String getLatestOpenTime() {
 
-        for (TimeBandModelDO DO : getTimeBandModelDOs()) {
+        for (TimeBandModelDTO DO : getTimeBandModelDTOs()) {
             if (isStringOpen(DO.getTimeBandFrom())) {
                 return DO.getTimeBandTo();
             }
@@ -205,7 +205,7 @@ public class PickTimebandOptionBean extends TimebandAbstractBean implements Prop
 
     private String getEarliestCloseTime() {
 
-        for (TimeBandModelDO DO : getTimeBandModelDOs()) {
+        for (TimeBandModelDTO DO : getTimeBandModelDTOs()) {
             if (isStringClose(DO.getTimeBandTo())) {
                 return DO.getTimeBandFrom();
             }

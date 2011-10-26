@@ -14,7 +14,7 @@ import java.util.List;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
-import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class TimeBandModelProvider {
@@ -35,12 +35,12 @@ public class TimeBandModelProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
-    public List<TimeBandModelDO> getTimeBandModelDOsFor(String meterClass,
-                                                        String dateType) {
-        LOGGER.entering(CLASSNAME, "getTimeBandModelDOsFor");
+    public List<TimeBandModelDTO> getTimeBandModelDTOsFor(String meterClass,
+                                                          String dateType) {
+        LOGGER.entering(CLASSNAME, "getTimeBandModelDTOsFor");
 
-        List<TimeBandModelDO> timeBandModelDOs =
-            new ArrayList<TimeBandModelDO>();
+        List<TimeBandModelDTO> TimeBandModelDTOs =
+            new ArrayList<TimeBandModelDTO>();
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -57,9 +57,9 @@ public class TimeBandModelProvider {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                TimeBandModelDO DO = TimeBandModelDO.extract(resultSet);
+                TimeBandModelDTO DO = TimeBandModelDTO.extract(resultSet);
 
-                timeBandModelDOs.add(DO);
+                TimeBandModelDTOs.add(DO);
             }
 
         } catch (SQLException e) {
@@ -70,9 +70,9 @@ public class TimeBandModelProvider {
                                         connection);
         }
 
-        LOGGER.exiting(CLASSNAME, "getTimeBandModelDOsFor");
+        LOGGER.exiting(CLASSNAME, "getTimeBandModelDTOsFor");
 
-        return timeBandModelDOs;
+        return TimeBandModelDTOs;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -89,24 +89,24 @@ public class TimeBandModelProvider {
         LOGGER.entering(CLASSNAME, "getSelectStatement");
 
         String Attributes =
-            StringUtil.convertListToString(TimeBandModelDO.getAttributeListForSelect());
+            StringUtil.convertListToString(TimeBandModelDTO.getAttributeListForSelect());
 
         String string1 =
-            StatementGenerator.equalToOperator(TimeBandModelDO.METER_CLASS);
+            StatementGenerator.equalToOperator(TimeBandModelDTO.METER_CLASS);
         String string2 =
-            StatementGenerator.equalToOperator(TimeBandModelDO.DATE_TYPE);
+            StatementGenerator.equalToOperator(TimeBandModelDTO.DATE_TYPE);
 
         String Where = StatementGenerator.andOperator(string1, string2);
 
         String OrderBy =
-            StatementGenerator.commaOperator(TimeBandModelDO.METER_CLASS,
-                                             TimeBandModelDO.DATE_TYPE,
-                                             TimeBandModelDO.TIME_BAND_ID);
+            StatementGenerator.commaOperator(TimeBandModelDTO.METER_CLASS,
+                                             TimeBandModelDTO.DATE_TYPE,
+                                             TimeBandModelDTO.TIME_BAND_ID);
 
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
         return StatementGenerator.selectStatement(Attributes,
-                                                  TimeBandModelDO.getDatabaseTableName(),
+                                                  TimeBandModelDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 }

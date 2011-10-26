@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.utilities.generic.CurrencyUtil;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
@@ -47,14 +47,14 @@ public class BlockTimeBandsDTO extends BaseDTO {
 
     }
 
-    private BlockTimeBandsDTO(TimeBandModelDO timeBandModelDO) {
+    private BlockTimeBandsDTO(TimeBandModelDTO TimeBandModelDTO) {
         super();
 
-        this.setMeterClass(timeBandModelDO.getMeterClass());
-        this.setDateType(timeBandModelDO.getDateType());
-        this.setTimeBandID(timeBandModelDO.getTimeBandID());
-        this.setTimeBandFrom(timeBandModelDO.getTimeBandFrom());
-        this.setTimeBandTo(timeBandModelDO.getTimeBandTo());
+        this.setMeterClass(TimeBandModelDTO.getMeterClass());
+        this.setDateType(TimeBandModelDTO.getDateType());
+        this.setTimeBandID(TimeBandModelDTO.getTimeBandID());
+        this.setTimeBandFrom(TimeBandModelDTO.getTimeBandFrom());
+        this.setTimeBandTo(TimeBandModelDTO.getTimeBandTo());
 
     }
 
@@ -111,13 +111,13 @@ public class BlockTimeBandsDTO extends BaseDTO {
         return new BlockTimeBandsDTO(resultSet);
     }
 
-    public static BlockTimeBandsDTO extract(TimeBandModelDO timeBandModelDO) {
+    public static BlockTimeBandsDTO extract(TimeBandModelDTO TimeBandModelDTO) {
 
-        if (timeBandModelDO == null) {
+        if (TimeBandModelDTO == null) {
             return null;
         }
 
-        return new BlockTimeBandsDTO(timeBandModelDO);
+        return new BlockTimeBandsDTO(TimeBandModelDTO);
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

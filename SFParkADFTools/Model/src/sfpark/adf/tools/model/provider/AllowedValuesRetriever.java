@@ -16,7 +16,6 @@ import java.util.TreeMap;
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
-import sfpark.adf.tools.model.data.dO.timeBandModel.TimeBandModelDO;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.calendar.CalendarHeaderDTO;
 import sfpark.adf.tools.model.data.dto.meterOPSchedule.MeterOPScheduleDTO;
@@ -24,6 +23,7 @@ import sfpark.adf.tools.model.data.dto.parkingSpaceInventory.ParkingSpaceInvento
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeRulesDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.utilities.constants.TimeToUpdate;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -365,8 +365,8 @@ public final class AllowedValuesRetriever {
             ((System.currentTimeMillis() - TimeOfLastMeterClassRetrieve) >
              TIME_TO_UPDATE)) {
             meterClassList =
-                    getAllowedValuesFor(TimeBandModelDO.getDatabaseTableName(),
-                                        TimeBandModelDO.METER_CLASS);
+                    getAllowedValuesFor(TimeBandModelDTO.getDatabaseTableName(),
+                                        TimeBandModelDTO.METER_CLASS);
 
             TimeOfLastMeterClassRetrieve = System.currentTimeMillis();
         }
@@ -392,8 +392,8 @@ public final class AllowedValuesRetriever {
             ((System.currentTimeMillis() - TimeOfLastDateTypeRetrieve) >
              TIME_TO_UPDATE)) {
             dateTypeList =
-                    getAllowedValuesFor(TimeBandModelDO.getDatabaseTableName(),
-                                        TimeBandModelDO.DATE_TYPE);
+                    getAllowedValuesFor(TimeBandModelDTO.getDatabaseTableName(),
+                                        TimeBandModelDTO.DATE_TYPE);
 
             TimeOfLastDateTypeRetrieve = System.currentTimeMillis();
         }
