@@ -1,42 +1,5 @@
 package sfpark.admin.console.view.backing.timeband;
 
-import javax.faces.event.ActionEvent;
-
-import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
-
-public class TimebandAddBean extends TimebandAbstractBean implements PropertiesBeanInterface,
-                                                                     RequestScopeBeanInterface {
-    public TimebandAddBean() {
-        super();
-    }
-
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-    }
-
-    public void clearPageFlowScopeCache() {
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-}
-/*
-package sfpark.rateChange.manager.view.backing.blockTimeband;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,32 +7,32 @@ import javax.faces.event.ActionEvent;
 
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
-import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
-import sfpark.adf.tools.model.provider.BlockTimeBandsProvider;
+import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
-import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
-import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.flow.NavigationFlow;
-import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
-import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
+import sfpark.admin.console.application.key.PageFlowScopeKey;
+import sfpark.admin.console.application.key.SessionScopeKey;
+import sfpark.admin.console.view.flow.NavigationFlow;
+import sfpark.admin.console.view.flow.NavigationMode;
+import sfpark.admin.console.view.helper.TimeBandModelWrapper;
+import sfpark.admin.console.view.provider.DMLOperationsProvider;
 
-public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                               RequestScopeBeanInterface {
-    private RichTable InsertBlockTimeBandsTable;
+public class TimebandAddBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                     RequestScopeBeanInterface {
+    private RichTable InsertTimeBandModelsTable;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
 
-    public BlockTimebandAddBean() {
+    public TimebandAddBean() {
         super();
     }
 
@@ -104,17 +67,17 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
 
-    public List<BlockTimeBandsDTO> getInsertableBlockTimeBands() {
+    public List<TimeBandModelDTO> getInsertableTimeBandModels() {
+        List<TimeBandModelDTO> insertableTimeBandModelDTOs =
+            (List<TimeBandModelDTO>)getPageFlowScopeValue(PageFlowScopeKey.ADD_TIME_BAND_MODEL_DTO_LIST.getKey());
 
-        List<BlockTimeBandsDTO> insertableBlockTimeBandsDTOs =
-            (List<BlockTimeBandsDTO>)getPageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey());
-
-        if (insertableBlockTimeBandsDTOs == null) {
-            insertableBlockTimeBandsDTOs = new ArrayList<BlockTimeBandsDTO>();
-            setPageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
-                                  insertableBlockTimeBandsDTOs);
+        if (insertableTimeBandModelDTOs == null) {
+            insertableTimeBandModelDTOs = new ArrayList<TimeBandModelDTO>();
+            setPageFlowScopeValue(PageFlowScopeKey.ADD_TIME_BAND_MODEL_DTO_LIST.getKey(),
+                                  insertableTimeBandModelDTOs);
         }
-        return insertableBlockTimeBandsDTOs;
+
+        return insertableTimeBandModelDTOs;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -131,8 +94,8 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            List<BlockTimeBandsDTO> checkList =
-                (List<BlockTimeBandsDTO>)getInsertBlockTimeBandsTable().getValue();
+            List<TimeBandModelDTO> checkList =
+                (List<TimeBandModelDTO>)getInsertTimeBandModelsTable().getValue();
 
             if (checkList == null || checkList.isEmpty()) {
                 allValid = false;
@@ -166,19 +129,19 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
                 // ADD Mode
                 printLog("ADD Mode");
 
-                List<BlockTimeBandsDTO> insertableBlockTimeBandsDTOs =
-                    (List<BlockTimeBandsDTO>)getInsertBlockTimeBandsTable().getValue();
-                List<BlockTimeBandsDTO> deletableBlockTimeBandsDTOs =
-                    getDeletableBlockTimeBands();
+                List<TimeBandModelDTO> insertableTimeBandModelDTOs =
+                    (List<TimeBandModelDTO>)getInsertTimeBandModelsTable().getValue();
+                List<TimeBandModelDTO> deletableTimeBandModelDTOs =
+                    getDeletableTimeBandModels();
 
                 OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.addBlockTimeBands(insertableBlockTimeBandsDTOs,
-                                                                     deletableBlockTimeBandsDTOs);
+                    DMLOperationsProvider.INSTANCE.addTimebands(insertableTimeBandModelDTOs,
+                                                                deletableTimeBandModelDTOs);
 
                 if (operationStatus.isSuccess()) {
                     printLog("ADD operation successful");
 
-                    removePageFlowScopeValue(PageFlowScopeKey.EDIT_BLOCK_TIME_BANDS_DTO_LIST.getKey());
+                    removePageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_LIST.getKey());
                     moveOn();
 
                 } else {
@@ -206,9 +169,9 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
     private void moveOn() {
         clearPageFlowScopeCache();
 
-        setCurrentPageMode(NavigationMode.EDIT);
+        setCurrentPageMode(NavigationMode.READ_ONLY);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
+                             NavigationFlow.TIME_BAND_MODEL_LIST.name());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -216,13 +179,11 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS EXTRA
 
-    public List<BlockTimeBandsDTO> getDeletableBlockTimeBands() {
+    public List<TimeBandModelDTO> getDeletableTimeBandModels() {
+        TimeBandModelWrapper wrapper = getTimeBandModelWrapper();
 
-        BlockTimeBandsWrapper wrapper = getBlockTimeBandsWrapper();
-
-        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(wrapper.getBlockID(),
-                                                                                wrapper.getMeterClass(),
-                                                                                wrapper.getDateType());
+        return TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(wrapper.getMeterClass(),
+                                                                      wrapper.getDateType());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -230,13 +191,11 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS
 
-    public void setInsertBlockTimeBandsTable(RichTable InsertBlockTimeBandsTable) {
-        this.InsertBlockTimeBandsTable = InsertBlockTimeBandsTable;
+    public void setInsertTimeBandModelsTable(RichTable InsertTimeBandModelsTable) {
+        this.InsertTimeBandModelsTable = InsertTimeBandModelsTable;
     }
 
-    public RichTable getInsertBlockTimeBandsTable() {
-        return InsertBlockTimeBandsTable;
+    public RichTable getInsertTimeBandModelsTable() {
+        return InsertTimeBandModelsTable;
     }
 }
-
- */

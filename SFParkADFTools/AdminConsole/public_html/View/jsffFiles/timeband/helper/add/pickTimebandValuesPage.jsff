@@ -8,10 +8,10 @@
     </f:facet>
     <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
       <af:commandNavigationItem id="cni" immediate="true"
-                                text="#{rateChangeManagerBundle.string_block_time_bands_management}"
+                                text="#{adminConsoleBundle.string_timeband_model_management}"
                                 actionListener="#{pickTimebandValuesBean.cancelButtonHandler}"/>
       <af:outputText id="bcOT"
-                     value="#{rateChangeManagerBundle.string_pick_time_band_values}"/>
+                     value="#{adminConsoleBundle.string_pick_time_band_values}"/>
     </af:breadCrumbs>
     <af:separator id="Separator"/>
     <af:toolbar id="mainToolbar">
@@ -26,14 +26,6 @@
                           inlineStyle="#{globalBean.generalButtonInlineStyle}"
                           text="#{buttonBundle.button_cancel}"
                           actionListener="#{pickTimebandValuesBean.cancelButtonHandler}"/>
-        <af:spacer id="spaceAfterCancelButton" width="10"/>
-      </af:group>
-      <af:group id="mainToolbarInlineMessage">
-        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
-        <af:outputText id="inlineMessage" noWrap="true"
-                       value="#{pickTimebandValuesBean.inlineMessageText}"
-                       styleClass="#{pickTimebandValuesBean.inlineMessageClass}"
-                       partialTriggers="continueButton"/>
       </af:group>
     </af:toolbar>
     <af:panelGroupLayout id="timebandPickerPGL" layout="horizontal" valign="top"

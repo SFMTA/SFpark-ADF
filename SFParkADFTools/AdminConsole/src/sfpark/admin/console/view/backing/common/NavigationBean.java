@@ -164,6 +164,17 @@ public class NavigationBean extends BaseBean {
                     setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                          NavigationFlow.ALLOWED_VALUES_LIST.name());
 
+                } else if ( // TIME_BAND_MODEL
+                    operation.isTimeBandModel()) {
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    // ++++++++++++++++++++++++++++++++++
+                    LOGGER.debug("TIME_BAND_MODEL");
+
+                    setCurrentPageMode(NavigationMode.READ_ONLY);
+                    setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                         NavigationFlow.TIME_BAND_MODEL_LIST.name());
+
                 } else {
                     // ++++++++++++++++++++++++++++++++++
                     // ++++++++++++++++++++++++++++++++++

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
+import sfpark.adf.tools.utilities.generic.StringUtil;
+import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
 public class TimeBandModelDTO extends BaseDTO {
 
@@ -68,6 +70,29 @@ public class TimeBandModelDTO extends BaseDTO {
         }
 
         return new TimeBandModelDTO(resultSet);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PURELY FOR DISPLAY PURPOSES
+
+    public String getDisplayTimeBandFrom() {
+        return getDisplayTimeBand(getTimeBandFrom(), true);
+    }
+
+    public String getDisplayTimeBandTo() {
+        return getDisplayTimeBand(getTimeBandTo(), false);
+    }
+
+    private String getDisplayTimeBand(String value, boolean from) {
+
+        if (StringUtil.isDigitsONLY(value)) {
+            return (from) ? TimeDisplayUtil.extractFromTimeForDisplay(value) :
+                   TimeDisplayUtil.extractToTimeForDisplay(value);
+        }
+
+        return value;
     }
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

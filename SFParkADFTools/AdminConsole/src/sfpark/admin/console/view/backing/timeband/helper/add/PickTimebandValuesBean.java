@@ -1,60 +1,5 @@
 package sfpark.admin.console.view.backing.timeband.helper.add;
 
-import javax.faces.event.ActionEvent;
-
-import org.apache.myfaces.trinidad.event.SelectionEvent;
-
-import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
-import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
-
-import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
-
-public class PickTimebandValuesBean extends TimebandAbstractBean implements ListBeanInterface,
-                                                                            PropertiesBeanInterface,
-                                                                            RequestScopeBeanInterface {
-    public PickTimebandValuesBean() {
-        super();
-    }
-
-    public void addButtonHandler(ActionEvent event) {
-    }
-
-    public void editButtonHandler(ActionEvent event) {
-    }
-
-    public void deleteButtonHandler(ActionEvent event) {
-    }
-
-    public void tableRowSelectionHandler(SelectionEvent event) {
-    }
-
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-    }
-
-    public void clearPageFlowScopeCache() {
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-}
-/*
-package sfpark.rateChange.manager.view.backing.blockTimeband.helper.add;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,24 +15,22 @@ import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 
-import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
-import sfpark.adf.tools.utilities.constants.CSSClasses;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
+import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 import sfpark.adf.tools.utilities.ui.TimeUI;
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
-import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
-import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandAbstractBean;
-import sfpark.rateChange.manager.view.flow.NavigationFlow;
-import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
+import sfpark.admin.console.application.key.PageFlowScopeKey;
+import sfpark.admin.console.application.key.SessionScopeKey;
+import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
+import sfpark.admin.console.view.flow.NavigationFlow;
+import sfpark.admin.console.view.flow.NavigationMode;
+import sfpark.admin.console.view.helper.TimeBandModelWrapper;
 
-public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements ListBeanInterface,
-                                                                            PropertiesBeanInterface,
-                                                                            RequestScopeBeanInterface {
+public class PickTimebandValuesBean extends TimebandAbstractBean implements ListBeanInterface,
+                                                                            PropertiesBeanInterface {
 
     private int ChooseTimeband;
 
@@ -103,32 +46,6 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
 
     public PickTimebandValuesBean() {
         super();
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    public void clearPageFlowScopeCache() {
-        super.clearPageFlowScopeCache();
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(),
-                                   inlineMessageText);
-    }
-
-    public String getInlineMessageText() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(),
-                                   inlineMessageClass);
-    }
-
-    public String getInlineMessageClass() {
-        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -217,110 +134,53 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
     }
 
     public void saveButtonHandler(ActionEvent event) {
-        boolean allValid = true;
-        NavigationMode currentPageMode = getCurrentPageMode();
 
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Clear out old values
+        removePageFlowScopeValue(PageFlowScopeKey.ADD_TIME_BAND_MODEL_DTO_LIST.getKey());
 
-        if (allValid) {
-            List<Integer> list =
-                (List<Integer>)getChosenTimebandsTable().getValue();
+        // Create empty list
+        List<TimeBandModelDTO> DTOs = new ArrayList<TimeBandModelDTO>();
 
-            if (list == null || list.isEmpty() ||
-                list.size() < getMinimumTimebands()) {
-                setInlineMessageText("Minimum THREE time band values required!");
-                allValid = false;
-            }
+        // Get the timebands
+        List<String> timebands = getTimebands();
+
+        // Retrieve Transfer object
+        TimeBandModelWrapper wrapper = getTimeBandModelWrapper();
+
+        // Insert into DTOs
+        for (int i = 0; i < timebands.size() - 1; i++) {
+
+            TimeBandModelDTO DTO = new TimeBandModelDTO();
+
+            DTO.setMeterClass(wrapper.getMeterClass());
+            DTO.setDateType(wrapper.getDateType());
+
+            DTO.setTimeBandID(i + 1);
+
+            DTO.setTimeBandFrom(timebands.get(i));
+            DTO.setTimeBandTo(timebands.get(i + 1));
+
+            DTOs.add(DTO);
         }
 
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        setCurrentPageMode(NavigationMode.ADD);
 
-        //        allValid = false;
-        //        String tttt =
-        //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
-        //            getInlineMessageText();
-        //        setInlineMessageText(tttt);
+        removePageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
 
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        setPageFlowScopeValue(PageFlowScopeKey.ADD_TIME_BAND_MODEL_DTO_LIST.getKey(),
+                              DTOs);
 
-        if (allValid) {
-            printLog("All entries are Valid. Proceed");
-
-            if (currentPageMode.isAddMode()) {
-                // ++++++++++++++++++++++++++++++++++
-                // ++++++++++++++++++++++++++++++++++
-                // ++++++++++++++++++++++++++++++++++
-                // EDIT Mode
-                printLog("ADD Mode");
-
-                // Clear out old values
-                removePageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey());
-
-                // Retrieve Chosen Timebands
-                List<Integer> chosenTimebands =
-                    (List<Integer>)getChosenTimebandsTable().getValue();
-
-                // Retrieve Transfer Object
-                BlockTimeBandsWrapper wrapper = getBlockTimeBandsWrapper();
-
-                // Create empty list
-                List<BlockTimeBandsDTO> DTOs =
-                    new ArrayList<BlockTimeBandsDTO>();
-
-                int lastIndex = chosenTimebands.size() - 1;
-
-                // Insert into DTOs
-                for (int i = 0; i < lastIndex; i++) {
-
-                    BlockTimeBandsDTO DTO = new BlockTimeBandsDTO();
-
-                    DTO.setBlockID(wrapper.getBlockID());
-                    DTO.setMeterClass(wrapper.getMeterClass());
-                    DTO.setDateType(wrapper.getDateType());
-
-                    DTO.setTimeBandID(i + 1);
-
-                    DTO.setTimeBandFrom((i == 0) ? "Open" :
-                                        chosenTimebands.get(i).toString());
-                    DTO.setTimeBandTo((i < lastIndex - 1) ?
-                                      chosenTimebands.get(i + 1).toString() :
-                                      "Close");
-
-                    DTO.setFromTime(chosenTimebands.get(i));
-                    DTO.setToTime(chosenTimebands.get(i + 1));
-
-                    DTOs.add(DTO);
-                }
-
-                setCurrentPageMode(NavigationMode.ADD);
-
-                removePageFlowScopeValue(PageFlowScopeKey.TIMEBAND_PICKER_CHOSEN_LIST.getKey());
-
-                setPageFlowScopeValue(PageFlowScopeKey.ADD_BLOCK_TIME_BANDS_DTO_LIST.getKey(),
-                                      DTOs);
-
-                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                     NavigationFlow.AddTimeband.name());
-
-            }
-        } else {
-            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-        }
+        setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                             NavigationFlow.ADD_TIME_BAND_MODEL.name());
 
     }
 
     public void cancelButtonHandler(ActionEvent event) {
         clearPageFlowScopeCache();
 
-        setCurrentPageMode(NavigationMode.EDIT);
+        setCurrentPageMode(NavigationMode.READ_ONLY);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
+                             NavigationFlow.TIME_BAND_MODEL_LIST.name());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -328,8 +188,23 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
 
-    private int getMinimumTimebands() {
-        return 3;
+    private List<String> getTimebands() {
+        List<String> timebands = new ArrayList<String>();
+
+        timebands.add("Open");
+
+        List<Integer> pickedTimebands =
+            (List<Integer>)getChosenTimebandsTable().getValue();
+
+        if (pickedTimebands != null && !pickedTimebands.isEmpty()) {
+            for (Integer timeband : pickedTimebands) {
+                timebands.add(timeband.toString());
+            }
+        }
+
+        timebands.add("Close");
+
+        return timebands;
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -340,19 +215,23 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
     public List<String> getDisplayIteratorRows() {
         List<String> rows = new ArrayList<String>();
 
-        List<Integer> timebands =
-            (List<Integer>)getChosenTimebandsTable().getValue();
+        List<String> timebands = getTimebands();
 
-        if (timebands != null && !timebands.isEmpty() &&
-            timebands.size() >= getMinimumTimebands()) {
-            for (int i = 0; i < timebands.size() - 1; i++) {
-                rows.add(String.format("%s - %s",
-                                       TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i)),
-                                       TimeDisplayUtil.extractAnyTimeForDisplay(timebands.get(i +
-                                                                                              1))));
-            }
-        } else {
-            rows.add("Minimum THREE time band values required!");
+        for (int i = 0; i < timebands.size() - 1; i++) {
+
+            String fromTimeString = timebands.get(i);
+            String toTimeString = timebands.get(i + 1);
+
+            String displayFromTime =
+                (StringUtil.isDigitsONLY(fromTimeString)) ?
+                TimeDisplayUtil.extractAnyTimeForDisplay(Integer.parseInt(fromTimeString)) :
+                fromTimeString;
+
+            String displayToTime =
+                (StringUtil.isDigitsONLY(toTimeString)) ? TimeDisplayUtil.extractAnyTimeForDisplay(Integer.parseInt(toTimeString)) :
+                toTimeString;
+
+            rows.add(String.format("%s - %s", displayFromTime, displayToTime));
         }
 
         return rows;
@@ -395,5 +274,3 @@ public class PickTimebandValuesBean extends BlockTimebandAbstractBean implements
         return ChosenTimebandsTable;
     }
 }
-
- */

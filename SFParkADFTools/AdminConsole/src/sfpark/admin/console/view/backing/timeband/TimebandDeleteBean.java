@@ -1,71 +1,34 @@
 package sfpark.admin.console.view.backing.timeband;
 
-import javax.faces.event.ActionEvent;
-
-import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
-
-public class TimebandDeleteBean extends TimebandAbstractBean implements PropertiesBeanInterface,
-                                                                        RequestScopeBeanInterface {
-    public TimebandDeleteBean() {
-        super();
-    }
-
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-    }
-
-    public void clearPageFlowScopeCache() {
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-}
-/*
-package sfpark.rateChange.manager.view.backing.blockTimeband;
-
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
-import sfpark.adf.tools.model.data.dto.blockTimeBands.BlockTimeBandsDTO;
+import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
-import sfpark.adf.tools.model.provider.BlockTimeBandsProvider;
+import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
-import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
-import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.flow.NavigationFlow;
-import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.BlockTimeBandsWrapper;
-import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
+import sfpark.admin.console.application.key.PageFlowScopeKey;
+import sfpark.admin.console.application.key.SessionScopeKey;
+import sfpark.admin.console.view.flow.NavigationFlow;
+import sfpark.admin.console.view.flow.NavigationMode;
+import sfpark.admin.console.view.helper.TimeBandModelWrapper;
+import sfpark.admin.console.view.provider.DMLOperationsProvider;
 
-public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                                  RequestScopeBeanInterface {
+public class TimebandDeleteBean extends TimebandAbstractBean implements PropertiesBeanInterface,
+                                                                        RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
 
-    public BlockTimebandDeleteBean() {
+    public TimebandDeleteBean() {
         super();
     }
 
@@ -114,7 +77,7 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            List<BlockTimeBandsDTO> checkList = getDeletableBlockTimeBands();
+            List<TimeBandModelDTO> checkList = getDeletableTimeBandModels();
 
             if (checkList == null || checkList.isEmpty()) {
                 allValid = false;
@@ -148,16 +111,16 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
                 // DELETE Mode
                 printLog("DELETE Mode");
 
-                List<BlockTimeBandsDTO> deletableBlockTimeBandsDTOs =
-                    getDeletableBlockTimeBands();
+                List<TimeBandModelDTO> deletableTimeBandModelDTOs =
+                    getDeletableTimeBandModels();
 
                 OperationStatus operationStatus =
-                    DMLOperationsProvider.INSTANCE.deleteTimeBands(deletableBlockTimeBandsDTOs);
+                    DMLOperationsProvider.INSTANCE.deleteTimebands(deletableTimeBandModelDTOs);
 
                 if (operationStatus.isSuccess()) {
                     printLog("ADD operation successful");
 
-                    removePageFlowScopeValue(PageFlowScopeKey.EDIT_BLOCK_TIME_BANDS_DTO_LIST.getKey());
+                    removePageFlowScopeValue(PageFlowScopeKey.TIME_BAND_MODEL_LIST.getKey());
                     moveOn();
 
                 } else {
@@ -166,7 +129,6 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
             }
-
         } else {
             setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
@@ -184,9 +146,9 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
     private void moveOn() {
         clearPageFlowScopeCache();
 
-        setCurrentPageMode(NavigationMode.EDIT);
+        setCurrentPageMode(NavigationMode.READ_ONLY);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
+                             NavigationFlow.TIME_BAND_MODEL_LIST.name());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -194,14 +156,10 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // UI BINDINGS EXTRA
 
-    public List<BlockTimeBandsDTO> getDeletableBlockTimeBands() {
+    public List<TimeBandModelDTO> getDeletableTimeBandModels() {
+        TimeBandModelWrapper wrapper = getTimeBandModelWrapper();
 
-        BlockTimeBandsWrapper wrapper = getBlockTimeBandsWrapper();
-
-        return BlockTimeBandsProvider.INSTANCE.getToBeDeletedBlockTimeBandsDTOs(wrapper.getBlockID(),
-                                                                                wrapper.getMeterClass(),
-                                                                                wrapper.getDateType());
+        return TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(wrapper.getMeterClass(),
+                                                                      wrapper.getDateType());
     }
 }
-
- */

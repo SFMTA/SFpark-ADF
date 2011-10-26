@@ -1,63 +1,20 @@
 package sfpark.admin.console.view.backing.timeband.helper;
 
-import javax.faces.event.ActionEvent;
-
-import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
-
-import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
-
-public class PickTimebandTypeBean extends TimebandAbstractBean implements PropertiesBeanInterface,
-                                                                          RequestScopeBeanInterface {
-    public PickTimebandTypeBean() {
-        super();
-    }
-
-    public void saveButtonHandler(ActionEvent event) {
-    }
-
-    public void cancelButtonHandler(ActionEvent event) {
-    }
-
-    public void clearPageFlowScopeCache() {
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-}
-/*
-package sfpark.rateChange.manager.view.backing.blockTimeband.helper;
-
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
 import javax.faces.model.SelectItem;
 
-import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
-import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
-import sfpark.rateChange.manager.application.key.SessionScopeKey;
-import sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandAbstractBean;
-import sfpark.rateChange.manager.view.flow.NavigationFlow;
-import sfpark.rateChange.manager.view.flow.NavigationMode;
-import sfpark.rateChange.manager.view.helper.ADFUIHelper;
+import sfpark.admin.console.application.key.SessionScopeKey;
+import sfpark.admin.console.view.backing.timeband.TimebandAbstractBean;
+import sfpark.admin.console.view.flow.NavigationFlow;
+import sfpark.admin.console.view.flow.NavigationMode;
+import sfpark.admin.console.view.helper.ADFUIHelper;
 
-public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                          RequestScopeBeanInterface {
+public class PickTimebandTypeBean extends TimebandAbstractBean implements PropertiesBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,47 +24,6 @@ public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements P
     public PickTimebandTypeBean() {
         super();
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    public void clearPageFlowScopeCache() {
-        super.clearPageFlowScopeCache();
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DTO INFORMATION
-
-    //    public BlockTimeBandsWrapper getBlockTimeBandsWrapper() {
-    //        BlockTimeBandsWrapper wrapper =
-    //            (BlockTimeBandsWrapper)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey());
-    //
-    //        if (wrapper == null) {
-    //            wrapper =
-    //                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandsWrapper(getBlockID());
-    //            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey(),
-    //                                  wrapper);
-    //        }
-    //
-    //        return wrapper;
-    //    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -141,23 +57,8 @@ public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements P
             // ADD Mode
             printLog("ADD Mode");
 
-            List<TimeBandModelDTO> TimeBandModelDTOs =
-                TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(getBlockTimeBandsWrapper().getMeterClass(),
-                                                                       getBlockTimeBandsWrapper().getDateType());
-
-            if (TimeBandModelDTOs != null && !TimeBandModelDTOs.isEmpty()) {
-                // Template exists
-                // Go to Options page
-                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                     NavigationFlow.PickTimebandOption.name());
-
-            } else {
-                // NO Template exists
-                // Go to Values page
-                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                     NavigationFlow.PickTimebandValues.name());
-
-            }
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PICK_TIMEBAND_VALUES.name());
 
         } else if (currentPageMode.isDeleteMode()) {
             // ++++++++++++++++++++++++++++++++++
@@ -167,19 +68,16 @@ public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements P
             printLog("DELETE Mode");
 
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                 NavigationFlow.DeleteTimeband.name());
+                                 NavigationFlow.DELETE_TIME_BAND_MODEL.name());
 
         }
-
     }
 
     public void cancelButtonHandler(ActionEvent event) {
         clearPageFlowScopeCache();
 
-        setCurrentPageMode(NavigationMode.EDIT);
+        setCurrentPageMode(NavigationMode.READ_ONLY);
         setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                             NavigationFlow.EditTimeband.name());
+                             NavigationFlow.TIME_BAND_MODEL_LIST.name());
     }
 }
-
- */

@@ -10,8 +10,8 @@ public enum OperationValue {
     // Used for ALLOWED_VALUES
     ALLOWED_VALUES("allowedValues"),
 
-    // Used for TIME_BANDS_MODEL
-    TIME_BANDS_MODEL("timeBandsModel"),
+    // Used for TIME_BAND_MODEL
+    TIME_BAND_MODEL("timeBandModel"),
 
     UNKNOWN("");
 
@@ -55,6 +55,10 @@ public enum OperationValue {
 
     public boolean isAllowedValues() {
         return (this == ALLOWED_VALUES);
+    }
+
+    public boolean isTimeBandModel() {
+        return (this == TIME_BAND_MODEL);
     }
 
     public boolean isUnknown() {

@@ -8,10 +8,10 @@
     </f:facet>
     <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
       <af:commandNavigationItem id="cni" immediate="true"
-                                text="#{rateChangeManagerBundle.string_block_time_bands_management}"
+                                text="#{adminConsoleBundle.string_timeband_model_management}"
                                 actionListener="#{pickTimebandTypeBean.cancelButtonHandler}"/>
       <af:outputText id="bcOT"
-                     value="#{rateChangeManagerBundle.string_pick_time_band_type}"/>
+                     value="#{adminConsoleBundle.string_pick_time_band_type}"/>
     </af:breadCrumbs>
     <af:separator id="Separator"/>
     <af:toolbar id="mainToolbar">
@@ -33,7 +33,7 @@
                         inlineStyle="padding-left: 25px;">
       <af:selectOneChoice id="meterClassSOC" required="true"
                           label="#{labelBundle.label_meter_class}"
-                          value="#{pickTimebandTypeBean.blockTimeBandsWrapper.meterClass}"
+                          value="#{pickTimebandTypeBean.timeBandModelWrapper.meterClass}"
                           autoSubmit="true">
         <f:selectItems id="meterClassSOCSI"
                        value="#{pickTimebandTypeBean.listMeterClass}"/>
@@ -41,7 +41,7 @@
       <af:spacer id="meterClassSpacer" height="10"/>
       <af:selectOneChoice id="dateTypeSOC" required="true"
                           label="#{labelBundle.label_date_type}"
-                          value="#{pickTimebandTypeBean.blockTimeBandsWrapper.dateType}"
+                          value="#{pickTimebandTypeBean.timeBandModelWrapper.dateType}"
                           autoSubmit="true">
         <f:selectItems id="dateTypeSOCSI"
                        value="#{pickTimebandTypeBean.listDateType}"/>

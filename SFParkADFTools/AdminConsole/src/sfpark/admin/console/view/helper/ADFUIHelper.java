@@ -1,4 +1,4 @@
-package sfpark.rateChange.manager.view.helper;
+package sfpark.admin.console.view.helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,6 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
-import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public final class ADFUIHelper {
 
@@ -16,14 +15,6 @@ public final class ADFUIHelper {
      */
     private ADFUIHelper() {
         super();
-    }
-
-    public static String getDisplayableProcessStep(String possibleStep) {
-        return getDisplayableString(true, possibleStep);
-    }
-
-    public static String getDisplayableStepExecutionStatus(String stepExecStatus) {
-        return getDisplayableString(false, stepExecStatus);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -48,23 +39,6 @@ public final class ADFUIHelper {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
-
-    private static String getDisplayableString(boolean forProcessStep,
-                                               String forString) {
-        if (StringUtil.isBlank(forString)) {
-            return "N/A";
-        }
-
-        String displayString =
-            (forProcessStep) ? AllowedValuesRetriever.getProcessStepTreeMap().get(forString) :
-            AllowedValuesRetriever.getProcessStepExecStatusTreeMap().get(forString);
-
-        if (StringUtil.isBlank(displayString)) {
-            displayString = "";
-        }
-
-        return displayString;
-    }
 
     private static List<SelectItem> getAllowedValuesDisplayList(List<AllowedValuesDTO> allowedValuesList) {
         List<SelectItem> displayList = new ArrayList<SelectItem>();

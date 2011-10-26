@@ -24,9 +24,11 @@
                                  text="Timeband Options">
           <f:facet name="popup">
             <af:menu id="addDeleteButtonMenu">
-              <af:commandMenuItem id="addTimeband" text="Add Timeband"
+              <af:commandMenuItem id="addTimeband"
+                                  text="#{buttonBundle.button_add_block_timebands}"
                                   actionListener="#{blockTimebandPropertiesBean.pickButtonHandler}"/>
-              <af:commandMenuItem id="deleteTimeband" text="Delete Timebands"
+              <af:commandMenuItem id="deleteTimeband"
+                                  text="#{buttonBundle.button_delete_block_timebands}"
                                   actionListener="#{blockTimebandPropertiesBean.pickButtonHandler}"/>
             </af:menu>
           </f:facet>

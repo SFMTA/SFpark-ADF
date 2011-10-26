@@ -8,10 +8,10 @@
     </f:facet>
     <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
       <af:commandNavigationItem id="cni" immediate="true"
-                                text="#{rateChangeManagerBundle.string_block_time_bands_management}"
-                                actionListener="#{blockTimebandDeleteBean.cancelButtonHandler}"/>
+                                text="#{adminConsoleBundle.string_timeband_model_management}"
+                                actionListener="#{timebandDeleteBean.cancelButtonHandler}"/>
       <af:outputText id="bcOT"
-                     value="#{rateChangeManagerBundle.string_delete_time_bands}"/>
+                     value="#{adminConsoleBundle.string_delete_time_bands}"/>
     </af:breadCrumbs>
     <af:toolbar id="mainToolbar">
       <af:group id="mainToolbarDeleteAndCancel">
@@ -19,40 +19,35 @@
         <af:commandButton id="deleteButton"
                           inlineStyle="#{globalBean.commitButtonInlineStyle}"
                           text="#{buttonBundle.button_delete}"
-                          actionListener="#{blockTimebandDeleteBean.saveButtonHandler}"/>
+                          actionListener="#{timebandDeleteBean.saveButtonHandler}"/>
         <af:spacer id="spaceAfterDeleteButton" width="10"/>
         <af:commandButton id="cancelButton" immediate="true"
                           inlineStyle="#{globalBean.generalButtonInlineStyle}"
                           text="#{buttonBundle.button_cancel}"
-                          actionListener="#{blockTimebandDeleteBean.cancelButtonHandler}"/>
+                          actionListener="#{timebandDeleteBean.cancelButtonHandler}"/>
         <af:spacer id="spaceAfterCancelButton" width="10"/>
       </af:group>
       <af:group id="mainToolbarInlineMessage">
         <af:spacer id="spaceBeforeInlineMessage" width="10"/>
         <af:outputText id="inlineMessage" noWrap="true"
-                       value="#{blockTimebandDeleteBean.inlineMessageText}"
-                       styleClass="#{blockTimebandDeleteBean.inlineMessageClass}"
+                       value="#{timebandDeleteBean.inlineMessageText}"
+                       styleClass="#{timebandDeleteBean.inlineMessageClass}"
                        partialTriggers="deleteButton"/>
       </af:group>
     </af:toolbar>
     <af:separator id="Separator"/>
     <af:outputText id="OT2" inlineStyle="font-size: 14px; margin-left: 40px;"
-                   value="#{rateChangeManagerBundle.string_block_time_bands_to_delete}"/>
-    <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="800"
+                   value="#{adminConsoleBundle.string_time_band_models_to_delete}"/>
+    <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="500"
               inlineStyle="height: 150px; margin-left: 40px;"
               contentDelivery="immediate" rowSelection="none"
               rowBandingInterval="0" columnSelection="none"
               disableColumnReordering="true" columnStretching="last"
-              emptyText="#{rateChangeManagerBundle.info_empty_block_time_bands_delete_list}"
+              emptyText="#{adminConsoleBundle.info_empty_time_band_models_delete_list}"
               summary="Block Time Bands List"
-              value="#{blockTimebandDeleteBean.deletableBlockTimeBands}">
-      <af:column id="DTBTableColBlockID" rowHeader="unstyled" align="center"
-                 width="80px;" sortable="false"
-                 headerText="#{columnBundle.column_block_id}">
-        <af:outputText id="DTBTableRowBlockID" value="#{row.blockID}"/>
-      </af:column>
-      <af:column id="DTBTableColMeterClass" align="center" width="80px"
-                 sortable="false"
+              value="#{timebandDeleteBean.deletableTimeBandModels}">
+      <af:column id="DTBTableColMeterClass" rowHeader="unstyled" align="center"
+                 width="80px" sortable="false"
                  headerText="#{columnBundle.column_meter_class}">
         <af:outputText id="DTBTableRowMeterClass" value="#{row.meterClass}"/>
       </af:column>
@@ -76,30 +71,6 @@
                  headerText="#{columnBundle.column_time_band_to}">
         <af:outputText id="DTBTableRowTimeBandTo"
                        value="#{row.displayTimeBandTo}"/>
-      </af:column>
-      <af:column id="DTBTableColFromTime" align="center" width="60px"
-                 sortable="false" headerText="#{columnBundle.column_from_time}">
-        <af:outputText id="DTBTableRowFromTime" value="#{row.displayFromTime}"/>
-      </af:column>
-      <af:column id="DTBTableColToTime" align="center" width="60px"
-                 sortable="false" headerText="#{columnBundle.column_to_time}">
-        <af:outputText id="DTBTableRowToTime" value="#{row.displayToTime}"/>
-      </af:column>
-      <af:column id="DTBTableColCurrentRate" align="center" width="80px"
-                 sortable="false"
-                 headerText="#{columnBundle.column_current_rate}">
-        <af:outputText id="DTBTableRowCurrentRate" value="#{row.currentRate}">
-          <af:convertNumber type="currency" locale="en-US"
-                            maxFractionDigits="2"/>
-        </af:outputText>
-      </af:column>
-      <af:column id="DTBTableColLastRateChgDate" align="center" width="80px"
-                 sortable="false"
-                 headerText="#{columnBundle.column_last_rate_change_date}">
-        <af:outputText id="DTBTableRowLastRateChgDate"
-                       value="#{row.lastRateChangeDate}">
-          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
-        </af:outputText>
       </af:column>
     </af:table>
   </af:panelGroupLayout>

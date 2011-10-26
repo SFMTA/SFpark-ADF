@@ -51,6 +51,31 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   <managed-bean>
+    <managed-bean-name>timebandListBean</managed-bean-name>
+    <managed-bean-class>sfpark.admin.console.view.backing.timeband.TimebandListBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickTimebandTypeBean</managed-bean-name>
+    <managed-bean-class>sfpark.admin.console.view.backing.timeband.helper.PickTimebandTypeBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>pickTimebandValuesBean</managed-bean-name>
+    <managed-bean-class>sfpark.admin.console.view.backing.timeband.helper.add.PickTimebandValuesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>timebandAddBean</managed-bean-name>
+    <managed-bean-class>sfpark.admin.console.view.backing.timeband.TimebandAddBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>timebandDeleteBean</managed-bean-name>
+    <managed-bean-class>sfpark.admin.console.view.backing.timeband.TimebandDeleteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
     <managed-bean-name>errorsBean</managed-bean-name>
     <managed-bean-class>sfpark.admin.console.view.backing.common.ErrorsBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>

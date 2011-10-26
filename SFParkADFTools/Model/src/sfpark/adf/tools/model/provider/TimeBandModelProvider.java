@@ -86,6 +86,7 @@ public class TimeBandModelProvider {
 
         preparedStatement.setString(1, DTO.getMeterClass());
         preparedStatement.setString(2, DTO.getDateType());
+        preparedStatement.setInt(3, DTO.getTimeBandID());
 
         return preparedStatement;
     }
@@ -209,8 +210,11 @@ public class TimeBandModelProvider {
             StatementGenerator.equalToOperator(TimeBandModelDTO.METER_CLASS);
         String string2 =
             StatementGenerator.equalToOperator(TimeBandModelDTO.DATE_TYPE);
+        String string3 =
+            StatementGenerator.equalToOperator(TimeBandModelDTO.TIME_BAND_ID);
 
-        String Where = StatementGenerator.andOperator(string1, string2);
+        String Where =
+            StatementGenerator.andOperator(string1, string2, string3);
 
         LOGGER.exiting(CLASSNAME, "getDeleteStatement");
 
