@@ -392,23 +392,4 @@ public class NavigationBean extends BaseBean {
     protected String getCurrentADFControl() {
         return currentADFControl;
     }
-
-    /*
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ACCESSORS
-
-    public static NavigationBean getInstance() {
-        return (NavigationBean)getCurrentInstanceFor("navigationBean");
-    }
-
-    public void refreshNavPanel() {
-        addPartialTarget(this.getNavigationPanel());
-    }
-
-    public void refreshRegionContent() {
-        addPartialTarget(this.getNavigationRichRegion());
-    }
-    */
 }

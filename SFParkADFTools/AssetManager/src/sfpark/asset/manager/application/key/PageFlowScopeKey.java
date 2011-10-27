@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public enum PageFlowScopeKey {
 
+    ERROR_TITLE,
     ERROR_MESSAGE,
 
     INLINE_MESSAGE_TEXT,

@@ -167,17 +167,17 @@
         <af:spacer id="commentsITSpacer" height="10"/>
         <af:panelLabelAndMessage id="unmeterParkingSpacePLM"
                                  label="#{labelBundle.label_delete_parking_space}">
-          <!-- TODO update the strings -->
           <af:commandButton id="unmeterParkingSpaceButton"
                             visible="#{!bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.unmetered}"
-                            inlineStyle="width: 150px;" text="Unmeter Spaces"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_unmeter_spaces}"
                             actionListener="#{bulkMeterSpaceManagementBean.unmeterRemeterParkingSpaceButtonHandler}"
                             partialTriggers="remeterParkingSpaceButton"
                             shortDesc="Use with caution"/>
-          <!-- TODO update the strings -->
           <af:commandButton id="remeterParkingSpaceButton"
                             visible="#{bulkMeterSpaceManagementBean.parkingSpaceInventoryBulkTO.unmetered}"
-                            inlineStyle="width: 150px;" text="Remeter Spaces"
+                            inlineStyle="width: 150px;"
+                            text="#{buttonBundle.button_remeter_spaces}"
                             actionListener="#{bulkMeterSpaceManagementBean.unmeterRemeterParkingSpaceButtonHandler}"
                             partialTriggers="unmeterParkingSpaceButton"
                             shortDesc="Use with caution"/>

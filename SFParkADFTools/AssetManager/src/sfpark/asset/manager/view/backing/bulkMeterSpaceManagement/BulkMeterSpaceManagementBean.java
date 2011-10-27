@@ -79,10 +79,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    public static BulkMeterSpaceManagementBean getInstance() {
-        return (BulkMeterSpaceManagementBean)getCurrentInstanceFor("bulkMeterSpaceManagementBean");
-    }
-
     public void clearPageFlowScopeCache() {
         removePageFlowScopeValue(PageFlowScopeKey.BULK_PARKING_SPACE_TO.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.BULK_METER_SCHEDULE_TO.getKey());
@@ -177,11 +173,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // VALIDATORS
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DISABLE INFORMATION
 
     public boolean isDisableActiveMeterStatusSBCB() {
@@ -263,11 +254,6 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
     public List<SelectItem> getListPrePaymentTime() {
         return ADFUIDisplayUtil.getPrepaymentTimeList();
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // VALUE CHANGE HANDLERS
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

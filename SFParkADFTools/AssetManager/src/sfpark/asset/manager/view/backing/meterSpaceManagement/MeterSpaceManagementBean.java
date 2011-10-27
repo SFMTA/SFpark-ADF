@@ -283,30 +283,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         }
     }
 
-    /*
-    public void meterScheduleColorRuleAppliedValidator(FacesContext facesContext,
-                                                       UIComponent uiComponent,
-                                                       Object object) {
-
-        String colorRuleApplied = (String)object;
-        String capColor = getCurrentParkingSpaceInventoryDTO().getCapColor();
-
-        if (!StringUtil.areEqual(capColor, colorRuleApplied)) {
-
-            String ID = uiComponent.getClientId(facesContext);
-
-            FacesMessage facesMessage =
-                new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                 "Cap Color Different (" + ID + ")",
-                                 "Color rule applied is different from Cap Color");
-
-            facesContext.addMessage(uiComponent.getClientId(facesContext),
-                                    facesMessage);
-        }
-
-    }
-    */
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

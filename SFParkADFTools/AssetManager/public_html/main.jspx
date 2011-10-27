@@ -16,14 +16,6 @@
       <af:form id="f1">
         <af:panelStretchLayout id="mainPanelStretchLayout" topHeight="0px"
                                bottomHeight="32px">
-          <!--
-          <f:facet name="top">
-            <f:subview id="subViewHeader">
-              <jsp:include page="/View/jsffFiles/common/utilities.jsff"
-                           flush="true"/>
-            </f:subview>
-          </f:facet>
-          -->
           <f:facet name="center">
             <af:panelGroupLayout id="contentPanelGroupLayout" layout="scroll"
                                  styleClass="AFStretchWidth"
@@ -33,14 +25,6 @@
                          value="#{navigationBean.contentRegionModel}"/>
             </af:panelGroupLayout>
           </f:facet>
-          <!--
-          <f:facet name="bottom">
-            <f:subview id="subView_footer">
-              <jsp:include page="/View/jsffFiles/common/footer.jsff"
-                           flush="true"/>
-            </f:subview>
-          </f:facet>
-          -->
         </af:panelStretchLayout>
       </af:form>
     </af:document>

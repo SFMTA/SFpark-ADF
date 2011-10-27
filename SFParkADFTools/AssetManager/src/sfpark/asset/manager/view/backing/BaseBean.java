@@ -28,7 +28,6 @@ public abstract class BaseBean {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     protected BaseBean() {
-        // TODO: Create a Session Scope User Context
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

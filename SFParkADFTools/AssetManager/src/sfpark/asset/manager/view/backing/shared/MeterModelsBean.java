@@ -42,14 +42,6 @@ public class MeterModelsBean extends BaseBean implements PropertiesBeanInterface
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    public static MeterModelsBean getInstance() {
-        return (MeterModelsBean)getCurrentInstanceFor("meterModelsBean");
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     public void saveButtonHandler(ActionEvent event) {
         // Do nothing
     }

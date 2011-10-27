@@ -45,14 +45,6 @@ public class ChangeCNNIDBean extends BaseBean implements PropertiesBeanInterface
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    public static ChangeCNNIDBean getInstance() {
-        return (ChangeCNNIDBean)getCurrentInstanceFor("changeCNNIDBean");
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     public void saveButtonHandler(ActionEvent event) {
         //
         // Reuse as "Refresh Table" button

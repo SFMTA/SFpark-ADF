@@ -47,17 +47,6 @@
                         validator="#{meterSpaceManagementBean.postIDValidator}"
                         partialTriggers="activeMeterStatusSOC"/>
         </af:panelLabelAndMessage>
-        <!--
-        <af:inputText id="postIDIT" required="true" maximumLength="9"
-                      columns="10"
-                      disabled="#{meterSpaceManagementBean.disablePostIDIT}"
-                      label="#{labelBundle.label_post_id}"
-                      value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.postID}"
-                      partialTriggers="activeMeterStatusSOC">
-          <af:validateRegExp pattern="#{globalBean.postIDPattern}"
-                             messageDetailNoMatch="#{assetManagerBundle.info_post_id_validator}"/>
-        </af:inputText>
-        -->
         <af:spacer id="postIDSpacer" height="10"/>
         <af:panelLabelAndMessage id="streetTypePLM"
                                  rendered="#{meterSpaceManagementBean.renderStreetTypePLM}"
@@ -295,13 +284,13 @@
                       rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
                       label="#{labelBundle.label_created_on}"
                       value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       rendered="#{meterSpaceManagementBean.renderPassiveInfo}"
@@ -536,19 +525,6 @@
           <af:outputText id="MSTableRowSchedType"
                          value="#{row.scheduleType.stringForDisplay}"/>
         </af:column>
-        <!--
-        <af:column id="MSTableColSchedPriority" align="center" width="80px"
-                   showRequired="true" sortable="false"
-                   sortProperty="schedulePriority"
-                   headerText="#{columnBundle.column_schedule_priority}">
-          <af:inputText id="MSTableRowSchedPriority" required="true"
-                        simple="true" columns="3"
-                        readOnly="#{meterSpaceManagementBean.readOnly}"
-                        value="#{row.schedulePriority}">
-            <af:validateLongRange minimum="1" maximum="99"/>
-          </af:inputText>
-        </af:column>
-        -->
         <af:column id="MSTableColEffFromDate" align="center" width="100px"
                    showRequired="true" sortable="false"
                    sortProperty="effectiveFromDate"

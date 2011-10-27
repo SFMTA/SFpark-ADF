@@ -53,14 +53,6 @@ public class MeterScheduleTemplateBean extends BaseBean implements PropertiesBea
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    public static MeterScheduleTemplateBean getInstance() {
-        return (MeterScheduleTemplateBean)getCurrentInstanceFor("meterScheduleTemplateBean");
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     public void clearPageFlowScopeCache() {
         removePageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_TEMPLATE_TYPE.getKey());
     }
