@@ -4,6 +4,7 @@ public enum NavigationMode {
     ADD,
     EDIT,
     DELETE,
+
     READ_ONLY;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,5 +26,4 @@ public enum NavigationMode {
     public boolean isReadOnlyMode() {
         return (this == READ_ONLY);
     }
-
 }

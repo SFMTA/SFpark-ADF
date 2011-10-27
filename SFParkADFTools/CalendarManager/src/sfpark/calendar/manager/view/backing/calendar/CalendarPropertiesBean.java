@@ -166,19 +166,8 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
      * Edit Mode Steps:
      * ===============
      *    1. Calender Detail Table should NOT be empty
-     *    Check for Meter Schedule validations
-     *    2. Check for Meter Rate validations
      *
      * When all is valid, perform the following
-     *
-     * Common Steps:
-     * ============
-     *    1. Copy attributes of Blockface into Parking Space
-     *    2. Retrieve OLD_RATE_AREA
-     *    3. Retrieve PCO_BEAT
-     *    4. Street Type
-     *       ---ON
-     *          ---Street number should be generated from Post ID
      *
      * @param event
      */

@@ -37,5 +37,4 @@ public enum PageFlowScopeKey {
     public String getKey() {
         return Key;
     }
-
 }

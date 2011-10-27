@@ -7,7 +7,6 @@ import javax.faces.model.SelectItem;
 
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
-import sfpark.adf.tools.utilities.constants.PatternString;
 
 import sfpark.calendar.manager.view.backing.BaseBean;
 
@@ -47,10 +46,6 @@ public class GlobalBean extends BaseBean {
         String inlineStyle = "width: 80px;";
 
         return inlineStyle;
-    }
-
-    public String getDateTimePattern() {
-        return PatternString.DATE_TIME.getPattern();
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

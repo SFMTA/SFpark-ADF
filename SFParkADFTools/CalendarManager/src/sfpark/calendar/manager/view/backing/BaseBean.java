@@ -18,7 +18,6 @@ import sfpark.calendar.manager.view.flow.NavigationMode;
 public abstract class BaseBean {
 
     protected BaseBean() {
-        // TODO: Create a Session Scope User Context
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -255,5 +254,4 @@ public abstract class BaseBean {
         return "AdfPage.PAGE.findComponent('" +
             uiComponent.getClientId(getFacesContext()) + "')";
     }
-
 }

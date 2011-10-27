@@ -29,9 +29,8 @@
                     value="#{calendarDeleteBean.calendarHeaderDTO.status.stringForDisplay}"/>
       <af:spacer id="calendarStatusSpacer" height="10"/>
     </af:panelFormLayout>
-    <af:toolbar id="mainToolbar">
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
       <af:group id="mainToolbarDelete">
-        <af:spacer id="spaceBeforeButton" width="30"/>
         <af:commandButton id="deleteButton" blocking="true"
                           inlineStyle="font-weight: bold;"
                           text="#{buttonBundle.button_delete_calendar}"
