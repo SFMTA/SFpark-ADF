@@ -593,7 +593,7 @@ public class BulkMeterSpaceManagementBean extends BaseBean implements RequestSco
 
                     switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                    case UNIQUE_CONTRAINT:
+                    case UNIQUE_CONSTRAINT:
                         {
                             errorMessage =
                                     TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_unique_constraint);

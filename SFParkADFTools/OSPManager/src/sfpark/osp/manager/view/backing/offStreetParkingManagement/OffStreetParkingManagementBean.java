@@ -723,7 +723,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                        case UNIQUE_CONTRAINT:
+                        case UNIQUE_CONSTRAINT:
                             {
                                 errorMessage =
                                         TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_rates_or_op_hours);

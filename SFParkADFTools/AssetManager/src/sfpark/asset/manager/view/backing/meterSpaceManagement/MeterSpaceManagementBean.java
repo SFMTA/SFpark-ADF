@@ -1079,7 +1079,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                        case UNIQUE_CONTRAINT:
+                        case UNIQUE_CONSTRAINT:
                             {
                                 errorMessage =
                                         TranslationUtil.getErrorBundleString(ErrorBundleKey.error_parking_space_exception_unique_constraint);

@@ -318,7 +318,7 @@ public class CalendarPropertiesBean extends BaseBean implements ListBeanInterfac
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
 
-                        case UNIQUE_CONTRAINT:
+                        case UNIQUE_CONSTRAINT:
                             {
                                 errorMessage =
                                         TranslationUtil.getErrorBundleString(ErrorBundleKey.error_calendar_exception_unique_constraint);
