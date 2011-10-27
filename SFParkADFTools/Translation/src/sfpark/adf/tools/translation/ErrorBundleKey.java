@@ -95,6 +95,20 @@ public enum ErrorBundleKey {
     // OSP Manager Errors
 
     error_invalid_osp_manager_parameters,
+  
+  error_message_invalid_rates_or_op_hours,
+  error_message_invalid_new_rates,
+  error_message_invalid_new_op_hours,
+  error_message_invalid_existing_rates,
+  error_message_invalid_existing_op_hours,
+  error_message_invalid_osp_details,
+
+error_message_rates_null_description_or_time_band,
+error_message_rates_null_description,
+  error_message_rates_to_date_before_from_date,
+  error_message_op_hours_to_date_before_from_date,
+  error_message_rates_unique_constraint,
+  error_message_op_hours_unique_constraint,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -172,6 +186,20 @@ public enum ErrorBundleKey {
     // Admin Console Errors
 
     error_message_invalid_admin_console_parameters,
+
+    error_message_incompatible_column_value,
+
+    error_message_nonexistent_column_name,
+    error_message_nonexistent_table_name,
+
+    error_message_exists_already_allowed_value,
+
+    error_exception_delete_flag,
+    error_exception_delete_unsupported,
+    error_exception_delete_inuse,
+
+    error_message_no_timebands_to_insert,
+    error_message_no_timebands_to_delete,
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
