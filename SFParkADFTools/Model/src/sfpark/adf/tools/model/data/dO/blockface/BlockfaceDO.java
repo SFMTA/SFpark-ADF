@@ -10,6 +10,15 @@ import java.util.List;
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class BlockfaceDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "BLOCKFACES";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public BlockfaceDO() {
         super();
     }

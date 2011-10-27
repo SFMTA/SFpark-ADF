@@ -143,7 +143,7 @@ public class OSPInventoryProvider {
         preparedStatement.setString(getUpdateIndexOf(OSPInventoryDTO.STREET_SEG_CTRLN_ID),
                                     DTO.getCNNID());
         preparedStatement.setString(getUpdateIndexOf(OSPInventoryDTO.FACILITY_TYPE),
-                                    DTO.getFacilityType());
+                                    DTO.getFacilityType().getStringForTable());
         preparedStatement.setString(getUpdateIndexOf(OSPInventoryDTO.OWNER),
                                     DTO.getOwner());
 
@@ -153,7 +153,7 @@ public class OSPInventoryProvider {
                                     DTO.getInternalMeterFlag());
 
         preparedStatement.setString(getUpdateIndexOf(OSPInventoryDTO.DATA_FEED_FLAG),
-                                    DTO.getDataFeedFlag());
+                                    DTO.getDataFeedFlag().getStringForTable());
 
         preparedStatement.setString(getUpdateIndexOf(OSPInventoryDTO.SERVICES),
                                     DTO.getInternalServices());

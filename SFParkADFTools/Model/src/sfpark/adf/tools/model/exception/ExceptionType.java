@@ -1,7 +1,7 @@
 package sfpark.adf.tools.model.exception;
 
 public enum ExceptionType {
-    UNIQUE_CONTRAINT,
+    UNIQUE_CONSTRAINT,
 
     DTO_INSERT,
     DTO_UPDATE,
@@ -20,7 +20,7 @@ public enum ExceptionType {
 
         if (exception.getMessage().indexOf("ORA-00001: unique constraint") !=
             -1) {
-            return UNIQUE_CONTRAINT;
+            return UNIQUE_CONSTRAINT;
         }
 
         if (exception instanceof DTOInsertException) {

@@ -24,8 +24,6 @@ public final class ParkingSpaceGroupsProvider {
         ParkingSpaceGroupsProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "PARKING_SPACE_GROUPS";
-
     private ParkingSpaceGroupsProvider() {
         super();
     }
@@ -110,7 +108,8 @@ public final class ParkingSpaceGroupsProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatement");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  ParkingSpaceGroupsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 }

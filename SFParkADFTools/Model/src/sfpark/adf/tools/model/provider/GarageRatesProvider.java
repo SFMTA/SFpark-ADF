@@ -125,7 +125,7 @@ public class GarageRatesProvider {
         preparedStatement.setString(getInsertIndexOf(GarageRatesDTO.RATE_RESTRICTIONS),
                                     DTO.getRateRestrictions());
         preparedStatement.setString(getInsertIndexOf(GarageRatesDTO.DISPLAY_CODE),
-                                    DTO.getDisplayCode());
+                                    DTO.getDisplayCode().getStringForTable());
         preparedStatement.setString(getInsertIndexOf(GarageRatesDTO.RATE_CHG_REF),
                                     DTO.getRateChangeReference());
 
@@ -180,7 +180,7 @@ public class GarageRatesProvider {
                                     DTO.getRateRestrictions());
 
         preparedStatement.setString(getUpdateIndexOf(GarageRatesDTO.DISPLAY_CODE),
-                                    DTO.getDisplayCode());
+                                    DTO.getDisplayCode().getStringForTable());
         preparedStatement.setString(getUpdateIndexOf(GarageRatesDTO.RATE_CHG_REF),
                                     DTO.getRateChangeReference());
 

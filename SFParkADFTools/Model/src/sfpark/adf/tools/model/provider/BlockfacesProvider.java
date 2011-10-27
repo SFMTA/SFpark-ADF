@@ -20,8 +20,6 @@ public class BlockfacesProvider {
     private static final String CLASSNAME = BlockfacesProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "BLOCKFACES";
-
     private BlockfacesProvider() {
         super();
     }
@@ -139,7 +137,8 @@ public class BlockfacesProvider {
 
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForLongitudeAndLatitude");
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  BlockfaceDO.getDatabaseTableName(),
                                                   Where);
     }
 
@@ -152,7 +151,8 @@ public class BlockfacesProvider {
         String Where = BlockfaceDO.BLOCKFACE_ID + " = ?";
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForBlockfaceID");
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  BlockfaceDO.getDatabaseTableName(),
                                                   Where);
     }
 }

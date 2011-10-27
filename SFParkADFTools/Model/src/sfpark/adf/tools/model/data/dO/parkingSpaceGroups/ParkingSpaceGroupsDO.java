@@ -7,6 +7,14 @@ import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class ParkingSpaceGroupsDO extends BaseDO {
 
+    public static String getDatabaseTableName() {
+        return "PARKING_SPACE_GROUPS";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public ParkingSpaceGroupsDO(ParkingSpaceGroupsDO.GROUP_TYPE GroupType,
                                 String IdentifyingGroupID,
                                 List<String> ParkingSpaceIDList) {

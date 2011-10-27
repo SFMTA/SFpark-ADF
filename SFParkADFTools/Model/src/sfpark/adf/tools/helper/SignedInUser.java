@@ -47,15 +47,6 @@ public final class SignedInUser {
         return (hasMetersAccess() || hasGaragesAccess());
     }
 
-    // ++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++
-    // CALENDAR MANAGER HELPERS
-
-    public static boolean canOperateRateChangeCalendars() {
-        return hasRateChangeAccess();
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -90,16 +81,6 @@ public final class SignedInUser {
 
             return isUserInGroup(SecurityGroup.GARAGES);
 
-        }
-
-        return true;
-    }
-
-    private static boolean hasRateChangeAccess() {
-        if (USE_SECURITY_MODEL) {
-
-            return (isUserInGroup(SecurityGroup.RATE_CHANGE) ||
-                    isUserInGroup(SecurityGroup.SUPER_USER));
         }
 
         return true;

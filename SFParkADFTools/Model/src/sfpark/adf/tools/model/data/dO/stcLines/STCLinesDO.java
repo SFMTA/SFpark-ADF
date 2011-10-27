@@ -7,6 +7,15 @@ import java.sql.SQLException;
 import sfpark.adf.tools.model.data.dO.BaseDO;
 
 public class STCLinesDO extends BaseDO {
+
+    public static String getDatabaseTableName() {
+        return "STCLINES";
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     public STCLinesDO() {
         super();
     }

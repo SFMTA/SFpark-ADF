@@ -21,8 +21,6 @@ public class STCLinesProvider {
     private static final String CLASSNAME = STCLinesProvider.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
-    private static final String TABLE_NAME = "STCLINES";
-
     private STCLinesProvider() {
         super();
     }
@@ -109,7 +107,8 @@ public class STCLinesProvider {
 
         LOGGER.exiting(CLASSNAME, "getSelectStatementForSTCLinesDOs");
 
-        return StatementGenerator.selectStatement(Attributes, TABLE_NAME,
+        return StatementGenerator.selectStatement(Attributes,
+                                                  STCLinesDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
 }

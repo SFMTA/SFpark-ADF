@@ -163,12 +163,4 @@ public final class PMDistrictsProvider {
                                                   PMDistrictsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
     }
-
-    /*
-    SELECT PM_DISTRICT_ID, PM_DISTRICT_NAME
-    FROM SFPARK_ODS.PM_DISTRICTS
-    WHERE AREA_TYPE = 'Pilot' AND PM_DISTRICT_ID IN (&1)
-    ORDER BY PM_DISTRICT_NAME;
-
-     */
 }

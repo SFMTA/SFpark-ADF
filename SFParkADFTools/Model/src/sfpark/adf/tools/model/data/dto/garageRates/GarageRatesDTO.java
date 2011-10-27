@@ -9,6 +9,7 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.EffectiveDateBaseDTO;
 
+import sfpark.adf.tools.model.data.helper.GarageRatesDisplayCode;
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
 import sfpark.adf.tools.model.data.helper.GarageRatesQualifier;
 import sfpark.adf.tools.model.data.helper.GarageRatesTimeBand;
@@ -52,7 +53,7 @@ public class GarageRatesDTO extends EffectiveDateBaseDTO {
         this.setRateQualifier(GarageRatesQualifier.extractQualifier(resultSet.getString(RATE_QUALIFIER)));
         this.setMaximumAmount(resultSet.getString(MAX_AMT));
         this.setRateRestrictions(resultSet.getString(RATE_RESTRICTIONS));
-        this.setDisplayCode(resultSet.getString(DISPLAY_CODE));
+        this.setDisplayCode(GarageRatesDisplayCode.extract(resultSet.getString(DISPLAY_CODE)));
         this.setRateChangeReference(resultSet.getString(RATE_CHG_REF));
 
         switch (this.getDisplayGroup()) {
@@ -187,7 +188,7 @@ public class GarageRatesDTO extends EffectiveDateBaseDTO {
                                 dto.getMaximumAmount()) &&
             StringUtil.areEqual(this.getRateRestrictions(),
                                 dto.getRateRestrictions()) &&
-            StringUtil.areEqual(this.getDisplayCode(), dto.getDisplayCode()) &&
+            ObjectUtil.getNullSafe(this.getDisplayCode()).equals(ObjectUtil.getNullSafe(dto.getDisplayCode())) &&
             StringUtil.areEqual(this.getRateChangeReference(),
                                 dto.getRateChangeReference())) {
 
@@ -276,7 +277,7 @@ public class GarageRatesDTO extends EffectiveDateBaseDTO {
     private GarageRatesQualifier RateQualifier;
     private String MaximumAmount;
     private String RateRestrictions;
-    private String DisplayCode;
+    private GarageRatesDisplayCode DisplayCode;
     private String RateChangeReference;
 
     public void setGarageRateID(String GarageRateID) {
@@ -367,19 +368,19 @@ public class GarageRatesDTO extends EffectiveDateBaseDTO {
         return RateRestrictions;
     }
 
-    public void setDisplayCode(String DisplayCode) {
-        this.DisplayCode = DisplayCode;
-    }
-
-    public String getDisplayCode() {
-        return DisplayCode;
-    }
-
     public void setRateChangeReference(String RateChangeReference) {
         this.RateChangeReference = RateChangeReference;
     }
 
     public String getRateChangeReference() {
         return RateChangeReference;
+    }
+
+    public void setDisplayCode(GarageRatesDisplayCode DisplayCode) {
+        this.DisplayCode = DisplayCode;
+    }
+
+    public GarageRatesDisplayCode getDisplayCode() {
+        return DisplayCode;
     }
 }

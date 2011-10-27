@@ -9,6 +9,8 @@ import java.util.List;
 
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 
+import sfpark.adf.tools.model.data.helper.OSPDataFeedFlag;
+import sfpark.adf.tools.model.data.helper.OSPFacilityType;
 import sfpark.adf.tools.utilities.generic.CurrencyUtil;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
@@ -40,13 +42,13 @@ public class OSPInventoryDTO extends BaseDTO {
         this.setAreaType(resultSet.getString(AREA_TYPE));
         this.setBlockfaceID(resultSet.getString(BLOCKFACE_ID));
         this.setCNNID(resultSet.getString(STREET_SEG_CTRLN_ID));
-        this.setFacilityType(resultSet.getString(FACILITY_TYPE));
+        this.setFacilityType(OSPFacilityType.extract(resultSet.getString(FACILITY_TYPE)));
         this.setOwner(resultSet.getString(OWNER));
 
         this.setInternalSensorFlag(resultSet.getString(SENSOR_FLAG));
         this.setInternalMeterFlag(resultSet.getString(METER_FLAG));
 
-        this.setDataFeedFlag(resultSet.getString(DATA_FEED_FLAG));
+        this.setDataFeedFlag(OSPDataFeedFlag.extract(resultSet.getString(DATA_FEED_FLAG)));
 
         this.setInternalServices(resultSet.getString(SERVICES));
 
@@ -195,15 +197,13 @@ public class OSPInventoryDTO extends BaseDTO {
             StringUtil.areEqual(this.getBlockfaceID(),
                                 originalDTO.getBlockfaceID()) &&
             StringUtil.areEqual(this.getCNNID(), originalDTO.getCNNID()) &&
-            StringUtil.areEqual(this.getFacilityType(),
-                                originalDTO.getFacilityType()) &&
+            (ObjectUtil.getNullSafe(this.getFacilityType()).equals(ObjectUtil.getNullSafe(originalDTO.getFacilityType()))) &&
             StringUtil.areEqual(this.getOwner(), originalDTO.getOwner()) &&
             (ObjectUtil.getNullSafe(this.isSensored()) ==
              ObjectUtil.getNullSafe(originalDTO.isSensored())) &&
             (ObjectUtil.getNullSafe(this.isMetered()) ==
              ObjectUtil.getNullSafe(originalDTO.isMetered())) &&
-            StringUtil.areEqual(this.getDataFeedFlag(),
-                                originalDTO.getDataFeedFlag()) &&
+            (ObjectUtil.getNullSafe(this.getDataFeedFlag()).equals(ObjectUtil.getNullSafe(originalDTO.getDataFeedFlag()))) &&
             ObjectUtil.getNullSafe(this.getServices()).equals(ObjectUtil.getNullSafe(originalDTO.getServices())) &&
             StringUtil.areEqual(this.getWebSite(), originalDTO.getWebSite()) &&
             (ObjectUtil.getNullSafe(this.getNumberOfVehicleEntryLanes()) ==
@@ -258,11 +258,11 @@ public class OSPInventoryDTO extends BaseDTO {
     private String AreaType;
     private String BlockfaceID;
     private String CNNID;
-    private String FacilityType;
+    private OSPFacilityType FacilityType;
     private String Owner;
     private boolean Sensored;
     private boolean Metered;
-    private String DataFeedFlag;
+    private OSPDataFeedFlag DataFeedFlag;
     private List<String> Services;
     private String WebSite;
     private int NumberOfVehicleEntryLanes;
@@ -402,14 +402,6 @@ public class OSPInventoryDTO extends BaseDTO {
 
     public String getCNNID() {
         return CNNID;
-    }
-
-    public void setFacilityType(String FacilityType) {
-        this.FacilityType = FacilityType;
-    }
-
-    public String getFacilityType() {
-        return FacilityType;
     }
 
     public void setOwner(String Owner) {
@@ -580,11 +572,19 @@ public class OSPInventoryDTO extends BaseDTO {
         return Services;
     }
 
-    public void setDataFeedFlag(String DataFeedFlag) {
+    public void setFacilityType(OSPFacilityType FacilityType) {
+        this.FacilityType = FacilityType;
+    }
+
+    public OSPFacilityType getFacilityType() {
+        return FacilityType;
+    }
+
+    public void setDataFeedFlag(OSPDataFeedFlag DataFeedFlag) {
         this.DataFeedFlag = DataFeedFlag;
     }
 
-    public String getDataFeedFlag() {
+    public OSPDataFeedFlag getDataFeedFlag() {
         return DataFeedFlag;
     }
 }

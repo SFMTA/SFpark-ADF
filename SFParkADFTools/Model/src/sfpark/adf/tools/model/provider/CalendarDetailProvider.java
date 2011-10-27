@@ -99,11 +99,6 @@ public class CalendarDetailProvider {
         String Where =
             StatementGenerator.equalToOperator(LHS, CalendarDetailDTO.CALENDAR_ID);
 
-        LOGGER.debug("Calendar Detail ::: " +
-                     StatementGenerator.selectStatement(Attributes,
-                                                        CalendarDetailDTO.getDatabaseTableName(),
-                                                        Where));
-
         return StatementGenerator.selectStatement(Attributes,
                                                   CalendarDetailDTO.getDatabaseTableName(),
                                                   Where);
