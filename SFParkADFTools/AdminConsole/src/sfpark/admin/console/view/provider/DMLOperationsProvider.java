@@ -7,9 +7,11 @@ import oracle.adf.share.ADFContext;
 
 import sfpark.adf.tools.helper.Logger;
 
+import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.TableRecord;
+import sfpark.adf.tools.model.provider.AllowedValuesProvider;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 
 import sfpark.adf.tools.model.provider.ProviderWrapper;
@@ -52,6 +54,52 @@ public class DMLOperationsProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Actual operations
+
+    public OperationStatus addAllowedValue(AllowedValuesDTO allowedValuesDTO) {
+        LOGGER.entering(CLASSNAME, "addAllowedValue");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
+                                         allowedValuesDTO));
+
+        LOGGER.exiting(CLASSNAME, "addAllowedValue");
+
+        return performOperation(tableRecords);
+    }
+
+    public OperationStatus editAllowedValue(AllowedValuesDTO allowedValuesDTO) {
+        LOGGER.entering(CLASSNAME, "editAllowedValue");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        AllowedValuesDTO originalDTO =
+            AllowedValuesProvider.INSTANCE.checkForAllowedValuesData(allowedValuesDTO.getTableName(),
+                                                                     allowedValuesDTO.getColumnName(),
+                                                                     allowedValuesDTO.getColumnValue()).getDTO();
+
+        if (!allowedValuesDTO.isSameAs(originalDTO)) {
+            tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
+                                             allowedValuesDTO));
+        }
+
+        LOGGER.exiting(CLASSNAME, "editAllowedValue");
+
+        return performOperation(tableRecords);
+    }
+
+    public OperationStatus deleteAllowedValue(AllowedValuesDTO allowedValuesDTO) {
+        LOGGER.entering(CLASSNAME, "deleteAllowedValue");
+
+        List<TableRecord> tableRecords = new ArrayList<TableRecord>();
+
+        tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
+                                         allowedValuesDTO));
+
+        LOGGER.exiting(CLASSNAME, "deleteAllowedValue");
+
+        return performOperation(tableRecords);
+    }
 
     public OperationStatus addTimebands(List<TimeBandModelDTO> toBeInsertedTimeBandModelDTOs,
                                         List<TimeBandModelDTO> toBeDeletedTimeBandModelDTOs) {

@@ -14,17 +14,18 @@
       <af:group id="mainToolbarAdd">
         <af:commandButton id="addButton"
                           text="#{buttonBundle.button_add_allowed_values}"
-                          actionListener="#{allowedValuesListBean.buttonHandler}"/>
+                          actionListener="#{allowedValuesListBean.addButtonHandler}"/>
         <af:spacer id="spaceAfterAddButton" width="10"/>
       </af:group>
       <af:group id="mainToolbarShowDetails">
         <af:spacer id="spaceBeforeShowDetailsButton" width="10"/>
-        <af:commandButton id="showDetailsButton"
+        <af:commandButton id="showDetailsButton" disabled="true"
                           text="#{buttonBundle.button_show_details}"
-                          actionListener="#{allowedValuesListBean.buttonHandler}"/>
+                          binding="#{allowedValuesListBean.showDetailsButton}"
+                          actionListener="#{allowedValuesListBean.editButtonHandler}"/>
       </af:group>
     </af:toolbar>
-    <af:table id="AVTable" var="row" varStatus="rowStatus" width="700"
+    <af:table id="AVTable" var="row" varStatus="rowStatus" width="850"
               inlineStyle="height: 450px; margin-left: 35px;"
               contentDelivery="immediate" rowSelection="single"
               rowBandingInterval="0" columnSelection="none"
@@ -32,18 +33,24 @@
               emptyText="#{adminConsoleBundle.info_empty_allowed_values_list}"
               summary="Allowed Values List"
               value="#{allowedValuesListBean.allowedValues}"
-              binding="#{allowedValuesListBean.allowedValuesTable}">
+              binding="#{allowedValuesListBean.allowedValuesTable}"
+              selectionListener="#{allowedValuesListBean.tableRowSelectionHandler}">
       <af:column id="AVTableColTableName" rowHeader="unstyled" align="center"
-                 width="100px" sortable="false" headerText="Table Name">
+                 width="200px" sortable="false" headerText="Table Name">
         <af:outputText id="AVTableRowTableName" value="#{row.tableName}"/>
       </af:column>
-      <af:column id="AVTableColColumnName" align="center" width="100px"
+      <af:column id="AVTableColColumnName" align="center" width="200px"
                  sortable="false" headerText="Column Name">
         <af:outputText id="AVTableRowColumnName" value="#{row.columnName}"/>
       </af:column>
-      <af:column id="AVTableColColumnValue" align="center" width="100px"
+      <af:column id="AVTableColColumnValue" align="center" width="150px"
                  sortable="false" headerText="Column Value">
         <af:outputText id="AVTableRowColumnValue" value="#{row.columnValue}"/>
+      </af:column>
+      <af:column id="AVTableColDeletable" align="center" width="80px"
+                 sortable="false" headerText="Deletable">
+        <af:outputText id="AVTableRowDeletable"
+                       value="#{row.deletableIfUnused.stringForDisplay}"/>
       </af:column>
       <af:column id="AVTableColDesc" align="center" width="100px"
                  sortable="false" headerText="Description">

@@ -24,7 +24,7 @@
       <af:group id="mainToolbarDelete"
                 rendered="#{allowedValuesPropertiesBean.renderDeleteButton}">
         <af:spacer id="spaceBeforeDeleteButton" width="10"/>
-        <af:commandButton id="deleteButton"
+        <af:commandButton id="deleteButton" immediate="true"
                           inlineStyle="#{globalBean.commitButtonInlineStyle}"
                           rendered="#{allowedValuesPropertiesBean.renderDeleteButton}"
                           text="#{buttonBundle.button_delete}"
@@ -76,7 +76,16 @@
                       value="#{allowedValuesPropertiesBean.allowedValuesDTO.columnValue}"
                       autoSubmit="true"/>
         <af:spacer id="columnValueSpacer" height="10"/>
-        <af:inputText id="descriptionIT" columns="35" rows="5"
+        <af:selectOneChoice id="deletableIfUnusedSOC" required="true"
+                            readOnly="#{allowedValuesPropertiesBean.readOnly}"
+                            label="#{labelBundle.label_deletable_if_unused}"
+                            value="#{allowedValuesPropertiesBean.allowedValuesDTO.deletableIfUnused}"
+                            autoSubmit="true">
+          <f:selectItems id="deletableIfUnusedSOCSI"
+                         value="#{allowedValuesPropertiesBean.listDeletableIfUnused}"/>
+        </af:selectOneChoice>
+        <af:spacer id="deletableSpacer" height="10"/>
+        <af:inputText id="descriptionIT" required="true" columns="35" rows="5"
                       maximumLength="#{allowedValuesPropertiesBean.allowedValuesDTO.maximumLengthDescription}"
                       label="#{labelBundle.label_description}"
                       value="#{allowedValuesPropertiesBean.allowedValuesDTO.description}"
@@ -91,7 +100,6 @@
                       value="#{allowedValuesPropertiesBean.allowedValuesDTO.createdDate}">
           <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
-        <af:spacer id="createdOnSpacer" height="10"/>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       rendered="#{allowedValuesPropertiesBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_on}"
@@ -103,7 +111,6 @@
                       rendered="#{allowedValuesPropertiesBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_by}"
                       value="#{allowedValuesPropertiesBean.allowedValuesDTO.lastUpdatedUser}"/>
-        <af:spacer id="lastUpdatedBySpacer" height="10"/>
         <af:inputText id="lastUpdatedThroughIT" readOnly="true"
                       rendered="#{allowedValuesPropertiesBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_through}"

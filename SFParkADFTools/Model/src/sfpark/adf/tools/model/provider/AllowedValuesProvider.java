@@ -15,6 +15,7 @@ import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
+import sfpark.adf.tools.model.helper.dto.AllowedValuesDTOStatus;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
 public class AllowedValuesProvider {
@@ -35,6 +36,80 @@ public class AllowedValuesProvider {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // PUBLIC METHODS
 
+    public AllowedValuesDTOStatus checkForAllowedValuesData(String tableName,
+                                                            String columnName,
+                                                            String columnValue) {
+        LOGGER.entering(CLASSNAME, "checkForAllowedValuesData");
+
+        AllowedValuesDTO DTO = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = OracleDBConnection.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement());
+
+            preparedStatement.setString(1, tableName);
+            preparedStatement.setString(2, columnName);
+            preparedStatement.setString(3, columnValue);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DTO = AllowedValuesDTO.extract(resultSet);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
+        } finally {
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
+        }
+
+
+        LOGGER.exiting(CLASSNAME, "checkForAllowedValuesData");
+
+        return new AllowedValuesDTOStatus(DTO);
+    }
+
+    public long getNumberOfOccurrencesFor(AllowedValuesDTO allowedValuesDTO) {
+        LOGGER.entering(CLASSNAME, "getAllowedValuesDTOsFor");
+
+        long numOfOccurrences = Long.MAX_VALUE;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = OracleDBConnection.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatementFor(allowedValuesDTO));
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                numOfOccurrences = resultSet.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            numOfOccurrences = -1L;
+            LOGGER.warning(ErrorMessage.SELECT_DTO_LIST.getMessage(), e);
+        } finally {
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "getAllowedValuesDTOsFor");
+
+        return numOfOccurrences;
+    }
+
     public List<AllowedValuesDTO> getAllAllowedValuesDTOs() {
         LOGGER.entering(CLASSNAME, "getAllAllowedValuesDTOs");
 
@@ -48,7 +123,7 @@ public class AllowedValuesProvider {
             connection = OracleDBConnection.getConnection();
 
             preparedStatement =
-                    connection.prepareStatement(getSelectStatement());
+                    connection.prepareStatement(getSelectStatementForAll());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -64,7 +139,6 @@ public class AllowedValuesProvider {
             OracleDBConnection.closeAll(resultSet, preparedStatement,
                                         connection);
         }
-
 
         LOGGER.exiting(CLASSNAME, "getAllAllowedValuesDTOs");
 
@@ -92,6 +166,8 @@ public class AllowedValuesProvider {
                                     DTO.getColumnValue());
         preparedStatement.setString(getInsertIndexOf(AllowedValuesDTO.DESCRIPTION),
                                     DTO.getDescription());
+        preparedStatement.setString(getInsertIndexOf(AllowedValuesDTO.DELETABLE_IF_UNUSED),
+                                    DTO.getDeletableIfUnused().getStringForTable());
 
         preparedStatement.setString(getInsertIndexOf(AllowedValuesDTO.LAST_UPD_PGM),
                                     lastUpdatedProgram);
@@ -151,12 +227,43 @@ public class AllowedValuesProvider {
         String Attributes =
             StringUtil.convertListToString(AllowedValuesDTO.getAttributeListForSelect());
 
+        String Where = getWhereString();
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  AllowedValuesDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+
+    private String getSelectStatementFor(AllowedValuesDTO DTO) {
+        LOGGER.entering(CLASSNAME, "getSelectStatementFor");
+
+        String Attributes = " COUNT ( * ) ";
+
+        String RHS = "\'" + DTO.getColumnValue() + "\'";
+
+        String Where =
+            StatementGenerator.equalToOperator(DTO.getColumnName(), RHS);
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatementFor");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  DTO.getTableName(), Where);
+    }
+
+    private String getSelectStatementForAll() {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForAll");
+
+        String Attributes =
+            StringUtil.convertListToString(AllowedValuesDTO.getAttributeListForSelect());
+
         String OrderBy =
             StatementGenerator.commaOperator(AllowedValuesDTO.TABLE_NAME,
                                              AllowedValuesDTO.COLUMN_NAME,
                                              AllowedValuesDTO.COLUMN_VALUE);
 
-        LOGGER.exiting(CLASSNAME, "getSelectStatement");
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForAll");
 
         return StatementGenerator.selectStatement(Attributes,
                                                   AllowedValuesDTO.getDatabaseTableName(),
@@ -237,6 +344,20 @@ public class AllowedValuesProvider {
     private String getDeleteStatement() {
         LOGGER.entering(CLASSNAME, "getDeleteStatement");
 
+        String Where = getWhereString();
+
+        LOGGER.exiting(CLASSNAME, "getDeleteStatement");
+
+        return StatementGenerator.deleteStatement(AllowedValuesDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // HELPERS
+
+    private String getWhereString() {
         String string1 =
             StatementGenerator.equalToOperator(AllowedValuesDTO.TABLE_NAME);
         String string2 =
@@ -244,12 +365,6 @@ public class AllowedValuesProvider {
         String string3 =
             StatementGenerator.equalToOperator(AllowedValuesDTO.COLUMN_VALUE);
 
-        String Where =
-            StatementGenerator.andOperator(string1, string2, string3);
-
-        LOGGER.exiting(CLASSNAME, "getDeleteStatement");
-
-        return StatementGenerator.deleteStatement(AllowedValuesDTO.getDatabaseTableName(),
-                                                  Where);
+        return StatementGenerator.andOperator(string1, string2, string3);
     }
 }

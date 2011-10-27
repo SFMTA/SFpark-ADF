@@ -20,6 +20,8 @@ public final class OracleDBConnection {
     private static final String CLASSNAME = OracleDBConnection.class.getName();
     private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
 
+    public static final String DB_SCHEMA = "SFPARK_ODS";
+
     private static Context initialContext = null;
 
     private static final boolean USE_DATA_SOURCE =
