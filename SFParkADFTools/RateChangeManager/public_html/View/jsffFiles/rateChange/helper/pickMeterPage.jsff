@@ -14,9 +14,8 @@
                      value="#{rateChangeManagerBundle.string_pick_meter}"/>
     </af:breadCrumbs>
     <af:separator id="Separator"/>
-    <af:toolbar id="mainToolbar">
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
       <af:group id="mainToolbarCancel">
-        <af:spacer id="spaceBeforeButton" width="30"/>
         <af:commandButton id="cancelButton" immediate="true"
                           inlineStyle="#{globalBean.generalButtonInlineStyle}"
                           text="#{buttonBundle.button_cancel}"

@@ -117,13 +117,13 @@
                       rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
                       label="#{labelBundle.label_created_on}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       rendered="#{rateChangePropertiesBean.renderPassiveInfo}"

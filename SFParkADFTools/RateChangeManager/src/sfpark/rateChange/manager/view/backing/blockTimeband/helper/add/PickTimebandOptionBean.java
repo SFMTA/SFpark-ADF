@@ -13,7 +13,6 @@ import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
@@ -21,8 +20,7 @@ import sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandAbstrac
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
-public class PickTimebandOptionBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                                 RequestScopeBeanInterface {
+public class PickTimebandOptionBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -36,43 +34,7 @@ public class PickTimebandOptionBean extends BlockTimebandAbstractBean implements
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    public void clearPageFlowScopeCache() {
-        super.clearPageFlowScopeCache();
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ALL DTO INFORMATION
-
-    //    public BlockTimeBandsWrapper getBlockTimeBandsWrapper() {
-    //        BlockTimeBandsWrapper wrapper =
-    //            (BlockTimeBandsWrapper)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey());
-    //
-    //        if (wrapper == null) {
-    //            wrapper =
-    //                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandsWrapper(getBlockID());
-    //            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey(),
-    //                                  wrapper);
-    //        }
-    //
-    //        return wrapper;
-    //    }
 
     public List<TimeBandModelDTO> getTimeBandModelDTOs() {
         return TimeBandModelProvider.INSTANCE.getTimeBandModelDTOsFor(getBlockTimeBandsWrapper().getMeterClass(),
@@ -185,7 +147,6 @@ public class PickTimebandOptionBean extends BlockTimebandAbstractBean implements
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // HELPER METHODS
-
 
     private String getLatestOpenTime() {
 

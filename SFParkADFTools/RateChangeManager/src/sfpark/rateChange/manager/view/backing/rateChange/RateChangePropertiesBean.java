@@ -54,7 +54,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     }
 
     public String getInlineMessageText() {
-        return (String)getPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
     }
 
     public void setInlineMessageClass(String inlineMessageClass) {
@@ -63,7 +63,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     }
 
     public String getInlineMessageClass() {
-        return (String)getPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

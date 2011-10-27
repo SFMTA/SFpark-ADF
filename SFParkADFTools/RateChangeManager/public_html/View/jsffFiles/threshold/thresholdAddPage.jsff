@@ -9,9 +9,8 @@
     <af:outputText id="pageHeader" noWrap="true"
                    value="#{rateChangeManagerBundle.string_rate_change_rules_management}"
                    inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
-    <af:toolbar id="mainToolbar">
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
       <af:group id="mainToolbarValidateAndSave">
-        <af:spacer id="spaceBeforeButton" width="30"/>
         <af:commandButton id="validateAndSaveButton" blocking="true"
                           inlineStyle="width: 100px; font-weight: bold;"
                           text="#{buttonBundle.button_continue}"

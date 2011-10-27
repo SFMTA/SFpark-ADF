@@ -1,7 +1,5 @@
 package sfpark.rateChange.manager.view.backing.common;
 
-import sfpark.adf.tools.utilities.constants.PatternString;
-
 import sfpark.adf.tools.utilities.constants.RegularExpression;
 
 import sfpark.rateChange.manager.view.backing.BaseBean;
@@ -42,14 +40,6 @@ public class GlobalBean extends BaseBean {
         String inlineStyle = "width: 80px;";
 
         return inlineStyle;
-    }
-
-    public String getDateTimePattern() {
-        return PatternString.DATE_TIME.getPattern();
-    }
-
-    public String getDatePattern() {
-        return PatternString.DATE.getPattern();
     }
 
     public String getFileNamePattern() {

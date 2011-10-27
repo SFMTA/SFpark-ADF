@@ -106,12 +106,12 @@
         <af:inputText id="createdOnIT" readOnly="true"
                       label="#{labelBundle.label_created_on}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_by}"

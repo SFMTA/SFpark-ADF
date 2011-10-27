@@ -9,7 +9,6 @@ import javax.faces.model.SelectItem;
 import sfpark.adf.tools.model.data.dto.timeBandModel.TimeBandModelDTO;
 import sfpark.adf.tools.model.provider.TimeBandModelProvider;
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.blockTimeband.BlockTimebandAbstractBean;
@@ -17,8 +16,7 @@ import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
 
-public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface,
-                                                                               RequestScopeBeanInterface {
+public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements PropertiesBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -28,47 +26,6 @@ public class PickTimebandTypeBean extends BlockTimebandAbstractBean implements P
     public PickTimebandTypeBean() {
         super();
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    public void clearPageFlowScopeCache() {
-        super.clearPageFlowScopeCache();
-    }
-
-    public void setInlineMessageText(String inlineMessageText) {
-    }
-
-    public String getInlineMessageText() {
-        return null;
-    }
-
-    public void setInlineMessageClass(String inlineMessageClass) {
-    }
-
-    public String getInlineMessageClass() {
-        return null;
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DTO INFORMATION
-
-    //    public BlockTimeBandsWrapper getBlockTimeBandsWrapper() {
-    //        BlockTimeBandsWrapper wrapper =
-    //            (BlockTimeBandsWrapper)getPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey());
-    //
-    //        if (wrapper == null) {
-    //            wrapper =
-    //                    DMLOperationsProvider.INSTANCE.getNewBlockTimeBandsWrapper(getBlockID());
-    //            setPageFlowScopeValue(PageFlowScopeKey.BLOCK_TIME_BANDS_WRAPPER.getKey(),
-    //                                  wrapper);
-    //        }
-    //
-    //        return wrapper;
-    //    }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -61,11 +61,6 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ALL DTO INFORMATION
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // EVENT HANDLERS
 
     public void saveButtonHandler(ActionEvent event) {
@@ -81,7 +76,7 @@ public class BlockTimebandDeleteBean extends BlockTimebandAbstractBean implement
 
             if (checkList == null || checkList.isEmpty()) {
                 allValid = false;
-                setInlineMessageText("There are no timebands to delete."); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_no_timebands_to_delete));
             }
         }
 

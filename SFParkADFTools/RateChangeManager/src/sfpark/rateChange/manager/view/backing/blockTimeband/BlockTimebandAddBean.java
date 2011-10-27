@@ -99,7 +99,7 @@ public class BlockTimebandAddBean extends BlockTimebandAbstractBean implements P
 
             if (checkList == null || checkList.isEmpty()) {
                 allValid = false;
-                setInlineMessageText("There are no timebands to save."); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_no_timebands_to_insert));
             }
         }
 

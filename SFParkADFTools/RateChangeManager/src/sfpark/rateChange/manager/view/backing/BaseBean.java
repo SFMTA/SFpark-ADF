@@ -18,11 +18,11 @@ import sfpark.rateChange.manager.view.flow.NavigationMode;
 public abstract class BaseBean {
 
     protected BaseBean() {
-        // TODO: Create a Session Scope User Context
     }
 
     protected void printLog(String message) {
-        System.out.println(message); // TODO comment out before deploying
+        // During development phase, uncomment to make logging easy
+        // System.out.println(message);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -14,9 +14,8 @@
                      value="#{rateChangeManagerBundle.string_pick_thresholds}"/>
     </af:breadCrumbs>
     <af:separator id="Separator"/>
-    <af:toolbar id="mainToolbar">
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
       <af:group id="mainToolbarDoneAndCancel">
-        <af:spacer id="spaceBeforeDoneButton" width="30"/>
         <af:commandButton id="doneButton"
                           inlineStyle="#{globalBean.commitButtonInlineStyle}"
                           text="#{buttonBundle.button_done}"

@@ -125,12 +125,12 @@
         <af:inputText id="stepStartAtIT" readOnly="true"
                       label="#{labelBundle.label_step_start_at}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.stepStartDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="stepEndAtIT" readOnly="true"
                       label="#{labelBundle.label_step_end_at}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.stepEndDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:spacer id="stepStartEndSpacer" height="10"/>
         <af:panelLabelAndMessage id="statusMessagePLM"
@@ -165,12 +165,12 @@
         <af:inputText id="createdOnIT" readOnly="true"
                       label="#{labelBundle.label_created_on}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_by}"

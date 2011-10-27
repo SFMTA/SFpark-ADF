@@ -43,7 +43,7 @@
         <af:inputText id="plannedEffDateIT" readOnly="true"
                       label="#{labelBundle.label_planned_change_eff_date}"
                       value="#{rateChangeUpdateBean.rateChangeHeaderDTO.plannedChangeEffectiveDate}">
-          <af:convertDateTime pattern="#{globalBean.datePattern}"/>
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:spacer id="plannedEffDateSpacer" height="20"/>
         <af:inputText id="submittedByIT" required="true"
@@ -93,12 +93,12 @@
         <af:inputText id="createdOnIT" readOnly="true"
                       label="#{labelBundle.label_created_on}"
                       value="#{rateChangeUpdateBean.rateChangeHeaderDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{rateChangeUpdateBean.rateChangeHeaderDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_by}"

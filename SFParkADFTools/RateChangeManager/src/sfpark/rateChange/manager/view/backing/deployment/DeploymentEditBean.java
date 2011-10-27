@@ -151,9 +151,4 @@ public class DeploymentEditBean extends BaseBean implements PropertiesBeanInterf
     public String getDisplayPreviousProcessStep() {
         return ADFUIHelper.getDisplayableProcessStep(getRateChangeProcessControlDTO().getPreviousProcessStep());
     }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // UI BINDINGS
 }
