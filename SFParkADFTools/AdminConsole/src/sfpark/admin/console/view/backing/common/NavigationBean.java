@@ -200,7 +200,8 @@ public class NavigationBean extends BaseBean {
 
                 setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
                                       TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_admin_console_parameters,
-                                                                           StringUtil.convertListToString(OperationValue.getValidValues())));
+                                                                           StringUtil.convertListToString(OperationValue.getValidValues(),
+                                                                                                          StringUtil.SEPARATOR.COMMA_WITH_TRAILING_SPACE)));
                 setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                      NavigationFlow.ERROR.name());
             }

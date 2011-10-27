@@ -24,7 +24,7 @@
                           actionListener="#{timebandListBean.pickButtonHandler}"/>
       </af:group>
     </af:toolbar>
-    <af:table id="TBTable" var="row" varStatus="rowStatus" width="500"
+    <af:table id="TBTable" var="row" varStatus="rowStatus" width="600"
               inlineStyle="height: 450px; margin-left: 35px;"
               contentDelivery="immediate" rowSelection="none"
               rowBandingInterval="0" columnSelection="none"
@@ -34,26 +34,26 @@
               value="#{timebandListBean.timeBandModels}"
               binding="#{timebandListBean.timeBandModelsTable}">
       <af:column id="TBTableColMeterClass" rowHeader="unstyled" align="center"
-                 width="80px" sortable="false"
+                 width="100px" sortable="false"
                  headerText="#{columnBundle.column_meter_class}">
         <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
       </af:column>
-      <af:column id="TBTableColDateType" align="center" width="80px"
+      <af:column id="TBTableColDateType" align="center" width="100px"
                  sortable="false" headerText="#{columnBundle.column_date_type}">
         <af:outputText id="TBTableRowDateType" value="#{row.dateType}"/>
       </af:column>
-      <af:column id="TBTableColTimeBandID" align="center" width="50px"
+      <af:column id="TBTableColTimeBandID" align="center" width="100px"
                  sortable="false"
                  headerText="#{columnBundle.column_time_band_id}">
         <af:outputText id="TBTableRowTimeBandID" value="#{row.timeBandID}"/>
       </af:column>
-      <af:column id="TBTableColTimeBandFrom" align="center" width="60px"
+      <af:column id="TBTableColTimeBandFrom" align="center" width="100px"
                  sortable="false"
                  headerText="#{columnBundle.column_time_band_from}">
         <af:outputText id="TBTableRowTimeBandFrom"
                        value="#{row.displayTimeBandFrom}"/>
       </af:column>
-      <af:column id="TBTableColTimeBandTo" align="center" width="60px"
+      <af:column id="TBTableColTimeBandTo" align="center" width="100px"
                  sortable="false"
                  headerText="#{columnBundle.column_time_band_to}">
         <af:outputText id="TBTableRowTimeBandTo"

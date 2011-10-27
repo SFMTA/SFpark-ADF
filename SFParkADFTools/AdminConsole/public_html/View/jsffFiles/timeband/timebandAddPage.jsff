@@ -13,9 +13,8 @@
       <af:outputText id="bcOT"
                      value="#{adminConsoleBundle.string_add_time_bands}"/>
     </af:breadCrumbs>
-    <af:toolbar id="mainToolbar">
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
       <af:group id="mainToolbarSaveAndCancel">
-        <af:spacer id="spaceBeforeSaveButton" width="30"/>
         <af:commandButton id="saveButton"
                           inlineStyle="#{globalBean.commitButtonInlineStyle}"
                           text="#{buttonBundle.button_save}"
@@ -47,7 +46,7 @@
         </f:facet>
         <af:outputText id="OT1" inlineStyle="font-size: 14px;"
                        value="#{adminConsoleBundle.string_time_band_models_to_insert}"/>
-        <af:table id="ITBTabl" var="row" varStatus="rowStatus" width="500"
+        <af:table id="ITBTabl" var="row" varStatus="rowStatus" width="600"
                   inlineStyle="height: 150px;" contentDelivery="immediate"
                   rowSelection="none" rowBandingInterval="0"
                   columnSelection="none" disableColumnReordering="true"
@@ -57,29 +56,29 @@
                   value="#{timebandAddBean.insertableTimeBandModels}"
                   binding="#{timebandAddBean.insertTimeBandModelsTable}">
           <af:column id="ITBTableColMeterClass" rowHeader="unstyled"
-                     align="center" width="80px" sortable="false"
+                     align="center" width="100px" sortable="false"
                      headerText="#{columnBundle.column_meter_class}">
             <af:outputText id="ITBTableRowMeterClass"
                            value="#{row.meterClass}"/>
           </af:column>
-          <af:column id="ITBTableColDateType" align="center" width="80px"
+          <af:column id="ITBTableColDateType" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_date_type}">
             <af:outputText id="ITBTableRowDateType" value="#{row.dateType}"/>
           </af:column>
-          <af:column id="ITBTableColTimeBandID" align="center" width="50px"
+          <af:column id="ITBTableColTimeBandID" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_id}">
             <af:outputText id="ITBTableRowTimeBandID"
                            value="#{row.timeBandID}"/>
           </af:column>
-          <af:column id="ITBTableColTimeBandFrom" align="center" width="60px"
+          <af:column id="ITBTableColTimeBandFrom" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_from}">
             <af:outputText id="ITBTableRowTimeBandFrom"
                            value="#{row.displayTimeBandFrom}"/>
           </af:column>
-          <af:column id="ITBTableColTimeBandTo" align="center" width="60px"
+          <af:column id="ITBTableColTimeBandTo" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_to}">
             <af:outputText id="ITBTableRowTimeBandTo"
@@ -93,7 +92,7 @@
         </f:facet>
         <af:outputText id="OT2" inlineStyle="font-size: 14px;"
                        value="#{adminConsoleBundle.string_time_band_models_to_delete}"/>
-        <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="800"
+        <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="600"
                   inlineStyle="height: 150px;" contentDelivery="immediate"
                   rowSelection="none" rowBandingInterval="0"
                   columnSelection="none" disableColumnReordering="true"
@@ -102,29 +101,29 @@
                   summary="Block Time Bands List"
                   value="#{timebandAddBean.deletableTimeBandModels}">
           <af:column id="DTBTableColMeterClass" rowHeader="unstyled"
-                     align="center" width="80px" sortable="false"
+                     align="center" width="100px" sortable="false"
                      headerText="#{columnBundle.column_meter_class}">
             <af:outputText id="DTBTableRowMeterClass"
                            value="#{row.meterClass}"/>
           </af:column>
-          <af:column id="DTBTableColDateType" align="center" width="80px"
+          <af:column id="DTBTableColDateType" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_date_type}">
             <af:outputText id="DTBTableRowDateType" value="#{row.dateType}"/>
           </af:column>
-          <af:column id="DTBTableColTimeBandID" align="center" width="50px"
+          <af:column id="DTBTableColTimeBandID" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_id}">
             <af:outputText id="DTBTableRowTimeBandID"
                            value="#{row.timeBandID}"/>
           </af:column>
-          <af:column id="DTBTableColTimeBandFrom" align="center" width="60px"
+          <af:column id="DTBTableColTimeBandFrom" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_from}">
             <af:outputText id="DTBTableRowTimeBandFrom"
                            value="#{row.displayTimeBandFrom}"/>
           </af:column>
-          <af:column id="DTBTableColTimeBandTo" align="center" width="60px"
+          <af:column id="DTBTableColTimeBandTo" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_time_band_to}">
             <af:outputText id="DTBTableRowTimeBandTo"

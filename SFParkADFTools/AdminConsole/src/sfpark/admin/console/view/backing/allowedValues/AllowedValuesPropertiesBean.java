@@ -180,21 +180,21 @@ public class AllowedValuesPropertiesBean extends BaseBean implements PropertiesB
                         allValid = true;
                     } else {
                         allValid = false;
-                        setInlineMessageText("Column Valus is NOT compatible. Column accepts " +
-                                             columnInfoObjectStatus.getInfoObject().getTypeName() +
-                                             "(" +
-                                             columnInfoObjectStatus.getInfoObject().getColumnSize() +
-                                             ") values. "); // TODO
+                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_incompatible_column_value,
+                                                                                  columnInfoObjectStatus.getInfoObject().getTypeName(),
+                                                                                  columnInfoObjectStatus.getInfoObject().getColumnSize()));
                     }
 
                 } else {
                     allValid = false;
-                    setInlineMessageText("Column does NOT exist. "); // TODO
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_nonexistent_column_name,
+                                                                              allowedValuesDTO.getColumnName()));
                 }
 
             } else {
                 allValid = false;
-                setInlineMessageText("Table does NOT exist. "); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_nonexistent_table_name,
+                                                                          allowedValuesDTO.getTableName()));
             }
         }
 
@@ -208,7 +208,7 @@ public class AllowedValuesPropertiesBean extends BaseBean implements PropertiesB
 
             if (allowedValuesDTOStatus.existsDTO()) {
                 allValid = false;
-                setInlineMessageText("The value already exists. "); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_exists_already_allowed_value));
             }
         }
 
@@ -319,20 +319,23 @@ public class AllowedValuesPropertiesBean extends BaseBean implements PropertiesB
 
                 if (DTO.getDeletableIfUnused().isDeletable()) {
                     allValid = true;
+
                 } else {
                     allValid = false;
-                    setInlineMessageText("Cannot delete as DELETABLE_IF_UNUSED flag is not set. "); // TODO
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_delete_flag));
                 }
 
             } else if (numOfOccurrences < 0L) {
                 allValid = false;
-                setInlineMessageText("Cannot delete. Contact Administrator. "); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_delete_unsupported));
+
             } else {
                 allValid = false;
-                setInlineMessageText("Cannot delete. Used " +
-                                     numOfOccurrences + " times. "); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_delete_inuse,
+                                                                          numOfOccurrences));
             }
         }
+
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++

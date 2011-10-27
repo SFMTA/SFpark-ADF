@@ -81,7 +81,7 @@ public class TimebandDeleteBean extends TimebandAbstractBean implements Properti
 
             if (checkList == null || checkList.isEmpty()) {
                 allValid = false;
-                setInlineMessageText("There are no timebands to delete."); // TODO
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_no_timebands_to_delete));
             }
         }
 

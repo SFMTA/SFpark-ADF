@@ -25,7 +25,7 @@
                           actionListener="#{allowedValuesListBean.editButtonHandler}"/>
       </af:group>
     </af:toolbar>
-    <af:table id="AVTable" var="row" varStatus="rowStatus" width="850"
+    <af:table id="AVTable" var="row" varStatus="rowStatus" width="900"
               inlineStyle="height: 450px; margin-left: 35px;"
               contentDelivery="immediate" rowSelection="single"
               rowBandingInterval="0" columnSelection="none"
@@ -36,24 +36,28 @@
               binding="#{allowedValuesListBean.allowedValuesTable}"
               selectionListener="#{allowedValuesListBean.tableRowSelectionHandler}">
       <af:column id="AVTableColTableName" rowHeader="unstyled" align="center"
-                 width="200px" sortable="false" headerText="Table Name">
+                 width="200px" sortable="false"
+                 headerText="#{columnBundle.column_table_name}">
         <af:outputText id="AVTableRowTableName" value="#{row.tableName}"/>
       </af:column>
       <af:column id="AVTableColColumnName" align="center" width="200px"
-                 sortable="false" headerText="Column Name">
+                 sortable="false"
+                 headerText="#{columnBundle.column_column_name}">
         <af:outputText id="AVTableRowColumnName" value="#{row.columnName}"/>
       </af:column>
       <af:column id="AVTableColColumnValue" align="center" width="150px"
-                 sortable="false" headerText="Column Value">
+                 sortable="false"
+                 headerText="#{columnBundle.column_column_value}">
         <af:outputText id="AVTableRowColumnValue" value="#{row.columnValue}"/>
       </af:column>
       <af:column id="AVTableColDeletable" align="center" width="80px"
-                 sortable="false" headerText="Deletable">
+                 sortable="false" headerText="#{columnBundle.column_deletable}">
         <af:outputText id="AVTableRowDeletable"
                        value="#{row.deletableIfUnused.stringForDisplay}"/>
       </af:column>
       <af:column id="AVTableColDesc" align="center" width="100px"
-                 sortable="false" headerText="Description">
+                 sortable="false"
+                 headerText="#{columnBundle.column_description}">
         <af:outputText id="AVTableRowDesc" value="#{row.description}"/>
       </af:column>
     </af:table>

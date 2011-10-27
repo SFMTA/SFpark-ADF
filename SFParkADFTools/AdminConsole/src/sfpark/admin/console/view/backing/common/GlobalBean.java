@@ -39,16 +39,4 @@ public class GlobalBean extends BaseBean {
 
         return inlineStyle;
     }
-
-    //  public String getDateTimePattern() {
-    //      return PatternString.DATE_TIME.getPattern();
-    //  }
-    //
-    //  public String getDatePattern() {
-    //      return PatternString.DATE.getPattern();
-    //  }
-    //
-    //  public String getFileNamePattern() {
-    //      return RegularExpression.FILE_NAME.getRegEx();
-    //  }
 }

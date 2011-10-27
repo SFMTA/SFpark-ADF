@@ -17,11 +17,11 @@ import sfpark.admin.console.view.flow.NavigationMode;
 public abstract class BaseBean {
 
     protected BaseBean() {
-        // TODO: Create a Session Scope User Context
     }
 
     protected void printLog(String message) {
-        System.out.println(message); // TODO comment out before deploying
+        // During development phase, this can be uncommented to allow easy logs
+        // System.out.println(message);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
