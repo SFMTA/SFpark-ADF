@@ -3,6 +3,7 @@ package sfpark.osp.manager.view.flow;
 public enum NavigationMode {
     ADD,
     EDIT,
+
     READ_ONLY;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

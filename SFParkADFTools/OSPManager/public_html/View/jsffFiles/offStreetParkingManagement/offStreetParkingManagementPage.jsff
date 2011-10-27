@@ -9,22 +9,25 @@
     <af:outputText id="pageHeader" noWrap="true"
                    inlineStyle="#{globalBean.pageHeaderInlineStyle}"
                    value="#{ospManagerBundle.string_osp_management}"/>
-    <af:panelGroupLayout id="pageButtonPanel" layout="horizontal" halign="right"
-                         inlineStyle="width: 800px;">
-      <f:facet name="separator">
-        <af:spacer id="pageButtonPanelSpacer" width="15"/>
-      </f:facet>
-      <af:outputText id="inlineMessage" noWrap="true"
-                     value="#{offStreetParkingManagementBean.inlineMessageText}"
-                     styleClass="#{offStreetParkingManagementBean.inlineMessageClass}"
-                     partialTriggers="validateAndSaveButton"/>
-      <af:commandButton id="validateAndSaveButton" blocking="true"
-                        inlineStyle="width: 150px; font-weight: bold;"
-                        text="#{buttonBundle.button_validate_and_save}"
-                        actionListener="#{offStreetParkingManagementBean.saveButtonHandler}"/>
-    </af:panelGroupLayout>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarSave">
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{offStreetParkingManagementBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{offStreetParkingManagementBean.inlineMessageText}"
+                       styleClass="#{offStreetParkingManagementBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
     <af:separator id="Separator1"/>
     <af:panelGroupLayout id="ospInventoryPanel" layout="horizontal" valign="top"
+                         inlineStyle="margin-left: 35px;"
                          partialTriggers="validateAndSaveButton">
       <f:facet name="separator">
         <af:spacer id="ospInventoryPanelSpacer" width="50"/>
@@ -205,13 +208,13 @@
                       rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
                       label="#{labelBundle.label_created_on}"
                       value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.createdDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{offStreetParkingManagementBean.currentOSPInventoryDTO.lastUpdatedDate}">
-          <af:convertDateTime pattern="#{globalBean.dateTimePattern}"/>
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       rendered="#{offStreetParkingManagementBean.renderPassiveInfo}"
@@ -338,7 +341,8 @@
           <af:column id="HGRTableColRateQ" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_rate_qualifier}">
-            <af:outputText id="HGRTableRowRateQ" value="#{row.rateQualifier}"/>
+            <af:outputText id="HGRTableRowRateQ"
+                           value="#{row.rateQualifier.rateQualifierText}"/>
           </af:column>
           <af:column id="HGRTableColMaxAmt" align="center" width="80px"
                      sortable="false"
@@ -357,7 +361,8 @@
           <af:column id="HGRTableColDispCode" align="center" width="100px"
                      sortable="false"
                      headerText="#{columnBundle.column_display_code}">
-            <af:outputText id="HGRTableRowDispCode" value="#{row.displayCode}"/>
+            <af:outputText id="HGRTableRowDispCode"
+                           value="#{row.displayCode.stringForDisplay}"/>
           </af:column>
           <af:column id="HGRTableColRateChg" align="center" sortable="false"
                      headerText="#{columnBundle.column_rate_change_ref}">

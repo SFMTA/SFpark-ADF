@@ -34,14 +34,6 @@ public class NavigationBean extends BaseBean {
 
     private RichRegion ContentRichRegion;
 
-    public static NavigationBean getInstance() {
-        return (NavigationBean)getCurrentInstanceFor("navigationBean");
-    }
-
-    public void refreshContentRegion() {
-        addPartialTarget(getContentRichRegion());
-    }
-
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

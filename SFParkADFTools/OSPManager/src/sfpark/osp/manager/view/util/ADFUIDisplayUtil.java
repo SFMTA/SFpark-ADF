@@ -22,19 +22,6 @@ public final class ADFUIDisplayUtil {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Facility Type Util
-
-    public static final List<SelectItem> FACILITY_TYPE_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                add(new SelectItem("G", "G - Garage"));
-                add(new SelectItem("L", "L - Lot"));
-            }
-        });
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Owner Util
 
     public static final List<SelectItem> OWNER_LIST =
@@ -44,20 +31,6 @@ public final class ADFUIDisplayUtil {
                 add(new SelectItem("Port"));
                 add(new SelectItem("RPD"));
                 add(new SelectItem("SFMTA"));
-            }
-        });
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Data Feed Flag Util
-
-    public static final List<SelectItem> DATA_FEED_FLAG_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                add(new SelectItem("Y", "Y - Yes"));
-                add(new SelectItem("N", "N - No"));
-                add(new SelectItem("S", "S - Suspend"));
             }
         });
 
@@ -83,54 +56,6 @@ public final class ADFUIDisplayUtil {
                 add(new SelectItem("student rate"));
                 add(new SelectItem("valet parking"));
                 add(new SelectItem("validation"));
-            }
-        });
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Display Group Util
-
-    @Deprecated
-    public static final List<SelectItem> DISPLAY_GROUP_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                add(new SelectItem(new Integer(1), "1 - Hourly Rates"));
-                add(new SelectItem(new Integer(2),
-                                   "2 - Flat Rates / Discounts"));
-                add(new SelectItem(new Integer(3), "3 - Monthly Rates"));
-            }
-        });
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Rate Qualifier Util
-
-    public static final List<SelectItem> RATE_QUALIFIER_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                for (GarageRatesQualifier qualifier :
-                     GarageRatesQualifier.values()) {
-                    add(new SelectItem(qualifier,
-                                       qualifier.getRateQualifierText()));
-                }
-            }
-        });
-
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // Display Code Util
-
-    public static final List<SelectItem> DISPLAY_CODE_LIST =
-        Collections.unmodifiableList(new ArrayList<SelectItem>() {
-            {
-                add(new SelectItem("Y",
-                                   "Y - Normal Display using RATE_DESC and RATE_RESTRICTIONS"));
-                add(new SelectItem("N", "N - Do not use RATE_RESTRICTIONS"));
-                add(new SelectItem("O",
-                                   "O - Override the RATE_DESC with the value in RATE_RESTRICTIONS"));
             }
         });
 

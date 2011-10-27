@@ -9,6 +9,7 @@ import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.garageOPHours.GarageOPHoursDTO;
 import sfpark.adf.tools.model.data.dto.garageRates.GarageRatesDTO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
+import sfpark.adf.tools.model.data.helper.GarageRatesDisplayCode;
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
 import sfpark.adf.tools.model.data.helper.GarageRatesQualifier;
 import sfpark.adf.tools.model.data.helper.GarageRatesTimeBand;
@@ -65,7 +66,7 @@ public final class DMLOperationsProvider {
 
         DTO.setRate(0.00f);
 
-        DTO.setDisplayCode("Y");
+        DTO.setDisplayCode(GarageRatesDisplayCode.YES);
 
         switch (displayGroup) {
 
@@ -136,37 +137,6 @@ public final class DMLOperationsProvider {
 
         return DTO;
     }
-
-    //    public GarageRatesDTO getNewGarageRatesDTO(String ospID, int sequence) {
-    //
-    //        LOGGER.entering(CLASSNAME, "getNewGarageRatesDTO");
-    //
-    //        GarageRatesDTO DTO = new GarageRatesDTO();
-    //
-    //        DTO.setGarageRateID(null);
-    //        DTO.setOSPID(ospID);
-    //        DTO.setOverride(false);
-    //
-    //        DTO.setRateStatus("A");
-    //        // TO DO DTO.setDisplayGroup(1);
-    //        DTO.setDisplaySequence(sequence);
-    //
-    //        DTO.setEffectiveFromDate(SQLDateUtil.getTodaysDate());
-    //        DTO.setEffectiveToDate(SQLDateUtil.getMaximumDate());
-    //
-    //        DTO.setRateDescription(null);
-    //        // TO DO DTO.setTimeBand(GarageRatesDTO.TimeBand.BAND_1);
-    //        DTO.setMaximumAmount(null);
-    //
-    //        DTO.setRate(0.00f);
-    //        // TO DO DTO.setRateQualifier("Flat rate");
-    //
-    //        DTO.setDisplayCode("Y");
-    //
-    //        LOGGER.exiting(CLASSNAME, "getNewGarageRatesDTO");
-    //
-    //        return DTO;
-    //    }
 
     public GarageOPHoursDTO getNewGarageOPHoursDTO(String ospID,
                                                    int sequence) {

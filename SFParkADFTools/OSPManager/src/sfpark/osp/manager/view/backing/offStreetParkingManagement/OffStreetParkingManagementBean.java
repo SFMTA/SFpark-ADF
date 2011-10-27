@@ -20,7 +20,11 @@ import sfpark.adf.tools.model.data.dto.garageOPHours.GarageOPHoursDTO;
 import sfpark.adf.tools.model.data.dto.garageRates.GarageRatesDTO;
 import sfpark.adf.tools.model.data.dto.ospInventory.OSPInventoryDTO;
 
+import sfpark.adf.tools.model.data.helper.GarageRatesDisplayCode;
 import sfpark.adf.tools.model.data.helper.GarageRatesDisplayGroup;
+import sfpark.adf.tools.model.data.helper.GarageRatesQualifier;
+import sfpark.adf.tools.model.data.helper.OSPDataFeedFlag;
+import sfpark.adf.tools.model.data.helper.OSPFacilityType;
 import sfpark.adf.tools.model.exception.DTOInsertException;
 import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
@@ -31,6 +35,9 @@ import sfpark.adf.tools.model.provider.GarageRatesProvider;
 
 import sfpark.adf.tools.model.provider.OSPInventoryProvider;
 
+import sfpark.adf.tools.translation.CommonBundleKey;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 
@@ -85,31 +92,12 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    public static OffStreetParkingManagementBean getInstance() {
-        return (OffStreetParkingManagementBean)getCurrentInstanceFor("offStreetParkingManagementBean");
-    }
-
     public void clearPageFlowScopeCache() {
         removePageFlowScopeValue(PageFlowScopeKey.HISTORIC_GARAGE_RATES_LIST.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.ACTIVE_GARAGE_RATES_LIST.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.HISTORIC_GARAGE_OP_HOURS_LIST.getKey());
         removePageFlowScopeValue(PageFlowScopeKey.ACTIVE_GARAGE_OP_HOURS_LIST.getKey());
     }
-
-    /*
-  public void refreshTable() {
-      if (getMeterScheduleTable() != null) {
-
-          clearPageFlowScopeCache();
-          getMeterScheduleTable().getSelectedRowKeys().clear();
-          getMeterScheduleTable().setSelectedRowKeys(null);
-          resetAllMeterScheduleTableButtons();
-
-          getMeterScheduleTable().setValue(null);
-          addPartialTarget(getMeterScheduleTable());
-      }
-  }
-   */
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,7 +111,6 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
         if (DTO == null) {
             // This is an invalid situation. This will occur if the Navigation Flow is broken.
             DTO = new OSPInventoryDTO();
-            // TODO: replace with something like DMLOperationsProvider.INSTANCE.getEmptyDTO()
 
             setPageFlowScopeValue(PageFlowScopeKey.OSP_INVENTORY_DTO.getKey(),
                                   DTO);
@@ -270,7 +257,14 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
     // LIST VALUES
 
     public List<SelectItem> getListFacilityType() {
-        return ADFUIDisplayUtil.FACILITY_TYPE_LIST;
+        List<SelectItem> facilityTypeList = new ArrayList<SelectItem>();
+
+        for (OSPFacilityType facilityType : OSPFacilityType.values()) {
+            facilityTypeList.add(new SelectItem(facilityType,
+                                                facilityType.getStringForDisplay()));
+        }
+
+        return facilityTypeList;
     }
 
     public List<SelectItem> getListOwner() {
@@ -278,7 +272,14 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
     }
 
     public List<SelectItem> getListDataFeedFlag() {
-        return ADFUIDisplayUtil.DATA_FEED_FLAG_LIST;
+        List<SelectItem> dataFeedFlagList = new ArrayList<SelectItem>();
+
+        for (OSPDataFeedFlag ospDataFeedFlag : OSPDataFeedFlag.values()) {
+            dataFeedFlagList.add(new SelectItem(ospDataFeedFlag,
+                                                ospDataFeedFlag.getStringForDisplay()));
+        }
+
+        return dataFeedFlagList;
     }
 
     public List<SelectItem> getListServices() {
@@ -286,7 +287,15 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
     }
 
     public List<SelectItem> getListDisplayCode() {
-        return ADFUIDisplayUtil.DISPLAY_CODE_LIST;
+        List<SelectItem> displayCodeList = new ArrayList<SelectItem>();
+
+        for (GarageRatesDisplayCode displayCode :
+             GarageRatesDisplayCode.values()) {
+            displayCodeList.add(new SelectItem(displayCode,
+                                               displayCode.getStringForDisplay()));
+        }
+
+        return displayCodeList;
     }
 
     public List<SelectItem> getListTimeBand() {
@@ -294,7 +303,14 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
     }
 
     public List<SelectItem> getListRateQualifier() {
-        return ADFUIDisplayUtil.RATE_QUALIFIER_LIST;
+        List<SelectItem> rateQualifierList = new ArrayList<SelectItem>();
+
+        for (GarageRatesQualifier qualifier : GarageRatesQualifier.values()) {
+            rateQualifierList.add(new SelectItem(qualifier,
+                                                 qualifier.getRateQualifierText()));
+        }
+
+        return rateQualifierList;
     }
 
     public List<SelectItem> getListFromDay() {
@@ -674,13 +690,13 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                 }
 
                 if (operationStatus == null) {
-                    setInlineMessageText("There were no changes. So nothing was saved.");
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
                     setInlineMessageClass("");
 
                 } else {
                     if (operationStatus.isSuccess()) {
                         // System.out.println("EDIT operation was successful");
-                        setInlineMessageText("Successfully saved all the details.");
+                        setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
                         OSPInventoryDTOStatus ospStatus =
@@ -694,13 +710,9 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                         clearPageFlowScopeCache();
 
                         if (!ospStatus.getDTO().isMetered()) {
-                            // this.activeGarageRatesDTOs = null;
-                            // this.historicGarageRatesDTOs = null;
                             getActiveGarageRatesTable().setValue(null);
                             getHistoricGarageRatesTable().setValue(null);
 
-                            // this.activeGarageOPHoursDTOs = null;
-                            // this.historicGarageOPHoursDTOs = null;
                             getActiveGarageOPHoursTable().setValue(null);
                             getHistoricGarageOPHoursTable().setValue(null);
                         }
@@ -714,7 +726,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                         case UNIQUE_CONTRAINT:
                             {
                                 errorMessage =
-                                        "Failed due to invalid rates and/or op hours during archiving. Try overriding.";
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_rates_or_op_hours);
                             }
                             break;
 
@@ -726,14 +738,14 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                                 if (StringUtil.areEqual(tableName,
                                                         GarageRatesDTO.getDatabaseTableName())) {
                                     errorMessage =
-                                            "Failed due to invalid new rates. Try overriding or removing.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_new_rates);
                                 } else if (StringUtil.areEqual(tableName,
                                                                GarageOPHoursDTO.getDatabaseTableName())) {
                                     errorMessage =
-                                            "Failed due to invalid new op hours. Try overriding or removing.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_new_op_hours);
                                 } else {
                                     errorMessage =
-                                            "Failed to save details due to unknown reasons.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
                                 }
                             }
                             break;
@@ -746,18 +758,18 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                                 if (StringUtil.areEqual(tableName,
                                                         GarageRatesDTO.getDatabaseTableName())) {
                                     errorMessage =
-                                            "Failed due to invalid existing rates. Try overriding.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_existing_rates);
                                 } else if (StringUtil.areEqual(tableName,
                                                                GarageOPHoursDTO.getDatabaseTableName())) {
                                     errorMessage =
-                                            "Failed due to invalid existing op hours. Try overriding.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_existing_op_hours);
                                 } else if (StringUtil.areEqual(tableName,
                                                                OSPInventoryDTO.getDatabaseTableName())) {
                                     errorMessage =
-                                            "Failed due to invalid OSP details.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_invalid_osp_details);
                                 } else {
                                     errorMessage =
-                                            "Failed to save details due to unknown reasons.";
+                                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
                                 }
                             }
                             break;
@@ -765,7 +777,7 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                         default:
                             {
                                 errorMessage =
-                                        "Failed to save details due to unknown reasons.";
+                                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_save_failure);
                             }
                             break;
                         }
@@ -839,8 +851,9 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
 
             // For each row, TO date should be after FROM date
             if (iDTO.getEffectiveToDate().before(iDTO.getEffectiveFromDate())) {
-                setInlineMessageText("Rates Table: TO date should be after FROM date in row " +
-                                     (i + 1));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_rates_to_date_before_from_date,
+                                                                          (i +
+                                                                           1)));
                 return false;
             }
 
@@ -853,15 +866,17 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                 if (!(StringUtil.isBlank(iDTO.getRateDescription()) ^
                       iDTO.getTimeBand().isNULL())) {
 
-                    setInlineMessageText("Rates Table: Rate Description and Time Band should alternately be NULL in row " +
-                                         (i + 1));
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_rates_null_description_or_time_band,
+                                                                              (i +
+                                                                               1)));
                     return false;
                 }
             } else {
                 if (StringUtil.isBlank(iDTO.getRateDescription())) {
 
-                    setInlineMessageText("Rates Table: Rate Description cannot be null in row " +
-                                         (i + 1));
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_rates_null_description,
+                                                                              (i +
+                                                                               1)));
                     return false;
                 }
             }
@@ -876,9 +891,11 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                     SQLDateUtil.areEqual(iDTO.getEffectiveFromDate(),
                                          jDTO.getEffectiveFromDate())) {
 
-                    setInlineMessageText("Rates Table: Rows " + (i + 1) +
-                                         " and " + (j + 1) +
-                                         " have same unique constraint values");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_rates_unique_constraint,
+                                                                              (i +
+                                                                               1),
+                                                                              (j +
+                                                                               1)));
                     return false;
                 }
             }
@@ -913,8 +930,9 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
 
             // For each row, TO date should be after FROM date
             if (iDTO.getEffectiveToDate().before(iDTO.getEffectiveFromDate())) {
-                setInlineMessageText("OP Hours Table: TO date should be after FROM date in row " +
-                                     (i + 1));
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_op_hours_to_date_before_from_date,
+                                                                          (i +
+                                                                           1)));
                 return false;
             }
 
@@ -930,9 +948,11 @@ public class OffStreetParkingManagementBean extends BaseBean implements RequestS
                     StringUtil.areEqual(iDTO.getFromDay(),
                                         jDTO.getFromDay())) {
 
-                    setInlineMessageText("OP Hours Table: Rows " + (i + 1) +
-                                         " and " + (j + 1) +
-                                         " have same unique constraint values");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_op_hours_unique_constraint,
+                                                                              (i +
+                                                                               1),
+                                                                              (j +
+                                                                               1)));
                     return false;
 
                 }

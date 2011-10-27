@@ -1,7 +1,5 @@
 package sfpark.osp.manager.view.backing;
 
-import javax.el.ELContext;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -17,8 +15,6 @@ import org.apache.myfaces.trinidad.util.Service;
 import sfpark.osp.manager.view.flow.NavigationMode;
 
 public abstract class BaseBean {
-    private static final String CURRENT_PAGE_SAVED =
-        "sessionScopeKey.currentPageSaved";
     private static final String CURRENT_PAGE_MODE =
         "sessionScopeKey.currentPageMode";
 
@@ -42,26 +38,6 @@ public abstract class BaseBean {
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     protected BaseBean() {
-        // TODO: Create a Session Scope User Context
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // CURRENT PAGE SAVED MECHANISM
-
-    protected boolean isCurrentPageSaved() {
-        Boolean isCurrentPageSaved =
-            (Boolean)getSessionScopeValue(CURRENT_PAGE_SAVED);
-
-        // If the value is null, then the page was never edited, and so the page
-        // retains all the original values
-        return (isCurrentPageSaved == null) ? Boolean.TRUE :
-               isCurrentPageSaved.booleanValue();
-    }
-
-    protected void setCurrentPageSaved(Boolean currentPageSaved) {
-        setSessionScopeValue(CURRENT_PAGE_SAVED, currentPageSaved);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -294,23 +270,5 @@ public abstract class BaseBean {
     private String getComponentForJS(UIComponent uiComponent) {
         return "AdfPage.PAGE.findComponent('" +
             uiComponent.getClientId(getFacesContext()) + "')";
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // ACCESSOR METHODS
-
-    /**
-     * Returns the instance of the subclass of the BaseBean being called for
-     * @param beanClassName subclass reference name of BaseBean for which the instance is being asked for
-     * @return current instance of the subclass of BaseBean
-     */
-    protected static <T extends BaseBean> T getCurrentInstanceFor(String beanClassName) {
-        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-        Object beanInstance =
-            elContext.getELResolver().getValue(elContext, null, beanClassName);
-
-        return (T)beanInstance;
     }
 }
