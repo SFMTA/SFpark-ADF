@@ -7,8 +7,11 @@ import javax.faces.event.ActionEvent;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.myfaces.trinidad.component.UIXGroup;
+
 import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
@@ -28,7 +31,15 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
-
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111109-01 Mark Piller - Oracle Consulting  added Status Message of Generating Details
+ * 20111109-02 Mark Piller - Oracle Consulting  added logic to send Ref ID to ODI Function
+ * 20111109-03 Mark Piller - Oracle Consulting  added logic to display message from ODI Function.
+ */
 public class RateChangePropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                   RequestScopeBeanInterface {
 
@@ -160,7 +171,11 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
+        printLog("RateChangePropertiesBean saveButtonHandler()");
+
         boolean allValid = true;
+        String messageFromGenerateRates; // 20111109-03
+        
         NavigationMode currentPageMode = getCurrentPageMode();
 
         RateChangeHeaderDTO rateChangeHeaderDTO = getRateChangeHeaderDTO();
@@ -185,7 +200,6 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                 allValid = false;
                 setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_calendar_id));
             }
-
         }
 
         printLog("After Calendar ID = " + allValid);
@@ -227,14 +241,23 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                 printLog("ADD Mode");
 
                 RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
+                printLog("RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
 
                 OperationStatus addOperation =
                     DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
+                printLog("RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
 
                 if (addOperation.isSuccess()) {
+                    printLog("addOperation is successful");
 
                     RateChangeHeaderDTO newRateChangeHeaderDTO =
                         RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
+
+                    printLog("RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
+                    String referenceIdForStoredProcedureCall = newRateChangeHeaderDTO.getRateChangeReferenceID();
+                    printLog("referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
+                    // 20111109-01
+                    newRateChangeHeaderDTO.setStatus(RateChangeStatus.WORKING);
 
                     setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
@@ -244,15 +267,24 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                     setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                           newRateChangeHeaderDTO);
 
+                    // 20111109-02
+                    // get the status of the call to the Function (stored procedure)
+                    // that generates the new rates
+                    // copy Reference ID to Stored Procedure object
+                    currentDTO.setRateChangeReferenceID(referenceIdForStoredProcedureCall);
                     OperationStatus generateOperation =
                         DMLOperationsProvider.INSTANCE.generateRateChange(currentDTO);
-
+                    
+                    // 20111109-03
+                    // get the message for the Generate Rates function / stored procedure
+                    messageFromGenerateRates = generateOperation.getMessage();
+                    // display the message
+                    setInlineMessageText(messageFromGenerateRates);
+                    
+                    printLog("testing success of operation - " + generateOperation.isSuccess());
                     if (!generateOperation.isSuccess()) {
-
-                        printLog("Generate operation failed");
-                        setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_generate_rate_change_reference_details));
+                        printLog("Generate operation failed - reason should be given by Stored Procedure message");
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-
                     }
 
                 } else {
@@ -271,4 +303,5 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     public void cancelButtonHandler(ActionEvent event) {
         // Do nothing
     }
+
 }

@@ -1,13 +1,19 @@
 package sfpark.adf.tools.model.data.helper;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
-
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111031-01 Mark Piller - Oracle Consulting  change "Off per hour" to "Off per hr"
+ */
 public enum GarageRatesQualifier {
 
     NULL(""),
     FLAT_RATE("Flat rate"),
     OFF_TOTAL("Off total"),
-    OFF_PER_HOUR("Off per hour"),
+    OFF_PER_HOUR("Off per hr"),  // 20111031-01
     PER_DAY("Per day"),
     PER_HOUR("Per hour"),
     PER_MONTH("Per month");

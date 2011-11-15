@@ -134,6 +134,10 @@
                       label="#{labelBundle.label_last_updated_through}"
                       value="#{rateChangePropertiesBean.rateChangeHeaderDTO.lastUpdatedProgram}"/>
         <af:spacer id="passiveInfoSpacer" height="10"/>
+        <af:outputText id="inlineMessage2" noWrap="true"
+                       value="#{rateChangePropertiesBean.inlineMessageText}"
+                       styleClass="#{rateChangePropertiesBean.inlineMessageClass}"
+                       partialTriggers="rateChgRefIDIT"/>
       </af:panelFormLayout>
     </af:panelGroupLayout>
   </af:panelGroupLayout>

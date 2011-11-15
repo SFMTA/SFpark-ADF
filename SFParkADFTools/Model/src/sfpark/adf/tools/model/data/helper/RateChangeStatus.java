@@ -2,7 +2,18 @@ package sfpark.adf.tools.model.data.helper;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111109-01 Mark Piller - Oracle Consulting  added Generating Details, Failure
+ *                                              isGeneratingDetails(), isFailure()
+ */
 public enum RateChangeStatus {
+    // 20111109-01
+    GENERATINGDETAILS("Generating Details","Generating Details"),
+    FAILURE("Failure","Failure"),
     WORKING("Working", "Working"),
     SUBMITTED("Submitted", "Submitted"),
     APPROVED("Approved", "Approved");
@@ -27,6 +38,15 @@ public enum RateChangeStatus {
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++
+
+    // 20111109-01
+    public boolean isGeneratingDetails() {
+        return (this == GENERATINGDETAILS);
+    }
+
+    public boolean isFailure() {
+        return (this == FAILURE);
+    }
 
     public boolean isWorking() {
         return (this == WORKING);

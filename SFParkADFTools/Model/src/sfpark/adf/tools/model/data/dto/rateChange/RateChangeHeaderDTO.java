@@ -2,7 +2,6 @@ package sfpark.adf.tools.model.data.dto.rateChange;
 
 import java.sql.Date;
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -98,7 +97,6 @@ public class RateChangeHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public static RateChangeHeaderDTO extract(ResultSet resultSet) throws SQLException {
-
         if (resultSet == null) {
             return null;
         }
@@ -249,7 +247,7 @@ public class RateChangeHeaderDTO extends BaseDTO {
     private Date ApprovedOn;
 
     public void setRateChangeReferenceID(String RateChangeReferenceID) {
-        this.RateChangeReferenceID = RateChangeReferenceID;
+      this.RateChangeReferenceID = RateChangeReferenceID;
     }
 
     public String getRateChangeReferenceID() {

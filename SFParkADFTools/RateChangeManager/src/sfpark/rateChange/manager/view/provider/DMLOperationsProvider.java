@@ -258,6 +258,8 @@ public class DMLOperationsProvider {
 
     public OperationStatus generateRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
         LOGGER.in(CLASSNAME, "generateRateChange");
+        LOGGER.debug("generateRateChange() calling StoredProcedureProvider");
+        LOGGER.debug("generateRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeHeaderDTO.getRateChangeReferenceID());
 
         return StoredProcedureProvider.INSTANCE.generateRateChange(rateChangeHeaderDTO.getRateChangeReferenceID(),
                                                                    getLoggedInUsername());

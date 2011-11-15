@@ -28,6 +28,13 @@ import sfpark.adf.tools.utilities.constants.TimeToUpdate;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- --------------------------------------------------------
+ * 20111114-01 Mark Piller - Oracle Consulting  change default value for Rate Change Policy
+ */
 public final class AllowedValuesRetriever {
 
     private static final String CLASSNAME =
@@ -348,7 +355,8 @@ public final class AllowedValuesRetriever {
     }
 
     public static String getRateChgPolicyDefaultValue() {
-        return ObjectUtil.getNullSafe(getRateChgPolicyList().get(0).getColumnValue());
+        // 20111114-01   return ObjectUtil.getNullSafe(getRateChgPolicyList().get(0).getColumnValue());
+        return ObjectUtil.getNullSafe(getRateChgPolicyList().get(1).getColumnValue()); // 20111114-01
     }
 
     // ++++++++++++++++++++++++++++++++++

@@ -1,5 +1,9 @@
 package sfpark.rateChange.manager.view.backing;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
 import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
@@ -15,14 +19,28 @@ import org.apache.myfaces.trinidad.util.Service;
 
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- --------------------------------------------------------
+ * 20111109-01 Mark Piller - Oracle Consulting  added date/time and added " DEGUG: " string to printLog().
+ */
 public abstract class BaseBean {
 
     protected BaseBean() {
     }
 
+    // 20111109-01
     protected void printLog(String message) {
         // During development phase, uncomment to make logging easy
-        // System.out.println(message);
+        // Date today;
+        // String output;
+        // SimpleDateFormat formatter;
+        // formatter = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+        // today = new Date();
+        // output = formatter.format(today);
+        // System.out.println(output + "  DEBUG: " + message);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
