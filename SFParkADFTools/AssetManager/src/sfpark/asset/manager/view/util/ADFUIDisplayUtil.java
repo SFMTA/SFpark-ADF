@@ -11,6 +11,13 @@ import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111122-01 Mark Piller - Oracle Consulting  added 540 minutes to Time Limit array
+ */
 public final class ADFUIDisplayUtil {
 
     /**
@@ -150,6 +157,7 @@ public final class ADFUIDisplayUtil {
                 add(new SelectItem(new Integer(120)));
                 add(new SelectItem(new Integer(180)));
                 add(new SelectItem(new Integer(240)));
+                add(new SelectItem(new Integer(540))); // 20111122-01
                 add(new SelectItem(new Integer(600)));
                 add(new SelectItem(new Integer(720)));
                 add(new SelectItem(new Integer(1440)));

@@ -1,0 +1,143 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<jdevws:WebServiceProxy xmlns:jdevws="http://xmlns.oracle.com/jdeveloper/10130/webserviceproxy">
+   <list n="CHILD_NODES">
+      <url path="OdiInvoke.xml"/>
+      <url path="OdiInvoke.wsdl"/>
+      <url path="types/ScenarioType.java"/>
+      <url path="types/ObjectFactory.java"/>
+      <url path="OdiInvokePortType.java"/>
+      <url path="types/RepositoryConnectionType.java"/>
+      <url path="types/ScenarioCommandType.java"/>
+      <url path="types/VariableType.java"/>
+      <url path="types/package-info.java"/>
+      <url path="OdiInvokeSOAP11Port0Client.java"/>
+      <url path="types/AgentType.java"/>
+      <url path="types/ContextType.java"/>
+      <url path="types/InvokeScenarioRequest.java"/>
+      <url path="types/CommandResultType.java"/>
+      <url path="OdiInvoke.java"/>
+   </list>
+   <hash n="DATA_MODEL">
+      <value n="ATTACHMENT_ENCODING" v="MTOM"/>
+      <list n="LOCAL_FILES"/>
+      <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.proxy.WebServiceProxy"/>
+      <url n="ORACLE_WEBSERVICES_XML" path="OdiInvoke.xml"/>
+      <hash n="PROPERTY_GROUPS">
+         <hash n="WSDL_TO_JAVA_PROPERTIES">
+            <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.java.WSDLToJavaProperties"/>
+            <value n="WSDL2JAVA_DEFAULT_PACKAGE" v="com.sfmta.websvcs.applyratexml"/>
+            <value n="WSDL2JAVA_ROOT_VALUE_PACKAGE" v="com.sfmta.websvcs.applyratexml.types"/>
+            <value n="WSDL2JAVA_UNWRAP_PARAMETERS" v="false"/>
+         </hash>
+      </hash>
+      <value n="PROXY_ASYNC_METHODS" v="FOR_ENABLED"/>
+      <list n="PROXY_CLIENTS">
+         <url path="OdiInvokeSOAP11Port0Client.java"/>
+      </list>
+      <value n="PROXY_MAPPING_URL"/>
+      <url n="PROXY_ORIGINAL_WSDL_URL" path="../../../../../../../../../../Oracle/!Projects/SFPark/New Development/ODI WS/ApplyRate/OdiApplyRateDevWS.wsdl"/>
+      <hash n="PROXY_PORTS">
+         <hash n="OdiInvokeSOAP11port0">
+            <value n="ACCESSES_DOC_WRAPPPED" v="false"/>
+            <value n="ACCESSES_RPC_ENCODED" v="false"/>
+            <value n="CLASS_NAME" v="com.sfmta.websvcs.applyratexml.OdiInvokePortType"/>
+            <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.proxy.ProxyPort"/>
+            <value n="NAME" v="OdiInvokeSOAP11port0"/>
+            <hash n="OPERATIONS">
+               <hash n="invokeScenario">
+                  <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.proxy.ProxyOperation"/>
+                  <hash n="PROPERTY_GROUPS"/>
+               </hash>
+            </hash>
+            <hash n="PROPERTY_GROUPS">
+               <hash n="WS_CLIENT_POLICY">
+                  <value n="addressing"/>
+                  <list n="management">
+                     <string v="oracle/log_policy"/>
+                  </list>
+                  <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.policy.PolicyClientModel"/>
+                  <value n="mtom"/>
+                  <hash n="POLICY_OVERRIDE_PROPERTIES"/>
+                  <list n="security"/>
+                  <value n="wsrm"/>
+               </hash>
+            </hash>
+            <url n="PROXY_ORIGINAL_PORT_ENDPOINT" protocol="http" host="lnxappdev1" port="9704" path="/axis2/services/OdiInvoke.OdiInvokeSOAP11port0/"/>
+         </hash>
+      </hash>
+      <value n="PROXY_SERVICE_NAME" v="OdiInvoke"/>
+      <value n="PROXY_SERVICE_NAMESPACE" v="xmlns.oracle.com/odi/OdiInvoke/"/>
+      <url n="PROXY_TARGET_PROJECT" path="../../../../../WebServiceConnection.jpr"/>
+      <list n="PROXY_WSDL_IMPORT_LIST"/>
+      <url n="PROXY_WSDL_URL" path="OdiInvoke.wsdl"/>
+      <hash n="REFERENCED_WEBSERVICE">
+         <list n="BD_">
+            <hash>
+               <value n="BD_DEFAULT_DOCUMENT_WRAPPED" v="false"/>
+               <value n="BOUND_PORT_TYPE" v="{xmlns.oracle.com/odi/OdiInvoke/}OdiInvokePortType"/>
+               <value n="DEFAULT_NAME" v="false"/>
+               <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.SOAPBinding"/>
+               <value n="NAME" v="{xmlns.oracle.com/odi/OdiInvoke/}InvokeSOAP11Binding"/>
+               <list n="OP_BINDINGS">
+                  <hash>
+                     <value n="BD_SOAP_ACTION" v="xmlns.oracle.com/odi/OdiInvoke/invokeScenario"/>
+                     <value n="BD_SOAP_INPUT_USE" v="1"/>
+                     <value n="BD_SOAP_OUTPUT_USE" v="1"/>
+                     <value n="BD_SOAP_STYLE" v="1"/>
+                     <value n="BOUND_OPERATION" v="com.sfmta.websvcs.applyratexml.types.CommandResultType.invokeScenario.com.sfmta.websvcs.applyratexml.types.InvokeScenarioRequest"/>
+                     <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.SOAPOperationBinding"/>
+                     <hash n="PROPERTY_GROUPS"/>
+                  </hash>
+               </list>
+               <hash n="PROPERTY_GROUPS"/>
+            </hash>
+         </list>
+         <list n="BINDING_FILES"/>
+         <value n="GUID" v="c7d8abc9-0133-1000-8003-a9fe121f6d7f"/>
+         <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.proxy.WebServiceProxy$ProxyJavaWebService"/>
+         <list n="PO_">
+            <hash>
+               <value n="DEFAULT_NAME" v="false"/>
+               <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.SOAPPort"/>
+               <value n="NAME" v="OdiInvokeSOAP11port0"/>
+               <value n="PORT_BINDING_NAME" v="{xmlns.oracle.com/odi/OdiInvoke/}InvokeSOAP11Binding"/>
+               <list n="PORT_OPS">
+                  <hash>
+                     <value n="EXPOSED_BD_OPERATION" v="com.sfmta.websvcs.applyratexml.types.CommandResultType.invokeScenario.com.sfmta.websvcs.applyratexml.types.InvokeScenarioRequest"/>
+                     <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.PortOperation"/>
+                     <hash n="PROPERTY_GROUPS"/>
+                  </hash>
+               </list>
+               <hash n="PROPERTY_GROUPS"/>
+               <url n="URL" protocol="http" host="lnxappdev1" port="9704" path="/axis2/services/OdiInvoke.OdiInvokeSOAP11port0/"/>
+            </hash>
+         </list>
+         <hash n="PROPERTY_GROUPS">
+            <hash n="WSDL_TO_JAVA_PROPERTIES">
+               <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.java.WSDLToJavaProperties"/>
+               <value n="WSDL2JAVA_DEFAULT_PACKAGE" v="com.sfmta.websvcs.applyratexml"/>
+               <value n="WSDL2JAVA_ROOT_VALUE_PACKAGE" v="com.sfmta.websvcs.applyratexml.types"/>
+               <value n="WSDL2JAVA_UNWRAP_PARAMETERS" v="false"/>
+            </hash>
+         </hash>
+         <list n="PT_">
+            <hash>
+               <value n="AUTO_SERVICE_INTERFACE"/>
+               <value n="DEFAULT_NAME" v="false"/>
+               <value n="MODEL_CLASS" v="oracle.jdeveloper.webservices.model.java.JavaPortType"/>
+               <value n="NAME" v="{xmlns.oracle.com/odi/OdiInvoke/}OdiInvokePortType"/>
+               <hash n="PROPERTY_GROUPS"/>
+               <value n="PT_CLASS" v="com.sfmta.websvcs.applyratexml.OdiInvokePortTypeImpl"/>
+               <value n="PT_SERVICE_INTERFACE" v="com.sfmta.websvcs.applyratexml.OdiInvokePortType"/>
+            </hash>
+         </list>
+         <url n="TARGET_PROJECT" path="../../../../../WebServiceConnection.jpr"/>
+         <value n="WS_ORIG_GEN_DIRECTION" v="TOP_DOWN"/>
+         <value n="WS_TARGET_NAMESPACE" v="xmlns.oracle.com/odi/OdiInvoke/"/>
+         <value n="WS_URI" v="OdiInvoke"/>
+         <url n="WS_WSDL_FILE" path="../../../../../../../../../../Oracle/!Projects/SFPark/New Development/ODI WS/ApplyRate/OdiApplyRateDevWS.wsdl"/>
+      </hash>
+      <value n="SERVICE_ASYNC" v="false"/>
+      <value n="USE_WSDL_LOCATION" v="true"/>
+   </hash>
+</jdevws:WebServiceProxy>

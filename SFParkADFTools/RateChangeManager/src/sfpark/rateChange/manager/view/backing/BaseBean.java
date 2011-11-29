@@ -33,6 +33,7 @@ public abstract class BaseBean {
 
     // 20111109-01
     protected void printLog(String message) {
+        // these log entries will appear in bi_server1.out
         // During development phase, uncomment to make logging easy
         // Date today;
         // String output;

@@ -12,6 +12,7 @@ import javax.faces.event.ActionEvent;
 
 import javax.faces.model.SelectItem;
 
+import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.model.exception.DTOUpdateException;
@@ -20,6 +21,7 @@ import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
 import sfpark.adf.tools.model.provider.RateChangeProcessControlProvider;
 
+import sfpark.adf.tools.model.provider.RateProcessStepProvider;
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
@@ -35,11 +37,26 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.helper.ADFUIHelper;
+import sfpark.rateChange.manager.view.helper.ODIWebServiceHelper;
 import sfpark.rateChange.manager.view.helper.WebServiceHelper;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- --------------------------------------------------------
+ * 20111123-01 Mark Piller - Oracle Consulting  Added logic to process ODI Web Services
+ * 20111129-01 Mark Piller - Oracle Consulting  Added logic to process according to value in PROCESS_STEP
+ */
 public class DeploymentPropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                   RequestScopeBeanInterface {
+
+    private static final String CLASSNAME = DeploymentPropertiesBean.class.getName();
+    private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+    private static final String APPLY_RATE = "APPLY_RATE";
+    private static final String RECONCILE = "RECONCILE";
+    private static final String UPDT_EFF_DT = "UPDT_EFF_DT";
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -89,8 +106,7 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
             // Should NOT happen
             // Just in case
             DTO = new RateChangeProcessControlDTO();
-            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(),
-                                  DTO);
+            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(), DTO);
         }
 
         return DTO;
@@ -101,36 +117,30 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // VALIDATORS
 
-    public void effectiveDateValidator(FacesContext facesContext,
-                                       UIComponent uiComponent,
+    public void effectiveDateValidator(FacesContext facesContext, UIComponent uiComponent,
                                        Object object) {
 
         if (getRateChangeProcessControlDTO().isValidateEffectiveFromDate()) {
 
             int numOfDays = 16;
-            Date initialDate =
-                getRateChangeProcessControlDTO().getInitialEffectiveFromDate();
+            Date initialDate = getRateChangeProcessControlDTO().getInitialEffectiveFromDate();
 
-            Date begRange =
-                SQLDateUtil.getPreviousDateFor(initialDate, numOfDays);
+            Date begRange = SQLDateUtil.getPreviousDateFor(initialDate, numOfDays);
             Date endRange = SQLDateUtil.getNextDateFor(initialDate, numOfDays);
 
             Date selectedDate = (Date)object;
 
-            if (selectedDate.after(begRange) &&
-                selectedDate.before(endRange)) {
+            if (selectedDate.after(begRange) && selectedDate.before(endRange)) {
                 // Do nothing. Everything is fine
 
             } else {
                 // Display warning information
 
                 FacesMessage facesMessage =
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                     TranslationUtil.getCommonBundleString(CommonBundleKey.warning_title_finalised_eff_date),
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, TranslationUtil.getCommonBundleString(CommonBundleKey.warning_title_finalised_eff_date),
                                      TranslationUtil.getCommonBundleString(CommonBundleKey.warning_message_finalised_eff_date));
 
-                facesContext.addMessage(uiComponent.getClientId(facesContext),
-                                        facesMessage);
+                facesContext.addMessage(uiComponent.getClientId(facesContext), facesMessage);
             }
         }
     }
@@ -217,7 +227,25 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
+        LOGGER.entering(CLASSNAME, "saveButtonHandler");
+
         boolean allValid = true;
+        // 20111123-01 added flags to control flow
+        boolean meterPricingRequestWebServiceSuccessful = false;
+        boolean odiWebServiceSuccessful = false;
+        boolean databaseUpdateSuccessful = false;
+
+        boolean odiWebServicesWereExecuted = false;
+        boolean meterPricingWebServiceWasExecuted = false;
+
+        boolean noErrorsOccurredInProcess = true;
+
+        String processID = null;
+        String processStep = null;
+        String odiWebServiceMessage = null;
+
+        RateProcessStepProvider rateProcessStepProvider =
+            new RateProcessStepProvider(); // this is used to determine the current Process Step
         NavigationMode currentPageMode = getCurrentPageMode();
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -234,6 +262,9 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+        // create a variable for the Meter Pricing Web Service results
+        OperationStatus webServiceStatus = null;
+
         if (allValid) {
             printLog("All entries are Valid. Proceed");
 
@@ -244,8 +275,7 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                 // EDIT Mode
                 printLog("EDIT Mode");
 
-                RateChangeProcessControlDTO currentDTO =
-                    getRateChangeProcessControlDTO();
+                RateChangeProcessControlDTO currentDTO = getRateChangeProcessControlDTO();
 
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.editRateChangeProcessControl(currentDTO);
@@ -316,31 +346,98 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                 // EXECUTE Mode
                 printLog("EXECUTE Mode");
 
-                RateChangeProcessControlDTO currentDTO =
-                    getRateChangeProcessControlDTO();
+                RateChangeProcessControlDTO currentDTO = getRateChangeProcessControlDTO();
 
+                // 20111123-01 added to pass on to ApplyRate Web Service
+                processID = currentDTO.getProcessID();
+
+                // Set the STEP_START_FLAG to 'Y' in table RATE_CHG_PROCESS_CONTROL
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.executeRateChangeProcessControl(currentDTO);
-                OperationStatus webServiceStatus =
-                    WebServiceHelper.callWebService(currentDTO.getProcessID());
 
-                if (operationStatus.isSuccess() &&
-                    webServiceStatus.isSuccess()) {
-                    // Move on to the next page
-                    // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
+                if (operationStatus.isSuccess()) {
+                    databaseUpdateSuccessful = true;
 
-                    clearPageFlowScopeCache();
+                    // get the current PROCESS_STEP value in table RATE_CHG_PROCESS_CONTROL
+                    processStep = rateProcessStepProvider.checkForProcessID(processID);
+                    LOGGER.debug("Process step is: " + processStep);
 
-                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
-                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_execute_operation_successful));
-                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
-                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_execute_operation_successful,
-                                                                                currentDTO.getRateChangeReference()));
 
-                    setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
-                                         NavigationFlow.AfterEditRateChangeProcessProperties.name());
+                    // evaluate the Process Step to determine which web service is called
+                    int iProcessStep = Integer.parseInt(processStep);
+                    switch (iProcessStep) {
+                    case 10:
+                        odiWebServicesWereExecuted = true;
+                        OperationStatus applyRateWebServiceStatus = null;
+                        LOGGER.debug("Calling ApplyRateWebService() for PROCESS_STEP = " + processStep);
+                        applyRateWebServiceStatus =
+                                ODIWebServiceHelper.callODIWebService(processID, APPLY_RATE);
+                        LOGGER.debug("Completed call to ApplyRateWebService()");
+                        if (applyRateWebServiceStatus.isSuccess()) {
+                            odiWebServiceSuccessful = true;
+                        } else {
+                            odiWebServiceMessage =
+                                    applyRateWebServiceStatus.getException().getMessage();
+                        }
+                        break;
 
-                } else if (!operationStatus.isSuccess()) {
+                    case 60:
+                        odiWebServicesWereExecuted = true;
+                        OperationStatus reconcileRateWebServiceStatus = null;
+                        LOGGER.debug("Calling ReconcileRateWebService() for PROCESS_STEP = " + processStep);
+                        reconcileRateWebServiceStatus =
+                                ODIWebServiceHelper.callODIWebService(processID, RECONCILE);
+                        LOGGER.debug("Completed call to ReconcileRateWebService()");
+                        if (reconcileRateWebServiceStatus.isSuccess()) {
+                            odiWebServiceSuccessful = true;
+                        } else {
+                            odiWebServiceMessage =
+                                    reconcileRateWebServiceStatus.getException().getMessage();
+                        }
+                        break;
+
+                    case 70:
+                        odiWebServicesWereExecuted = true;
+                        OperationStatus updtEffDtWebServiceStatus = null;
+                        LOGGER.debug("Calling UpdtEffDtWebService() for PROCESS_STEP = " + processStep);
+                        updtEffDtWebServiceStatus =
+                                ODIWebServiceHelper.callODIWebService(processID, UPDT_EFF_DT);
+                        LOGGER.debug("Completed call to UpdtEffDtWebService()");
+                        if (updtEffDtWebServiceStatus.isSuccess()) {
+                            odiWebServiceSuccessful = true;
+                        } else {
+                            odiWebServiceMessage =
+                                    updtEffDtWebServiceStatus.getException().getMessage();
+                        }
+                        break;
+
+                    case 20:
+                    case 30:
+                    case 40:
+                    case 50:
+                        meterPricingWebServiceWasExecuted = true;
+                        LOGGER.debug("Calling Meter Pricing Web Service for PROCESS_STEP = " + processStep);
+                        webServiceStatus =
+                                WebServiceHelper.callWebService(currentDTO.getProcessID());
+                        LOGGER.debug("Completed Meter Pricing Web Service");
+
+                        // test success of MeterPricing Web Service
+                        if (webServiceStatus.isSuccess()) {
+                            LOGGER.debug("Meter Pricing Web Service was successful - setting flag");
+                            meterPricingRequestWebServiceSuccessful = true;
+                        }
+                        break;
+                    } // end switch statement
+
+                } // end if operationStatus.isSuccess() -- database update success test
+
+                // 20111123-01
+                // Evaluate executed processes and control flow according to success/failure
+                LOGGER.debug("Evaluating database update success");
+                if (!databaseUpdateSuccessful) {
+                    noErrorsOccurredInProcess = false;
+                    LOGGER.debug("DB Operation failed... display the error");
+                    // database operation failed
                     printLog("EXECUTE operation failed during the saving of the DTO");
 
                     String errorMessage = "";
@@ -374,27 +471,80 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                     setInlineMessageText(errorMessage);
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
-
                 } else {
-                    printLog("EXECUTE operation failed during the Web Service Call");
+                  LOGGER.debug("Database update was successful - do not display errors");
+                } // end test for database update execution
 
-                    String extraInfo =
-                        webServiceStatus.getException().getMessage();
+                LOGGER.debug("Evaluating Meter Pricing WS success");
+                if (meterPricingWebServiceWasExecuted && noErrorsOccurredInProcess) {
+                    LOGGER.debug("Meter Pricing WS was executed");
+                    // see if Meter Pricing Web Service executed successfully
+                    if (!meterPricingRequestWebServiceSuccessful) {
+                        noErrorsOccurredInProcess = false;
+                        LOGGER.debug("Meter Pricing Request WS failed... display the error");
+                        // Meter Pricing Web Service failed
+                        printLog("EXECUTE operation failed during the Meter Pricing Web Service Call");
+                        String extraInfo = webServiceStatus.getException().getMessage();
+                        printLog(extraInfo);
 
-                    printLog(extraInfo);
+                        String errorMessage =
+                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute,
+                                                                 extraInfo);
 
-                    String errorMessage =
-                        TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute,
-                                                             extraInfo);
+                        setInlineMessageText(errorMessage);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+                    } else {
+                      LOGGER.debug("Meter Pricing WS was successful - do not display errors");
+                    }
+                } // end if (meterPricingWebServiceWasExecuted && noErrorsOccurredInProcess)
 
-                    setInlineMessageText(errorMessage);
-                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+                LOGGER.debug("Evaluating ODI WS success");
+                if (odiWebServicesWereExecuted && noErrorsOccurredInProcess) {
+                    LOGGER.debug("ODI WS was executed");
+                    if (!odiWebServiceSuccessful) {
+                        noErrorsOccurredInProcess = false;
+                        LOGGER.debug("ODI Web Service failed... display the error");
+                        // ODI Web Service Failed
+                        // 20111123-01
+                        printLog("EXECUTE operation failed during the ODI Web Service Call");
+                        String extraInfo = odiWebServiceMessage;
+                        printLog(extraInfo);
 
-                }
+                        String errorMessage =
+                            TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exception_rate_change_process_control_execute,
+                                                                 extraInfo);
 
-            }
+                        setInlineMessageText(errorMessage);
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+                    } else {
+                      LOGGER.debug("ODI WS was successful - do not display errors");
+                    }
+                } // if (odiWebServicesWereExecuted && noErrorsOccurredInProcess)
+
+
+                LOGGER.debug("No Errors occurred in the database or WS updates - navigate to the next screen");
+                if (noErrorsOccurredInProcess) {
+                    LOGGER.debug("Database update, Meter Pricing WS and ODI WS successful - navigate page flow");
+
+                    // Move on to the next page
+                    // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
+                    clearPageFlowScopeCache();
+
+                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_execute_operation_successful));
+                    setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+                                          TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_execute_operation_successful,
+                                                                                currentDTO.getRateChangeReference()));
+
+                    setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                         NavigationFlow.AfterEditRateChangeProcessProperties.name());
+
+                } // end if (noErrorsOccurredInProcess)
+
+            } // end else Execute Mode
 
         } else {
+            LOGGER.debug("Setting In Line Message Class to display the error");
             setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
         }
     }

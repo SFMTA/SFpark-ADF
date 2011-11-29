@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="rateChangeFinalizePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="rateChangeFinalizePGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="sectionHeaderSeparator"/>
+    <af:outputText id="OT1" inlineStyle="font-size: 14px; margin-left: 35px;"
+                   value="#{rateChangeManagerBundle.string_finalize_rate_change_confirmation}"/>
+    <af:panelFormLayout id="RCHFormPanel" inlineStyle="margin-left: 35px;">
+      <af:inputText id="rateChgRefIDIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference_id}"
+                    value="#{rateChangeFinalizeBean.rateChangeHeaderDTO.rateChangeReferenceID}"/>
+      <af:spacer id="rateChgRefIDSpacer" height="10"/>
+      <af:inputText id="rateChgRefIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference}"
+                    value="#{rateChangeFinalizeBean.rateChangeHeaderDTO.rateChangeReference}"/>
+      <af:spacer id="rateChgRefSpacer" height="10"/>
+      <af:inputText id="statusIT" readOnly="true"
+                    label="#{labelBundle.label_status}"
+                    value="#{rateChangeFinalizeBean.rateChangeHeaderDTO.status.stringForDisplay}"/>
+      <af:spacer id="statusSpacer" height="10"/>
+    </af:panelFormLayout>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarFinalize">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="finalizeButton" blocking="true"
+                          inlineStyle="font-weight: bold;"
+                          text="#{buttonBundle.button_finalize_rate_change}"
+                          actionListener="#{rateChangeFinalizeBean.finalizeButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="30"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{rateChangeFinalizeBean.inlineMessageText}"
+                       styleClass="#{rateChangeFinalizeBean.inlineMessageClass}"
+                       partialTriggers="finalizeButton"/>
+      </af:group>
+    </af:toolbar>
+  </af:panelGroupLayout>
+</jsp:root>

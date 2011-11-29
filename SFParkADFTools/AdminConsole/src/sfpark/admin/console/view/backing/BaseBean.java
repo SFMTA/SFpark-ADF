@@ -20,6 +20,7 @@ public abstract class BaseBean {
     }
 
     protected void printLog(String message) {
+        // these log entries will appear in bi_server1.out
         // During development phase, this can be uncommented to allow easy logs
         // System.out.println(message);
     }

@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle-webservice-clients xmlns:ns2="http://java.sun.com/xml/ns/javaee">
+   <webservice-client>
+      <service-qname localpart="OdiInvoke"
+                     namespaceURI="xmlns.oracle.com/odi/OdiInvoke/"/>
+      <port-info>
+         <wsdl-port localpart="OdiInvokeSOAP11port0"
+                    namespaceURI="xmlns.oracle.com/odi/OdiInvoke/"/>
+         <runtime/>
+         <policy-references>
+            <policy-reference uri="oracle/log_policy" category="management"/>
+         </policy-references>
+         <operations>
+            <operation name="invokeScenario"/>
+         </operations>
+      </port-info>
+   </webservice-client>
+</oracle-webservice-clients>

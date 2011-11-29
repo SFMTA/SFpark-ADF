@@ -1,4 +1,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
   <system systemId="http://lnxappdev1:8001/SFpark/ProxyServices/MeterPricingRequest?WSDL"
           uri="http://lnxappdev1:8001/SFpark/ProxyServices/MeterPricingRequest?WSDL"/>
+  <system systemId="http://sfparktrac1b:9704/axis2/services/OdiInvoke.OdiInvokeSOAP11port0/#%7Bxmlns.oracle.com%2Fodi%2FOdiInvoke%2F%7DOdiInvoke?wsdl"
+          uri="http://sfparktrac1b:9704/axis2/services/OdiInvoke?wsd"/>
 </catalog>

@@ -15,7 +15,13 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
-
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- --------------------------------------------------------
+ * 20111115-01 Mark Piller - Oracle Consulting  change message displayed to user to display ODI Function results
+ */
 public class RateChangeDeleteBean extends BaseBean implements RequestScopeBeanInterface {
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -90,9 +96,17 @@ public class RateChangeDeleteBean extends BaseBean implements RequestScopeBeanIn
             // Reuse the ERROR_TITLE and ERROR_MESSAGE variables
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
                                   TranslationUtil.getCommonBundleString(CommonBundleKey.string_title_delete_operation_successful));
+
+// 20111115-01  replaced by logic below
+//            setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+//                                  TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_delete_rate_change_successful,
+//                                                                        DTO.getRateChangeReference()));
+
+            // 20111115-01 added
             setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
                                   TranslationUtil.getCommonBundleString(CommonBundleKey.string_message_delete_rate_change_successful,
-                                                                        DTO.getRateChangeReference()));
+                                                                        operationStatus.getMessage()));
+
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.AfterDeleteRateChange.name());
 

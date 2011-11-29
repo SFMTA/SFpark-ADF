@@ -23,6 +23,7 @@ import sfpark.adf.tools.model.helper.OperationStatus;
  * 20111109-01 Mark Piller - Oracle Consulting  added messageFromGenerateRatesFunction
  * 20111109-02 Mark Piller - Oracle Consulting  added logic to receive message from ODI function
  * 20111109-03 Mark Piller - Oracle Consulting  added logic to evaluate message returned from ODI function.
+ * 20111115-01 Mark Piller - Oracle Consulting  added test for "0" returned by ODI function
  */
 public final class StoredProcedureProvider {
 
@@ -72,6 +73,23 @@ public final class StoredProcedureProvider {
     /*
      * This actually is calling a Function in ODI - not a Stored Procedure.
      * The logic still works the same.
+     * 
+     * There are 3 functions: DELETE_RATE_CHG, GENERATE_RATE_CHG, IS_CALENDAR_DELETABLE.
+     * DELETE_RATE_CHG and GENERATE_RATE_CHG return string messages that must be interpreted.
+     * 
+     * GENERATE_RATE_CHG messages:
+     *      Detail generation succeeded: 1259 rows expected, 1259 rows generated. Data committed.
+     *      Detail generation failed validation: 1259 rows expected, 1260 rows generated. Rollback executed.
+     *      Detail generation failed prior to validation step.
+     * 
+     * DELETE_RATE_CHG messages:
+     *      Deletion of Rate Chg Ref ID 1065 completed successfully.
+     *      Deletion of Rate Chg Ref ID 1065 did not complete successfully.
+     *      Execution of Rate Chg Ref ID 1065 delete failed
+     *
+     * IS_CALENDAR_DELETABLE returns 
+     *      0 if a failure (locked calendar) and 
+     *      1 if successful
      */
     private OperationStatus callStoredProcedure(StoredProcedure procedure,
                                                 Object... args) {
@@ -88,6 +106,8 @@ public final class StoredProcedureProvider {
         try {
             connection = OracleDBConnection.getConnection();
             LOGGER.debug("Calling getPreparedStatement()");
+            LOGGER.debug("connection: " + connection.toString());
+            LOGGER.debug("procedure: " + procedure.toString());
             preparedStatement = getPreparedStatement(connection, procedure, args);
 
             LOGGER.debug("Executing executeQuery()");
@@ -108,9 +128,16 @@ public final class StoredProcedureProvider {
             // determine if it is a success or failure
             // If the string "FAIL" is not found then there is success
             LOGGER.debug("Setting operation status to success");
-            if (messageFromGenerateRatesFunction.toUpperCase().indexOf("FAIL") == -1) {
+            // 20111115-01 added test for "0"
+            if (messageFromGenerateRatesFunction.equals("0")) {
+                // Cannot delete calendar
+                operationStatus = OperationStatus.failure(new SQLException("Stored procedure returned false."));
+            }
+            else if (messageFromGenerateRatesFunction.toUpperCase().indexOf("FAIL") == -1) {
+                // if the word FAIL does not exist or the result returned is "0" then success
                 operationStatus = OperationStatus.success(messageFromGenerateRatesFunction);
             } else {
+                // any occurence of the word FAIL is a failure
                 operationStatus = OperationStatus.failure(messageFromGenerateRatesFunction);
             }
 
