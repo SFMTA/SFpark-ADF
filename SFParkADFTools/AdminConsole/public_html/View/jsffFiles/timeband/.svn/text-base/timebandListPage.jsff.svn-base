@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="timebandListPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="timebandListPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{adminConsoleBundle.string_timeband_model_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarAdd">
+        <af:commandButton id="addTimebandButton"
+                          text="#{buttonBundle.button_add_timeband_model}"
+                          actionListener="#{timebandListBean.pickButtonHandler}"/>
+        <af:spacer id="spaceAfterAddButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarDelete">
+        <af:spacer id="spaceBeforeDeleteButton" width="10"/>
+        <af:commandButton id="deleteTimebandButton"
+                          text="#{buttonBundle.button_delete_timeband_model}"
+                          actionListener="#{timebandListBean.pickButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:table id="TBTable" var="row" varStatus="rowStatus" width="600"
+              inlineStyle="height: 450px; margin-left: 35px;"
+              contentDelivery="immediate" rowSelection="none"
+              rowBandingInterval="0" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{adminConsoleBundle.info_empty_timeband_model_list}"
+              summary="Time Band Model List"
+              value="#{timebandListBean.timeBandModels}"
+              binding="#{timebandListBean.timeBandModelsTable}">
+      <af:column id="TBTableColMeterClass" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_meter_class}">
+        <af:outputText id="TBTableRowMeterClass" value="#{row.meterClass}"/>
+      </af:column>
+      <af:column id="TBTableColDateType" align="center" width="100px"
+                 sortable="false" headerText="#{columnBundle.column_date_type}">
+        <af:outputText id="TBTableRowDateType" value="#{row.dateType}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandID" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_id}">
+        <af:outputText id="TBTableRowTimeBandID" value="#{row.timeBandID}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandFrom" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_from}">
+        <af:outputText id="TBTableRowTimeBandFrom"
+                       value="#{row.displayTimeBandFrom}"/>
+      </af:column>
+      <af:column id="TBTableColTimeBandTo" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_time_band_to}">
+        <af:outputText id="TBTableRowTimeBandTo"
+                       value="#{row.displayTimeBandTo}"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</jsp:root>

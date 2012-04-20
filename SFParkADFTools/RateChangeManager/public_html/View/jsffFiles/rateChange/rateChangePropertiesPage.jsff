@@ -65,6 +65,27 @@
           <af:outputText id="descriptionOT" escape="false"
                          value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangeDescription}&lt;/div>'/>
         </af:panelLabelAndMessage>
+<af:panelLabelAndMessage label="#{labelBundle.label_active_sensor_coverage_threshold}"
+                                 id="activeSensorThresholdPLAM"
+                         showRequired="true">
+          <af:inputText id="activeSensorThreshold_IT" columns="1"
+                        maximumLength="3"
+                        inlineStyle="text-align:left;" wrap="off"
+                        simple="false" autoSubmit="true"
+                        readOnly="#{rateChangePropertiesBean.readOnly}"
+                        value="#{rateChangePropertiesBean.rateChangeHeaderDTO.sensorCoverageMinPct}" required="true"
+                        showRequired="false">
+            <af:convertNumber id="activeSensorCoverage_CN" type="number"
+                              integerOnly="true" maxIntegerDigits="3"
+                              minIntegerDigits="1"
+                              messageDetailConvertNumber="You entered [1} for a coverage percentage. Please enter a whole number from 0 to 100."/>
+            <af:validateLongRange id="activeSensorCoverage_LR" minimum="0"
+                                  maximum="100"/>
+          </af:inputText>
+          <f:facet name="end">
+            <af:outputText value="%" id="pctSymbol_ot" inlineStyle="text-align:left;"/>
+          </f:facet>
+        </af:panelLabelAndMessage>
         <af:spacer id="descriptionSpacer" height="10"/>
       </af:panelFormLayout>
       <af:panelFormLayout id="centerPSIFormPanel"
@@ -98,8 +119,9 @@
                           inlineStyle="width: 150px;" text="Change Calendar"
                           actionListener="#{rateChangePropertiesBean.pickButtonHandler}"/>
         <af:inputText id="calendarNameIT" readOnly="true"
-                      label="#{labelBundle.label_calendar_name}"
-                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.displayCalendarName}"/>
+                      label="* Calendar Name:"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.displayCalendarName}"
+                      required="true"/>
         <af:spacer id="calendarSpacer" height="10"/>
       </af:panelFormLayout>
       <af:panelFormLayout id="rhsPSIFormPanel">

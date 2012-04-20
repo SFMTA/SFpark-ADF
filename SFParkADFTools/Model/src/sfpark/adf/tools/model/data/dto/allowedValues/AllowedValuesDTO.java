@@ -46,7 +46,7 @@ public class AllowedValuesDTO extends BaseDTO {
         Arrays.asList(TABLE_NAME, COLUMN_NAME, COLUMN_VALUE, DESCRIPTION,
                       DELETABLE_IF_UNUSED, CREATED_DT, LAST_UPD_DT,
                       LAST_UPD_USER, LAST_UPD_PGM);
-
+    
     private static final List<String> AttributeListForInsert =
         Arrays.asList(TABLE_NAME, COLUMN_NAME, COLUMN_VALUE, DESCRIPTION,
                       DELETABLE_IF_UNUSED, LAST_UPD_USER, LAST_UPD_PGM);

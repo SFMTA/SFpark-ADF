@@ -1,0 +1,219 @@
+# Error Bundle
+# Consists of all the error strings
+
+# Change History:
+# Change ID format is YYYYMMDD-## where you can identify multiple changes
+# Change ID   Developer Name                   Description
+# ----------- -------------------------------- ------------------------------------------
+# 20111129-01 Mark Piller - Oracle Consulting  add error_message_unsupported_rate_change_finalize_operation
+#                                              add error_finalize_failure
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# General Errors
+
+error_title_invalid_parameters=Invalid Parameters
+error_title_insufficient_privileges=Insufficient Privileges
+error_title_nonexistent_resource=Nonexistent Resource
+error_title_unsupported_operation=Unsupported Operation
+error_title_unsupported_resource=Invalid Resource
+
+error_message_insufficient_privileges=You do not have sufficient privileges to perform the requested operation. Contact System Administrator.
+error_message_unsupported_operation=Requested "{0}" operation is not supported.
+
+error_insufficient_privileges=You do not have sufficient privileges to perform the requested operation. Contact System Administrator.
+
+error_invalid_request_parameters_1=Some or all request parameters are invalid = {0}
+error_invalid_request_parameters_2=Some or all request parameters are invalid = {0}, {1}
+error_invalid_request_parameters_3=Some or all request parameters are invalid = {0}, {1}, {2}
+
+error_create_failure=Failed to create
+error_save_failure=Failed to save
+error_delete_failure=Failed to delete
+error_finalize_failure=Failed to finalize
+error_edit_failure=Failed to edit
+error_invalid_login=Invalid login
+
+error_exception_save_failure=Failed to save details due to unknown reasons.
+
+error_invalid_email=Invalid E-mail address
+error_invalid_url=Invalid URL
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Asset Manager Errors
+
+error_create_parking_space_failure=Failed to add the Parking Space
+
+error_invalid_asset_manager_parameters=Some or all request parameters are invalid. Parking Space ID = {0}, Longitude = {1}, Latitude = {2}
+
+error_invalid_asset_manager_bulk_parameters=Some or all request parameters are invalid. Parking Space Group ID = {0} or OSP ID = {1}
+
+# Note: {0} refers to the Parking Space ID
+error_not_exists_parking_space=Parking Space with ID {0} does not exist.
+
+# Note: {0} refers to the Parking Space Group ID
+error_not_exists_parking_space_group=Parking Space Group (or Parking Spaces) does not exist for {0}
+
+error_not_exists_blockface=Blockface ID does not exist.
+error_not_exists_blockface_long_lat=Blockface for the specified Longitude ({0}) and Latitude ({1}) does not exist.
+
+error_not_work_postid_and_blockface=Combination of Post ID and Blockface ID is not allowed for a parity digit position of {0}.
+
+error_not_work_postid_and_mspaystationid=Post ID and MS Pay Station ID do not match
+error_bulk_not_work_postid_and_mspaystationid=Combination of Post ID and Multi Space Pay Station ID does not work for one or more Parking Spaces
+
+error_off_street_needs_osp_id=For OFF street type, OSP ID needs to have a value
+
+error_invalid_cnn_id=CNN ID needs to have a valid value
+
+error_exists_already_post_id=Post ID already exists
+
+error_meter_schedule_date_to_before_from={0} Schedule Table: TO date should be after FROM date in row {1}
+error_meter_rate_date_to_before_from={0} Rate Table: TO date should be after FROM date in row {1}
+
+error_meter_schedule_time_to_zero={0} Schedule Table: TO time can be zero only under certain conditions in row {1}
+error_meter_rate_time_to_zero={0} Rate Table: TO time can be zero only for Base Rates in row {1}
+
+error_meter_schedule_time_to_before_from={0} Schedule Table: TO time should be after FROM time in row {1} or if after midnight, create a new rate schedule
+error_meter_rate_time_to_before_from={0} Rate Table: TO time should be after FROM time in row {1} or if after midnight, create a new rate schedule
+
+error_meter_schedule_op_invalid_cap_color={0} Schedule Table: OP Schedules with different Color Rule Applied should be deleted. (Row {1})
+
+error_bulk_meter_schedule_op_invalid_cap_color={0} Schedule Table: OP Schedule should not have a Color Rule Applied as Cap Color is not being updated. Delete {1} row
+
+error_meter_schedule_invalid_unique_constraints={0} Schedule Table: Rows {1} and {2} have same unique constraint values
+error_meter_rate_invalid_unique_constraints={0} Rate Table: Rows {1} and {2} have same unique constraint values
+
+error_bulk_meter_invalid_to_cap_color=Changing CAP_COLOR to Black/Brown is not permitted
+error_bulk_meter_invalid_from_cap_color=Changing CAP_COLOR does not work for one or more Parking Spaces
+
+error_bulk_meter_invalid_from_active_meter_status=Changing Meter Status does not work for one or more Parking Spaces
+
+error_bulk_meter_invalid_meter_details=Changing Meter details does not work due to one or more Unmetered Parking Spaces
+
+error_bulk_could_not_load_parking_spaces=Could not load Parking Spaces
+
+error_parking_space_exception_unique_constraint=Failed due to invalid Meter Schedules/Rates during archiving. Try overriding.
+error_parking_space_exception_schedule_insert=Failed due to invalid new Meter Schedules. Try overriding or removing.
+error_parking_space_exception_rate_insert=Failed due to invalid new Meter Rates. Try overriding or removing.
+error_parking_space_exception_schedule_update=Failed due to invalid existing Meter Schedules. Try overriding.
+error_parking_space_exception_rate_update=Failed due to invalid existing Meter Rates. Try overriding.
+error_parking_space_exception_inventory_update=Failed due to invalid Parking Space details.
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# OSP Manager Errors
+
+error_invalid_osp_manager_parameters=Some or all request parameters are invalid. OSP ID = {0}, Longitude = {1}, Latitude = {2}
+
+error_message_invalid_rates_or_op_hours=Failed due to invalid rates and/or OP hours during archiving. Try overriding.
+error_message_invalid_new_rates=Failed due to invalid new rates. Try overriding.
+error_message_invalid_new_op_hours=Failed due to invalid new OP hours. Try overriding.
+error_message_invalid_existing_rates=Failed due to invalid existing rates. Try overriding.
+error_message_invalid_existing_op_hours=Failed due to invalid existing OP hours. Try overriding.
+error_message_invalid_osp_details=Failed due to invalid OSP details
+
+error_message_rates_null_description_or_time_band=Rates Table: Rate Description and Time Band should alternately be NULL in row {0}
+error_message_rates_null_description=Rates Table: Rate Description cannot be null in row {0}
+error_message_rates_to_date_before_from_date=Rates Table: TO date should be after FROM date in row {0}
+error_message_op_hours_to_date_before_from_date=OP Hours Table: TO date should be after FROM date in row {0}
+error_message_rates_unique_constraint=Rate Table: Rows {0} and {1} have same unique constraint values
+error_message_op_hours_unique_constraint=OP Hours Table: Rows {0} and {1} have same unique constraint values
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Calendar Manager Errors
+
+error_message_invalid_calendar_manager_parameters=Some or all request parameters are invalid. Operation = {0}, Calendar ID = {1}
+
+error_message_nonexistent_calendar_id_resource=Calendar with ID {0} does not exist.
+
+error_message_unsupported_calendar_resource_not_rate_change=Calendar with ID {0} is not of type Rate Change.
+
+error_message_unsupported_calendar_delete_operation=Calendar with ID {0} is already in use so it can not be deleted.
+
+error_exists_already_calendar_name=Calendar Name already exists
+
+error_empty_calendar_detail_table=Calendar Table should not be empty
+
+error_create_calendar_name_failure=Failed to add the Calendar Name
+
+error_calendar_exception_calendar_header_update=Failed due to invalid new Calendar details.
+error_calendar_exception_unique_constraint=Failed due to invalid Calendar Dates.
+error_calendar_exception_calendar_detail_insert=Failed due to invalid new Calendar Dates.
+error_calendar_exception_calendar_detail_delete=Failed due to invalid existing Calendar Dates.
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Rate Change Manager Errors
+
+error_message_invalid_rate_change_manager_parameters=Some or all request parameters are invalid. Operation = {0}, Rate Change Reference ID = {1}
+error_message_invalid_rate_change_manager_deploy_parameters=Some or all request parameters are invalid. Operation = {0}, Process ID = {1}
+error_message_invalid_rate_change_manager_modify_parameters=Some or all request parameters are invalid. Operation = {0}, Block Rate Sched ID = {1}
+error_message_invalid_threshold_parameters=Some or all request parameters are invalid. Operation = {0}, Rate Change Type = {1}
+error_message_invalid_timeband_parameters=Some or all request parameters are invalid. Block ID = {0}
+
+error_message_nonexistent_rate_change_reference_id_resource=Rate Change Reference with ID {0} does not exist.
+error_message_nonexistent_process_id_resource=Rate Change Process Control with ID {0} does not exist.
+error_message_nonexistent_block_rate_sched_id_resource=Block Rate Schedule with ID {0} does not exist.
+error_message_nonexistent_block_id_resource=Block with ID {0} does not exist.
+
+error_message_unsupported_block_rate_sched_modify_operation=Block Rate Schedule with ID {0} can not be modified. It is already Approved.
+
+error_message_unsupported_rate_change_update_operation=Rate Change Reference with ID {0} can not be updated. It is already Approved.
+error_message_unsupported_rate_change_delete_operation=Rate Change Reference with ID {0} can not be deleted.
+error_message_unsupported_rate_change_deploy_operation=Rate Change Reference with ID {0} is not yet Approved and/or area type is not Pilot.
+# 20111129-01
+error_message_unsupported_rate_change_finalize_operation=Rate Change Reference with ID {0} is not yet Approved.
+
+error_message_unsupported_rate_change_process_edit_operation=Rate Change Process Control with ID {0} can not be edited at this stage.
+error_message_unsupported_rate_change_process_delete_operation=Rate Change Process Control with ID {0} can not be deleted. It is past the initial step.
+
+error_exists_already_rate_change_reference=Rate Change Reference already exists
+
+error_create_rate_change_reference_failure=Failed to add the Rate Change Reference
+error_generate_rate_change_reference_details=Failed to generate Rate Change Reference details but successfully created Rate Change Reference
+
+error_invalid_calendar_id=Calendar ID needs to have a valid value
+
+error_invalid_meter_vendor=Meter Vendor needs to have a valid value
+
+error_exists_already_rate_chg_ref=Rate Change Reference already exists
+
+error_date_approved_before_submitted=Approved date should be after Submitted date
+
+error_exception_rate_change_update=Failed due to invalid Rate Change Reference details.
+
+error_exception_block_rate_sched_update=Failed due to invalid Block Rate Schedule details.
+
+error_exception_rate_change_process_control_update=Failed due to invalid Rate Change Process Control details.
+
+error_exception_rate_change_process_control_execute=Failed due to Web Service exception. {0}
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Admin Console Errors
+
+error_message_invalid_admin_console_parameters=Valid values are - Operation = {0}
+
+error_message_incompatible_column_value=Incompatible column value. Acceptable value should be of {0}({1}) data type.
+
+error_message_nonexistent_column_name=Column with name {0} does not exist.
+error_message_nonexistent_table_name=Table with name {0} does not exist.
+
+error_message_exists_already_allowed_value=Allowed Values entry already exists.
+
+error_exception_delete_flag=Cannot Delete - DELETABLE_IF_UNUSED is not set
+error_exception_delete_unsupported=Cannot Delete - Unsupported, Contact Administrator
+error_exception_delete_inuse=Cannot Delete - In use by {0} rows
+
+error_message_no_timebands_to_insert=There are no Timebands to insert
+error_message_no_timebands_to_delete=There are no Timebands to delete
+

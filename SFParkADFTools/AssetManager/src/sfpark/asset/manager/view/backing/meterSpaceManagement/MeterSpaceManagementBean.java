@@ -11,10 +11,15 @@ import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
 
+import oracle.adf.share.logging.ADFLogger;
+import oracle.adf.view.rich.component.rich.data.RichColumn;
 import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.input.RichInputDate;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneRadio;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
+
+import oracle.adf.view.rich.context.AdfFacesContext;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.RowKeySet;
@@ -67,10 +72,20 @@ import sfpark.asset.manager.view.provider.DMLOperationsProvider;
 import sfpark.asset.manager.view.util.ADFUIDisplayUtil;
 import sfpark.asset.manager.view.util.DataRepositoryUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111207-01 Mark Piller - Oracle Consulting  Change getListTimeLimit() logic to refer to Allowed Values list of values
+ * 20120222-01 Mark Piller - Oracle Consulting  Add logic to warn user there are active Op/Rate Schedules when inactivating meter
+ * 20120311-01 Mark Piller - Oracle Consulting  Add logic to remove warning after a save operation
+ */
 public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBeanInterface,
                                                                   ListBeanInterface,
                                                                   PropertiesBeanInterface {
-
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(MeterSpaceManagementBean.class);
+    
     private RichSelectOneRadio streetTypeSOR;
 
     private RichInputText meterVendorIT;
@@ -91,6 +106,9 @@ public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBe
 
     private RichTable activeMeterRateTable;
     private RichTable historicMeterRateTable;
+    private RichColumn meterOpScheduleEffToDateColumn;
+    private RichColumn meterRateScheduleEffToDateColumn;
+    private RichInputDate meterOpSchedEffToDateInputText;
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -462,9 +480,15 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         return DayUI.DAYS_APPLIED_LIST;
     }
 
+    // 20111207-01 change logic to refer to Allowed Values list of values
     public List<SelectItem> getListTimeLimit() {
-        return ADFUIDisplayUtil.TIME_LIMIT_LIST;
+        return ADFUIDisplayUtil.getTimeLimitDisplayList();
     }
+
+    // 20111208-01 comment out - replaced by new logic
+//    public List<SelectItem> getListTimeLimit() {
+//        return ADFUIDisplayUtil.TIME_LIMIT_LIST;
+//    }
 
     public List<SelectItem> getListPrePaymentTime() {
         return ADFUIDisplayUtil.getPrepaymentTimeList();
@@ -517,11 +541,88 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         // If moving from Unmetered to Anything, then set the values
         if (oldValue.contains("U")) {
             getCurrentParkingSpaceInventoryDTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDODefaultValue());
+
+            // 20120311-01 Remove any highlighting when saving changes
+            // use ADF Faces Context to use Partial Triggers for Partial Page Refresh (PPR)
+            AdfFacesContext adfFacesCtx = AdfFacesContext.getCurrentInstance();
+
+            meterOpScheduleEffToDateColumn.setInlineStyle("background-color:White;");
+            meterRateScheduleEffToDateColumn.setInlineStyle("background-color:White;");
+            // place highlights on the page
+            adfFacesCtx.addPartialTarget(activeMeterScheduleTable);
+            adfFacesCtx.addPartialTarget(activeMeterRateTable);
         }
 
         // If moving from Anything to Unmetered, then reset the values
         if (newValue.contains("U")) {
             getCurrentParkingSpaceInventoryDTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
+
+            // 20120222-01 logic from here to end of method is new
+            // use ADF Faces Context to use Partial Triggers for Partial Page Refresh (PPR)
+            AdfFacesContext adfFacesCtx = AdfFacesContext.getCurrentInstance();
+
+            // get table row count for Meter Operating Schedule
+            int meterOpSchedRowCount = activeMeterScheduleTable.getRowCount();
+            // get table row count for Meter Rate Schedule
+            int meterRateRowCount = activeMeterRateTable.getRowCount();
+
+            // initialize the warning message
+            String warningMessage = "";
+            StringBuilder sbWarningMessage = new StringBuilder("<html><body>");
+            
+            // determine the content of the message 
+            // based upon existance of meter operation and rate schedules
+            if ((meterOpSchedRowCount > 0) && (meterRateRowCount > 0) ){
+                // both multiple operation and multiple rate schedules are assigned
+                sbWarningMessage.append("Active Op and Rate Schedules exist.<br />");
+                sbWarningMessage.append("Do you want to end date the schedules?<br />");
+                meterOpScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                meterRateScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                // place highlights on the page
+                adfFacesCtx.addPartialTarget(activeMeterScheduleTable);
+                adfFacesCtx.addPartialTarget(activeMeterRateTable);
+            } else if(meterOpSchedRowCount == 1) {
+                // only one operation schedule assigned
+                sbWarningMessage.append("Active Op Schedule exist.<br />");
+                sbWarningMessage.append("Do you want to end date the schedule?<br />");
+                meterOpScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                // place highlights on the page
+                adfFacesCtx.addPartialTarget(activeMeterScheduleTable);
+            } else if (meterRateRowCount == 1) {
+                // only one rate schedule assigned
+                sbWarningMessage.append("Active Rate Schedule exist.<br />");
+                sbWarningMessage.append("Do you want to end date the schedule?<br />");
+                meterRateScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                // place highlights on the page
+                adfFacesCtx.addPartialTarget(activeMeterRateTable);
+            } else if (meterOpSchedRowCount > 1) {
+                // only operation schedules assigned (but more than one)
+                sbWarningMessage.append("Active Op Schedules exist.<br />");
+                sbWarningMessage.append("Do you want to end date the schedules?<br />");
+                meterOpScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                // place highlights on the page
+                adfFacesCtx.addPartialTarget(activeMeterScheduleTable);
+            } else if (meterRateRowCount > 1) {
+                // only rate schedules assigned (but more than one)
+                sbWarningMessage.append("Active Rate Schedules exist.<br />");
+                sbWarningMessage.append("Do you want to end date the schedules?<br />");
+                meterRateScheduleEffToDateColumn.setInlineStyle("background-color:Yellow;");
+                // place highlights on the page
+                adfFacesCtx.addPartialTarget(activeMeterRateTable);
+            }
+
+            // complete the building of the warning message
+            sbWarningMessage.append("<SPAN style=\"BACKGROUND-COLOR: #ffff00\">(see yellow highlight below)</SPAN><br />");
+            sbWarningMessage.append("</body></html>");
+            warningMessage = sbWarningMessage.toString();
+
+            // add the message to the display
+            FacesContext fctx = FacesContext.getCurrentInstance();
+            FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN,"Summary", warningMessage);
+            String clientId = meterOpScheduleEffToDateColumn.getClientId(fctx);
+            fctx.addMessage(clientId, fmsg);
+//          String id = meterOpScheduleEffToDateColumn.getId();
+//          fctx.addMessage(meterOpScheduleEffToDateColumn.getClientId(fctx), fmsg);
         }
 
         updateAllMeterDetails();
@@ -815,7 +916,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         //                                              !StringUtil.areEqual(originalParkingSpaceInventoryDTO.getPostID(),
         //                                                                   parkingSpaceInventoryDTO.getPostID()));
 
-        // System.out.println("Check for Post ID = " + checkPostIDUniqueness);
+        adfLogger.info("Check for Post ID = " + checkPostIDUniqueness);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -834,7 +935,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        // System.out.println("After Blockface check = " + allValid);
+        adfLogger.info("After Blockface check = " + allValid);
 
         if (allValid) {
 
@@ -861,7 +962,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         }
 
-        // System.out.println("After ON-OFF Street = " + allValid);
+        adfLogger.info("After ON-OFF Street = " + allValid);
 
         if (allValid) {
 
@@ -873,7 +974,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        // System.out.println("After CNN ID = " + allValid);
+        adfLogger.info("After CNN ID = " + allValid);
 
         if (allValid && checkPostIDUniqueness) {
             ParkingSpaceInventoryDTOStatus parkingSpaceStatus =
@@ -885,7 +986,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        // System.out.println("After Post ID check = " + allValid);
+        adfLogger.info("After Post ID check = " + allValid);
 
         if (allValid) {
 
@@ -901,10 +1002,10 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        // System.out.println("After Meter Type check = " + allValid);
+        adfLogger.info("After Meter Type check = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            // System.out.println("Under edit mode, test for Active Meter Schedules as well");
+            adfLogger.info("Under edit mode, test for Active Meter Schedules as well");
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
 
@@ -913,10 +1014,10 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                            "Active");
         }
 
-        // System.out.println("After Active Meter OP Schedule = " + allValid);
+        adfLogger.info("After Active Meter OP Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            // System.out.println("Under edit mode, test for Historic Meter Schedules as well");
+            adfLogger.info("Under edit mode, test for Historic Meter Schedules as well");
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getHistoricMeterScheduleTable().getValue();
 
@@ -925,27 +1026,27 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                            "Historic");
         }
 
-        // System.out.println("After Historic Meter OP Schedule = " + allValid);
+        adfLogger.info("After Historic Meter OP Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            // System.out.println("Under edit mode, test for Active Meter Rates as well");
+            adfLogger.info("Under edit mode, test for Active Meter Rates as well");
             List<MeterRateScheduleDTO> meterRates =
                 (List<MeterRateScheduleDTO>)getActiveMeterRateTable().getValue();
 
             allValid = areValidMeterRates(meterRates, "Active");
         }
 
-        // System.out.println("After Active Meter Rate Schedule = " + allValid);
+        adfLogger.info("After Active Meter Rate Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            // System.out.println("Under edit mode, test for Historic Meter Rates as well");
+            adfLogger.info("Under edit mode, test for Historic Meter Rates as well");
             List<MeterRateScheduleDTO> meterRates =
                 (List<MeterRateScheduleDTO>)getHistoricMeterRateTable().getValue();
 
             allValid = areValidMeterRates(meterRates, "Historic");
         }
 
-        // System.out.println("After Historic Meter Rate Schedule = " + allValid);
+        adfLogger.info("After Historic Meter Rate Schedule = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -982,14 +1083,14 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            // System.out.println("All entries are Valid. Proceed");
+            adfLogger.info("All entries are Valid. Proceed");
 
             if (currentPageMode.isAddMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ADD Mode
-                // System.out.println("ADD Mode");
+                adfLogger.info("ADD Mode");
 
                 ParkingSpaceInventoryDTO currentDTO =
                     getCurrentParkingSpaceInventoryDTO();
@@ -1002,7 +1103,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                         ParkingSpaceInventoryProvider.INSTANCE.checkForPostID(currentDTO.getPostID());
 
                     if (parkingSpaceStatus.existsDTO()) {
-                        // System.out.println("ADD operation was successful");
+                        adfLogger.info("ADD operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -1012,12 +1113,12 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                               parkingSpaceStatus.getDTO());
 
                     } else {
-                        // System.out.println("ADD operation failed");
+                        adfLogger.info("ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
                 } else {
-                    // System.out.println("ADD operation failed");
+                    adfLogger.info("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
@@ -1027,7 +1128,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // EDIT Mode
-                // System.out.println("EDIT Mode");
+                adfLogger.info("EDIT Mode");
 
                 ParkingSpaceInventoryDTO currentDTO =
                     getCurrentParkingSpaceInventoryDTO();
@@ -1050,13 +1151,13 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                                                     meterRates);
 
                 if (operationStatus == null) {
-                    // System.out.println("There were no changes. So nothing was saved");
+                    adfLogger.info("There were no changes. So nothing was saved");
                     setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
                     setInlineMessageClass("");
 
                 } else {
                     if (operationStatus.isSuccess()) {
-                        // System.out.println("EDIT operation was successful");
+                        adfLogger.info("EDIT operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -1073,8 +1174,19 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                         getActiveMeterRateTable().setValue(null);
                         getHistoricMeterRateTable().setValue(null);
 
+                        // 20120311-01 Remove any highlighting when saving changes
+                        // use ADF Faces Context to use Partial Triggers for Partial Page Refresh (PPR)
+                        AdfFacesContext adfFacesCtx = AdfFacesContext.getCurrentInstance();
+
+                        meterOpScheduleEffToDateColumn.setInlineStyle("background-color:White;");
+                        meterRateScheduleEffToDateColumn.setInlineStyle("background-color:White;");
+                        // place highlights on the page
+                        adfFacesCtx.addPartialTarget(activeMeterScheduleTable);
+                        adfFacesCtx.addPartialTarget(activeMeterRateTable);
+
+
                     } else {
-                        // System.out.println("EDIT operation failed");
+                        adfLogger.info("EDIT operation failed");
                         String errorMessage = "";
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
@@ -1811,4 +1923,29 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     public RichTable getHistoricMeterRateTable() {
         return historicMeterRateTable;
     }
+
+    public void setMeterOpScheduleEffToDateColumn(RichColumn meterOpScheduleEffToDateColumn) {
+        this.meterOpScheduleEffToDateColumn = meterOpScheduleEffToDateColumn;
+    }
+
+    public RichColumn getMeterOpScheduleEffToDateColumn() {
+        return meterOpScheduleEffToDateColumn;
+    }
+
+    public void setMeterRateScheduleEffToDateColumn(RichColumn meterRateScheduleEffToDateColumn) {
+        this.meterRateScheduleEffToDateColumn = meterRateScheduleEffToDateColumn;
+    }
+
+    public RichColumn getMeterRateScheduleEffToDateColumn() {
+        return meterRateScheduleEffToDateColumn;
+    }
+
+    public void setMeterOpSchedEffToDateInputText(RichInputDate meterOpSchedEffToDateInputText) {
+        this.meterOpSchedEffToDateInputText = meterOpSchedEffToDateInputText;
+    }
+
+    public RichInputDate getMeterOpSchedEffToDateInputText() {
+        return meterOpSchedEffToDateInputText;
+    }
+
 }

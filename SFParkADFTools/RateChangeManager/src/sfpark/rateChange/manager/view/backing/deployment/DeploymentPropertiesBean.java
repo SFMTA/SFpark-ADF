@@ -48,6 +48,7 @@ import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
  * ----------- -------------------------------- --------------------------------------------------------
  * 20111123-01 Mark Piller - Oracle Consulting  Added logic to process ODI Web Services
  * 20111129-01 Mark Piller - Oracle Consulting  Added logic to process according to value in PROCESS_STEP
+ * 20120320-01 Mark Piller - Oracle Consulting  Change logger debug level to info level
  */
 public class DeploymentPropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                   RequestScopeBeanInterface {
@@ -360,7 +361,7 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                     // get the current PROCESS_STEP value in table RATE_CHG_PROCESS_CONTROL
                     processStep = rateProcessStepProvider.checkForProcessID(processID);
-                    LOGGER.debug("Process step is: " + processStep);
+                    LOGGER.info("Process step is: " + processStep); // 20120320-01
 
 
                     // evaluate the Process Step to determine which web service is called
@@ -369,10 +370,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     case 10:
                         odiWebServicesWereExecuted = true;
                         OperationStatus applyRateWebServiceStatus = null;
-                        LOGGER.debug("Calling ApplyRateWebService() for PROCESS_STEP = " + processStep);
+                        LOGGER.info("Calling ApplyRateWebService() for PROCESS_STEP = " + processStep); // 20120320-01
                         applyRateWebServiceStatus =
                                 ODIWebServiceHelper.callODIWebService(processID, APPLY_RATE);
-                        LOGGER.debug("Completed call to ApplyRateWebService()");
+                        LOGGER.info("Completed call to ApplyRateWebService()"); // 20120320-01
                         if (applyRateWebServiceStatus.isSuccess()) {
                             odiWebServiceSuccessful = true;
                         } else {
@@ -384,10 +385,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     case 60:
                         odiWebServicesWereExecuted = true;
                         OperationStatus reconcileRateWebServiceStatus = null;
-                        LOGGER.debug("Calling ReconcileRateWebService() for PROCESS_STEP = " + processStep);
+                        LOGGER.info("Calling ReconcileRateWebService() for PROCESS_STEP = " + processStep); // 20120320-01
                         reconcileRateWebServiceStatus =
                                 ODIWebServiceHelper.callODIWebService(processID, RECONCILE);
-                        LOGGER.debug("Completed call to ReconcileRateWebService()");
+                        LOGGER.info("Completed call to ReconcileRateWebService()"); // 20120320-01
                         if (reconcileRateWebServiceStatus.isSuccess()) {
                             odiWebServiceSuccessful = true;
                         } else {
@@ -399,10 +400,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     case 70:
                         odiWebServicesWereExecuted = true;
                         OperationStatus updtEffDtWebServiceStatus = null;
-                        LOGGER.debug("Calling UpdtEffDtWebService() for PROCESS_STEP = " + processStep);
+                        LOGGER.info("Calling UpdtEffDtWebService() for PROCESS_STEP = " + processStep);  // 20120320-01
                         updtEffDtWebServiceStatus =
                                 ODIWebServiceHelper.callODIWebService(processID, UPDT_EFF_DT);
-                        LOGGER.debug("Completed call to UpdtEffDtWebService()");
+                        LOGGER.info("Completed call to UpdtEffDtWebService()");  // 20120320-01
                         if (updtEffDtWebServiceStatus.isSuccess()) {
                             odiWebServiceSuccessful = true;
                         } else {
@@ -416,14 +417,14 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     case 40:
                     case 50:
                         meterPricingWebServiceWasExecuted = true;
-                        LOGGER.debug("Calling Meter Pricing Web Service for PROCESS_STEP = " + processStep);
+                        LOGGER.info("Calling Meter Pricing Web Service for PROCESS_STEP = " + processStep);  // 20120320-01
                         webServiceStatus =
                                 WebServiceHelper.callWebService(currentDTO.getProcessID());
-                        LOGGER.debug("Completed Meter Pricing Web Service");
+                        LOGGER.info("Completed Meter Pricing Web Service");  // 20120320-01
 
                         // test success of MeterPricing Web Service
                         if (webServiceStatus.isSuccess()) {
-                            LOGGER.debug("Meter Pricing Web Service was successful - setting flag");
+                            LOGGER.info("Meter Pricing Web Service was successful - setting flag"); // 20120320-01
                             meterPricingRequestWebServiceSuccessful = true;
                         }
                         break;
@@ -433,10 +434,10 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
 
                 // 20111123-01
                 // Evaluate executed processes and control flow according to success/failure
-                LOGGER.debug("Evaluating database update success");
+                LOGGER.info("Evaluating database update success"); // 20120320-01
                 if (!databaseUpdateSuccessful) {
                     noErrorsOccurredInProcess = false;
-                    LOGGER.debug("DB Operation failed... display the error");
+                    LOGGER.info("DB Operation failed... display the error"); // 20120320-01
                     // database operation failed
                     printLog("EXECUTE operation failed during the saving of the DTO");
 
@@ -472,16 +473,16 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                     setInlineMessageText(errorMessage);
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 } else {
-                  LOGGER.debug("Database update was successful - do not display errors");
+                  LOGGER.info("Database update was successful - do not display errors"); // 20120320-01
                 } // end test for database update execution
 
-                LOGGER.debug("Evaluating Meter Pricing WS success");
+                LOGGER.info("Evaluating Meter Pricing WS success"); // 20120320-01
                 if (meterPricingWebServiceWasExecuted && noErrorsOccurredInProcess) {
-                    LOGGER.debug("Meter Pricing WS was executed");
+                    LOGGER.info("Meter Pricing WS was executed"); // 20120320-01
                     // see if Meter Pricing Web Service executed successfully
                     if (!meterPricingRequestWebServiceSuccessful) {
                         noErrorsOccurredInProcess = false;
-                        LOGGER.debug("Meter Pricing Request WS failed... display the error");
+                        LOGGER.info("Meter Pricing Request WS failed... display the error"); // 20120320-01
                         // Meter Pricing Web Service failed
                         printLog("EXECUTE operation failed during the Meter Pricing Web Service Call");
                         String extraInfo = webServiceStatus.getException().getMessage();
@@ -494,16 +495,16 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                         setInlineMessageText(errorMessage);
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     } else {
-                      LOGGER.debug("Meter Pricing WS was successful - do not display errors");
+                      LOGGER.info("Meter Pricing WS was successful - do not display errors"); // 20120320-01
                     }
                 } // end if (meterPricingWebServiceWasExecuted && noErrorsOccurredInProcess)
 
-                LOGGER.debug("Evaluating ODI WS success");
+                LOGGER.info("Evaluating ODI WS success"); // 20120320-01
                 if (odiWebServicesWereExecuted && noErrorsOccurredInProcess) {
-                    LOGGER.debug("ODI WS was executed");
+                    LOGGER.info("ODI WS was executed"); // 20120320-01
                     if (!odiWebServiceSuccessful) {
                         noErrorsOccurredInProcess = false;
-                        LOGGER.debug("ODI Web Service failed... display the error");
+                        LOGGER.info("ODI Web Service failed... display the error");  // 20120320-01
                         // ODI Web Service Failed
                         // 20111123-01
                         printLog("EXECUTE operation failed during the ODI Web Service Call");
@@ -517,7 +518,7 @@ public class DeploymentPropertiesBean extends BaseBean implements PropertiesBean
                         setInlineMessageText(errorMessage);
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     } else {
-                      LOGGER.debug("ODI WS was successful - do not display errors");
+                      LOGGER.info("ODI WS was successful - do not display errors"); // 20120320-01
                     }
                 } // if (odiWebServicesWereExecuted && noErrorsOccurredInProcess)
 

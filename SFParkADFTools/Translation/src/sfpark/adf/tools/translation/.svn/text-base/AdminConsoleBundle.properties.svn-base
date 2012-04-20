@@ -1,0 +1,32 @@
+# Admin Console Bundle
+# Consists of Admin Console specific strings
+
+string_application_name=Admin Console
+string_allowed_values_management=Allowed Values Management
+string_allowed_values_details=Details
+string_timeband_model_management=Time Band Model Management
+
+string_time_band_models_to_insert=Time Band Models to be Applied
+string_time_band_models_to_delete=Time Band Models to be Deleted
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Title Strings
+
+string_pick_time_band_type=Pick Timeband Class and Type
+string_pick_time_band_values=Pick Timeband Values
+
+string_add_time_bands=Add Time Bands
+string_delete_time_bands=Delete Time Bands
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Information Strings
+
+info_empty_allowed_values_list=No Allowed Values available
+info_empty_timeband_model_list=No Time Band Models available
+
+info_empty_time_band_models_insert_list=No insertable Time Band Models available
+info_empty_time_band_models_delete_list=No deletable Time Band Models available

@@ -1,0 +1,98 @@
+10
+
+dir
+1
+file:///D:/Oracle/!Projects/SFPark/Repositories
+file:///D:/Oracle/!Projects/SFPark/Repositories
+
+
+
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+3b9f106f-3301-0010-898d-859f85c9185b
+
+.adf
+dir
+
+AdminConsole
+dir
+
+AssetManager
+dir
+
+CalendarManager
+dir
+
+Model
+dir
+
+OSPManager
+dir
+
+RateChangeManager
+dir
+
+SFParkADFTools.jws
+file
+
+
+
+
+2011-11-04T14:58:39.203000Z
+18cce76307ed69df8593034c0098698f
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7018
+
+Translation
+dir
+
+Utilities
+dir
+
+WebServiceConnection
+dir
+
+deploy
+dir
+
+src
+dir
+

@@ -34,7 +34,10 @@
       <hash n="profileDefinitions">
          <hash n="SFParkADFTools_application1">
             <hash n="archiveOptions">
-               <value n="hasManifest" v="false"/>
+               <list n="additionalManifests">
+                  <url path="Model/src/WebLogicVersionForManifest.txt"/>
+               </list>
+               <value n="hasManifest" v="true"/>
             </hash>
             <value n="defaultConnection"/>
             <hash n="dependencies">
@@ -81,6 +84,11 @@
                      <url n="ownerURL" path="AdminConsole/AdminConsole.jpr"/>
                      <value n="profileName" v="SFParkADFTools_AdminConsole_webapp1"/>
                   </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="ViewController/ViewController.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_ViewController_webapp1"/>
+                  </hash>
                </list>
             </hash>
             <url n="earURL" path="deploy/SFParkADFTools_application1.ear"/>
@@ -125,6 +133,7 @@
       <list n="profileList">
          <string v="SFParkADFTools_application1"/>
       </list>
+      <value n="Weblogic-JDBC-Auto-Sync-Key" v="false"/>
    </hash>
    <hash n="oracle.mds.internal.dt.ide.CustOptions">
       <list n="customizationLibraries">

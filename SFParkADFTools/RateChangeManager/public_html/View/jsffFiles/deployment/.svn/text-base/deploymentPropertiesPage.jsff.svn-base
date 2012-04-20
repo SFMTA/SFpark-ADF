@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="deploymentPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="deploymentPropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.rateChangeReference}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 20px;"
+                partialTriggers="validateAndSaveButton">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeSaveButton" width="10"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          disabled="#{deploymentPropertiesBean.disableValidateAndSaveButton}"
+                          inlineStyle="font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{deploymentPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarExecute">
+        <af:spacer id="spaceBeforeExecuteButton" width="10"/>
+        <af:commandButton id="executeButton"
+                          disabled="#{deploymentPropertiesBean.disableExecuteButton}"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_execute}"
+                          actionListener="#{deploymentPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterExecuteButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="5"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       styleClass="#{deploymentPropertiesBean.inlineMessageClass}"
+                       value="#{deploymentPropertiesBean.inlineMessageText}"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="formPanels" layout="horizontal" valign="top"
+                         inlineStyle="margin-left: 20px;"
+                         partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="formPanelsSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsFormPanel">
+        <af:inputText id="rateChgRefIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.rateChangeReference}"/>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefIDSpacer" height="10"/>
+        <af:inputDate id="effFromDateID" columns="11" required="true"
+                      readOnly="#{deploymentPropertiesBean.readOnlyEffectiveFromDate}"
+                      label="#{labelBundle.label_effective_from_date}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.effectiveFromDate}"
+                      validator="#{deploymentPropertiesBean.effectiveDateValidator}"
+                      autoSubmit="true"
+                      minValue="#{deploymentPropertiesBean.minimumEffectiveDate}">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="effDateSpacer" height="10"/>
+        <af:selectOneChoice id="timeLimitSOC" required="true"
+                            readOnly="#{deploymentPropertiesBean.readOnlyTimeLimitOption}"
+                            label="#{labelBundle.label_time_limit}"
+                            value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.timeLimitOption}"
+                            autoSubmit="true">
+          <f:selectItems id="timeLimitSOCSI"
+                         value="#{deploymentPropertiesBean.listTimeLimitOption}"/>
+        </af:selectOneChoice>
+        <af:spacer id="timeLimitSpacer" height="10"/>
+        <af:panelLabelAndMessage id="inputXMLFilenamePLM"
+                                 rendered="#{!deploymentPropertiesBean.renderXMLInputFileName}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_input_xml_filename}">
+          <af:outputText id="inputXMLFilenameOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.XMLInputFileName}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:inputText id="inputXMLFilenameIT" columns="40" rows="6"
+                      required="true"
+                      rendered="#{deploymentPropertiesBean.renderXMLInputFileName}"
+                      maximumLength="#{deploymentPropertiesBean.rateChangeProcessControlDTO.maximumLengthXMLInputFileName}"
+                      label="#{labelBundle.label_input_xml_filename}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.XMLInputFileName}"
+                      autoSubmit="true">
+          <af:validateRegExp pattern="#{globalBean.fileNamePattern}"
+                             hint="#{rateChangeManagerBundle.tooltip_input_xml_filename}"
+                             messageDetailNoMatch="#{rateChangeManagerBundle.tooltip_input_xml_filename}"/>
+        </af:inputText>
+        <af:spacer id="inputXMLFilenameSpacer" height="10"/>
+        <af:panelLabelAndMessage id="outputXMLFilenamePLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_output_xml_filename}">
+          <af:outputText id="outputXMLFilenameOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.XMLOutputFileName}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="outputXMLFilenameSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centreFormPanel"
+                          styleClass="centerPanelFormLayout">
+        <af:inputText id="processStepIT" readOnly="true"
+                      label="#{labelBundle.label_process_step}"
+                      value="#{deploymentPropertiesBean.displayProcessStep}"/>
+        <af:spacer id="processStepSpacer" height="10"/>
+        <af:panelLabelAndMessage id="commentsPLM"
+                                 rendered="#{!deploymentPropertiesBean.renderComments}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_comments}">
+          <af:outputText id="commentsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.comments}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:inputText id="commentsIT" columns="40" rows="5"
+                      rendered="#{deploymentPropertiesBean.renderComments}"
+                      maximumLength="#{deploymentPropertiesBean.rateChangeProcessControlDTO.maximumLengthComments}"
+                      label="#{labelBundle.label_comments}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.comments}"
+                      autoSubmit="true"/>
+        <af:spacer id="commentsSpacer" height="10"/>
+        <af:inputText id="stepExecStatusIT" readOnly="true"
+                      label="#{labelBundle.label_step_exec_status}"
+                      value="#{deploymentPropertiesBean.displayStepExecutionStatus}"/>
+        <af:spacer id="stepExecStatusSpacer" height="10"/>
+        <af:inputText id="stepStartAtIT" readOnly="true"
+                      label="#{labelBundle.label_step_start_at}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.stepStartDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="stepEndAtIT" readOnly="true"
+                      label="#{labelBundle.label_step_end_at}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.stepEndDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:spacer id="stepStartEndSpacer" height="10"/>
+        <af:panelLabelAndMessage id="statusMessagePLM"
+                                 inlineStyle="vertical-align: top"
+                                 label="#{labelBundle.label_status_message}">
+          <af:outputText id="statusMessageOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.statusMessage}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="statusMessageSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsFormPanel">
+        <af:inputText id="pmDistrictsIT" readOnly="true"
+                      label="#{labelBundle.label_pm_district_id}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.PMDistricts}"/>
+        <af:panelLabelAndMessage id="blockSelectionPLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_block_selection}">
+          <af:outputText id="blockSelectionOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{deploymentPropertiesBean.rateChangeProcessControlDTO.blockSelection}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:inputText id="meterVendorIT" readOnly="true"
+                      label="#{labelBundle.label_meter_vendor}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.meterVendor}"/>
+        <af:inputText id="meterModelIT" readOnly="true"
+                      label="#{labelBundle.label_meter_model}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.meterModel}"/>
+        <af:spacer id="meterSpacer" height="10"/>
+        <af:inputText id="processIDIT" readOnly="true"
+                      label="#{labelBundle.label_process_id}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.processID}"/>
+        <af:spacer id="processIDSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.createdDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.lastUpdatedDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.lastUpdatedProgram}"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

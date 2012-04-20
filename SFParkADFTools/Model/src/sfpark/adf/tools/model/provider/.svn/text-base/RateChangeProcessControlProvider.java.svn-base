@@ -1,0 +1,284 @@
+package sfpark.adf.tools.model.provider;
+
+import java.sql.Connection;
+
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
+
+import sfpark.adf.tools.constants.ErrorMessage;
+import sfpark.adf.tools.helper.Logger;
+import sfpark.adf.tools.helper.OracleDBConnection;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
+import sfpark.adf.tools.model.helper.dto.RateChangeProcessControlDTOStatus;
+import sfpark.adf.tools.utilities.generic.StringUtil;
+
+public class RateChangeProcessControlProvider {
+
+    private static final String CLASSNAME =
+        RateChangeProcessControlProvider.class.getName();
+    private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+
+    private RateChangeProcessControlProvider() {
+        super();
+    }
+
+    public static final RateChangeProcessControlProvider INSTANCE =
+        new RateChangeProcessControlProvider();
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PUBLIC METHODS
+
+    /**
+     * Checks for the existence of the Rate Change Reference. Returns a Rate
+     * Change Process Control Status Object which consolidates all the necessary
+     * information as a single record
+     *
+     * @param rateChangeReference
+     * @return Consolidated Rate Change Process Control Status Object
+     */
+    public RateChangeProcessControlDTOStatus checkForRateChangeReference(String rateChangeReference) {
+        LOGGER.in(CLASSNAME, "checkForRateChangeReference");
+
+        return checkForRateChangeProcessControl(rateChangeReference, true);
+    }
+
+    /**
+     * Checks for the existence of the Process ID. Returns a Rate Change Process
+     * Control Status Object which consolidates all the necessary information as
+     * a single record
+     *
+     * @param processID
+     * @return Consolidated Rate Change Process Control Status Object
+     */
+    public RateChangeProcessControlDTOStatus checkForProcessID(String processID) {
+        LOGGER.in(CLASSNAME, "checkForProcessID");
+
+        return checkForRateChangeProcessControl(processID, false);
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PROTECTED METHODS
+
+    protected PreparedStatement prepareInsertStatement(Connection connection,
+                                                       RateChangeProcessControlDTO DTO,
+                                                       final String lastUpdatedUser,
+                                                       final String lastUpdatedProgram) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getInsertStatement());
+
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.RATE_CHG_REF),
+                                    DTO.getRateChangeReference());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.RATE_CHG_REF_ID),
+                                    DTO.getRateChangeReferenceID());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.COMMENTS),
+                                    DTO.getComments());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.PM_DISTRICTS),
+                                    DTO.getPMDistricts());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.METER_VENDOR),
+                                    DTO.getMeterVendor());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.METER_MODEL),
+                                    DTO.getMeterModel());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.BLOCK_SELECTION),
+                                    DTO.getBlockSelection());
+        preparedStatement.setDate(getInsertIndexOf(RateChangeProcessControlDTO.EFF_FROM_DT),
+                                  DTO.getEffectiveFromDate());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.TIME_LIMIT_OPTION),
+                                    DTO.getTimeLimitOption().getStringForTable());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.PROCESS_STEP),
+                                    DTO.getProcessStep());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
+                                    DTO.getStepStartFlag().getStringForTable());
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.STEP_EXEC_STATUS),
+                                    DTO.getStepExecStatus());
+
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
+                                    lastUpdatedProgram);
+        preparedStatement.setString(getInsertIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
+                                    lastUpdatedUser);
+
+        return preparedStatement;
+    }
+
+    protected PreparedStatement prepareUpdateStatement(Connection connection,
+                                                       RateChangeProcessControlDTO DTO,
+                                                       final String lastUpdatedUser,
+                                                       final String lastUpdatedProgram) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getUpdateStatementForProcessID(DTO.getProcessID()));
+
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.COMMENTS),
+                                    DTO.getComments());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.XML_INPUT_FILE_NAME),
+                                    DTO.getXMLInputFileName());
+        preparedStatement.setDate(getUpdateIndexOf(RateChangeProcessControlDTO.EFF_FROM_DT),
+                                  DTO.getEffectiveFromDate());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.TIME_LIMIT_OPTION),
+                                    DTO.getTimeLimitOption().getStringForTable());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.PROCESS_STEP),
+                                    DTO.getProcessStep());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.STEP_START_FLAG),
+                                    DTO.getStepStartFlag().getStringForTable());
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.STEP_EXEC_STATUS),
+                                    DTO.getStepExecStatus());
+
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_PGM),
+                                    lastUpdatedProgram);
+        preparedStatement.setString(getUpdateIndexOf(RateChangeProcessControlDTO.LAST_UPD_USER),
+                                    lastUpdatedUser);
+
+        return preparedStatement;
+    }
+
+    protected PreparedStatement prepareDeleteStatement(Connection connection,
+                                                       RateChangeProcessControlDTO DTO) throws SQLException {
+
+        PreparedStatement preparedStatement =
+            connection.prepareStatement(getDeleteStatement());
+
+        preparedStatement.setString(1, DTO.getProcessID());
+
+        return preparedStatement;
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // PRIVATE METHODS
+
+    private RateChangeProcessControlDTOStatus checkForRateChangeProcessControl(String value,
+                                                                               boolean rateChangeReference) {
+        LOGGER.entering(CLASSNAME, "checkForRateChangeProcessControl");
+
+        RateChangeProcessControlDTO DTO = null;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = OracleDBConnection.getConnection();
+
+            preparedStatement =
+                    connection.prepareStatement(getSelectStatement(rateChangeReference));
+            preparedStatement.setString(1, value);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                DTO = RateChangeProcessControlDTO.extract(resultSet);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning(ErrorMessage.SELECT_DTO.getMessage(), e);
+        } finally {
+            OracleDBConnection.closeAll(resultSet, preparedStatement,
+                                        connection);
+        }
+
+        LOGGER.exiting(CLASSNAME, "checkForRateChangeProcessControl");
+
+        return new RateChangeProcessControlDTOStatus(DTO);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // SELECT HELPERS
+
+    private String getSelectStatement(boolean rateChangeReference) {
+        LOGGER.entering(CLASSNAME, "getSelectStatementForRateChangeReference");
+
+        String Attributes =
+            StringUtil.convertListToString(RateChangeProcessControlDTO.getAttributeListForSelect());
+
+        String Where =
+            (rateChangeReference) ? StatementGenerator.equalToOperator(RateChangeProcessControlDTO.RATE_CHG_REF) :
+            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_ID);
+
+        LOGGER.exiting(CLASSNAME, "getSelectStatementForRateChangeReference");
+
+        return StatementGenerator.selectStatement(Attributes,
+                                                  RateChangeProcessControlDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // INSERT HELPERS
+
+    private String getInsertStatement() {
+        LOGGER.entering(CLASSNAME, "getInsertStatement");
+
+        String Columns =
+            StringUtil.convertListToString(RateChangeProcessControlDTO.getAttributeListForInsert());
+
+        String Values =
+            StringUtil.generateStringWithRepetition("?", RateChangeProcessControlDTO.getAttributeListForInsert().size());
+
+        LOGGER.exiting(CLASSNAME, "getInsertStatement");
+
+        return StatementGenerator.insertStatement(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                                  Columns, Values);
+    }
+
+    private int getInsertIndexOf(String indexFor) {
+        return (RateChangeProcessControlDTO.getAttributeListForInsert().indexOf(indexFor) +
+                1);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // UPDATE HELPERS
+
+    private String getUpdateStatementForProcessID(String processID) {
+        LOGGER.entering(CLASSNAME, "getUpdateStatementForProcessID");
+
+        String SetColumnValues =
+            StringUtil.convertListToString(StringUtil.concatenateToAllStringsInList(RateChangeProcessControlDTO.getAttributeListForUpdate(),
+                                                                                    "=?"));
+
+        String RHS = "\'" + processID + "\'";
+
+        String Where =
+            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_ID,
+                                               RHS);
+
+        LOGGER.exiting(CLASSNAME, "getUpdateStatementForProcessID");
+
+        return StatementGenerator.updateStatement(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                                  SetColumnValues, Where);
+    }
+
+    private int getUpdateIndexOf(String indexFor) {
+        return (RateChangeProcessControlDTO.getAttributeListForUpdate().indexOf(indexFor) +
+                1);
+    }
+
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++
+    // DELETE HELPERS
+
+    private String getDeleteStatement() {
+        LOGGER.entering(CLASSNAME, "getDeleteStatement");
+
+        String Where =
+            StatementGenerator.equalToOperator(RateChangeProcessControlDTO.PROCESS_ID);
+
+        LOGGER.exiting(CLASSNAME, "getDeleteStatement");
+
+        return StatementGenerator.deleteStatement(RateChangeProcessControlDTO.getDatabaseTableName(),
+                                                  Where);
+    }
+}

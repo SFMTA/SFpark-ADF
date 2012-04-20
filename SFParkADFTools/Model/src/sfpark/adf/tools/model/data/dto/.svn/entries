@@ -1,0 +1,132 @@
+10
+
+dir
+1
+file:///D:/Oracle/!Projects/SFPark/Repositories/Model/src/sfpark/adf/tools/model/data/dto
+file:///D:/Oracle/!Projects/SFPark/Repositories
+
+
+
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+3b9f106f-3301-0010-898d-859f85c9185b
+
+BaseDTO.java
+file
+
+
+
+
+2011-11-04T14:58:20.796000Z
+557655f7a2423aa3c082d16666a139e9
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2408
+
+EffectiveDateBaseDTO.java
+file
+
+
+
+
+2011-11-04T14:58:21.265000Z
+b39e7c67ee1bc606fda29af1673dc79f
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3166
+
+allowedValues
+dir
+
+blockRateSchedule
+dir
+
+blockTimeBands
+dir
+
+calendar
+dir
+
+garageOPHours
+dir
+
+garageRates
+dir
+
+meterOPSchedule
+dir
+
+meterRateSchedule
+dir
+
+ospInventory
+dir
+
+parkingSpaceInventory
+dir
+
+rateChange
+dir
+
+timeBandModel
+dir
+

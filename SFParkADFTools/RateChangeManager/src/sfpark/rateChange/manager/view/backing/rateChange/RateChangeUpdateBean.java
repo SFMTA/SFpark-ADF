@@ -2,7 +2,13 @@ package sfpark.rateChange.manager.view.backing.rateChange;
 
 import java.sql.Date;
 
+import java.util.List;
+
 import javax.faces.event.ActionEvent;
+
+import javax.faces.model.SelectItem;
+
+import oracle.adf.view.rich.component.rich.output.RichOutputText;
 
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.exception.DTOUpdateException;
@@ -24,6 +30,15 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
+import sfpark.rateChange.manager.view.util.ADFUIDisplayUtil;
+
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111212-01 Mark Piller - Oracle Consulting  Add getListSubmittedBy(), getApprovedByDisplayList()
+ */
 public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInterface,
                                                               RequestScopeBeanInterface {
 
@@ -31,6 +46,9 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
+
+    private RichOutputText inLineTextMessage;
+    private RichOutputText myTest;
 
     public RateChangeUpdateBean() {
         super();
@@ -114,6 +132,17 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                  getRateChangeHeaderDTO().getStatus().isApproved()));
     }
 
+
+    // 20111212-01 added
+    public List<SelectItem> getListSubmittedBy() {
+        return ADFUIDisplayUtil.getSubmittedByDisplayList();
+    }
+    
+    // 20111212-01 added
+    public List<SelectItem> getListApprovedBy() {
+        return ADFUIDisplayUtil.getApprovedByDisplayList();
+    }
+
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -194,6 +223,7 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                 } else {
                     if (operationStatus.isSuccess()) {
                         printLog("UPDATE operation was successful");
+                        System.out.println("message to be displayed: " + TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -255,4 +285,5 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     public void cancelButtonHandler(ActionEvent event) {
         // Do nothing
     }
+
 }

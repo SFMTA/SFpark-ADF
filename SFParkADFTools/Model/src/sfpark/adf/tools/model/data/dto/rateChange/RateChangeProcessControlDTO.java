@@ -21,6 +21,14 @@ import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111130-01 Mark Piller - Oracle Consulting  add isResetable()
+ * 
+ */
 public class RateChangeProcessControlDTO extends BaseDTO {
 
     public static String getDatabaseTableName() {
@@ -313,6 +321,24 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
         return (currentProcessStep == 10 && currentExecStatus != 1);
     }
+
+
+    /**
+     * 20111130-01 added isResetable()
+     * 
+     * Can be reseted ONLY when
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     *    ---PROCESS_STEP     < 99
+     *
+     * @return
+     */
+    public boolean isResetable() {
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+  
+        return (currentProcessStep < 99 && currentExecStatus != 1);
+    }
+
 
     /**
      * Can be edited ONLY when

@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="timebandAddPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="timebandAddPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{adminConsoleBundle.string_timeband_model_management}"
+                                actionListener="#{timebandAddBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{adminConsoleBundle.string_add_time_bands}"/>
+    </af:breadCrumbs>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarSaveAndCancel">
+        <af:commandButton id="saveButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_save}"
+                          actionListener="#{timebandAddBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterSaveButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{timebandAddBean.cancelButtonHandler}"/>
+        <af:spacer id="spaceAfterCancelButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{timebandAddBean.inlineMessageText}"
+                       styleClass="#{timebandAddBean.inlineMessageClass}"
+                       partialTriggers="saveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator"/>
+    <af:panelGroupLayout id="timebandAddPanel" layout="vertical"
+                         inlineStyle="padding-left: 35px;">
+      <f:facet name="separator">
+        <af:spacer id="timebandAddPanelSpacer" height="20"/>
+      </f:facet>
+      <af:panelGroupLayout id="addPanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="addPanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                       value="#{adminConsoleBundle.string_time_band_models_to_insert}"/>
+        <af:table id="ITBTabl" var="row" varStatus="rowStatus" width="600"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{adminConsoleBundle.info_empty_time_band_models_insert_list}"
+                  summary="Block Time Bands List"
+                  value="#{timebandAddBean.insertableTimeBandModels}"
+                  binding="#{timebandAddBean.insertTimeBandModelsTable}">
+          <af:column id="ITBTableColMeterClass" rowHeader="unstyled"
+                     align="center" width="100px" sortable="false"
+                     headerText="#{columnBundle.column_meter_class}">
+            <af:outputText id="ITBTableRowMeterClass"
+                           value="#{row.meterClass}"/>
+          </af:column>
+          <af:column id="ITBTableColDateType" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_date_type}">
+            <af:outputText id="ITBTableRowDateType" value="#{row.dateType}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandID" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_id}">
+            <af:outputText id="ITBTableRowTimeBandID"
+                           value="#{row.timeBandID}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandFrom" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_from}">
+            <af:outputText id="ITBTableRowTimeBandFrom"
+                           value="#{row.displayTimeBandFrom}"/>
+          </af:column>
+          <af:column id="ITBTableColTimeBandTo" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_to}">
+            <af:outputText id="ITBTableRowTimeBandTo"
+                           value="#{row.displayTimeBandTo}"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="deletePanel" layout="vertical">
+        <f:facet name="separator">
+          <af:spacer id="deletePanelSpacer" height="10"/>
+        </f:facet>
+        <af:outputText id="OT2" inlineStyle="font-size: 14px;"
+                       value="#{adminConsoleBundle.string_time_band_models_to_delete}"/>
+        <af:table id="DTBTabl" var="row" varStatus="rowStatus" width="600"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="none" rowBandingInterval="0"
+                  columnSelection="none" disableColumnReordering="true"
+                  columnStretching="last"
+                  emptyText="#{adminConsoleBundle.info_empty_time_band_models_delete_list}"
+                  summary="Block Time Bands List"
+                  value="#{timebandAddBean.deletableTimeBandModels}">
+          <af:column id="DTBTableColMeterClass" rowHeader="unstyled"
+                     align="center" width="100px" sortable="false"
+                     headerText="#{columnBundle.column_meter_class}">
+            <af:outputText id="DTBTableRowMeterClass"
+                           value="#{row.meterClass}"/>
+          </af:column>
+          <af:column id="DTBTableColDateType" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_date_type}">
+            <af:outputText id="DTBTableRowDateType" value="#{row.dateType}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandID" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_id}">
+            <af:outputText id="DTBTableRowTimeBandID"
+                           value="#{row.timeBandID}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandFrom" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_from}">
+            <af:outputText id="DTBTableRowTimeBandFrom"
+                           value="#{row.displayTimeBandFrom}"/>
+          </af:column>
+          <af:column id="DTBTableColTimeBandTo" align="center" width="100px"
+                     sortable="false"
+                     headerText="#{columnBundle.column_time_band_to}">
+            <af:outputText id="DTBTableRowTimeBandTo"
+                           value="#{row.displayTimeBandTo}"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

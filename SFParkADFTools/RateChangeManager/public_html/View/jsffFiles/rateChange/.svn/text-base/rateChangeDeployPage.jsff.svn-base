@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="rateChangeDeployPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="rateChangeDeployPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{rateChangeDeployBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{rateChangeDeployBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{rateChangeDeployBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{rateChangeDeployBean.inlineMessageText}"
+                       styleClass="#{rateChangeDeployBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="rateChangeProcessControlPGL" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="rateChangeProcessControlPGLSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsRCPCFormPanel">
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefIDSpacer" height="10"/>
+        <af:panelLabelAndMessage id="rateChgRefPLM"
+                                 label="#{labelBundle.label_rate_change_reference}">
+          <af:inputText id="rateChgRefIT" required="true"
+                        rendered="#{!rateChangeDeployBean.readOnly}"
+                        readOnly="#{rateChangeDeployBean.readOnly}"
+                        maximumLength="#{rateChangeDeployBean.rateChangeProcessControlDTO.maximumLengthValueRateChangeReference}"
+                        columns="#{rateChangeDeployBean.rateChangeProcessControlDTO.columnsValueRateChangeReference}"
+                        label="#{rateChangeDeployBean.rateChangeProcessControlDTO.labelRateChangeReference}"
+                        value="#{rateChangeDeployBean.rateChangeProcessControlDTO.valueRateChangeReference}"
+                        autoSubmit="true"/>
+          <af:outputText id="rateChgRefOT"
+                         rendered="#{rateChangeDeployBean.readOnly}"
+                         value="#{rateChangeDeployBean.rateChangeProcessControlDTO.rateChangeReference}"></af:outputText>
+        </af:panelLabelAndMessage>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputText id="commentsIT" rows="5" columns="40"
+                      maximumLength="#{rateChangeDeployBean.rateChangeProcessControlDTO.maximumLengthComments}"
+                      rendered="#{!rateChangeDeployBean.readOnly}"
+                      label="#{labelBundle.label_comments}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.comments}"
+                      autoSubmit="true"/>
+        <af:panelLabelAndMessage id="commentsPLM"
+                                 rendered="#{rateChangeDeployBean.readOnly}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_comments}">
+          <af:outputText id="commentsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangeDeployBean.rateChangeProcessControlDTO.comments}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="commentsSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centerRCPCFormPanel"
+                          styleClass="centerPanelFormLayout"
+                          rendered="#{rateChangeDeployBean.renderCenterFormPanel}">
+        <af:commandButton id="meterVendorButton" immediate="true"
+                          rendered="#{rateChangeDeployBean.renderButtons}"
+                          inlineStyle="width: 150px;"
+                          text="#{buttonBundle.button_change_meter_vendor}"
+                          actionListener="#{rateChangeDeployBean.pickButtonHandler}"/>
+        <af:inputText id="meterVendorIT" readOnly="true"
+                      label="#{labelBundle.label_meter_vendor}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.meterVendor}"/>
+        <af:inputText id="meterModelIT" readOnly="true"
+                      label="#{labelBundle.label_meter_model}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.meterModel}"/>
+        <af:spacer id="meterSpacer" height="20"/>
+        <af:commandButton id="pmDistrictsButton" immediate="true"
+                          rendered="#{rateChangeDeployBean.renderButtons}"
+                          inlineStyle="width: 150px;"
+                          text="#{buttonBundle.button_change_pm_district}"
+                          actionListener="#{rateChangeDeployBean.pickButtonHandler}"/>
+        <af:panelLabelAndMessage id="pmDistrictsPLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_pm_districts}">
+          <af:outputText id="pmDistrictsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangeDeployBean.rateChangeProcessControlDTO.displayPMDistricts}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage id="blockSelectionPLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_block_selection}">
+          <af:outputText id="blockSelectionOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangeDeployBean.rateChangeProcessControlDTO.displayBlockSelection}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsRCPCFormPanel">
+        <af:inputText id="processIDIT" readOnly="true"
+                      rendered="#{rateChangeDeployBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_process_id}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.processID}"/>
+        <af:spacer id="processIDSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{rateChangeDeployBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.createdDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{rateChangeDeployBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.lastUpdatedDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{rateChangeDeployBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{rateChangeDeployBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{rateChangeDeployBean.rateChangeProcessControlDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

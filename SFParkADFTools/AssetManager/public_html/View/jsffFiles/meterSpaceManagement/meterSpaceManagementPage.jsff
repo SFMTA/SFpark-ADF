@@ -34,6 +34,7 @@
       <f:facet name="separator">
         <af:spacer id="parkingSpaceInventoryPanelSpacer" width="50"/>
       </f:facet>
+      
       <af:panelFormLayout id="lhsPSIFormPanel">
         <af:panelLabelAndMessage id="postIDPLM" for="postIDIT"
                                  label="#{labelBundle.label_post_id}">
@@ -539,11 +540,13 @@
         <af:column id="MSTableColEffToDate" align="center" width="100px"
                    showRequired="true" sortable="false"
                    sortProperty="effectiveToDate"
-                   headerText="#{columnBundle.column_effective_to_date}">
+                   headerText="#{columnBundle.column_effective_to_date}"
+                   binding="#{meterSpaceManagementBean.meterOpScheduleEffToDateColumn}">
           <af:inputDate id="MSTableRowEffToDate" required="true" simple="true"
                         columns="10"
                         readOnly="#{meterSpaceManagementBean.readOnly}"
-                        value="#{row.effectiveToDate}">
+                        value="#{row.effectiveToDate}"
+                        binding="#{meterSpaceManagementBean.meterOpSchedEffToDateInputText}">
             <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
           </af:inputDate>
         </af:column>
@@ -839,7 +842,8 @@
         <af:column id="MRTableColEffToDate" align="center" width="100px"
                    showRequired="true" sortable="false"
                    sortProperty="effectiveToDate"
-                   headerText="#{columnBundle.column_effective_to_date}">
+                   headerText="#{columnBundle.column_effective_to_date}"
+                   binding="#{meterSpaceManagementBean.meterRateScheduleEffToDateColumn}">
           <af:inputDate id="MRTableRowEffToDate" required="true" simple="true"
                         columns="10"
                         readOnly="#{meterSpaceManagementBean.readOnly}"

@@ -11,6 +11,19 @@ import java.util.List;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
+/**
+ * Description:
+ * This class translates database resultsets to objects
+ *
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120313-01 Mark Piller - Oracle Consulting  change Adjusted Rate from float to string to allow for null entries
+ * 20120313-02 Mark Piller - Oracle Consulting  add logic to make Adjusted Rate string value appear as a currency value in UI
+ * 20120320-01 Mark Piller - Oracle Consulting  change Final Rate from float to string to allow for null entries
+ * 20120320-02 Mark Piller - Oracle Consulting  add logic to make Final Rate string value appear as a currency value in UI
+ */
 public class BlockRateScheduleDTO extends BaseDTO {
 
     public static String getDatabaseTableName() {
@@ -45,9 +58,11 @@ public class BlockRateScheduleDTO extends BaseDTO {
         this.setOccupancyPercentage(resultSet.getInt(OCCUPANCY_PCT));
         this.setProposedRateChange(resultSet.getFloat(PROPOSED_RATE_CHG));
         this.setNewRate(resultSet.getFloat(NEW_RATE));
-        this.setAdjustedRate(resultSet.getFloat(ADJUSTED_RATE));
+//        this.setAdjustedRate(resultSet.getFloat(ADJUSTED_RATE)); // 20120313-01
+        this.setAdjustedRate(convertRateToDollars(resultSet.getString(ADJUSTED_RATE))); // 20120313-01
         this.setAdjustmentReason(resultSet.getString(ADJUSTMENT_REASON));
-        this.setFinalRate(resultSet.getFloat(FINAL_RATE));
+//        this.setFinalRate(resultSet.getFloat(FINAL_RATE));  // 20120320-01
+        this.setFinalRate(convertRateToDollars(resultSet.getString(FINAL_RATE))); // 20120320-01
         this.setFinalRateEffectiveDate(resultSet.getDate(FINAL_RATE_EFF_DT));
         this.setFinalJustification(resultSet.getString(FINAL_JUSTIFICATION));
 
@@ -145,9 +160,11 @@ public class BlockRateScheduleDTO extends BaseDTO {
     private int OccupancyPercentage;
     private float ProposedRateChange;
     private float NewRate;
-    private float AdjustedRate;
+//    private float AdjustedRate;  // 20120313-01
+    private String AdjustedRate; // 20120313-01
     private String AdjustmentReason;
-    private float FinalRate;
+//    private float FinalRate; // 20120320-01
+    private String FinalRate; // 20120320-01
     private Date FinalRateEffectiveDate;
     private String FinalJustification;
 
@@ -287,11 +304,21 @@ public class BlockRateScheduleDTO extends BaseDTO {
         return NewRate;
     }
 
-    public void setAdjustedRate(float AdjustedRate) {
+    // 20120313-01 - this is replaced with a String method
+//    public void setAdjustedRate(float AdjustedRate) {
+//        this.AdjustedRate = AdjustedRate;
+//    }
+    // 20120313-01 - new String method replaces above float method
+    public void setAdjustedRate(String AdjustedRate) {
         this.AdjustedRate = AdjustedRate;
     }
 
-    public float getAdjustedRate() {
+    // 20120313-01 - this is replaced with a String method
+//    public float getAdjustedRate() {
+//        return AdjustedRate;
+//    }
+    // 20120313-01 - new String method replaces above float method
+    public String getAdjustedRate() {
         return AdjustedRate;
     }
 
@@ -303,13 +330,22 @@ public class BlockRateScheduleDTO extends BaseDTO {
         return AdjustmentReason;
     }
 
-    public void setFinalRate(float FinalRate) {
+    // 20120320-01 - change from data type float to String
+//    public void setFinalRate(float FinalRate) {
+//        this.FinalRate = FinalRate;
+//    }
+    public void setFinalRate(String FinalRate) {
         this.FinalRate = FinalRate;
     }
 
-    public float getFinalRate() {
+    // 20120320-01 - change from data type float to String
+//    public float getFinalRate() {
+//        return FinalRate;
+//    }
+    public String getFinalRate() {
         return FinalRate;
     }
+
 
     public void setFinalRateEffectiveDate(Date FinalRateEffectiveDate) {
         this.FinalRateEffectiveDate = FinalRateEffectiveDate;
@@ -325,5 +361,19 @@ public class BlockRateScheduleDTO extends BaseDTO {
 
     public String getFinalJustification() {
         return FinalJustification;
+    }
+
+    // 20120313-02 - added function to be able to present data in UI with $
+    // special logic needed because must make the UI field a string
+    // but the data from the database is a nullable numeric field
+    private String convertRateToDollars(String value){
+        if ((value == null) || value.equals("")) {
+            // do nothing to the data
+        } else {
+            // add the dollar sign to any value other than empty/null
+            value = "$" + value;
+        }
+        
+        return value;
     }
 }

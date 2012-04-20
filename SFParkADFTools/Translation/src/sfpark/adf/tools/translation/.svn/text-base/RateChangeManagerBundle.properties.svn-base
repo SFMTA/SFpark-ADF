@@ -1,0 +1,74 @@
+# Rate Change Manager Bundle
+# Consists of Rate Change Manager specific strings
+
+# Change History:
+# Change ID format is YYYYMMDD-## where you can identify multiple changes
+# Change ID   Developer Name                   Description
+# ----------- -------------------------------- ------------------------------------------
+# 20111130-01 Mark Piller - Oracle Consulting  add string_finalize_rate_change_confirmation
+
+string_application_name=Rate Change Manager Tool
+string_rate_change_rules_management=Rate Change Rules Management
+string_rate_change_management=Rate Change Management
+string_block_time_bands_management=Block Time Bands Management
+
+string_rate_change_rules_to_apply=Rate Change Rules to be Applied, effective from the date mentioned above
+string_rate_change_rules_to_replace=Rate Change Rules to be Replaced
+
+string_block_time_bands_to_insert=Block Time Bands to be Applied
+string_block_time_bands_to_delete=Block Time Bands to be Deleted
+
+string_delete_rate_change_confirmation=Are you sure you want to delete the following Rate Change?
+string_delete_rate_change_process_confirmation=Are you sure you want to delete the following Rate Change Process Control?
+
+string_finalize_rate_change_confirmation=Are you sure you want to finalize the following Rate Change?
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Title Strings
+
+string_pick_thresholds=Pick Threshold Values
+
+string_pick_time_band_type=Pick Timeband Class and Type
+string_pick_time_band_options=Pick Timeband Options
+string_pick_time_band_values=Pick Timeband Values
+
+string_add_time_bands=Add Time Bands
+string_delete_time_bands=Delete Time Bands
+
+string_pick_calendar=Pick Calendar
+
+string_pick_area_type=Pick Area Type
+
+string_pick_meter=Pick Meter Vendor
+
+string_pick_pm_districts=Pick PM Districts
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Tooltip Strings
+
+tooltip_input_xml_filename=Filename should contain ONLY alphabets, numerals, dash (-) and underscore (_) and always end in '.xml' (multiple files should be comma-separated).
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Information Strings
+
+info_create_success=Successfully added the Rate Change Reference
+
+info_empty_rate_change_rules_apply_list=Click Add/Edit Threshold Button to add thresholds
+info_empty_rate_change_rules_replace_list=No replaceable thresholds available
+
+info_empty_block_time_bands_apply_list=Click Add Timebands Button to add timebands
+info_empty_block_time_bands_delete_list=No deletable timebands available
+
+info_empty_meters_list=No meters available
+
+info_empty_calendar_id_list=No Calendars available
+
+info_empty_block_list=No Blocks available
+
+info_empty_active_deployment_process_list=Click Initiate Process Button to add a process

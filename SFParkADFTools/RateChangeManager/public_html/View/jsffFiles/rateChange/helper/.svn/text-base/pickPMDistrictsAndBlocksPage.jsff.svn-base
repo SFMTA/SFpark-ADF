@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickPMDistrictsAndBlocksPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickPMDistrictsAndBlocksPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{rateChangeManagerBundle.string_rate_change_management}"
+                                actionListener="#{pickPMDistrictsAndBlocksBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{rateChangeManagerBundle.string_pick_pm_districts}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarDoneAndCancel">
+        <af:commandButton id="doneButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_done}"
+                          actionListener="#{pickPMDistrictsAndBlocksBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterDoneButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickPMDistrictsAndBlocksBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelGroupLayout id="pickPMDistrictsPanel" layout="horizontal"
+                         valign="top" inlineStyle="margin-left: 60px;">
+      <af:selectManyListbox id="pmDistrictsSML"
+                            label="#{labelBundle.label_pm_districts}"
+                            value="#{pickPMDistrictsAndBlocksBean.PMDistrictsDOs}"
+                            autoSubmit="true">
+        <f:selectItems id="pmDistrictsSMLSI"
+                       value="#{pickPMDistrictsAndBlocksBean.listPMDistricts}"/>
+      </af:selectManyListbox>
+      <af:spacer id="pmDistrictsSMLSpacer" width="10"/>
+      <af:commandButton id="refreshTable" inlineStyle="width: 100px;"
+                        text="#{buttonBundle.button_refresh_table}"
+                        actionListener="#{pickPMDistrictsAndBlocksBean.refreshButtonHandler}"
+                        partialSubmit="true"/>
+    </af:panelGroupLayout>
+    <af:table id="BSTable" var="row" varStatus="rowStatus" width="300"
+              inlineStyle="margin-left: 60px; height: 400px;"
+              contentDelivery="immediate" rowSelection="multipleNoSelectAll"
+              rowBandingInterval="1" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{rateChangeManagerBundle.info_empty_block_list}"
+              summary="Block Selection List"
+              value="#{pickPMDistrictsAndBlocksBean.listBlockSelection}"
+              binding="#{pickPMDistrictsAndBlocksBean.blockSelectionTable}">
+      <af:column id="BSTableColBlockID" rowHeader="unstyled" align="center"
+                 width="100px" sortable="false"
+                 headerText="#{columnBundle.column_block_id}">
+        <af:outputText id="BSTableRowBlockID" value="#{row.blockID}"/>
+      </af:column>
+      <af:column id="BSTableColStreetName" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_street_name}">
+        <af:outputText id="BSTableRowStreetName" value="#{row.streetName}"/>
+      </af:column>
+    </af:table>
+    <af:inputText id="BSTableNoteIT" readOnly="true"
+                  inlineStyle="margin-left: 60px;"
+                  label="#{labelBundle.label_note}"
+                  value="#{commonBundle.note_table_multiple_select}"/>
+  </af:panelGroupLayout>
+</jsp:root>

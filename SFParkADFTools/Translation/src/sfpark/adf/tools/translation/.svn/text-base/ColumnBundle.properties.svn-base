@@ -1,0 +1,112 @@
+# Column Bundle
+# Consists of all the column header strings
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# General Column Headers
+
+column_override=Edit existing record
+column_effective_from_date=Effective From Date
+column_effective_to_date=Effective To Date
+
+column_from_time=From Time
+column_to_time=To Time
+
+column_rate=Rate
+column_rate_change_ref=Rate Change Reference
+
+column_date_type=Date Type
+
+column_meter_class=Meter Class
+column_time_band_id=Timeband ID
+column_time_band_from=Timeband From
+column_time_band_to=Timeband To
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Asset Manager Column Headers
+
+column_meter_vendor=Meter Vendor
+column_meter_model=Meter Model
+column_meter_type=Meter Type
+column_smart_meter=Smart Meter
+
+column_cnn_id=CNN ID
+column_street_name=Street Name
+column_distance=Distance
+column_odd_address=Odd
+column_even_address=Even
+
+column_schedule_type=Schedule Type
+column_schedule_priority=Schedule Priority
+column_color_rule_applied=Color Rule Applied
+column_addl_desc=Additional Desc
+column_days_applied=Days Applied
+column_time_limit=Time Limit
+column_prepayment_time=Prepayment Time
+
+column_rate_type=Rate Type
+column_parking_space_group_id=Parking Space Group ID
+column_event_id=Event ID
+column_block_id=Block ID
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# OSP Manager Column Headers
+
+column_display_group=Display Group
+column_display_sequence=Display Sequence
+column_rate_desc=Rate Description
+column_time_band=Time Band
+
+column_rate_qualifier=Rate Qualifier
+column_max_amount=Maximum Amount
+column_rate_restrictions=Rate Restrictions
+column_display_code=Display Code
+
+column_schedule_sequence=Schedule Sequence
+column_from_day=From Day
+column_to_day=To Day
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Calendar Manager Column Headers
+
+column_date_operation=Date Operation
+column_date=Date
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Rate Change Manager Column Headers
+
+column_from_occupancy=From Occupancy
+column_to_occupancy=To Occupancy
+column_change_amount=Change Amount
+
+column_thresholds=Thresholds
+
+column_current_rate=Current Rate
+column_last_rate_change_date=Last Rate Change Date
+column_timebands=Timebands
+
+column_calendar_id=Calendar ID
+column_calendar_name=Calendar Name
+
+column_process_step=Process Step
+column_step_exec_status=Step Execution Status
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Rate Change Manager Column Headers
+
+column_table_name=Table Name
+column_column_name=Column Name
+column_column_value=Column Value
+column_deletable=Deletable
+column_description=Description

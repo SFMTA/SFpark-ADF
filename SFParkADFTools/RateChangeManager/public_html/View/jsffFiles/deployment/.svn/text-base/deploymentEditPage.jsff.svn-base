@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="deploymentEditProperties" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="deploymentEditPropertiesSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="sectionHeaderSeparator"/>
+    <af:panelGroupLayout id="rateChangeProcessControlPGL" layout="horizontal"
+                         valign="top" inlineStyle="margin-left: 20px;">
+      <f:facet name="separator">
+        <af:spacer id="rateChangeProcessControlPGLSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsRCPFormPanel">
+        <af:inputText id="currentStepIT" readOnly="true"
+                      label="#{labelBundle.label_current_process_step}"
+                      value="#{deploymentEditBean.displayCurrentProcessStep}"/>
+        <af:commandButton id="showButton"
+                          text="#{buttonBundle.button_show_details}"
+                          actionListener="#{deploymentEditBean.saveButtonHandler}"/>
+        <af:spacer id="currentStepSpacer" height="15"/>
+        <af:inputText id="stepExecStatusIT" readOnly="true"
+                      label="#{labelBundle.label_step_exec_status}"
+                      value="#{deploymentEditBean.displayCurrentExecutionStatus}"/>
+        <af:spacer id="stepExecStatusSpacer" height="10"/>
+        <af:inputText id="stepStartAtIT" readOnly="true"
+                      label="#{labelBundle.label_step_start_at}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.stepStartDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="stepEndAtIT" readOnly="true"
+                      label="#{labelBundle.label_step_end_at}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.stepEndDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:spacer id="stepStartEndSpacer" height="10"/>
+        <af:panelLabelAndMessage id="statusMessagePLM"
+                                 inlineStyle="vertical-align: top"
+                                 label="#{labelBundle.label_status_message}">
+          <af:outputText id="statusMessageOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 180px;">#{deploymentEditBean.rateChangeProcessControlDTO.statusMessage}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="statusMessageSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centreRCPFormPanel"
+                          styleClass="centerPanelFormLayout">
+        <af:inputText id="nextStepIT" readOnly="true"
+                      label="#{labelBundle.label_next_process_step}"
+                      value="#{deploymentEditBean.displayNextProcessStep}"/>
+        <af:commandButton id="nextButton"
+                          rendered="#{deploymentEditBean.rateChangeProcessControlDTO.possibleNextProcessStep}"
+                          text="#{buttonBundle.button_next_process_step}"
+                          actionListener="#{deploymentEditBean.saveButtonHandler}"/>
+        <af:spacer id="nextStepSpacer" height="35"/>
+        <af:inputText id="prevStepIT" readOnly="true"
+                      label="#{labelBundle.label_prev_process_step}"
+                      value="#{deploymentEditBean.displayPreviousProcessStep}"/>
+        <af:commandButton id="prevButton"
+                          rendered="#{deploymentEditBean.rateChangeProcessControlDTO.possiblePreviousProcessStep}"
+                          text="#{buttonBundle.button_prev_process_step}"
+                          actionListener="#{deploymentEditBean.saveButtonHandler}"/>
+        <af:spacer id="prevStepSpacer" height="35"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsRCPFormPanel">
+        <af:inputText id="processIDIT" readOnly="true"
+                      label="#{labelBundle.label_process_id}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.processID}"/>
+        <af:spacer id="processIDSpacer" height="10"/>
+        <af:inputText id="rateChgRefIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.rateChangeReference}"/>
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.createdDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.lastUpdatedDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{deploymentEditBean.rateChangeProcessControlDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

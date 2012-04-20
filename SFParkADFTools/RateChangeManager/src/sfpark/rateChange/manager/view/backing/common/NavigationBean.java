@@ -28,6 +28,18 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
+/**
+ * Description:
+ * This class reads the HTTP request and identifies parameters and controls the
+ * ADF page navigation according to the URLs
+ * 
+ * 
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111129-01 Mark Piller - Oracle Consulting  add logic to handle Finalize Rate Mode
+ */
 public class NavigationBean extends BaseBean {
 
     private static final String CLASSNAME = NavigationBean.class.getName();
@@ -228,6 +240,8 @@ public class NavigationBean extends BaseBean {
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
                             // ++++++++++++++++++++++++++++++++++
+                            // rateChangeHeaderDTO is a Data Transit Object
+                            // which holds all the values from the 
                             LOGGER.debug("DELETE Mode");
                             setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                                   rateChangeHeaderDTO);
@@ -235,6 +249,34 @@ public class NavigationBean extends BaseBean {
                             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                                  NavigationFlow.DeleteRateChange.name());
 
+                        } else if ( // FINALIZE Mode
+                          // 20111129-01 add this logic for Finalize Rate
+                          operation.isFinalize()) {
+                          // ++++++++++++++++++++++++++++++++++
+                          // ++++++++++++++++++++++++++++++++++
+                          // ++++++++++++++++++++++++++++++++++
+                          // rateChangeHeaderDTO contains the values in the record from RATE_CHG_HEADER table
+                            if (rateChangeHeaderDTO.getStatus().isApproved()) {
+                                LOGGER.debug("FINALIZE Mode");
+                                setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                                      rateChangeHeaderDTO);
+                                setCurrentPageMode(NavigationMode.FINALIZE);
+                                setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                     NavigationFlow.FinalizeRateChange.name());
+                            } else {
+                              // ++++++++++++++++++++++++++++++++++
+                              // ++++++++++++++++++++++++++++++++++
+                              // ++++++++++++++++++++++++++++++++++
+                              LOGGER.warning("Unsupported Operation - Can not finalize, NOT yet approved");
+                              setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
+                                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
+                              // the error message is stored in ErrorBundle.properties for Project Translation
+                              setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+                                                    TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_rate_change_finalize_operation,
+                                                                                         rateChgRefID));
+                              setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                   NavigationFlow.ERROR.name());
+                            }
                         } else if ( // DEPLOY Mode
                             operation.isDeploy()) {
                             // ++++++++++++++++++++++++++++++++++

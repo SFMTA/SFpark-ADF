@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="rateChangePropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="rateChangePropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{rateChangePropertiesBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{rateChangePropertiesBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{rateChangePropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{rateChangePropertiesBean.inlineMessageText}"
+                       styleClass="#{rateChangePropertiesBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="rateChangeHeaderPanel" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="rateChangeHeaderPanelSpacer" width="50"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsRCHFormPanel">
+        <af:inputText id="rateChgRefIT" required="true"
+                      readOnly="#{rateChangePropertiesBean.readOnly}"
+                      maximumLength="#{rateChangePropertiesBean.rateChangeHeaderDTO.maximumLengthRateChangeReference}"
+                      columns="#{rateChangePropertiesBean.rateChangeHeaderDTO.columnsRateChangeReference}"
+                      label="#{labelBundle.label_rate_change_reference}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangeReference}"
+                      autoSubmit="true"/>
+        <af:spacer id="rateChgRefSpacer" height="10"/>
+        <af:inputDate id="plannedEffDateID" columns="11" required="true"
+                      readOnly="#{rateChangePropertiesBean.readOnly}"
+                      label="#{labelBundle.label_planned_change_eff_date}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.plannedChangeEffectiveDate}"
+                      minValue="#{rateChangePropertiesBean.rateChangeHeaderDTO.minimumAllowedDate}"
+                      autoSubmit="true">
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:spacer id="plannedEffDateSpacer" height="10"/>
+        <af:inputText id="descriptionIT" rows="5" columns="40"
+                      maximumLength="#{rateChangePropertiesBean.rateChangeHeaderDTO.maximumLengthRateChangeDescription}"
+                      rendered="#{!rateChangePropertiesBean.readOnly}"
+                      label="#{labelBundle.label_rate_change_description}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangeDescription}"
+                      autoSubmit="true"/>
+        <af:panelLabelAndMessage id="descriptionPLM"
+                                 rendered="#{rateChangePropertiesBean.readOnly}"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_rate_change_description}">
+          <af:outputText id="descriptionOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangeDescription}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="descriptionSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="centerPSIFormPanel"
+                          styleClass="centerPanelFormLayout"
+                          rendered="#{rateChangePropertiesBean.renderCenterFormPanel}">
+        <af:selectOneChoice id="rateChgPolicySOC" required="true"
+                            readOnly="#{rateChangePropertiesBean.readOnly}"
+                            label="#{labelBundle.label_rate_change_policy}"
+                            value="#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangePolicy}"
+                            autoSubmit="true">
+          <f:selectItems id="rateChgPolicySOCSI"
+                         value="#{rateChangePropertiesBean.listRateChgPolicy}"/>
+        </af:selectOneChoice>
+        <af:spacer id="rateChgPolicySpacer" height="20"/>
+        <af:commandButton id="areaTypeButton" immediate="true"
+                          rendered="#{rateChangePropertiesBean.renderButtons}"
+                          inlineStyle="width: 150px;" text="Change Area Type"
+                          actionListener="#{rateChangePropertiesBean.pickButtonHandler}"/>
+        <af:inputText id="areaTypeIT" readOnly="true"
+                      label="#{labelBundle.label_area_type}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.areaType.stringForDisplay}"/>
+        <af:panelLabelAndMessage id="pmDistrictsPLM"
+                                 inlineStyle="vertical-align: top;"
+                                 label="#{labelBundle.label_pm_districts}">
+          <af:outputText id="pmDistrictsOT" escape="false"
+                         value='&lt;div style="word-wrap: break-word; width: 150px;">#{rateChangePropertiesBean.rateChangeHeaderDTO.displayPMDistricts}&lt;/div>'/>
+        </af:panelLabelAndMessage>
+        <af:spacer id="areaTypeSpacer" height="20"/>
+        <af:commandButton id="calendarButton" immediate="true"
+                          rendered="#{rateChangePropertiesBean.renderButtons}"
+                          inlineStyle="width: 150px;" text="Change Calendar"
+                          actionListener="#{rateChangePropertiesBean.pickButtonHandler}"/>
+        <af:inputText id="calendarNameIT" readOnly="true"
+                      label="#{labelBundle.label_calendar_name}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.displayCalendarName}"/>
+        <af:spacer id="calendarSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:inputText id="rateChgRefIDIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_rate_change_reference_id}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.rateChangeReferenceID}"/>
+        <af:spacer id="rateChgRefIDSpacer" height="10"/>
+        <af:inputText id="statusIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_status}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.status.stringForDisplay}"/>
+        <af:spacer id="statusSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.createdDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.lastUpdatedDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{rateChangePropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{rateChangePropertiesBean.rateChangeHeaderDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+        <af:outputText id="inlineMessage2" noWrap="true"
+                       value="#{rateChangePropertiesBean.inlineMessageText}"
+                       styleClass="#{rateChangePropertiesBean.inlineMessageClass}"
+                       partialTriggers="rateChgRefIDIT"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

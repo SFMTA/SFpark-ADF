@@ -1,5 +1,15 @@
 package sfpark.adf.tools.translation;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111129-01 Mark Piller - Oracle Consulting  add error_message_unsupported_rate_change_finalize_operation
+ *                                              add error_finalize_failure
+ *                                              add error_reset_failure
+ * 20111130-01 Mark Piller - Oracle Consulting  add error_message_unsupported_rate_change_process_reset_operation
+ */
 public enum ErrorBundleKey {
 
     error_title_invalid_parameters,
@@ -20,6 +30,8 @@ public enum ErrorBundleKey {
     error_create_failure,
     error_save_failure,
     error_delete_failure,
+    error_finalize_failure,
+    error_reset_failure,
     error_edit_failure,
     error_invalid_login,
 
@@ -155,9 +167,11 @@ error_message_rates_null_description,
     error_message_unsupported_rate_change_update_operation,
     error_message_unsupported_rate_change_delete_operation,
     error_message_unsupported_rate_change_deploy_operation,
+    error_message_unsupported_rate_change_finalize_operation, // 20111129-01
 
     error_message_unsupported_rate_change_process_edit_operation,
     error_message_unsupported_rate_change_process_delete_operation,
+    error_message_unsupported_rate_change_process_reset_operation, // 20111130-01
 
     error_exists_already_rate_change_reference,
 

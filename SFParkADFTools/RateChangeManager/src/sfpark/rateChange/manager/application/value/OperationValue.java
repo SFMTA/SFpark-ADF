@@ -4,13 +4,25 @@ import java.util.Locale;
 
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111129-01 Mark Piller - Oracle Consulting  add FINALIZE, isFinalize()
+ * 20111130-01 Mark Piller - Oracle Consulting  add RESET, isReset()
+ */
 public enum OperationValue {
 
     // Used for RATE_CHG_HEADER
+    // 20111129-01
     ADD,
     UPDATE,
     DELETE,
     DEPLOY,
+    FINALIZE,
+    RESET,
 
     // Used for RATE_CHG_PROCESS_CONTROL
     EDIT,
@@ -72,4 +84,15 @@ public enum OperationValue {
     public boolean isUnknown() {
         return (this == UNKNOWN);
     }
+
+    // 20111129-01    
+    public boolean isFinalize() {
+        return (this == FINALIZE);
+    }
+
+    // 20111130-01    
+    public boolean isReset() {
+        return (this == RESET);
+    }
+
 }

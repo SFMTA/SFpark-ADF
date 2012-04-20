@@ -1,0 +1,71 @@
+10
+
+dir
+1
+file:///D:/Oracle/!Projects/SFPark/Repositories/AdminConsole/src/sfpark/admin/console/view/backing
+file:///D:/Oracle/!Projects/SFPark/Repositories
+
+
+
+2011-11-04T14:58:01.640000Z
+1
+mpiller
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+3b9f106f-3301-0010-898d-859f85c9185b
+
+BaseBean.java
+file
+6
+
+
+
+2011-11-29T20:33:24.556000Z
+684734f9d4c6679edb7979b17f4f95a7
+2011-11-30T20:30:56.609000Z
+6
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8975
+
+allowedValues
+dir
+
+common
+dir
+
+timeband
+dir
+

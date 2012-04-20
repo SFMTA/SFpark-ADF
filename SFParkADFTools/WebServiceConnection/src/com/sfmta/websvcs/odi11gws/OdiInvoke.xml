@@ -1,0 +1,24 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle-webservice-clients xmlns:ns2="http://java.sun.com/xml/ns/javaee">
+   <webservice-client>
+      <service-qname localpart="OdiInvoke"
+                     namespaceURI="xmlns.oracle.com/odi/OdiInvoke/"/>
+      <port-info>
+         <wsdl-port localpart="OdiInvokeRequestSOAP11port0"
+                    namespaceURI="xmlns.oracle.com/odi/OdiInvoke/"/>
+         <runtime/>
+         <operations>
+            <operation name="invokeStartScen"/>
+            <operation name="invokeStartScenWithCallback"/>
+            <operation name="getVersion"/>
+            <operation name="invokeRestartSess"/>
+            <operation name="invokeRestartSessWithCallback"/>
+            <operation name="getSessionStatus"/>
+            <operation name="invokeStartLoadPlan"/>
+            <operation name="invokeStopLoadPlan"/>
+            <operation name="invokeRestartLoadPlan"/>
+            <operation name="getLoadPlanStatus"/>
+         </operations>
+      </port-info>
+   </webservice-client>
+</oracle-webservice-clients>

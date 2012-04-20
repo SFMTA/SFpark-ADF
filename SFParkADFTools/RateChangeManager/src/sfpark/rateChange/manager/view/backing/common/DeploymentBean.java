@@ -28,6 +28,18 @@ import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
+/**
+ * Description:
+ * This class reads the HTTP request and identifies parameters and controls the
+ * ADF page navigation (for deployment processes) according to the URLs
+ * 
+ * 
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111130-01 Mark Piller - Oracle Consulting  add logic to handle Reset Rate Process
+ */
 public class DeploymentBean extends BaseBean {
 
     private static final String CLASSNAME = DeploymentBean.class.getName();
@@ -236,7 +248,35 @@ public class DeploymentBean extends BaseBean {
                                                  NavigationFlow.ERROR.name());
                         }
 
-                    } else {
+                    } else if ( // RESET MODE 20111130-01
+                        operation.isReset()) {
+                        if (rateChangeProcessControlDTO.isResetable()){
+                            // ++++++++++++++++++++++++++++++++++
+                            // ++++++++++++++++++++++++++++++++++
+                            // ++++++++++++++++++++++++++++++++++
+                            LOGGER.debug("RESET Mode");
+                            LOGGER.debug("setPageFlowScopeValue");
+                            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_PROCESS_CONTROL_DTO.getKey(),
+                                                  rateChangeProcessControlDTO);
+                            LOGGER.debug("setCurrentPageMode to RESET");
+                            setCurrentPageMode(NavigationMode.RESET);
+                            LOGGER.debug("setSessionScopeValue - should navigate to new page");
+                            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                 NavigationFlow.ResetRateChange.name());
+                        } else {                          
+                            // ++++++++++++++++++++++++++++++++++
+                            // ++++++++++++++++++++++++++++++++++
+                            // ++++++++++++++++++++++++++++++++++
+                            LOGGER.warning("Unsupported Operation - Can not reset");
+                            setPageFlowScopeValue(PageFlowScopeKey.ERROR_TITLE.getKey(),
+                                                  TranslationUtil.getErrorBundleString(ErrorBundleKey.error_title_unsupported_operation));
+                            setPageFlowScopeValue(PageFlowScopeKey.ERROR_MESSAGE.getKey(),
+                                                  TranslationUtil.getErrorBundleString(ErrorBundleKey.error_message_unsupported_rate_change_process_reset_operation,
+                                                                                       processID));
+                            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                                 NavigationFlow.ERROR.name());
+                        }
+                    }else {
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++
                         // ++++++++++++++++++++++++++++++++++

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="allowedValuesListPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="allowedValuesListPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{adminConsoleBundle.string_allowed_values_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarAdd">
+        <af:commandButton id="addButton"
+                          text="#{buttonBundle.button_add_allowed_values}"
+                          actionListener="#{allowedValuesListBean.addButtonHandler}"/>
+        <af:spacer id="spaceAfterAddButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarShowDetails">
+        <af:spacer id="spaceBeforeShowDetailsButton" width="10"/>
+        <af:commandButton id="showDetailsButton" disabled="true"
+                          text="#{buttonBundle.button_show_details}"
+                          binding="#{allowedValuesListBean.showDetailsButton}"
+                          actionListener="#{allowedValuesListBean.editButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:table id="AVTable" var="row" varStatus="rowStatus" width="900"
+              inlineStyle="height: 450px; margin-left: 35px;"
+              contentDelivery="immediate" rowSelection="single"
+              rowBandingInterval="0" columnSelection="none"
+              disableColumnReordering="true" columnStretching="last"
+              emptyText="#{adminConsoleBundle.info_empty_allowed_values_list}"
+              summary="Allowed Values List"
+              value="#{allowedValuesListBean.allowedValues}"
+              binding="#{allowedValuesListBean.allowedValuesTable}"
+              selectionListener="#{allowedValuesListBean.tableRowSelectionHandler}">
+      <af:column id="AVTableColTableName" rowHeader="unstyled" align="center"
+                 width="200px" sortable="false"
+                 headerText="#{columnBundle.column_table_name}">
+        <af:outputText id="AVTableRowTableName" value="#{row.tableName}"/>
+      </af:column>
+      <af:column id="AVTableColColumnName" align="center" width="200px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_column_name}">
+        <af:outputText id="AVTableRowColumnName" value="#{row.columnName}"/>
+      </af:column>
+      <af:column id="AVTableColColumnValue" align="center" width="150px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_column_value}">
+        <af:outputText id="AVTableRowColumnValue" value="#{row.columnValue}"/>
+      </af:column>
+      <af:column id="AVTableColDeletable" align="center" width="80px"
+                 sortable="false" headerText="#{columnBundle.column_deletable}">
+        <af:outputText id="AVTableRowDeletable"
+                       value="#{row.deletableIfUnused.stringForDisplay}"/>
+      </af:column>
+      <af:column id="AVTableColDesc" align="center" width="100px"
+                 sortable="false"
+                 headerText="#{columnBundle.column_description}">
+        <af:outputText id="AVTableRowDesc" value="#{row.description}"/>
+      </af:column>
+    </af:table>
+    <af:inputText id="noteIT" inlineStyle="margin-left: 35px;"
+                  label="#{labelBundle.label_note}"
+                  value="#{commonBundle.note_table_single_select}"/>
+  </af:panelGroupLayout>
+</jsp:root>

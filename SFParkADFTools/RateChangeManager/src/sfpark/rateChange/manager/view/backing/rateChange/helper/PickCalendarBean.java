@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import oracle.adf.share.logging.ADFLogger;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
@@ -21,7 +22,21 @@ import sfpark.rateChange.manager.application.key.SessionScopeKey;
 import sfpark.rateChange.manager.view.backing.BaseBean;
 import sfpark.rateChange.manager.view.flow.NavigationFlow;
 
+/**
+ * Description:
+ * This class is used to populate the UI with Calendar data
+ * 
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120419-01 Mark Piller - Oracle Consulting  added adfLogger
+ * 20120419-02 Mark Piller - Oracle Consulting  change query to only have 2 parameters (remove date)
+ */
 public class PickCalendarBean extends BaseBean implements PropertiesBeanInterface {
+
+    // 20120419-01 setup ADF logger
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(PickCalendarBean.class);
 
     private RichTable CalendarIDTable;
 
@@ -93,9 +108,13 @@ public class PickCalendarBean extends BaseBean implements PropertiesBeanInterfac
         String searchType = "RateChg";
         Date searchDate = SQLDateUtil.getTodaysDate();
 
+        // 20120419-02 change query to only have 2 parameters (remove date)
+//        return CalendarHeaderProvider.INSTANCE.getCalendarHeaderDTOs(searchString,
+//                                                                     searchType,
+//                                                                     searchDate);
+
         return CalendarHeaderProvider.INSTANCE.getCalendarHeaderDTOs(searchString,
-                                                                     searchType,
-                                                                     searchDate);
+                                                                     searchType);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

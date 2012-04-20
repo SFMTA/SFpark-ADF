@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ParkingSpaceInventorySearchByPostIdVO"
+  Version="11.1.1.59.23"
+  SelectList="ParkingSpaceInventoryEO.POST_ID, 
+       ParkingSpaceInventoryEO.PARKING_SPACE_ID"
+  FromList="PARKING_SPACE_INVENTORY ParkingSpaceInventoryEO"
+  Where="POST_ID = :postId"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="vo.ParkingSpaceInventorySearchByPostIdVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="postId"
+    Kind="where"
+    Type="java.lang.String"/>
+  <EntityUsage
+    Name="ParkingSpaceInventoryEO"
+    Entity="eo.ParkingSpaceInventoryEO"
+    ReadOnly="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="PostId"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="PostId"
+    EntityUsage="ParkingSpaceInventoryEO"
+    AliasName="POST_ID"/>
+  <ViewAttribute
+    Name="ParkingSpaceId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ParkingSpaceId"
+    EntityUsage="ParkingSpaceInventoryEO"
+    AliasName="PARKING_SPACE_ID"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

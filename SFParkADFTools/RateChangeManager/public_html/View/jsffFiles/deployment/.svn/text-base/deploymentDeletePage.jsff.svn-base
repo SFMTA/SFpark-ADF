@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="deploymentDeletePGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="deploymentDeletePGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader" noWrap="true"
+                   value="#{rateChangeManagerBundle.string_rate_change_management}"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"/>
+    <af:separator id="sectionHeaderSeparator"/>
+    <af:outputText id="OT1" inlineStyle="font-size: 14px; margin-left: 35px;"
+                   value="#{rateChangeManagerBundle.string_delete_rate_change_process_confirmation}"/>
+    <af:panelFormLayout id="RCPCFormPanel" inlineStyle="margin-left: 35px;">
+      <af:inputText id="processIDIT" readOnly="true"
+                    label="#{labelBundle.label_process_id}"
+                    value="#{deploymentDeleteBean.rateChangeProcessControlDTO.processID}"/>
+      <af:spacer id="processIDSpacer" height="10"/>
+      <af:inputText id="rateChgRefIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference}"
+                    value="#{deploymentDeleteBean.rateChangeProcessControlDTO.rateChangeReference}"/>
+      <af:spacer id="rateChgRefSpacer" height="10"/>
+      <af:inputText id="rateChgRefIDIT" readOnly="true"
+                    label="#{labelBundle.label_rate_change_reference_id}"
+                    value="#{deploymentDeleteBean.rateChangeProcessControlDTO.rateChangeReferenceID}"/>
+      <af:spacer id="rateChgRefIDSpacer" height="10"/>
+      <af:inputText id="currentStepIT" readOnly="true"
+                    label="#{labelBundle.label_current_process_step}"
+                    value="#{deploymentDeleteBean.displayCurrentProcessStep}"/>
+      <af:spacer id="currentStepSpacer" height="10"/>
+      <af:inputText id="stepExecStatusIT" readOnly="true"
+                    label="#{labelBundle.label_step_exec_status}"
+                    value="#{deploymentDeleteBean.displayCurrentExecutionStatus}"/>
+      <af:spacer id="stepExecStatusSpacer" height="10"/>
+    </af:panelFormLayout>
+    <af:toolbar id="mainToolbar" inlineStyle="margin-left: 35px;">
+      <af:group id="mainToolbarDelete">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="deleteButton" blocking="true"
+                          inlineStyle="font-weight: bold;"
+                          text="#{buttonBundle.button_delete_rate_change_process}"
+                          actionListener="#{deploymentDeleteBean.deleteButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="30"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{deploymentDeleteBean.inlineMessageText}"
+                       styleClass="#{deploymentDeleteBean.inlineMessageClass}"
+                       partialTriggers="deleteButton"/>
+      </af:group>
+    </af:toolbar>
+  </af:panelGroupLayout>
+</jsp:root>

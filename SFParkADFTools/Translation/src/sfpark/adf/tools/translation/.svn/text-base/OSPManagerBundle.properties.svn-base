@@ -1,0 +1,22 @@
+# OSP Manager Bundle
+# Consists of OSP Manager specific strings
+
+string_application_name=OSP Manager Tool
+string_osp_management=OSP Management
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Information Strings
+
+info_empty_garage_rate_list=Click Add Garage Rate Button to add a rate
+info_empty_garage_op_hours_list=Click Add Garage OP Hours Button to add a rate
+info_empty_historic_list=No historic data available
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# General Strings
+
+string_show_historic_data=Show Historic Data
+string_hide_historic_data=Hide Historic Data

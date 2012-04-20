@@ -12,9 +12,17 @@ import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
 import sfpark.adf.tools.model.data.helper.PMDistrictAreaType;
 import sfpark.adf.tools.model.data.helper.RateChangeStatus;
+import sfpark.adf.tools.utilities.generic.FloatUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120215-01 Mark Piller - Oracle Consulting  Time Band Rate Change Overrides
+ */
 public class RateChangeHeaderDTO extends BaseDTO {
 
     public static String getDatabaseTableName() {
@@ -46,7 +54,7 @@ public class RateChangeHeaderDTO extends BaseDTO {
         this.setSubmittedOn(resultSet.getDate(SUBMITTED_DT));
         this.setApprovedBy(resultSet.getString(APPROVED_BY));
         this.setApprovedOn(resultSet.getDate(APPROVED_DT));
-
+        this.setSensorCoverageMinPct(resultSet.getString(SENSOR_COVERAGE_MIN_PCT)); // 20120215-01
     }
 
     public static final String RATE_CHG_REF_ID = "RATE_CHG_REF_ID";
@@ -63,22 +71,26 @@ public class RateChangeHeaderDTO extends BaseDTO {
     public static final String SUBMITTED_DT = "SUBMITTED_DT";
     public static final String APPROVED_BY = "APPROVED_BY";
     public static final String APPROVED_DT = "APPROVED_DT";
-
+    public static final String SENSOR_COVERAGE_MIN_PCT = "SENSOR_COVERAGE_MIN_PCT"; // 20120215-01
+    
+    // 20120215-001 added SENSOR_COVERAGE_MIN_PCT
     private static final List<String> AttributeListForSelect =
         Arrays.asList(RATE_CHG_REF_ID, RATE_CHG_REF, RATE_CHG_DESC,
                       PM_DISTRICTS, AREA_TYPE, GROUP_ID, CALENDAR_ID,
                       RATE_CHG_POLICY, PLANNED_CHG_EFF_DT, STATUS,
                       SUBMITTED_BY, SUBMITTED_DT, APPROVED_BY, APPROVED_DT,
-                      CREATED_DT, LAST_UPD_DT, LAST_UPD_USER, LAST_UPD_PGM);
+                      CREATED_DT, LAST_UPD_DT, LAST_UPD_USER, LAST_UPD_PGM, SENSOR_COVERAGE_MIN_PCT);
 
+    // 20120215-01 added SENSOR_COVERAGE_MIN_PCT
     private static final List<String> AttributeListForInsert =
         Arrays.asList(RATE_CHG_REF, RATE_CHG_DESC, PM_DISTRICTS, AREA_TYPE,
                       CALENDAR_ID, RATE_CHG_POLICY, PLANNED_CHG_EFF_DT, STATUS,
-                      LAST_UPD_USER, LAST_UPD_PGM);
+                      LAST_UPD_USER, LAST_UPD_PGM, SENSOR_COVERAGE_MIN_PCT);
 
+    // 20120215-01 added SENSOR_COVERAGE_MIN_PCT
     private static final List<String> AttributeListForUpdate =
         Arrays.asList(STATUS, SUBMITTED_BY, SUBMITTED_DT, APPROVED_BY,
-                      APPROVED_DT, LAST_UPD_USER, LAST_UPD_PGM);
+                      APPROVED_DT, LAST_UPD_USER, LAST_UPD_PGM, SENSOR_COVERAGE_MIN_PCT);
 
     public static List<String> getAttributeListForSelect() {
         return AttributeListForSelect;
@@ -107,7 +119,6 @@ public class RateChangeHeaderDTO extends BaseDTO {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
     public boolean isSameAs(RateChangeHeaderDTO originalDTO) {
 
         if (StringUtil.areEqual(this.getRateChangeReferenceID(),
@@ -245,6 +256,17 @@ public class RateChangeHeaderDTO extends BaseDTO {
     private Date SubmittedOn;
     private String ApprovedBy;
     private Date ApprovedOn;
+    private String SensorCoverageMinPct = "50"; // 20120215-01 default the value to 50%
+
+    // 20120215-01
+    public void setSensorCoverageMinPct(String SensorCoverageMinPct) {
+        this.SensorCoverageMinPct = SensorCoverageMinPct;
+    }
+
+    // 20120215-01
+    public String getSensorCoverageMinPct() {
+        return SensorCoverageMinPct;
+    }
 
     public void setRateChangeReferenceID(String RateChangeReferenceID) {
       this.RateChangeReferenceID = RateChangeReferenceID;

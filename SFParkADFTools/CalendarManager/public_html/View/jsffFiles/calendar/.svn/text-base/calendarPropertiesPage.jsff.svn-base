@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="calendarPropertiesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="calendarPropertiesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:outputText id="pageHeader"
+                   inlineStyle="#{globalBean.pageHeaderInlineStyle}"
+                   value="#{calendarManagerBundle.string_calendar_management}"/>
+    <af:toolbar id="mainToolbar"
+                rendered="#{calendarPropertiesBean.renderButtons}">
+      <af:group id="mainToolbarValidateAndSave">
+        <af:spacer id="spaceBeforeButton" width="30"/>
+        <af:commandButton id="validateAndSaveButton" blocking="true"
+                          rendered="#{calendarPropertiesBean.renderButtons}"
+                          inlineStyle="width: 150px; font-weight: bold;"
+                          text="#{buttonBundle.button_validate_and_save}"
+                          actionListener="#{calendarPropertiesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterButton" width="10"/>
+      </af:group>
+      <af:group id="mainToolbarInlineMessage">
+        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+        <af:outputText id="inlineMessage" noWrap="true"
+                       value="#{calendarPropertiesBean.inlineMessageText}"
+                       styleClass="#{calendarPropertiesBean.inlineMessageClass}"
+                       partialTriggers="validateAndSaveButton"/>
+      </af:group>
+    </af:toolbar>
+    <af:separator id="Separator1"/>
+    <af:panelGroupLayout id="calendarHeaderPanel" layout="horizontal"
+                         valign="top" partialTriggers="validateAndSaveButton">
+      <f:facet name="separator">
+        <af:spacer id="calendarHeaderPanelSpacer" width="100"/>
+      </f:facet>
+      <af:panelFormLayout id="lhsPSIFormPanel">
+        <af:inputText id="calendarNameIT" required="true"
+                      maximumLength="#{calendarPropertiesBean.calendarHeaderDTO.maximumLengthCalendarName}"
+                      columns="#{calendarPropertiesBean.calendarHeaderDTO.columnsCalendarName}"
+                      readOnly="#{calendarPropertiesBean.readOnly}"
+                      label="#{labelBundle.label_calendar_name}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.calendarName}"
+                      autoSubmit="true"/>
+        <af:spacer id="calendarNameSpacer" height="10"/>
+        <af:selectOneChoice id="calendarTypeSOC" required="true"
+                            readOnly="#{calendarPropertiesBean.readOnlyCalendarType}"
+                            label="#{labelBundle.label_calendar_type}"
+                            value="#{calendarPropertiesBean.calendarHeaderDTO.calendarType}"
+                            autoSubmit="true">
+          <f:selectItems id="calendarTypeSOCSI"
+                         value="#{globalBean.listCalendarType}"/>
+        </af:selectOneChoice>
+        <af:spacer id="calendarTypeSpacer" height="10"/>
+        <af:inputText id="calendarStatusIT" readOnly="true"
+                      label="#{labelBundle.label_calendar_status}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.status.stringForDisplay}"/>
+        <af:spacer id="calendarStatusSpacer" height="10"/>
+      </af:panelFormLayout>
+      <af:panelFormLayout id="rhsPSIFormPanel">
+        <af:inputText id="calendarIDIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_calendar_id}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.calendarID}"/>
+        <af:spacer id="calendarIDITSpacer" height="10"/>
+        <af:inputText id="createdOnIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_created_on}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.createdDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedOnIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_on}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedDate}">
+          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+        </af:inputText>
+        <af:inputText id="lastUpdatedByIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_by}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedUser}"/>
+        <af:inputText id="lastUpdatedThroughIT" readOnly="true"
+                      rendered="#{calendarPropertiesBean.renderPassiveInfo}"
+                      label="#{labelBundle.label_last_updated_through}"
+                      value="#{calendarPropertiesBean.calendarHeaderDTO.lastUpdatedProgram}"/>
+        <af:spacer id="passiveInfoSpacer" height="10"/>
+      </af:panelFormLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="calendarDetailPanel" layout="vertical"
+                         inlineStyle="padding: 15px;"
+                         partialTriggers="validateAndSaveButton"
+                         rendered="#{calendarPropertiesBean.renderCalendarDetailPanel}">
+      <f:facet name="separator">
+        <af:spacer id="calendarDetailPanelSpacer" height="10"/>
+      </f:facet>
+      <af:outputText id="OT1" inlineStyle="font-size: 14px;"
+                     value="#{calendarManagerBundle.string_calendar_dates}"/>
+      <af:toolbar id="calendarDetailToolbar"
+                  rendered="#{calendarPropertiesBean.renderButtons}">
+        <af:group id="calendarDetailToolbarAdd">
+          <af:commandButton id="addDateButton" inlineStyle="width: 100px;"
+                            text="Add Date"
+                            actionListener="#{calendarPropertiesBean.addButtonHandler}"/>
+          <af:spacer id="spaceAfterAddButton" width="10"/>
+        </af:group>
+        <af:group id="calendarDetailToolbarDeleteAndUndelete">
+          <af:spacer id="spaceBeforeDeleteButton" width="10"/>
+          <af:commandButton id="deleteDateButton" inlineStyle="width: 100px;"
+                            text="Delete Date" disabled="true"
+                            binding="#{calendarPropertiesBean.deleteDateButton}"
+                            actionListener="#{calendarPropertiesBean.deleteButtonHandler}"/>
+          <af:spacer id="spaceAfterDeleteButton" width="10"/>
+          <af:commandButton id="undeleteDateButton" inlineStyle="width: 100px;"
+                            text="Undelete Date" disabled="true"
+                            binding="#{calendarPropertiesBean.undeleteDateButton}"
+                            actionListener="#{calendarPropertiesBean.editButtonHandler}"/>
+        </af:group>
+      </af:toolbar>
+      <af:table id="CDTable" var="row" varStatus="rowStatus" width="400"
+                inlineStyle="height: 400px;" contentDelivery="immediate"
+                rowSelection="#{calendarPropertiesBean.rowSelectionValue}"
+                rowBandingInterval="0" columnSelection="none"
+                disableColumnReordering="true" columnStretching="last"
+                emptyText="#{calendarManagerBundle.info_empty_calendar_detail_list}"
+                summary="Calendar Detail Display Date List"
+                value="#{calendarPropertiesBean.calendarDetailDDOs}"
+                binding="#{calendarPropertiesBean.calendarDetailTable}"
+                selectionListener="#{calendarPropertiesBean.tableRowSelectionHandler}">
+        <af:column id="CDTableColDateOperation" rowHeader="unstyled"
+                   align="center" width="110px" sortable="false"
+                   headerText="#{columnBundle.column_date_operation}">
+          <af:outputText id="CDTableRowDateOperation"
+                         value="#{row.operationType.stringForDisplay}"/>
+        </af:column>
+        <af:column id="CDTableColDate" align="center" width="110px"
+                   sortable="false" headerText="#{columnBundle.column_date}">
+          <af:outputText id="CDTableRowDate" value="#{row.displayDateDT}"/>
+        </af:column>
+        <af:column id="CDTableColDateType" align="center" width="110px"
+                   sortable="false"
+                   headerText="#{columnBundle.column_date_type}">
+          <af:outputText id="CDTableRowDateType"
+                         value="#{row.displayDateType}"/>
+        </af:column>
+      </af:table>
+      <af:inputText id="noteIT"
+                    rendered="#{calendarPropertiesBean.renderButtons}"
+                    label="#{labelBundle.label_note}"
+                    value="#{commonBundle.note_table_single_select}"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,5 +1,17 @@
 package sfpark.rateChange.manager.view.flow;
 
+
+/**
+ * Description:
+ * This class is used to define which jsff pages are called from the backing beans supporting the jsff pages
+ * 
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111129-01 Mark Piller - Oracle Consulting  add FinalizeRateChange(), AfterFinalizeRateChange()
+ * 20111130-01 Mark Piller - Oracle Consulting  add ResetRateChange(), AfterResetRateChangeProcess()
+ */
 public enum NavigationFlow {
     ERROR("/View/jsffFiles/common/errorsPage.jsff"),
 
@@ -40,6 +52,9 @@ public enum NavigationFlow {
     AfterEditRateChangeProcessProperties("/View/jsffFiles/common/errorsPage.jsff"),
     DeleteRateChangeProcess("/View/jsffFiles/deployment/deploymentDeletePage.jsff"),
     AfterDeleteRateChangeProcess("/View/jsffFiles/common/errorsPage.jsff"),
+    // 20111130-01 added
+    ResetRateChange("/View/jsffFiles/deployment/deploymentResetPage.jsff"),
+    AfterResetRateChangeProcess("/View/jsffFiles/common/errorsPage.jsff"),
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -53,6 +68,10 @@ public enum NavigationFlow {
     PickPMDistrictsAndBlocks("/View/jsffFiles/rateChange/helper/pickPMDistrictsAndBlocksPage.jsff"),
 
     AddRateChange("/View/jsffFiles/rateChange/rateChangePropertiesPage.jsff"),
+
+    // 20111129-01 added
+    FinalizeRateChange("/View/jsffFiles/rateChange/rateChangeFinalizePage.jsff"),
+    AfterFinalizeRateChange("/View/jsffFiles/common/errorsPage.jsff"),
 
     UpdateRateChange("/View/jsffFiles/rateChange/rateChangeUpdatePage.jsff"),
 

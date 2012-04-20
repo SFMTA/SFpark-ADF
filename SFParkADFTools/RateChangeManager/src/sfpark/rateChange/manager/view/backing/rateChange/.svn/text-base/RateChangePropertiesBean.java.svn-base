@@ -1,0 +1,307 @@
+package sfpark.rateChange.manager.view.backing.rateChange;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.event.ActionEvent;
+
+import javax.faces.model.SelectItem;
+
+import org.apache.myfaces.trinidad.component.UIXGroup;
+
+import sfpark.adf.tools.model.data.dto.allowedValues.AllowedValuesDTO;
+import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
+import sfpark.adf.tools.model.data.helper.RateChangeStatus;
+import sfpark.adf.tools.model.helper.OperationStatus;
+import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
+import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
+import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
+
+import sfpark.adf.tools.translation.CommonBundleKey;
+import sfpark.adf.tools.translation.ErrorBundleKey;
+import sfpark.adf.tools.translation.TranslationUtil;
+import sfpark.adf.tools.utilities.constants.CSSClasses;
+import sfpark.adf.tools.utilities.generic.StringUtil;
+import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
+import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
+
+import sfpark.rateChange.manager.application.key.PageFlowScopeKey;
+import sfpark.rateChange.manager.application.key.SessionScopeKey;
+import sfpark.rateChange.manager.view.backing.BaseBean;
+import sfpark.rateChange.manager.view.flow.NavigationFlow;
+import sfpark.rateChange.manager.view.flow.NavigationMode;
+import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111109-01 Mark Piller - Oracle Consulting  added Status Message of Generating Details
+ * 20111109-02 Mark Piller - Oracle Consulting  added logic to send Ref ID to ODI Function
+ * 20111109-03 Mark Piller - Oracle Consulting  added logic to display message from ODI Function.
+ */
+public class RateChangePropertiesBean extends BaseBean implements PropertiesBeanInterface,
+                                                                  RequestScopeBeanInterface {
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // CONSTRUCTORS
+
+    public RateChangePropertiesBean() {
+        super();
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    public void clearPageFlowScopeCache() {
+    }
+
+    public void setInlineMessageText(String inlineMessageText) {
+        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey(),
+                                   inlineMessageText);
+    }
+
+    public String getInlineMessageText() {
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_TEXT.getKey());
+    }
+
+    public void setInlineMessageClass(String inlineMessageClass) {
+        this.setPageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey(),
+                                   inlineMessageClass);
+    }
+
+    public String getInlineMessageClass() {
+        return (String)removePageFlowScopeValue(PageFlowScopeKey.INLINE_MESSAGE_CLASS.getKey());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL DTO INFORMATION
+
+    public RateChangeHeaderDTO getRateChangeHeaderDTO() {
+
+        RateChangeHeaderDTO DTO =
+            (RateChangeHeaderDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey());
+
+        if (DTO == null) {
+            DTO = DMLOperationsProvider.INSTANCE.getNewRateChangeHeaderDTO();
+            setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                  DTO);
+        }
+
+        return DTO;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL READ-ONLY INFORMATION
+
+    public boolean isReadOnly() {
+        return (getCurrentPageMode().isReadOnlyMode());
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // ALL RENDER INFORMATION
+
+    public boolean isRenderButtons() {
+        return (!getCurrentPageMode().isReadOnlyMode());
+    }
+
+    public boolean isRenderCenterFormPanel() {
+        return (!getCurrentPageMode().isReadOnlyMode());
+    }
+
+    public boolean isRenderPassiveInfo() {
+        return getCurrentPageMode().isReadOnlyMode();
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // LIST VALUES
+
+    public List<SelectItem> getListRateChgPolicy() {
+        List<SelectItem> listRateChgPolicy = new ArrayList<SelectItem>();
+
+        for (AllowedValuesDTO allowedValuesDTO :
+             AllowedValuesRetriever.getRateChgPolicyList()) {
+            listRateChgPolicy.add(new SelectItem(allowedValuesDTO.getColumnValue(),
+                                                 allowedValuesDTO.getDescription()));
+        }
+
+        return listRateChgPolicy;
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // EVENT HANDLERS
+
+    public void pickButtonHandler(ActionEvent event) {
+        //
+        // Reuse as various buttons
+        //
+
+        String ID = event.getComponent().getId();
+
+        if (ID.contains("areaType")) {
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PickAreaType.name());
+        } else if (ID.contains("calendar")) {
+            setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
+                                 NavigationFlow.PickCalendar.name());
+        }
+    }
+
+    /**
+     * Validates the Form and Saves if all entries are valid
+     *
+     * Common Validity Tests:
+     * =====================
+     *    1. Calendar ID should not be ZERO
+     *    2. Rate Change Reference should NOT exist
+     *
+     * @param event
+     */
+    public void saveButtonHandler(ActionEvent event) {
+        printLog("RateChangePropertiesBean saveButtonHandler()");
+
+        boolean allValid = true;
+        String messageFromGenerateRates; // 20111109-03
+        
+        NavigationMode currentPageMode = getCurrentPageMode();
+
+        RateChangeHeaderDTO rateChangeHeaderDTO = getRateChangeHeaderDTO();
+
+        boolean checkForRateChgRefUniqueness = false;
+
+        if (currentPageMode.isAddMode()) {
+            checkForRateChgRefUniqueness = true;
+        }
+
+        printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        if (allValid) {
+            String calendarID = rateChangeHeaderDTO.getCalendarID();
+
+            if (StringUtil.isBlank(calendarID) ||
+                StringUtil.areEqual(calendarID, "0")) {
+                allValid = false;
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_invalid_calendar_id));
+            }
+        }
+
+        printLog("After Calendar ID = " + allValid);
+
+        if (allValid && checkForRateChgRefUniqueness) {
+            RateChangeHeaderDTOStatus rateChangeHeaderStatus =
+                RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(rateChangeHeaderDTO.getRateChangeReference());
+
+            if (rateChangeHeaderStatus.existsDTO()) {
+                allValid = false;
+                setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_exists_already_rate_change_reference));
+            }
+        }
+
+        printLog("After Rate Chg Ref check = " + allValid);
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //        allValid = false;
+        //        String tttt =
+        //            StringUtil.isBlank(getInlineMessageText()) ? "All are valid" :
+        //            getInlineMessageText();
+        //        setInlineMessageText(tttt);
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        if (allValid) {
+            printLog("All entries are Valid. Proceed");
+
+            if (currentPageMode.isAddMode()) {
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ++++++++++++++++++++++++++++++++++
+                // ADD Mode
+                printLog("ADD Mode");
+
+                RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
+                printLog("RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
+
+                OperationStatus addOperation =
+                    DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
+                printLog("RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
+
+                if (addOperation.isSuccess()) {
+                    printLog("addOperation is successful");
+
+                    RateChangeHeaderDTO newRateChangeHeaderDTO =
+                        RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
+
+                    printLog("RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
+                    String referenceIdForStoredProcedureCall = newRateChangeHeaderDTO.getRateChangeReferenceID();
+                    printLog("referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
+                    // 20111109-01
+                    newRateChangeHeaderDTO.setStatus(RateChangeStatus.WORKING);
+
+                    setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
+
+                    clearPageFlowScopeCache();
+                    setCurrentPageMode(NavigationMode.READ_ONLY);
+                    setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
+                                          newRateChangeHeaderDTO);
+
+                    // 20111109-02
+                    // get the status of the call to the Function (stored procedure)
+                    // that generates the new rates
+                    // copy Reference ID to Stored Procedure object
+                    currentDTO.setRateChangeReferenceID(referenceIdForStoredProcedureCall);
+                    OperationStatus generateOperation =
+                        DMLOperationsProvider.INSTANCE.generateRateChange(currentDTO);
+                    
+                    // 20111109-03
+                    // get the message for the Generate Rates function / stored procedure
+                    messageFromGenerateRates = generateOperation.getMessage();
+                    // display the message
+                    setInlineMessageText(messageFromGenerateRates);
+                    
+                    printLog("testing success of operation - " + generateOperation.isSuccess());
+                    if (!generateOperation.isSuccess()) {
+                        printLog("Generate operation failed - reason should be given by Stored Procedure message");
+                        setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+                    }
+
+                } else {
+                    printLog("ADD operation failed");
+                    setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
+                    setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+                }
+
+            }
+
+        } else {
+            setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
+        }
+    }
+
+    public void cancelButtonHandler(ActionEvent event) {
+        // Do nothing
+    }
+
+}

@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGroupLayout id="pickCalendarDatesPGL" layout="vertical">
+    <f:facet name="separator">
+      <af:spacer id="pickCalendarDatesPGLSpacer" height="10"/>
+    </f:facet>
+    <af:breadCrumbs id="bc" inlineStyle="#{globalBean.breadCrumbInlineStyle}">
+      <af:commandNavigationItem id="cni" immediate="true"
+                                text="#{calendarManagerBundle.string_calendar_management}"
+                                actionListener="#{pickCalendarDatesBean.cancelButtonHandler}"/>
+      <af:outputText id="bcOT"
+                     value="#{calendarManagerBundle.string_pick_calendar_dates}"/>
+    </af:breadCrumbs>
+    <af:separator id="Separator"/>
+    <af:toolbar id="mainToolbar">
+      <af:group id="mainToolbarDoneAndCancel">
+        <af:spacer id="spaceBeforeDoneButton" width="30"/>
+        <af:commandButton id="doneButton"
+                          inlineStyle="#{globalBean.commitButtonInlineStyle}"
+                          text="#{buttonBundle.button_done}"
+                          actionListener="#{pickCalendarDatesBean.saveButtonHandler}"/>
+        <af:spacer id="spaceAfterDoneButton" width="10"/>
+        <af:commandButton id="cancelButton" immediate="true"
+                          inlineStyle="#{globalBean.generalButtonInlineStyle}"
+                          text="#{buttonBundle.button_cancel}"
+                          actionListener="#{pickCalendarDatesBean.cancelButtonHandler}"/>
+      </af:group>
+    </af:toolbar>
+    <af:panelGroupLayout id="datePickerPGL" layout="horizontal"
+                         inlineStyle="padding-left: 25px;">
+      <f:facet name="separator">
+        <af:spacer id="datePickerPGLSpacer" width="40"/>
+      </f:facet>
+      <af:panelGroupLayout id="chooseDatePGL" layout="vertical" valign="top">
+        <f:facet name="separator">
+          <af:spacer id="chooseDatePGLSpacer" height="10"/>
+        </f:facet>
+        <af:inputDate id="chooseDateID" chooseId="chooseDateCD" visible="false"
+                      label="Choose Date:"
+                      value="#{pickCalendarDatesBean.chooseDate}"
+                      valueChangeListener="#{pickCalendarDatesBean.anyValueChangeHandler}"
+                      autoSubmit="true">
+          <!-- validator="#{addEventCalendarDateBean.chosenDateValidator}" -->
+          <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
+        </af:inputDate>
+        <af:inputText id="chooseDateNoteIT" readOnly="true"
+                      label="#{labelBundle.label_note}"
+                      value="#{calendarManagerBundle.note_select_calendar_date}"/>
+        <af:chooseDate id="chooseDateCD"
+                       binding="#{pickCalendarDatesBean.calendarDisplay}"
+                       disabledDays="#{pickCalendarDatesBean.dateListProvider}"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="chosenDatePGL" layout="vertical" valign="top">
+        <f:facet name="separator">
+          <af:spacer id="chosenDatePGLSpacer" height="10"/>
+        </f:facet>
+        <af:commandButton id="removeButton" disabled="true"
+                          inlineStyle="width: 120px;" text="Remove from List"
+                          binding="#{pickCalendarDatesBean.removeButton}"
+                          actionListener="#{pickCalendarDatesBean.deleteButtonHandler}"
+                          partialSubmit="true"/>
+        <af:table id="CDTable" var="row" varStatus="rowStatus" width="120"
+                  inlineStyle="height: 150px;" contentDelivery="immediate"
+                  rowSelection="single" rowBandingInterval="0"
+                  disableColumnReordering="true" columnSelection="none"
+                  columnStretching="last" summary="Chosen Date List"
+                  value="#{pickCalendarDatesBean.chosenDates}"
+                  binding="#{pickCalendarDatesBean.chosenDatesTable}"
+                  selectionListener="#{pickCalendarDatesBean.tableRowSelectionHandler}">
+          <af:column id="CDTableColChosenDate" rowHeader="unstyled"
+                     align="center" width="80px" sortable="false"
+                     headerText="Chosen Dates">
+            <af:outputText id="CDTableRowChosenDate" value="#{row}"/>
+          </af:column>
+        </af:table>
+        <af:inputText id="chosenDatesNoteIT" readOnly="true"
+                      label="#{labelBundle.label_note}"
+                      value="#{commonBundle.note_table_single_select}"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>
