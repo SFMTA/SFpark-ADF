@@ -481,7 +481,8 @@
           <af:commandToolbarButton id="addSchedButton"
                                    inlineStyle="width: 130px;"
                                    actionDelivery="none"
-                                   text="#{buttonBundle.button_add_schedule}">
+                                   text="#{buttonBundle.button_add_schedule}"
+                                   binding="#{meterSpaceManagementBean.addNewScheduleButton}">
             <f:facet name="popup">
               <af:menu id="addSchedButtonMenu">
                 <af:commandMenuItem id="addOPSched" text="OP Schedule"
@@ -518,7 +519,8 @@
                    headerText="#{columnBundle.column_override}">
           <af:selectBooleanCheckbox id="MSTableRowOverride" simple="true"
                                     disabled="#{row.newRecord}"
-                                    value="#{row.override}"/>
+                                    value="#{row.override}"
+                                    valueChangeListener="#{meterSpaceManagementBean.editExistingScheduleRecordValueChangeHandler}" autoSubmit="true"/>
         </af:column>
         <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="scheduleType"
@@ -577,7 +579,9 @@
                               rendered="#{row.editableFromTime}"
                               readOnly="#{meterSpaceManagementBean.readOnly}"
                               value="#{row.fromTime}"
-                              contentStyle="width: 60px;">
+                              contentStyle="width: 60px;"
+                              valueChangeListener="#{meterSpaceManagementBean.opSchedFromTimeValueChangeHandler}"
+                              autoSubmit="true">
             <f:selectItems id="MSTableRowFromTimeSI"
                            value="#{meterSpaceManagementBean.listFromTime}"/>
           </af:selectOneChoice>
@@ -783,7 +787,8 @@
           <af:commandToolbarButton id="addRateButton"
                                    inlineStyle="width: 110px;"
                                    actionDelivery="none"
-                                   text="#{buttonBundle.button_add_rate}">
+                                   text="#{buttonBundle.button_add_rate}"
+                                   binding="#{meterSpaceManagementBean.addNewRateButton}">
             <f:facet name="popup">
               <af:menu id="addRateButtonMenu">
                 <af:commandMenuItem id="addBaseRate" text="Base Rate"
@@ -820,7 +825,9 @@
                    headerText="#{columnBundle.column_override}">
           <af:selectBooleanCheckbox id="MRTableRowOverride" simple="true"
                                     disabled="#{row.newRecord}"
-                                    value="#{row.override}"/>
+                                    value="#{row.override}"
+                                    valueChangeListener="#{meterSpaceManagementBean.editExistingRateRecordValueChangeHandler}"
+                                    autoSubmit="true"/>
         </af:column>
         <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="rateType"

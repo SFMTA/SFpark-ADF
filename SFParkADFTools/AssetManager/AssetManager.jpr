@@ -188,7 +188,7 @@
       <hash n="runConfigurationDefinitions">
          <hash n="Default">
             <value n="custom" v="false"/>
-            <value n="javaOptions" v="-Djbo.debugoutput -Djbo.logging.show.function -Djbo.logging.show.timing"/>
+            <value n="javaOptions" v="-Djbo.debugoutput=adflogger -Djbo.debugoutput=console"/>
             <value n="name" v="Default"/>
          </hash>
       </hash>

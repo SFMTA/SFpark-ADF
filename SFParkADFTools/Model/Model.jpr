@@ -203,14 +203,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Commons-configuration-1.5.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="Commons-lang-2.3.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Resource Bundle Support"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -218,12 +210,20 @@
             <value n="id" v="ADF Common Runtime"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="Commons-configuration-1.5.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Commons-lang-2.3.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url protocol="jar" path="file:/C:/oracle/Middleware/jdev11114/oracle_common/modules/oracle.owasp_11.1.1/commons-configuration-1.5.jar!/"/>
+                  <url protocol="jar" path="file:/C:/Oracle/Middleware/111150/oracle_common/modules/oracle.owasp_11.1.1/commons-configuration-1.5.jar!/"/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Commons-configuration-1.5.jar"/>
@@ -232,7 +232,7 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url protocol="jar" path="file:/C:/oracle/Middleware/jdev11114/oracle_common/modules/oracle.owasp_11.1.1/commons-lang-2.3.jar!/"/>
+                  <url protocol="jar" path="file:/C:/Oracle/Middleware/111150/oracle_common/modules/oracle.owasp_11.1.1/commons-lang-2.3.jar!/"/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Commons-lang-2.3.jar"/>
@@ -275,19 +275,19 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Commons-configuration-1.5.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="Commons-lang-2.3.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Resource Bundle Support"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
             <value n="id" v="ADF Common Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Commons-configuration-1.5.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Commons-lang-2.3.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

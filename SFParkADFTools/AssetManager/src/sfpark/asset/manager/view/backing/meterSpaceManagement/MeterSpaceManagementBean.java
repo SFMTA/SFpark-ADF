@@ -3,12 +3,13 @@ package sfpark.asset.manager.view.backing.meterSpaceManagement;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Map;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-
 import javax.faces.model.SelectItem;
 
 import oracle.adf.share.logging.ADFLogger;
@@ -18,7 +19,7 @@ import oracle.adf.view.rich.component.rich.input.RichInputDate;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneRadio;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
-
+import oracle.adf.view.rich.component.rich.nav.RichCommandToolbarButton;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
@@ -42,11 +43,9 @@ import sfpark.adf.tools.model.provider.BlockfacesProvider;
 import sfpark.adf.tools.model.provider.MeterOPScheduleProvider;
 import sfpark.adf.tools.model.provider.MeterRateScheduleProvider;
 import sfpark.adf.tools.model.provider.ParkingSpaceInventoryProvider;
-
 import sfpark.adf.tools.translation.CommonBundleKey;
 import sfpark.adf.tools.translation.ErrorBundleKey;
 import sfpark.adf.tools.translation.TranslationUtil;
-
 import sfpark.adf.tools.utilities.constants.CSSClasses;
 import sfpark.adf.tools.utilities.constants.RegularExpression;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
@@ -54,23 +53,23 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 import sfpark.adf.tools.utilities.ui.DayUI;
 import sfpark.adf.tools.utilities.ui.TimeUI;
-
 import sfpark.adf.tools.view.backing.helper.ListBeanInterface;
-
 import sfpark.adf.tools.view.backing.helper.PropertiesBeanInterface;
-
 import sfpark.adf.tools.view.backing.helper.RequestScopeBeanInterface;
 
 import sfpark.asset.manager.application.key.PageFlowScopeKey;
 import sfpark.asset.manager.application.key.SessionScopeKey;
 import sfpark.asset.manager.view.backing.BaseBean;
-
 import sfpark.asset.manager.view.flow.NavigationFlow;
 import sfpark.asset.manager.view.flow.NavigationMode;
 import sfpark.asset.manager.view.provider.CommonUtils;
 import sfpark.asset.manager.view.provider.DMLOperationsProvider;
 import sfpark.asset.manager.view.util.ADFUIDisplayUtil;
 import sfpark.asset.manager.view.util.DataRepositoryUtil;
+import sfpark.asset.manager.application.key.ViewScopeKey;
+
+import sfpark.adf.tools.utilities.ui.ADFUtils;
+
 
 /**
  * Change History:
@@ -80,6 +79,11 @@ import sfpark.asset.manager.view.util.DataRepositoryUtil;
  * 20111207-01 Mark Piller - Oracle Consulting  Change getListTimeLimit() logic to refer to Allowed Values list of values
  * 20120222-01 Mark Piller - Oracle Consulting  Add logic to warn user there are active Op/Rate Schedules when inactivating meter
  * 20120311-01 Mark Piller - Oracle Consulting  Add logic to remove warning after a save operation
+ * 20120501-01 Mark Piller - Oracle Consulting  Add logic to disable buttons when user selects Edit Existing Record check boxes for Meter Schedule Table
+ * 20120501-02 Mark Piller - Oracle Consulting  Add logic to disable buttons when user selects Edit Existing Record check boxes for Meter Rate Table
+ * 20120521-01 Mark Piller - Oracle Consulting  Add logic to display warning when changing OP Schedule Start Time
+ * 20120522-01 Mark Piller - Oracle Consulting  Add logic to support when and which warning messages are displayed for OP Schedule Start Time changes
+ * 20120522-02 Mark Piller - Oracle Consulting  Add logic to preserve Multi Space Pay Station ID and Multi Space Number
  */
 public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBeanInterface,
                                                                   ListBeanInterface,
@@ -97,18 +101,22 @@ public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBe
 
     private RichInputText cnnIDIT;
 
-    private RichCommandButton deleteSchedButton;
 
     private RichTable activeMeterScheduleTable;
     private RichTable historicMeterScheduleTable;
 
+    private RichCommandButton deleteSchedButton;
     private RichCommandButton deleteRateButton;
+    private RichCommandToolbarButton addNewScheduleButton;
+    private RichCommandToolbarButton addNewRateButton;
 
     private RichTable activeMeterRateTable;
     private RichTable historicMeterRateTable;
     private RichColumn meterOpScheduleEffToDateColumn;
     private RichColumn meterRateScheduleEffToDateColumn;
     private RichInputDate meterOpSchedEffToDateInputText;
+    
+    
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -634,6 +642,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     public void addButtonHandler(ActionEvent event) {
+        setAddedTWOSchedule(false);
 
         String ID = event.getComponent().getId();
 
@@ -643,6 +652,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 meterOPScheduleType = MeterOPScheduleType.ALT;
             } else if (ID.contains("TOW")) {
                 meterOPScheduleType = MeterOPScheduleType.TOW;
+                setAddedTWOSchedule(true);
             } else {
                 meterOPScheduleType = MeterOPScheduleType.OP;
             }
@@ -707,6 +717,20 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         preserveTableData();
 
         if (ID.equalsIgnoreCase("meterModelsButton")) {
+            // 20120522-02
+            // save the action to view scope memory - 20120522-02
+            setViewScopeValue(ViewScopeKey.ACTION.getKey(),"ChangeMeterModel");
+
+            // get the Meter Type (Multi Space or Single Space) - 20120522-02
+            String meterTypeValue = meterTypeIT.getValue().toString();
+            setViewScopeValue(ViewScopeKey.METER_TYPE.getKey(),meterTypeValue);
+            
+            // get the Multi Space Pay Station ID and Multi Space Number - 20120522-02
+            String msPayStationIdValue = msPayStationIDIT.getValue().toString();
+            int msNumberValue = (Integer)msNumberIT.getValue();
+            setViewScopeValue(ViewScopeKey.MS_PAY_STATION_ID.getKey(),msPayStationIdValue);
+            setViewScopeValue(ViewScopeKey.MS_NUMBER.getKey(), msNumberValue);
+            
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.MeterModelsPage.name());
         } else if (ID.equalsIgnoreCase("cnnIDButton")) {
@@ -814,35 +838,77 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         }
     }
 
+    /**
+     *  20120501-01 completely revised
+     *  
+     *  This controls which buttons are activated above the Meter Schedule Table and Meter Rate Tables
+     *  
+     * @param event
+     */
     public void tableRowSelectionHandler(SelectionEvent event) {
 
         String ID = event.getComponent().getId();
 
         if (ID.contains("MSTable")) {
-            RichTable table = getActiveMeterScheduleTable();
+            // automatically reset the Meter Rate Table buttons
+            resetAllMeterRateTableButtons();
 
+
+            RichTable table = getActiveMeterScheduleTable();
             int selectedNumOfRows = table.getSelectedRowKeys().getSize();
 
-            if (selectedNumOfRows > 0) {
-                setAllMeterScheduleTableButtons();
+            // When user selects a row....
+            // Should have enabled Add New Schedule Button and End Schedule Button
+            // BUT no buttons are active if the Edit Existing Record is checked
+            if (selectedNumOfRows > 0) {  // a row was selected
+                int rowIndexOfSelectionEvent = table.getRowIndex();
+                // if any table rows has the Edit Existing Record checked... disable buttons
+                if (isMeterScheduleTableEditExistingRecordSelected(rowIndexOfSelectionEvent) == true){
+                    // 20120501-01 added disableAllMeterScheduleTableButtons()
+                    // disable the Add New Schedule button
+                    // disable the End Schedule button
+                    disableAllMeterScheduleTableButtons();
+                } else { // The user has selected the table row AND NO Edit Existing Records are checked
+                    // therefore enable the buttons
+                    enableAllMeterScheduleTableButtons();  // enables Add New Schedule and End Schedule buttons
+                }
             } else {
+                // enable the Add New Schedule button
                 resetAllMeterScheduleTableButtons();
             }
 
         } else if (ID.contains("MRTable")) {
+            // Automatically reset the Meter Schedule Buttons
+            resetAllMeterScheduleTableButtons();
+            addPartialTarget(activeMeterScheduleTable);
+            
             RichTable table = getActiveMeterRateTable();
 
             int selectedNumOfRows = table.getSelectedRowKeys().getSize();
 
-            if (selectedNumOfRows > 0) {
-                setAllMeterRateTableButtons();
+            // When user selects a row....
+            // Should have enabled Add New Rate Button and End Date Rate Button
+            // BUT no buttons are active if the Edit Existing Record is checked
+            if (selectedNumOfRows > 0) { // a row was selected
+                int rowIndexOfSelectionEvent = table.getRowIndex();
+                // if any table rows has the Edit Existing Record checked... disable buttons
+                if (isMeterRateTableEditExistingRecordSelected(rowIndexOfSelectionEvent) == true){
+                    // 20120501-01 added disableAllMeterScheduleTableButtons()
+                    // disable the Add New Rate button
+                    // disable the End Date Rate button
+                    disableAllMeterRateTableButtons();
+                } else { // The user has selected the table row AND NO Edit Existing Records are checked
+                    // therefore enable the buttons
+                    enableAllMeterRateTableButtons();  // enables Add New Rate and End Date Rate buttons
+                }
             } else {
+                // enable the Add New Rate button
                 resetAllMeterRateTableButtons();
             }
 
-        }
+        } // if (ID.contains("MSTable"))
 
-    }
+    } // tableRowSelectionHandler
 
     /**
      * Validates the Form and Saves if all entries are valid
@@ -916,7 +982,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         //                                              !StringUtil.areEqual(originalParkingSpaceInventoryDTO.getPostID(),
         //                                                                   parkingSpaceInventoryDTO.getPostID()));
 
-        adfLogger.info("Check for Post ID = " + checkPostIDUniqueness);
+        adfLogger.log(adfLogger.TRACE, "Check for Post ID = " + checkPostIDUniqueness);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -935,7 +1001,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        adfLogger.info("After Blockface check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Blockface check = " + allValid);
 
         if (allValid) {
 
@@ -962,7 +1028,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         }
 
-        adfLogger.info("After ON-OFF Street = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After ON-OFF Street = " + allValid);
 
         if (allValid) {
 
@@ -974,7 +1040,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        adfLogger.info("After CNN ID = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After CNN ID = " + allValid);
 
         if (allValid && checkPostIDUniqueness) {
             ParkingSpaceInventoryDTOStatus parkingSpaceStatus =
@@ -986,7 +1052,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        adfLogger.info("After Post ID check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Post ID check = " + allValid);
 
         if (allValid) {
 
@@ -1002,10 +1068,10 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             }
         }
 
-        adfLogger.info("After Meter Type check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Meter Type check = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            adfLogger.info("Under edit mode, test for Active Meter Schedules as well");
+            adfLogger.log(adfLogger.TRACE,"Under edit mode, test for Active Meter Schedules as well");
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
 
@@ -1014,10 +1080,10 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                            "Active");
         }
 
-        adfLogger.info("After Active Meter OP Schedule = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Active Meter OP Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            adfLogger.info("Under edit mode, test for Historic Meter Schedules as well");
+            adfLogger.log(adfLogger.TRACE,"Under edit mode, test for Historic Meter Schedules as well");
             List<MeterOPScheduleDTO> meterSchedules =
                 (List<MeterOPScheduleDTO>)getHistoricMeterScheduleTable().getValue();
 
@@ -1026,27 +1092,27 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                            "Historic");
         }
 
-        adfLogger.info("After Historic Meter OP Schedule = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Historic Meter OP Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            adfLogger.info("Under edit mode, test for Active Meter Rates as well");
+            adfLogger.log(adfLogger.TRACE,"Under edit mode, test for Active Meter Rates as well");
             List<MeterRateScheduleDTO> meterRates =
                 (List<MeterRateScheduleDTO>)getActiveMeterRateTable().getValue();
 
             allValid = areValidMeterRates(meterRates, "Active");
         }
 
-        adfLogger.info("After Active Meter Rate Schedule = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Active Meter Rate Schedule = " + allValid);
 
         if (allValid && currentPageMode.isEditMode()) {
-            adfLogger.info("Under edit mode, test for Historic Meter Rates as well");
+            adfLogger.log(adfLogger.TRACE,"Under edit mode, test for Historic Meter Rates as well");
             List<MeterRateScheduleDTO> meterRates =
                 (List<MeterRateScheduleDTO>)getHistoricMeterRateTable().getValue();
 
             allValid = areValidMeterRates(meterRates, "Historic");
         }
 
-        adfLogger.info("After Historic Meter Rate Schedule = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"After Historic Meter Rate Schedule = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1083,14 +1149,14 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            adfLogger.info("All entries are Valid. Proceed");
+            adfLogger.log(adfLogger.TRACE,"All entries are Valid. Proceed");
 
             if (currentPageMode.isAddMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ADD Mode
-                adfLogger.info("ADD Mode");
+                adfLogger.log(adfLogger.TRACE,"ADD Mode");
 
                 ParkingSpaceInventoryDTO currentDTO =
                     getCurrentParkingSpaceInventoryDTO();
@@ -1103,7 +1169,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                         ParkingSpaceInventoryProvider.INSTANCE.checkForPostID(currentDTO.getPostID());
 
                     if (parkingSpaceStatus.existsDTO()) {
-                        adfLogger.info("ADD operation was successful");
+                        adfLogger.log(adfLogger.TRACE,"ADD operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -1113,12 +1179,12 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                               parkingSpaceStatus.getDTO());
 
                     } else {
-                        adfLogger.info("ADD operation failed");
+                        adfLogger.log(adfLogger.TRACE,"ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
                 } else {
-                    adfLogger.info("ADD operation failed");
+                    adfLogger.log(adfLogger.TRACE,"ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_parking_space_failure));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
@@ -1128,7 +1194,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // EDIT Mode
-                adfLogger.info("EDIT Mode");
+                adfLogger.log(adfLogger.TRACE,"EDIT Mode");
 
                 ParkingSpaceInventoryDTO currentDTO =
                     getCurrentParkingSpaceInventoryDTO();
@@ -1151,13 +1217,13 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                                                                     meterRates);
 
                 if (operationStatus == null) {
-                    adfLogger.info("There were no changes. So nothing was saved");
+                    adfLogger.log(adfLogger.TRACE,"There were no changes. So nothing was saved");
                     setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_nothing_to_save));
                     setInlineMessageClass("");
 
                 } else {
                     if (operationStatus.isSuccess()) {
-                        adfLogger.info("EDIT operation was successful");
+                        adfLogger.log(adfLogger.TRACE,"EDIT operation was successful");
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -1186,7 +1252,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
 
                     } else {
-                        adfLogger.info("EDIT operation failed");
+                        adfLogger.log(adfLogger.TRACE,"EDIT operation failed");
                         String errorMessage = "";
 
                         switch (ExceptionType.getExceptionType(operationStatus.getException())) {
@@ -1650,37 +1716,162 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
     }
 
-    private void setAllMeterScheduleTableButtons() {
-        updateAllMeterScheduleTableButtons(false);
-    }
+    /**
+     * METER SCHEDULE TABLE BUTTON METHODS
+     */
 
+    /**
+     *  20120501-01 changed
+     *  
+     *  This enables and disables buttons for the Meter Schedule table.
+     *  If the Edit Existing Record is selected > no buttons are active.
+     *  Else activate the Add Schedule button.
+     *  
+     */
     private void resetAllMeterScheduleTableButtons() {
-        updateAllMeterScheduleTableButtons(true);
+        boolean overrideIsSet = false;
+
+        // 20120501-01 removed --> updateAllMeterScheduleTableButtons(true);
+        
+        try {
+            overrideIsSet =
+                   (Boolean)getPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_EDIT_EXISTING_RECORDS_SELECTED.getKey());
+        } catch (Exception e) {
+            // do nothing
+        }
+        
+        if (overrideIsSet == true){
+            disableAddNewScheduleButton(true);   // disable this button
+            disableDeleteSchedButton(true);      // disable this button
+        } else {
+            disableAddNewScheduleButton(false);  // enable this button
+            disableDeleteSchedButton(true);      // disable this button
+        }
+
+        // make certain no rows are selected in the Meter Schedule Table
+        activeMeterScheduleTable.getSelectedRowKeys().clear();
+        addPartialTarget(activeMeterScheduleTable);
     }
 
-    private void updateAllMeterScheduleTableButtons(boolean disable) {
 
+    // 20120501-01 added
+    private void disableAllMeterScheduleTableButtons() {
+        disableAddNewScheduleButton(true);
+        disableDeleteSchedButton(true);
+    }
+
+    // 20120501-01 added
+    private void enableAllMeterScheduleTableButtons() {
+        disableAddNewScheduleButton(false);
+        disableDeleteSchedButton(false);
+    }
+
+
+    // 20120501-01 added
+    // note: this is the button with label "End Schedule"
+    private void disableDeleteSchedButton(boolean disabled) {
+        // if disabled = true then button is disabled
+        // else enable the button
         if (getDeleteSchedButton() != null) {
-            getDeleteSchedButton().setDisabled(disable);
+            getDeleteSchedButton().setDisabled(disabled);
             addPartialTarget(getDeleteSchedButton());
         }
     }
 
-    private void setAllMeterRateTableButtons() {
-        updateAllMeterRateTableButtons(false);
+    // 20120501-01 added
+    private void disableAddNewScheduleButton(boolean disabled) {
+        // if disabled = true then button is disabled
+        // else enable the button
+        if (getAddNewScheduleButton() != null) {
+            getAddNewScheduleButton().setDisabled(disabled);
+            addPartialTarget(getAddNewScheduleButton());
+        }
     }
 
-    private void resetAllMeterRateTableButtons() {
-        updateAllMeterRateTableButtons(true);
+
+    /**
+     * METER RATE TABLE BUTTON METHODS
+     */
+
+     /**
+      *  20120501-02 changed
+      *  
+      *  This enables and disables buttons for the Meter Rate table.
+      *  If the Edit Existing Record is selected > no buttons are active.
+      *  Else activate the Add Rate button.
+      *  
+      */
+     private void resetAllMeterRateTableButtons() {
+        boolean overrideIsSet = false;
+        
+        // 201205-02 removed ->  updateAllMeterRateTableButtons(true);
+        try {
+            overrideIsSet =
+                    (Boolean)getPageFlowScopeValue(PageFlowScopeKey.METER_RATE_EDIT_EXISTING_RECORDS_SELECTED.getKey());
+        } catch (Exception e) {
+            // do nothing
+        }
+        
+        if( overrideIsSet == true){
+            disableAddNewRateButton(true);   // disable this button
+            disableDeleteRateButton(true);   // disable this button
+        } else {
+            disableAddNewRateButton(false);  // enable this button
+            disableDeleteRateButton(true);   // disable this button
+        }
+
+        // make certain no rows are selected in the Meter Rate table
+        activeMeterRateTable.getSelectedRowKeys().clear();
+        addPartialTarget(activeMeterRateTable);
+
+     }
+
+     // 20120501-02 added
+    private void disableAllMeterRateTableButtons(){
+        disableAddNewRateButton(true);
+        disableDeleteRateButton(true);
     }
 
-    private void updateAllMeterRateTableButtons(boolean disable) {
+    // 20120501-02 added
+    private void enableAllMeterRateTableButtons(){
+       disableAddNewRateButton(false);
+       disableDeleteRateButton(false);
+    }
 
+    // 20120501-02 added
+    private void disableAddNewRateButton(boolean disabled){
+        // if disabled = true then button is disabled
+        // else enable the button
+        if (getAddNewRateButton() != null) {
+            getAddNewRateButton().setDisabled(disabled);
+            addPartialTarget(getAddNewRateButton());
+        }
+    }
+
+    // 20120501-02 added
+    private void disableDeleteRateButton(boolean disabled){
+        // if disabled = true then button is disabled
+        // else enable the button
         if (getDeleteRateButton() != null) {
-            getDeleteRateButton().setDisabled(disable);
+            getDeleteRateButton().setDisabled(disabled);
             addPartialTarget(getDeleteRateButton());
         }
     }
+
+// 20120502 - Disabled
+//    private void setAllMeterRateTableButtons() {
+//        updateAllMeterRateTableButtons(false);
+//    }
+
+
+// 20120502 - Disabled
+//    private void updateAllMeterRateTableButtons(boolean disable) {
+//        // 20120501-02
+//        if (getDeleteRateButton() != null) {
+//            getDeleteRateButton().setDisabled(disable);
+//            addPartialTarget(getDeleteRateButton());
+//        }
+//    }
 
     private void updateAllMeterDetails() {
         addPartialTarget(getMeterVendorIT());
@@ -1690,6 +1881,177 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         addPartialTarget(getMsPayStationIDIT());
         addPartialTarget(getMsNumberIT());
     }
+
+
+
+    /** 
+     * 20120501-01 added 
+     * 
+     * This captures the change event on the CheckBox "Edit Existing Record"
+     * In the Meter Schedule Table.
+     * 
+     * If the checkbox is selected   (checked)... then disable the End Schedule Button
+     * If the checkbox is deselected (unchecked), then evaluate all rows in the table for the checked box
+     */
+    public void editExistingScheduleRecordValueChangeHandler(ValueChangeEvent valueChangeEvent) {
+        boolean editExistingRecordIsSelected = (Boolean)valueChangeEvent.getNewValue();
+
+        // identify the row that the change was made in
+        UIComponent chkBoxComponent = valueChangeEvent.getComponent();
+        UIComponent colComponent = chkBoxComponent.getParent();
+        RichTable tableComponent = (RichTable)colComponent.getParent();
+
+        int rowIndexOfChangeEvent = tableComponent.getRowIndex(); // good
+
+        if (editExistingRecordIsSelected == false){
+            // this valueChangeEvent did not set the checkbox (editExistingRecordIsSelected == true)
+            // Therefore...
+            // review the table for any other row having Edit Existing Record checkbox selected
+            editExistingRecordIsSelected = isMeterScheduleTableEditExistingRecordSelected(rowIndexOfChangeEvent);
+
+        }
+
+        // set buttons according to findings
+        if (editExistingRecordIsSelected == true){
+            // One or more Existing Records CheckBoxs are checked
+            disableAllMeterScheduleTableButtons(); // disables Add New Schedule and End Schedule buttons
+            // save to memory the current settings
+            setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_EDIT_EXISTING_RECORDS_SELECTED.getKey(),true);
+        } else {
+            // no Existing Records CheckBoxs are checked
+            enableAllMeterScheduleTableButtons();  // enables Add New Schedule and End Schedule buttons
+        }
+
+    } // editExistingScheduleRecordValueChangeHandler()
+
+
+    /** 
+     * 20120501-02 added 
+     * 
+     * This captures the change event on the CheckBox "Edit Existing Record"
+     * In the Meter Rate Table.
+     * 
+     * If the checkbox is selected   (checked)... then disable the End Date Rate Button
+     * If the checkbox is deselected (unchecked), then evaluate all rows in the table for the checked box
+     */
+    public void editExistingRateRecordValueChangeHandler(ValueChangeEvent valueChangeEvent) {
+        boolean editExistingRecordIsSelected = (Boolean)valueChangeEvent.getNewValue();
+
+        // identify the row that the change was made in
+        UIComponent chkBoxComponent = valueChangeEvent.getComponent();
+        UIComponent colComponent = chkBoxComponent.getParent();
+        RichTable tableComponent = (RichTable)colComponent.getParent();
+
+        int rowIndexOfChangeEvent = tableComponent.getRowIndex(); // good
+
+        if (editExistingRecordIsSelected == false){
+            // this valueChangeEvent did not set the checkbox (editExistingRecordIsSelected == true)
+            // Therefore...
+            // review the table for any other row having Edit Existing Record checkbox selected
+            editExistingRecordIsSelected = isMeterRateTableEditExistingRecordSelected(rowIndexOfChangeEvent);
+        }
+
+        // set buttons according to findings
+        if (editExistingRecordIsSelected == true){
+            // One or more Existing Records CheckBoxs are checked
+            disableAllMeterRateTableButtons(); // disables Add New Rate and End Date Rate buttons
+            // save to memory the current settings
+            setPageFlowScopeValue(PageFlowScopeKey.METER_RATE_EDIT_EXISTING_RECORDS_SELECTED.getKey(),true);
+        } else {
+            // no Existing Records CheckBoxs are checked
+            enableAllMeterRateTableButtons();  // enables Add New Rate and End Date Rate buttons
+        }
+
+    } // editExistingRateRecordValueChangeHandler()
+
+
+
+
+    /**
+     * 20120501-01 added 
+     * 
+     * This passes through all the rows in the Meter Schedule Table 
+     * except if one of the rows is selected.
+     * 
+     * If the "Edit Existing Record" is selected in any of the table rows
+     * then this returns true
+     * 
+     * @param rowIndexOfChangeEvent
+     * @return
+     */
+    public boolean isMeterScheduleTableEditExistingRecordSelected(int rowIndexOfChangeEvent){
+        boolean overrideIsSet = false;
+        MeterOPScheduleDTO rowDataForChangeEvent = null;
+
+        if(rowIndexOfChangeEvent > -1){
+            rowDataForChangeEvent = (MeterOPScheduleDTO)activeMeterScheduleTable.getRowData(rowIndexOfChangeEvent);
+        }
+
+        // get MeterSchedule Table and see if the Override is set
+        int rowCount = activeMeterScheduleTable.getRowCount();
+        for(int rowIndex=0; rowIndex < rowCount; rowIndex++){
+            MeterOPScheduleDTO rowData = (MeterOPScheduleDTO)activeMeterScheduleTable.getRowData(rowIndex);
+            if ( (rowDataForChangeEvent != null) && (rowData.equals(rowDataForChangeEvent) )) {
+                // skip this row, the change has taken place here
+                // we only want to review unchanged rows for the isOverride setting
+            } else {
+                if (rowData.isOverride() == true){
+                    overrideIsSet = true;
+                    break;
+                }
+            }
+        }
+
+        // save to memory the current settings
+        setPageFlowScopeValue(PageFlowScopeKey.METER_SCHEDULE_EDIT_EXISTING_RECORDS_SELECTED.getKey(),overrideIsSet);
+
+        return overrideIsSet;
+    } // isMeterScheduleTableEditExistingRecordSelected()
+
+
+    /**
+     * 20120501-02 added 
+     * 
+     * This passes through all the rows in the Meter Rate Table 
+     * except if one of the rows is selected.
+     * 
+     * If the "Edit Existing Record" is selected in any of the table rows
+     * then this returns true
+     * 
+     * @param rowIndexOfChangeEvent
+     * @return
+     */
+    public boolean isMeterRateTableEditExistingRecordSelected(int rowIndexOfChangeEvent){
+        boolean overrideIsSet = false;
+        MeterRateScheduleDTO rowDataForChangeEvent = null;
+
+        if(rowIndexOfChangeEvent > -1){
+            rowDataForChangeEvent = (MeterRateScheduleDTO)activeMeterRateTable.getRowData(rowIndexOfChangeEvent);
+        }
+
+        // get Meter Rate Table and see if the Override is set
+        int rowCount = activeMeterRateTable.getRowCount();
+        for(int rowIndex=0; rowIndex < rowCount; rowIndex++){
+            MeterRateScheduleDTO rowData = (MeterRateScheduleDTO)activeMeterRateTable.getRowData(rowIndex);
+            if ( (rowDataForChangeEvent != null) && (rowData.equals(rowDataForChangeEvent) )) {
+                // skip this row, the change has taken place here
+                // we only want to review unchanged rows for the isOverride setting
+            } else {
+                if (rowData.isOverride() == true){
+                    overrideIsSet = true;
+                    break;
+                }
+            }
+        }
+
+        // save to memory the current settings
+        setPageFlowScopeValue(PageFlowScopeKey.METER_RATE_EDIT_EXISTING_RECORDS_SELECTED.getKey(),overrideIsSet);
+
+        return overrideIsSet;
+    } // isMeterRateTableEditExistingRecordSelected()
+
+
+
 
     private int getPostIDTypePosition(int max) {
         return (max - getPostIDPosition());
@@ -1948,4 +2310,125 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         return meterOpSchedEffToDateInputText;
     }
 
+    // 20120501-01 added 
+    public void setAddNewScheduleButton(RichCommandToolbarButton addNewScheduleButton) {
+        this.addNewScheduleButton = addNewScheduleButton;
+    }
+
+    // 20120501-01 added 
+    public RichCommandToolbarButton getAddNewScheduleButton() {
+        return addNewScheduleButton;
+    }
+
+    // 20120501-01 added 
+    public void setAddNewRateButton(RichCommandToolbarButton addNewRateButton) {
+        this.addNewRateButton = addNewRateButton;
+    }
+
+    // 20120501-01 added 
+    public RichCommandToolbarButton getAddNewRateButton() {
+        return addNewRateButton;
+    }
+    
+
+    /**
+     * 20120521-01
+     * 
+     * This logic is used to warn the user when changing the From Time on a schedule
+     *
+     * @param valueChangeEvent
+     */
+    public void opSchedFromTimeValueChangeHandler(ValueChangeEvent valueChangeEvent) {
+        String warningMessage = "";
+        String scheduleType = "";
+        String fromTime = "";
+        StringBuilder sbWarningMessage = new StringBuilder("<html><body>");
+        boolean addedTWOSchedule = getAddedTWOSchedule();
+
+        // get the schedule type
+        scheduleType = getScheduleTypeForCurrentRow();
+        
+        // get the new time value
+        fromTime = valueChangeEvent.getNewValue().toString();
+        
+        // if the time entered is in the AM and 
+        // the scheduleType is TOW then a special message
+        // otherwise the "generic warning"
+        int myComparison = fromTime.compareTo("12:00");
+        if( (fromTime.compareTo("12:00") < 0) && (scheduleType.compareTo("TOW") == 0) && (addedTWOSchedule) ){
+            // warning tied to TOW before AM
+            sbWarningMessage.append("<b>TOW schedule has been added.</b><br /><br />");
+            sbWarningMessage.append("Please review OP schedules<br />");
+            sbWarningMessage.append("for PREPAY times starting before<br />");
+            sbWarningMessage.append("TOW start times and change them<br />");
+            sbWarningMessage.append("as appropriate.");
+        } else {
+            // generic warning message
+            sbWarningMessage.append("<b>OP schedule start time has been changed.</b><br /><br />");
+            sbWarningMessage.append("Please review HOURLY rate schedules below<br />");
+            sbWarningMessage.append("and change start times as appropriate.");
+        }
+                
+        // initialize the warning message
+        sbWarningMessage.append("</body></html>");
+        warningMessage = sbWarningMessage.toString();
+        
+        // add the message to the display
+        FacesMessage fm = new FacesMessage(warningMessage);
+        fm.setSeverity(FacesMessage.SEVERITY_WARN);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, fm);
+    }
+    
+
+    /**
+     * 20120522-01
+     * 
+     * This is called by opSchedFromTimeValueChangeHandler() which has an event
+     * occur on an OP Schedule table row.  This logic will get the 
+     * Schedule Type (TOW, ALT, OP) and return it to the calling method.
+     * 
+     * @return
+     */
+    public String getScheduleTypeForCurrentRow(){
+        String scheduleType = (String)ADFUtils.evaluateEL("#{row.scheduleType.stringForDisplay}");
+        
+        return scheduleType;
+    }
+
+    /**
+     * 20120522-01
+     * 
+     * Sets ViewScope memory variable to indicate whether a new
+     * TOW Schedule is created by the user in the Meter OP Schedule
+     * 
+     * @param addedTWOSchedule
+     */
+    public void setAddedTWOSchedule(boolean addedTWOSchedule){
+        Map viewScope = AdfFacesContext.getCurrentInstance().getViewScope();
+        viewScope.put("addedTWOSchedule", addedTWOSchedule);
+    }
+
+    /**
+     * 20120522-01
+     * 
+     * Reads ViewScope memory variable that indicates whether a new
+     * TOW schedule is created by the user in the Meter OP Schedule
+     * 
+     * @return
+     */
+    public boolean getAddedTWOSchedule(){
+        boolean addedTWOSchedule;
+        Object scopeVariable = null;
+
+        Map viewScope = AdfFacesContext.getCurrentInstance().getViewScope();
+        scopeVariable = viewScope.get("addedTWOSchedule");
+        if(scopeVariable == null){
+            addedTWOSchedule = false;
+        } else {
+            addedTWOSchedule = (Boolean)scopeVariable;
+        }
+
+        return addedTWOSchedule;
+    }
 }

@@ -2,7 +2,6 @@ package sfpark.adf.tools.model.data.dto.parkingSpaceInventory;
 
 import java.sql.Date;
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 
 import java.util.Arrays;
@@ -15,6 +14,15 @@ import sfpark.adf.tools.utilities.generic.GeoSpaceUtil;
 import sfpark.adf.tools.utilities.generic.ObjectUtil;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
+
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120522-01 Mark Piller - Oracle Consulting  Add logic to preserve Multi Space Pay Station ID and Multi Space Number
+ *                                              Added a method constructor for setDisplayMeterDetails()
+ */
 
 public class ParkingSpaceInventoryDTO extends BaseDTO {
 
@@ -297,12 +305,26 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
     }
 
     public void setDisplayMeterDetails(MeterModelsDO meterModelsDO) {
-
         setMeterDetails(meterModelsDO);
 
         if (meterModelsDO.getMeterType().isMultiSpace()) {
             setMSPayStationID(getPostID());
             setMSSpaceNum(1);
+        } else {
+            setMSPayStationID("-");
+            setMSSpaceNum(0);
+        }
+    }
+
+    // 20120522-01 added
+    // Needed additional parameters to preserve Multi Space Pay Station ID and Multi Space Number
+    // whenever changing the Meter Model but the From space is Multi Space and the To space is Multi Space
+    public void setDisplayMeterDetails(MeterModelsDO meterModelsDO, String msPayStationId, int msNumber){
+        setMeterDetails(meterModelsDO);
+
+        if (meterModelsDO.getMeterType().isMultiSpace()) {
+            setMSPayStationID(msPayStationId);
+            setMSSpaceNum(msNumber);
         } else {
             setMSPayStationID("-");
             setMSSpaceNum(0);

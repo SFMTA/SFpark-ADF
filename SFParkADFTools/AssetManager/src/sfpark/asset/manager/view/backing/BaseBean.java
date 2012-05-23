@@ -1,5 +1,7 @@
 package sfpark.asset.manager.view.backing;
 
+import java.util.Map;
+
 import javax.el.ELContext;
 
 import javax.faces.component.UIComponent;
@@ -16,6 +18,16 @@ import org.apache.myfaces.trinidad.util.Service;
 
 import sfpark.asset.manager.view.flow.NavigationMode;
 import sfpark.asset.manager.view.flow.NavigationType;
+
+
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120522-01 Mark Piller - Oracle Consulting  Added View Scope methods
+ * 
+ */
 
 public abstract class BaseBean {
     private static final String CURRENT_PAGE_MODE =
@@ -172,6 +184,49 @@ public abstract class BaseBean {
     protected Object removeRequestScopeValue(String key) {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestMap().remove(key);
     }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // 20120522-01
+    // VIEW SCOPE
+
+    /**
+     * 20120522-01
+     * Set a key/value pair in View Scope
+     *
+     * @param key keyword
+     * @param value corresponding value
+     */
+    protected void setViewScopeValue(String key, Object value) {
+        Map viewScope = AdfFacesContext.getCurrentInstance().getViewScope();
+        viewScope.put(key, value);
+    }
+
+    /**
+     * 20120522-01
+     * Get the corresponding value of the keyword in View Scope
+     *
+     * @param key keyword
+     * @return corresponding value
+     */
+    protected Object getViewScopeValue(String key) {
+        Map viewScope = AdfFacesContext.getCurrentInstance().getViewScope();
+        return viewScope.get(key);
+    }
+
+    /**
+     * 20120522-01
+     * Remove a key (and return corresponding value) from View Scope
+     *
+     * @param key keyword
+     * @return corresponding value
+     */
+    protected Object removeViewScopeValue(String key) {
+        Map viewScope = AdfFacesContext.getCurrentInstance().getViewScope();
+        return viewScope.remove(key);
+    }
+
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

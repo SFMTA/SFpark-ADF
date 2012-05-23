@@ -15,6 +15,17 @@ import javax.naming.NamingException;
 
 import javax.sql.DataSource;
 
+/**
+ * Description:
+ * This class provides methods to open and close the database connection.
+ *
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120424-01 Mark Piller - Oracle Consulting  Change Data Source from jdbc.SFParkADFDataSource
+ * 20120522-01 Mark Piller - Oracle Consulting  Change connection string and password for new DEV environment
+ */
 public final class OracleDBConnection {
 
     private static final String CLASSNAME = OracleDBConnection.class.getName();
@@ -27,7 +38,9 @@ public final class OracleDBConnection {
     private static final boolean USE_DATA_SOURCE =
         DeveloperMode.DEPLOYED_ON_SERVER;
 
-    private static final String DATA_SOURCE = "jdbc.SFParkADFDataSource";
+    // 20120424-01
+    // private static final String DATA_SOURCE = "jdbc.SFParkADFDataSource";
+    private static final String DATA_SOURCE = "jdbc.SFParkADFDS";
 
     /**
      * To avoid instantiation
@@ -40,8 +53,9 @@ public final class OracleDBConnection {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // NECESSARY DURING DEVELOPMENT
-    private static final String DEV_CONNECTION =
-        "jdbc:oracle:thin:@lnxoradev1:1521/sfpark1";
+    // 20120522-01 private static final String DEV_CONNECTION = "jdbc:oracle:thin:@lnxoradev1:1521/sfpark1";
+    // 20120522-01
+    private static final String DEV_CONNECTION = "jdbc:oracle:thin@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=sfptst-scan.sfpark.org)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=SFPDVRAC)))";
     // private static final String TEST_CONNECTION =
     // "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)
     // (HOST=sfparktrac1a)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=sfparktrac1b)
@@ -50,7 +64,7 @@ public final class OracleDBConnection {
     private static final String CONNECTION_URL = DEV_CONNECTION;
     private static final String DRIVER_NAME = "oracle.jdbc.OracleDriver";
     private static final String USERNAME = "SFPARK_ODS";
-    private static final String PASSWORD = "SFPARK_ODS";
+    private static final String PASSWORD = "sfpOds1912"; //20120522-01  "SFPARK_ODS";
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
