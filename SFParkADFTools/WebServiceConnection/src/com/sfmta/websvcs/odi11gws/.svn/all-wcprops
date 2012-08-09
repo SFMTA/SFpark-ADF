@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws
+END
+OdiInvokeProxy.proxy
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/OdiInvokeProxy.proxy
+END
+OdiInvoke.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/OdiInvoke.java
+END
+OdiInvokeRequestSOAP11Port0Client.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/OdiInvokeRequestSOAP11Port0Client.java
+END
+OdiInvoke.xml
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/OdiInvoke.xml
+END
+OdiInvoke.wsdl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/OdiInvoke.wsdl
+END
+RequestPortType.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/WebServiceConnection/src/com/sfmta/websvcs/odi11gws/RequestPortType.java
+END

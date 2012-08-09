@@ -22,6 +22,7 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
  * ----------- -------------------------------- ------------------------------------------
  * 20120522-01 Mark Piller - Oracle Consulting  Add logic to preserve Multi Space Pay Station ID and Multi Space Number
  *                                              Added a method constructor for setDisplayMeterDetails()
+ * 05120523-01 Mark Piller - Oracle Consulting  Added a method constructor for setDisplayMeterDetails() for Multi Space to Single Space changes
  */
 
 public class ParkingSpaceInventoryDTO extends BaseDTO {
@@ -316,9 +317,10 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
         }
     }
 
-    // 20120522-01 added
+    // 20120522-01
+    // This is called when user is changing a Multi Space Meter Type to Multi Space Meter Type (they are actually changing vendors)
     // Needed additional parameters to preserve Multi Space Pay Station ID and Multi Space Number
-    // whenever changing the Meter Model but the From space is Multi Space and the To space is Multi Space
+    // whenever changing the Meter Model
     public void setDisplayMeterDetails(MeterModelsDO meterModelsDO, String msPayStationId, int msNumber){
         setMeterDetails(meterModelsDO);
 
@@ -330,6 +332,22 @@ public class ParkingSpaceInventoryDTO extends BaseDTO {
             setMSSpaceNum(0);
         }
     }
+
+    // 05120523-01
+    // This is called when user is changing a Single Space Meter Type to a Multi Space Meter Type
+    public void setDisplayMeterDetails(MeterModelsDO meterModelsDO, String blockfaceId){
+        setMeterDetails(meterModelsDO);
+        String formattedBlockfaceId = blockfaceId.substring(0, 3) + "-" + blockfaceId.substring(3);
+        
+        if (meterModelsDO.getMeterType().isMultiSpace()) {
+            setMSPayStationID(formattedBlockfaceId);
+            setMSSpaceNum(0);
+        } else {
+            setMSPayStationID("-");
+            setMSSpaceNum(0);
+        }
+    }
+    
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

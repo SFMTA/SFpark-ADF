@@ -17,6 +17,15 @@ import sfpark.adf.tools.helper.OracleDBConnection;
 import sfpark.adf.tools.model.data.dO.meterModels.MeterModelsDO;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120529-01 Mark Piller - Oracle Consulting  Add to Query method getSelectStatement() for Meter Vendor to include Pay By Phone (PBP)
+ * 20120530-01 Mark Piller - Oracle Consulting  Prevent Pay By Phone (PBP) to appear in Meter Models List
+ * 
+ */
 public final class MeterModelsProvider {
 
     private static final String CLASSNAME =
@@ -153,19 +162,17 @@ public final class MeterModelsProvider {
 
         String Where = "";
 
+        // 20120529-01
         if (rateChangeProcessControl) {
-            String string1 =
-                StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,
-                                                   "\'Y\'");
-            String string2 =
-                StatementGenerator.inOperator(MeterModelsDO.METER_VENDOR,
-                                              "\'Duncan\', \'IPS\'");
-
-            Where = StatementGenerator.andOperator(string1, string2);
+            String string1 = StatementGenerator.equalToOperator(MeterModelsDO.SMART_METER_FLAG,"\'Y\'");
+            // 20120529-01
+            // String string2 = StatementGenerator.inOperator(MeterModelsDO.METER_VENDOR, "\'Duncan\', \'IPS\'");
+            // Where = StatementGenerator.andOperator(string1, string2);
+            Where = StatementGenerator.andOperator(string1);
 
         } else {
-            Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
-
+            // 20120530-01 comment out --> Where = MeterModelsDO.METER_VENDOR + " <> '-' ";
+            Where = MeterModelsDO.METER_VENDOR + " <> '-' AND " + MeterModelsDO.METER_VENDOR + " <> 'PBP' ";
         }
 
         String OrderBy =
@@ -180,5 +187,6 @@ public final class MeterModelsProvider {
         return StatementGenerator.selectStatement(Attributes,
                                                   MeterModelsDO.getDatabaseTableName(),
                                                   Where, OrderBy);
-    }
-}
+    } // getSelectStatement
+        
+} // MeterModelsProvider

@@ -6,6 +6,7 @@
 # Change ID   Developer Name                   Description
 # ----------- -------------------------------- ------------------------------------------
 # 20111130-01 Mark Piller - Oracle Consulting  add string_finalize_rate_change_confirmation
+# 20111130-02 Mark Piller - Oracle Consulting  add string_reset_rate_change_process_confirmation
 
 string_application_name=Rate Change Manager Tool
 string_rate_change_rules_management=Rate Change Rules Management
@@ -20,6 +21,8 @@ string_block_time_bands_to_delete=Block Time Bands to be Deleted
 
 string_delete_rate_change_confirmation=Are you sure you want to delete the following Rate Change?
 string_delete_rate_change_process_confirmation=Are you sure you want to delete the following Rate Change Process Control?
+
+string_reset_rate_change_process_confirmation=Are you sure you want to reset the following Rate Change Process Control?
 
 string_finalize_rate_change_confirmation=Are you sure you want to finalize the following Rate Change?
 

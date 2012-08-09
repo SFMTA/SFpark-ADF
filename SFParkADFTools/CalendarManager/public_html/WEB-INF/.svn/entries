@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/CalendarManager/public_html/WEB-INF
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/CalendarManager/public_html/WEB-INF
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 adfc-config.xml
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:40.156000Z
+2012-08-07T15:03:53.093000Z
 e00b02e62e2595604fb0a59755a2136a
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:40.109000Z
+2012-08-07T15:03:53.156000Z
 8d8d270c10aef37a4b0c957f332b90a4
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:40.140000Z
+2012-08-07T15:03:53.125000Z
 fe77062de7b285997eeaa60646236953
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -130,14 +130,14 @@ mpiller
 
 web.xml
 file
-13
 
 
 
-2011-12-08T17:35:25.078000Z
+
+2012-08-07T15:03:53.203000Z
 0b5abc1f2d4a2b1bf057cc0a5b484160
-2011-12-08T21:06:03.718000Z
-13
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -164,14 +164,14 @@ mpiller
 
 weblogic.xml
 file
-13
 
 
 
-2011-12-08T17:36:06.718000Z
+
+2012-08-07T15:03:53.187000Z
 907cbe63006a560e9f72f31b4cc3f0ec
-2011-12-08T21:06:03.718000Z
-13
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

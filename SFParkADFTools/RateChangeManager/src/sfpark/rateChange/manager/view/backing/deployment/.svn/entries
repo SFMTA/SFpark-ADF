@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 DeploymentDeleteBean.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:36.296000Z
+2012-08-07T15:04:24.812000Z
 83f13c1cfe89f5a87237882e0625dc1a
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:36.343000Z
+2012-08-07T15:04:24.968000Z
 6a3fce743568c6bdab201bf40746e8e0
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -96,14 +96,14 @@ mpiller
 
 DeploymentPropertiesBean.java
 file
-16
 
 
 
-2011-12-08T21:13:34.703000Z
-330d2b62f4c3d0012ac774cae67fccc2
-2011-12-08T21:23:33.203000Z
-16
+
+2012-08-07T15:04:24.734000Z
+e9ef043d935092ef34c65b826d9c6435
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -126,12 +126,39 @@ mpiller
 
 
 
-26819
+37241
 
 DeploymentResetBean.java
 file
-0
 
 
-add
+
+
+2012-08-07T15:04:24.875000Z
+4e2353b520e05b689b9170a07d0220cb
+2012-08-07T15:03:36.734375Z
+2
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5743
 

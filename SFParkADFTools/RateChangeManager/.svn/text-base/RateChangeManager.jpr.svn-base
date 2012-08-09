@@ -193,7 +193,14 @@
       <hash n="runConfigurationDefinitions">
          <hash n="Default">
             <value n="custom" v="false"/>
+            <value n="javaOptions" v="-Djbo.debugoutput -Djbo.debugoutput=adflogger -Djbo.adflogger.level=FINEST -Djbo.logging.show.function -Djbo.logging.show.timing"/>
+            <value n="JavaScriptRunConfigurationEnableDebugStatement" v="true"/>
+            <value n="JavaScriptRunConfigurationStopInChrome" v="true"/>
+            <value n="JavaScriptRunConfigurationStopOnError" v="true"/>
+            <value n="JavaScriptRunConfigurationStopOnException" v="false"/>
+            <value n="JavaScriptRunConfigurationTransferErrors" v="true"/>
             <value n="name" v="Default"/>
+            <value n="VMName" v="client"/>
          </hash>
       </hash>
       <list n="runConfigurationList">
@@ -282,6 +289,10 @@
             <value n="id" v="Resource Bundle Variable Resolver"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="ADF Model Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <list n="libraryReferences">
          <hash>
@@ -364,6 +375,10 @@
             <value n="id" v="Resource Bundle Variable Resolver"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="ADF Model Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">
@@ -426,5 +441,8 @@
             <url path="toplink/"/>
          </list>
       </hash>
+   </hash>
+   <hash n="ResourceBundleOptions">
+      <list n="RegisteredResourceBundles"/>
    </hash>
 </jpr:project>

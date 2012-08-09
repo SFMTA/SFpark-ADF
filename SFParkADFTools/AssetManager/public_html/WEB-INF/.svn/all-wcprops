@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF
+END
+faces-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF/faces-config.xml
+END
+weblogic.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF/weblogic.xml
+END
+trinidad-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF/trinidad-config.xml
+END
+adfc-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF/adfc-config.xml
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/SFParkADFTools/!svn/ver/2/trunk/AssetManager/public_html/WEB-INF/web.xml
+END

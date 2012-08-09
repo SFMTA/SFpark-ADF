@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/WebServiceConnection/src/META-INF
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/WebServiceConnection/src/META-INF
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,18 +24,18 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 jax-ws-catalog.xml
 file
-5
 
 
 
-2011-11-23T23:14:22.546000Z
+
+2012-08-07T15:04:34.828000Z
 d988ad64afa1303eeee3a01061761456
-2011-11-29T22:40:51.399000Z
-5
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

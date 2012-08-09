@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/SFParkADFTools/!svn/ver/2/trunk/deploy
+END
+SFParkADFTools_application1.ear
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/SFParkADFTools/!svn/ver/2/trunk/deploy/SFParkADFTools_application1.ear
+END
+SFParkADFTools.ear
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/SFParkADFTools/!svn/ver/2/trunk/deploy/SFParkADFTools.ear
+END

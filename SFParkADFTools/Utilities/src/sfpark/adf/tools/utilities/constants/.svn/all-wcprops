@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants
+END
+SecurityGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/SecurityGroup.java
+END
+WeekDays.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/WeekDays.java
+END
+RequestParameter.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/RequestParameter.java
+END
+RegularExpression.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/RegularExpression.java
+END
+CSSClasses.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/CSSClasses.java
+END
+TimeToUpdate.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/constants/TimeToUpdate.java
+END

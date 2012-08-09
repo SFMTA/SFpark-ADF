@@ -13,6 +13,8 @@ import java.util.List;
 
 import java.util.TreeSet;
 
+import oracle.adf.share.logging.ADFLogger;
+
 import sfpark.adf.tools.model.data.dO.blocks.BlocksDO;
 import sfpark.adf.tools.model.data.dO.pmDistricts.PMDistrictsDO;
 import sfpark.adf.tools.model.data.dto.BaseDTO;
@@ -21,7 +23,20 @@ import sfpark.adf.tools.model.data.helper.RateChangeProcessTimeLimitOption;
 import sfpark.adf.tools.utilities.generic.SQLDateUtil;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20111130-01 Mark Piller - Oracle Consulting  add isResetable()
+ * 20120611-01 Mark Piller - Oracle Consulting  revised logic for isDeletable() to special handle Pay By Phone
+ * 20120611-02 Mark Piller - Oracle Consulting  added ADF logger
+ * 20120611-03 Mark Piller - Oracle Consulting  added isPayByPhoneRateChange()
+ * 20120611-04 Mark Piller - Oracle Consulting  added Pay By Phone logic for isPossiblePreviousProcessStep()
+ * 
+ */
 public class RateChangeProcessControlDTO extends BaseDTO {
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(RateChangeProcessControlDTO.class); // 20120611-02
 
     public static String getDatabaseTableName() {
         return "RATE_CHG_PROCESS_CONTROL";
@@ -302,17 +317,79 @@ public class RateChangeProcessControlDTO extends BaseDTO {
 
     /**
      * Can be deleted ONLY when
+     *    ---Not a Pay By Phone
      *    ---STEP_EXEC_STATUS != 1 (Running)
      *    ---PROCESS_STEP     = 10 (Apply prices to meters)
+     *
+     *    ---Pay by Phone
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     *    ---PROCESS_STEP     = 20 (Apply prices to meters)
+     *    
+     * 20120611-01 - made changes to work with Pay By Phone requirements
      *
      * @return
      */
     public boolean isDeletable() {
         int currentProcessStep = getIntegerProcessStep();
         int currentExecStatus = getIntegerStepExecStatus();
+        boolean deletable = false;
 
-        return (currentProcessStep == 10 && currentExecStatus != 1);
+        if(isPayByPhoneRateChange()){
+            if( (currentProcessStep == 20) && (currentExecStatus !=1) ){
+                adfLogger.log(adfLogger.TRACE,"This is a Pay By Phone rate change - it is deletable - Process Step = 20, Exec Step <> 1");
+                deletable = true;
+            }
+        } else {            
+            if( (currentProcessStep == 10) && (currentExecStatus !=1) ){
+                deletable = true;
+            }
+        }
+        
+        // 20120611-01  return (currentProcessStep == 10 && currentExecStatus != 1);
+        return(deletable);
+    } // isDeletable()
+
+    /**
+     * 20120611-03
+     * 
+     * A Pay By Phone rate change is identified by
+     * a percent symbol in the 7th position (6 for zero index)
+     * of the RATE_CHG_REF value
+     *  
+     * sample Rate Change Ref:  "201206%"
+     *  
+     * @return
+     */
+    public boolean isPayByPhoneRateChange(){
+        String rateChangeReference = getRateChangeReference();
+        boolean payByPhone = false;
+        
+        int positionOfPercentSymbol = 6;
+        if( (rateChangeReference.length() > 6) && (rateChangeReference.substring(positionOfPercentSymbol, positionOfPercentSymbol+1).equals("%"))){
+            adfLogger.log(adfLogger.TRACE,"This is a Pay By Phone rate change");
+            payByPhone = true;
+        }
+        
+        return(payByPhone);
+    } // isPayByPhoneRateChange()
+
+
+    /**
+     * 20111130-01 added isResetable()
+     * 
+     * Can be reseted ONLY when
+     *    ---STEP_EXEC_STATUS != 1 (Running)
+     *    ---PROCESS_STEP     < 99
+     *
+     * @return
+     */
+    public boolean isResetable() {
+        int currentProcessStep = getIntegerProcessStep();
+        int currentExecStatus = getIntegerStepExecStatus();
+  
+        return (currentProcessStep < 99 && currentExecStatus != 1);
     }
+
 
     /**
      * Can be edited ONLY when
@@ -393,24 +470,40 @@ public class RateChangeProcessControlDTO extends BaseDTO {
     }
 
     /**
+     * 20120611-04
+     * 
      * Previous step is possible ONLY under following circumstances
-     * ---PROCESS_STEP     >  10 (Apply prices to meters)
+     * ---PROCESS_STEP     >  10 (Apply prices to meters) when not a Pay By Phone rate change
+     *                     >  20 when a Pay By Phone rate change
      *                     <= 70 (Finalised)
      * ---STEP_EXEC_STATUS != 1 (Running)
      *
      * @return
      */
     public boolean isPossiblePreviousProcessStep() {
+        boolean allowMoveToPreviousStep = false;
         int currentProcessStep = getIntegerProcessStep();
         int currentExecStatus = getIntegerStepExecStatus();
 
-        if (currentProcessStep == -1 || currentExecStatus == -1) {
-            return false;
+        //  if (currentProcessStep == -1 || currentExecStatus == -1) {
+        //      return false;
+        //  }
+
+        if(isPayByPhoneRateChange()){
+            if(currentProcessStep > 20 && currentProcessStep <= 70 && currentExecStatus != 1){
+                allowMoveToPreviousStep = true;
+            }
+        } else {
+            if(currentProcessStep > 10 && currentProcessStep <= 70 && currentExecStatus != 1){
+                allowMoveToPreviousStep = true;
+            }
         }
 
-        return (currentProcessStep > 10 && currentProcessStep <= 70 &&
-                currentExecStatus != 1);
-    }
+        //  return (currentProcessStep > 10 && currentProcessStep <= 70 &&
+        //          currentExecStatus != 1);
+        
+        return(allowMoveToPreviousStep);
+    } // isPossiblePreviousProcessStep()
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

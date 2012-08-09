@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/RateChangeManager/public_html/View/jsffFiles/blockTimeband/helper/add
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/RateChangeManager/public_html/View/jsffFiles/blockTimeband/helper/add
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 pickTimebandOptionPage.jsff
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:33.812000Z
+2012-08-07T15:04:21.468000Z
 134342b5d0a8df7717ca2bdcdfd0f83a
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:33.828000Z
+2012-08-07T15:04:21.515000Z
 6f25d9805706bdeb056baea5d887aa7d
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

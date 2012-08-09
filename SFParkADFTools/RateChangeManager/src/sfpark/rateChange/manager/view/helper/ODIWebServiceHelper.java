@@ -16,6 +16,8 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
+import oracle.adf.share.logging.ADFLogger;
+
 import sfpark.adf.tools.helper.DeveloperMode;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.model.helper.OperationStatus;
@@ -30,11 +32,13 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
  * 20111123-01 Mark Piller - Oracle Consulting  Created this Class
  * 20111129-01 Mark Piller - Oracle Consulting  Added logic to different ODI web services
  * 20120320-01 Mark Piller - Oracle Consulting  Change logger debug level to info level
+ * 20120604-01 Mark Piller - Oracle Consulting  Change logger to ADF Logger for consistency
  */
 public final class ODIWebServiceHelper {
 
     private static final String CLASSNAME = ODIWebServiceHelper.class.getName();
-    private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+    // 20120604-01  private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(CLASSNAME); // 20120531-02
 
     private static final String WEB_SERVICE_URL = "http://lnxappdev1:9704/axis2/services/OdiInvoke.OdiInvokeSOAP11port0";
     private static final String WEB_SERVICE_URL_PROPERTY_KEY = "SFPARK.ADF.TOOLS.ODI.WEBSERVICE.URL";
@@ -107,15 +111,15 @@ public final class ODIWebServiceHelper {
     }
 
     public static OperationStatus callODIWebService(String processID, String webServiceName) {
-        LOGGER.entering(CLASSNAME, "callODIWebService");
+        adfLogger.entering(CLASSNAME, "DEBUG >> callODIWebService");
 
         if (!StringUtil.isDigitsONLY(processID)) {
-            LOGGER.debug("processID is not only digits");
+            adfLogger.info("DEBUG >> processID is not only digits");
             return OperationStatus.failure(new IllegalArgumentException("Process ID should be valid. "));
         }
 
         String webServiceURL = getWebServiceURL();
-        LOGGER.info("Web Service URL used is: " + webServiceURL); // 20120320-01
+        adfLogger.info("DEBUG >> Web Service URL used is: " + webServiceURL); // 20120320-01
 
         if (StringUtil.isBlank(webServiceURL)) {
             return OperationStatus.failure(new NoSuchFieldException("Web Service URL was not found. "));
@@ -168,29 +172,26 @@ public final class ODIWebServiceHelper {
 
       OdiStartType invokeStartScen = null;
       try {
-          LOGGER.info("Executing WS invokeScenario(request)"); // 20120320-01
+          adfLogger.info("DEBUG >> Executing WS invokeScenario(request)"); // 20120320-01
           invokeStartScen = requestPortType.invokeStartScen(request);
       } catch (Exception e) {
-          LOGGER.error("Web Service URL is invalid and/or not working. ", e);
+          adfLogger.log(adfLogger.ERROR,"Web Service URL is invalid and/or not working. ", e);
 
           return OperationStatus.failure(new Exception("Web Service Error. Contact System Administrator. "));
       }
 
       long sessionResult = invokeStartScen.getSession();
-      LOGGER.info("Result of calling ODI Web Service: " + sessionResult); // 20120320-01
+      adfLogger.info("DEBUG >> Result of calling ODI Web Service: " + sessionResult); // 20120320-01
       if (sessionResult > 0) {
-        LOGGER.info("Returning Call to ODI Web Service success to calling logic"); // 20120320-01
-        LOGGER.exiting(CLASSNAME, "callODIWebService");
+        adfLogger.info("DEBUG >> Returning Call to ODI Web Service success to calling logic"); // 20120320-01
+        adfLogger.exiting(CLASSNAME, "callODIWebService");
         return OperationStatus.success();
       } else {
 
-        LOGGER.info("Returning Call to ODI Web Service failure to calling logic"); // 20120320-01
-        LOGGER.exiting(CLASSNAME, "callODIWebService");
+        adfLogger.info("DEBUG >> Returning Call to ODI Web Service failure to calling logic"); // 20120320-01
+        adfLogger.exiting(CLASSNAME, "callODIWebService");
         return OperationStatus.failure(new Exception("Web Service Error: Contact System Administrator. "));
       }
-
-
-
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

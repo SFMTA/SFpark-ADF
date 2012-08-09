@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider
+END
+RateChangeProcessControlProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/RateChangeProcessControlProvider.java
+END
+RateChangeHeaderProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/RateChangeHeaderProvider.java
+END
+AllowedValuesRetriever.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/AllowedValuesRetriever.java
+END
+RateProcessStepProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/RateProcessStepProvider.java
+END
+MeterScheduleValidationsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/MeterScheduleValidationsProvider.java
+END
+StatementGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/StatementGenerator.java
+END
+MeterModelsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/MeterModelsProvider.java
+END
+DDateProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/DDateProvider.java
+END
+ProviderWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/ProviderWrapper.java
+END
+StoredProcedureProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/StoredProcedureProvider.java
+END
+OSPInventoryProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/OSPInventoryProvider.java
+END
+GarageRatesProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/GarageRatesProvider.java
+END
+AllowedValuesProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/AllowedValuesProvider.java
+END
+BlockfacesProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/BlockfacesProvider.java
+END
+PayByPhonePreRequisiteProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/PayByPhonePreRequisiteProvider.java
+END
+ParkingSpaceGroupsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/ParkingSpaceGroupsProvider.java
+END
+PCOBeatsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/PCOBeatsProvider.java
+END
+STCLinesProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/STCLinesProvider.java
+END
+InformationObjectRetriever.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/InformationObjectRetriever.java
+END
+PropertyFileProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/PropertyFileProvider.java
+END
+CalendarDetailProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/CalendarDetailProvider.java
+END
+ParkingSpaceInventoryProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/ParkingSpaceInventoryProvider.java
+END
+CalendarHeaderProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/CalendarHeaderProvider.java
+END
+PMDistrictsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/PMDistrictsProvider.java
+END
+TimeBandModelProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/TimeBandModelProvider.java
+END
+GarageOPHoursProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/GarageOPHoursProvider.java
+END
+RateChangeRulesProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/RateChangeRulesProvider.java
+END
+RateAreasProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/RateAreasProvider.java
+END
+BlocksProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/BlocksProvider.java
+END
+BlockTimeBandsProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/BlockTimeBandsProvider.java
+END
+BlockRateScheduleProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/BlockRateScheduleProvider.java
+END
+MeterOPScheduleProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/MeterOPScheduleProvider.java
+END
+MeterRateScheduleProvider.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/provider/MeterRateScheduleProvider.java
+END

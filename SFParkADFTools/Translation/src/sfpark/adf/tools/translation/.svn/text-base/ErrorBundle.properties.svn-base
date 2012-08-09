@@ -7,6 +7,8 @@
 # ----------- -------------------------------- ------------------------------------------
 # 20111129-01 Mark Piller - Oracle Consulting  add error_message_unsupported_rate_change_finalize_operation
 #                                              add error_finalize_failure
+# 20111130-01 Mark Piller - Oracle Consulting  add error_reset_failure
+#                                              add error_message_unsupported_rate_change_process_reset_operation
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -32,6 +34,7 @@ error_create_failure=Failed to create
 error_save_failure=Failed to save
 error_delete_failure=Failed to delete
 error_finalize_failure=Failed to finalize
+error_reset_failure=Failed to reset
 error_edit_failure=Failed to edit
 error_invalid_login=Invalid login
 
@@ -171,6 +174,8 @@ error_message_unsupported_rate_change_delete_operation=Rate Change Reference wit
 error_message_unsupported_rate_change_deploy_operation=Rate Change Reference with ID {0} is not yet Approved and/or area type is not Pilot.
 # 20111129-01
 error_message_unsupported_rate_change_finalize_operation=Rate Change Reference with ID {0} is not yet Approved.
+# 20111130-01
+error_message_unsupported_rate_change_process_reset_operation=Rate Change Reference with ID {0} cannot be reseted.
 
 error_message_unsupported_rate_change_process_edit_operation=Rate Change Process Control with ID {0} can not be edited at this stage.
 error_message_unsupported_rate_change_process_delete_operation=Rate Change Process Control with ID {0} can not be deleted. It is past the initial step.

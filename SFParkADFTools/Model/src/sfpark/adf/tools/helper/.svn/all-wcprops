@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/helper
+END
+Logger.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/helper/Logger.java
+END
+DeveloperMode.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/helper/DeveloperMode.java
+END
+SignedInUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/helper/SignedInUser.java
+END
+OracleDBConnection.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/helper/OracleDBConnection.java
+END

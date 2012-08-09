@@ -3,9 +3,19 @@ package sfpark.rateChange.manager.view.backing.rateChange;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import javax.faces.model.SelectItem;
+
+import javax.faces.validator.ValidatorException;
+
+import oracle.adf.share.logging.ADFLogger;
 
 import org.apache.myfaces.trinidad.component.UIXGroup;
 
@@ -15,6 +25,7 @@ import sfpark.adf.tools.model.data.helper.RateChangeStatus;
 import sfpark.adf.tools.model.helper.OperationStatus;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.model.provider.AllowedValuesRetriever;
+import sfpark.adf.tools.model.provider.CalendarHeaderProvider;
 import sfpark.adf.tools.model.provider.RateChangeHeaderProvider;
 
 import sfpark.adf.tools.translation.CommonBundleKey;
@@ -39,9 +50,14 @@ import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
  * 20111109-01 Mark Piller - Oracle Consulting  added Status Message of Generating Details
  * 20111109-02 Mark Piller - Oracle Consulting  added logic to send Ref ID to ODI Function
  * 20111109-03 Mark Piller - Oracle Consulting  added logic to display message from ODI Function.
+ * 20120221-01 Mark Piller - Oracle Consulting  added validator for Active Sensor Coverage Threshold field
+ * 20120419-01 Mark Piller - Oracle Consulting  replace printLog with ADF Logger
  */
 public class RateChangePropertiesBean extends BaseBean implements PropertiesBeanInterface,
                                                                   RequestScopeBeanInterface {
+
+    // 20120419-01
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(RateChangePropertiesBean.class);
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -84,11 +100,18 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
 
     public RateChangeHeaderDTO getRateChangeHeaderDTO() {
 
+        // 20120419-01 printLog("RateChangePropertiesBean getRateChangeHeaderDTO()");
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> Creating DTO object by getting DTO from PageFlowScope memory");
+        // 20120419-01 printLog("Creating DTO object by getting DTO from PageFlowScope memory");
         RateChangeHeaderDTO DTO =
             (RateChangeHeaderDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey());
 
         if (DTO == null) {
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> DTO is null therefore was not in PageFlowScope and now creating DTO with DMLOperationsProvider");
+            // 20120419-01 printLog("DTO is null therefore was not in PageFlowScope and now creating DTO with DMLOperationsProvider");
             DTO = DMLOperationsProvider.INSTANCE.getNewRateChangeHeaderDTO();
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> Saving new DTO to PageFlowScope memory");
+            // 20120419-01 printLog("Saving new DTO to PageFlowScope memory");
             setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                   DTO);
         }
@@ -171,7 +194,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
-        printLog("RateChangePropertiesBean saveButtonHandler()");
+        // 20120419-01 printLog("RateChangePropertiesBean saveButtonHandler()");
 
         boolean allValid = true;
         String messageFromGenerateRates; // 20111109-03
@@ -186,7 +209,8 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             checkForRateChgRefUniqueness = true;
         }
 
-        printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        // 20120419-01 printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -202,7 +226,8 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             }
         }
 
-        printLog("After Calendar ID = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Calendar ID = " + allValid);
+        // 20120419-01 printLog("After Calendar ID = " + allValid);
 
         if (allValid && checkForRateChgRefUniqueness) {
             RateChangeHeaderDTOStatus rateChangeHeaderStatus =
@@ -214,7 +239,8 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             }
         }
 
-        printLog("After Rate Chg Ref check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Rate Chg Ref check = " + allValid);
+        // 20120419-01 printLog("After Rate Chg Ref check = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -231,31 +257,38 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            printLog("All entries are Valid. Proceed");
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> All entries are Valid. Proceed");
+            // 20120419-01 printLog("All entries are Valid. Proceed");
 
             if (currentPageMode.isAddMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ADD Mode
-                printLog("ADD Mode");
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD Mode");
+                // 20120419-01 printLog("ADD Mode");
 
                 RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
-                printLog("RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
+                // 20120419-01 printLog("RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
 
                 OperationStatus addOperation =
                     DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
-                printLog("RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
+                // 20120419-01 printLog("RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
 
                 if (addOperation.isSuccess()) {
-                    printLog("addOperation is successful");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> addOperation is successful");
+                    // 20120419-01 printLog("addOperation is successful");
 
                     RateChangeHeaderDTO newRateChangeHeaderDTO =
                         RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
 
-                    printLog("RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
+                    // 20120419-01 printLog("RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
                     String referenceIdForStoredProcedureCall = newRateChangeHeaderDTO.getRateChangeReferenceID();
-                    printLog("referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
+                    // 20120419-01 printLog("referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
                     // 20111109-01
                     newRateChangeHeaderDTO.setStatus(RateChangeStatus.WORKING);
 
@@ -281,14 +314,17 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                     // display the message
                     setInlineMessageText(messageFromGenerateRates);
                     
-                    printLog("testing success of operation - " + generateOperation.isSuccess());
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> testing success of operation - " + generateOperation.isSuccess());
+                    // 20120419-01 printLog("testing success of operation - " + generateOperation.isSuccess());
                     if (!generateOperation.isSuccess()) {
-                        printLog("Generate operation failed - reason should be given by Stored Procedure message");
+                        adfLogger.log(adfLogger.TRACE,"DEBUG >> Generate operation failed - reason should be given by Stored Procedure message");
+                        // 20120419-01 printLog("Generate operation failed - reason should be given by Stored Procedure message");
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
 
                 } else {
-                    printLog("ADD operation failed");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD operation failed");
+                    // 20120419-01 printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }
@@ -304,4 +340,36 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         // Do nothing
     }
 
+    // 20120221-01
+    public void isValidActiveSensorThresholdValue(FacesContext facesContext,
+                                                  UIComponent uIComponent, Object object) {
+        // System.out.println("*** START isValidActiveSensorThresholdValue()");
+        boolean validFormat = false;
+
+        // get the value to validate
+        String newSensorThreshold = (String)object;
+        if ((newSensorThreshold == null) || (newSensorThreshold.length() == 0)) {
+            // null values are allowed
+            return;
+        }
+        // System.out.println("newSensorThreshold to validate: " + newSensorThreshold);
+
+        // Active Sensor Coverage Threshold - if numeric must be in format of ##
+        // value is at least 1 and at most 3 {1,3} and in range of 0 through 9
+        String regExExpression = "([0-9]{1,3})";
+        CharSequence inputStr = newSensorThreshold;
+        Pattern pattern = Pattern.compile(regExExpression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        validFormat = matcher.matches();
+
+        if (validFormat) {
+            // do nothing
+        } else {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                                          "Invalid format for Active Sensor Coverage Threshold",
+                                                          "The value you entered (" + newSensorThreshold +
+                                                          ") is an invalid format. Please enter a value from 0 to 100."));
+        } // if (validFormat)
+
+    } // isValidActiveSensorThresholdValue
 }

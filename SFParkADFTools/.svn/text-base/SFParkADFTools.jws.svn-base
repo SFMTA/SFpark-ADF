@@ -29,21 +29,33 @@
    </list>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="DefaultProfile">
-         <value n="ProfileName" v="SFParkADFTools_application1"/>
+         <value n="ProfileName" v="SFParkADFTools"/>
       </hash>
       <hash n="profileDefinitions">
-         <hash n="SFParkADFTools_application1">
+         <hash n="SFParkADFTools">
             <hash n="archiveOptions">
-               <value n="hasManifest" v="false"/>
+               <list n="additionalManifests">
+                  <url path="Model/src/WebLogicVersionForManifest.txt"/>
+               </list>
+               <value n="hasManifest" v="true"/>
             </hash>
             <value n="defaultConnection"/>
             <hash n="dependencies">
                <list n="dependencyList">
                   <hash>
                      <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="EventManager/EventManager.jpr"/>
-                     <value n="pathInEar" v=""/>
-                     <value n="profileName" v="SFParkADFTools_EventManager_webapp1"/>
+                     <url n="ownerURL" path="AdminConsole/AdminConsole.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_AdminConsole_webapp1"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="AssetManager/AssetManager.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_AssetManager_webapp1"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="CalendarManager/CalendarManager.jpr"/>
+                     <value n="profileName" v="SFParkADFTools_CalendarManager_webapp1"/>
                   </hash>
                   <hash>
                      <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
@@ -53,38 +65,13 @@
                   </hash>
                   <hash>
                      <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="AssetManager/AssetManager.jpr"/>
-                     <value n="profileName" v="SFParkADFTools_AssetManager_webapp1"/>
-                  </hash>
-                  <hash>
-                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="PriceChangeManager/PriceChangeManager.jpr"/>
-                     <value n="profileName" v="SFParkADFTools_PriceChangeManager_webapp1"/>
-                  </hash>
-                  <hash>
-                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="CalendarManager/CalendarManager.jpr"/>
-                     <value n="profileName" v="SFParkADFTools_CalendarManager_webapp1"/>
-                  </hash>
-                  <hash>
-                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="ResourceFiles/ResourceFiles.jpr"/>
-                     <value n="profileName" v="SFParkADFTools_ResourceFiles_webapp1"/>
-                  </hash>
-                  <hash>
-                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
                      <url n="ownerURL" path="RateChangeManager/RateChangeManager.jpr"/>
                      <value n="profileName" v="SFParkADFTools_RateChangeManager_webapp1"/>
                   </hash>
-                  <hash>
-                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
-                     <url n="ownerURL" path="AdminConsole/AdminConsole.jpr"/>
-                     <value n="profileName" v="SFParkADFTools_AdminConsole_webapp1"/>
-                  </hash>
                </list>
             </hash>
-            <url n="earURL" path="deploy/SFParkADFTools_application1.ear"/>
-            <value n="enterpriseAppName" v="SFParkADFTools_application1"/>
+            <url n="earURL" path="deploy/SFParkADFTools.ear"/>
+            <value n="enterpriseAppName" v="SFParkADFTools"/>
             <hash n="fileGroups">
                <list n="groups">
                   <hash>
@@ -119,12 +106,13 @@
                <value n="IncludeLibrariesFromOtherContainers" v="true"/>
             </hash>
             <value n="profileClass" v="oracle.jdeveloper.deploy.ear.EarProfile"/>
-            <value n="profileName" v="SFParkADFTools_application1"/>
+            <value n="profileName" v="SFParkADFTools"/>
          </hash>
       </hash>
       <list n="profileList">
-         <string v="SFParkADFTools_application1"/>
+         <string v="SFParkADFTools"/>
       </list>
+      <value n="Weblogic-JDBC-Auto-Sync-Key" v="false"/>
    </hash>
    <hash n="oracle.mds.internal.dt.ide.CustOptions">
       <list n="customizationLibraries">

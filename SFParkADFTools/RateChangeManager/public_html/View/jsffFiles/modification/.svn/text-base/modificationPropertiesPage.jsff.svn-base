@@ -46,16 +46,24 @@
         <af:spacer id="rateChgRefSpacer" height="10"/>
         <af:inputText id="newRateIT" readOnly="true"
                       label="#{labelBundle.label_new_rate}"
-                      value="#{modificationPropertiesBean.blockRateScheduleDTO.newRate}">
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.newRate}"
+                      binding="#{modificationPropertiesBean.newRateAmount}">
           <af:convertNumber type="currency" locale="en-US"
                             maxFractionDigits="2"/>
         </af:inputText>
         <af:spacer id="newRateSpacer" height="10"/>
+        <af:commandButton text="Remove Required Adjusted Rate"
+                          id="removeAdjustedRateCB"
+                          actionListener="#{modificationPropertiesBean.removeRequiredAdjustedRateButtonHandler}"
+                          rendered="#{modificationPropertiesBean.renderedRemoveRequiredAdjustedRateButton}"/>
         <af:inputText id="adjustedRateIT" required="true" columns="7"
                       readOnly="#{modificationPropertiesBean.readOnlyAdjustedInfo}"
                       label="#{labelBundle.label_adjusted_rate}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.adjustedRate}"
-                      autoSubmit="true">
+                      autoSubmit="true"
+                      binding="#{modificationPropertiesBean.adjustedRateAmount}"
+                      valueChangeListener="#{modificationPropertiesBean.AdjustedRateValueChange}"
+                      partialTriggers="removeAdjustedRateCB adjustedRateIT adjustmentReasonIT">
           <af:convertNumber type="currency" locale="en-US"
                             maxFractionDigits="2"/>
         </af:inputText>
@@ -65,7 +73,10 @@
                       rendered="#{!modificationPropertiesBean.readOnlyAdjustedInfo}"
                       label="#{labelBundle.label_adjustment_reason}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.adjustmentReason}"
-                      autoSubmit="true"/>
+                      autoSubmit="true"
+                      valueChangeListener="#{modificationPropertiesBean.AdjustmentReasonValueChange}"
+                      binding="#{modificationPropertiesBean.adjustmentReason}"
+                      partialTriggers="removeAdjustedRateCB adjustedRateIT adjustmentReasonIT"/>
         <af:panelLabelAndMessage id="adjustmentReasonPLM"
                                  rendered="#{modificationPropertiesBean.readOnlyAdjustedInfo}"
                                  inlineStyle="vertical-align: top;"
@@ -78,7 +89,9 @@
                       readOnly="#{modificationPropertiesBean.readOnlyFinalInfo}"
                       label="#{labelBundle.label_final_rate}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.finalRate}"
-                      autoSubmit="true">
+                      autoSubmit="true"
+                      binding="#{modificationPropertiesBean.finalRateAmount}"
+                      partialTriggers="adjustmentReasonIT adjustedRateIT">
           <af:convertNumber type="currency" locale="en-US"
                             maxFractionDigits="2"/>
         </af:inputText>
@@ -102,6 +115,18 @@
         <af:inputText id="blockRateSchedIDIT" readOnly="true"
                       label="#{labelBundle.label_block_rate_sched_id}"
                       value="#{modificationPropertiesBean.blockRateScheduleDTO.blockRateSchedID}"/>
+        <af:inputText id="blockIdIT" readOnly="true"
+                      label="#{labelBundle.label_block_id}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.blockID}"/>
+        <af:inputText id="meterClassIT" readOnly="true"
+                      label="#{labelBundle.label_meter_class}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.meterClass}"/>
+        <af:inputText id="dateTypeIT" readOnly="true"
+                      label="#{labelBundle.label_date_type}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.dateType}"/>
+        <af:inputText id="timeBandIdIT" readOnly="true"
+                      label="#{labelBundle.label_time_band_id}"
+                      value="#{modificationPropertiesBean.blockRateScheduleDTO.timeBandID}"/>
         <af:spacer id="blockRateSchedIDSpacer" height="10"/>
         <af:inputText id="createdOnIT" readOnly="true"
                       label="#{labelBundle.label_created_on}"

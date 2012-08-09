@@ -223,7 +223,7 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                 } else {
                     if (operationStatus.isSuccess()) {
                         printLog("UPDATE operation was successful");
-                        System.out.println("message to be displayed: " + TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
+                        // System.out.println("message to be displayed: " + TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 

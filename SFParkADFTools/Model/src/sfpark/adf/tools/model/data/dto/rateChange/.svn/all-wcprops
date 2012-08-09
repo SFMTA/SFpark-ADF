@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/dto/rateChange
+END
+RateChangeRulesDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/dto/rateChange/RateChangeRulesDTO.java
+END
+RateChangeHeaderDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/dto/rateChange/RateChangeHeaderDTO.java
+END
+RateChangeProcessControlDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/dto/rateChange/RateChangeProcessControlDTO.java
+END

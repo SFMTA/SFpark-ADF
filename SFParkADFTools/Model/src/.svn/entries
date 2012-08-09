@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/Model/src
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/Model/src
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,41 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
+
+WebLogicVersionForManifest.txt
+file
+
+
+
+
+2012-08-07T15:03:52.796000Z
+7f8d3456e2bc9e5afcbae3ccea01b956
+2012-08-07T15:03:36.734375Z
+2
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+38
 
 sfpark
 dir

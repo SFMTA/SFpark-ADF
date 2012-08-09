@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/SFParkADFTools/!svn/ver/2/trunk/src/META-INF
+END
+jazn-data.xml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/SFParkADFTools/!svn/ver/2/trunk/src/META-INF/jazn-data.xml
+END
+weblogic-application.xml
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/SFParkADFTools/!svn/ver/2/trunk/src/META-INF/weblogic-application.xml
+END
+jps-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/SFParkADFTools/!svn/ver/2/trunk/src/META-INF/jps-config.xml
+END
+cwallet.sso
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/SFParkADFTools/!svn/ver/2/trunk/src/META-INF/cwallet.sso
+END

@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/Model/src/sfpark/adf/tools/helper
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/Model/src/sfpark/adf/tools/helper
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 DeveloperMode.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-12-14T17:55:10.531000Z
+2012-08-07T15:03:39.312000Z
 1493296e0b6f28bbe49735a7dca858fd
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:24.156000Z
+2012-08-07T15:03:39.218000Z
 6b2e5bcdc909e85a81d42df2d2c8910d
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:24.265000Z
-bbb8581890cdafaebd5b3c476e42210b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:39.359000Z
+a310f60c6b577b6ee2bb5e7f0c75783a
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -126,7 +126,7 @@ mpiller
 
 
 
-5237
+6137
 
 SignedInUser.java
 file
@@ -134,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:24.234000Z
+2012-08-07T15:03:39.265000Z
 fdad2bb99041cb7bf28d8f168df7547b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO
+END
+ParkingSpaceGroupsDOStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/ParkingSpaceGroupsDOStatus.java
+END
+PCOBeatsDOStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/PCOBeatsDOStatus.java
+END
+DOStatusInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/DOStatusInterface.java
+END
+BlockfaceDOStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/BlockfaceDOStatus.java
+END
+BlocksDOStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/BlocksDOStatus.java
+END
+RateAreasDOStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/helper/dO/RateAreasDOStatus.java
+END

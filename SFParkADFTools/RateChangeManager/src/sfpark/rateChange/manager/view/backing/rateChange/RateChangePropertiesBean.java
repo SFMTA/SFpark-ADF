@@ -101,16 +101,16 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
     public RateChangeHeaderDTO getRateChangeHeaderDTO() {
 
         // 20120419-01 printLog("RateChangePropertiesBean getRateChangeHeaderDTO()");
-        adfLogger.info("DEBUG >> Creating DTO object by getting DTO from PageFlowScope memory");
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> Creating DTO object by getting DTO from PageFlowScope memory");
         // 20120419-01 printLog("Creating DTO object by getting DTO from PageFlowScope memory");
         RateChangeHeaderDTO DTO =
             (RateChangeHeaderDTO)getPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey());
 
         if (DTO == null) {
-            adfLogger.info("DEBUG >> DTO is null therefore was not in PageFlowScope and now creating DTO with DMLOperationsProvider");
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> DTO is null therefore was not in PageFlowScope and now creating DTO with DMLOperationsProvider");
             // 20120419-01 printLog("DTO is null therefore was not in PageFlowScope and now creating DTO with DMLOperationsProvider");
             DTO = DMLOperationsProvider.INSTANCE.getNewRateChangeHeaderDTO();
-            adfLogger.info("DEBUG >> Saving new DTO to PageFlowScope memory");
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> Saving new DTO to PageFlowScope memory");
             // 20120419-01 printLog("Saving new DTO to PageFlowScope memory");
             setPageFlowScopeValue(PageFlowScopeKey.RATE_CHANGE_HEADER_DTO.getKey(),
                                   DTO);
@@ -209,7 +209,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             checkForRateChgRefUniqueness = true;
         }
 
-        adfLogger.info("DEBUG >> Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> Check for RateChgRef = " + checkForRateChgRefUniqueness);
         // 20120419-01 printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -226,7 +226,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             }
         }
 
-        adfLogger.info("DEBUG >> After Calendar ID = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Calendar ID = " + allValid);
         // 20120419-01 printLog("After Calendar ID = " + allValid);
 
         if (allValid && checkForRateChgRefUniqueness) {
@@ -239,7 +239,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
             }
         }
 
-        adfLogger.info("DEBUG >> After Rate Chg Ref check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Rate Chg Ref check = " + allValid);
         // 20120419-01 printLog("After Rate Chg Ref check = " + allValid);
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -257,7 +257,7 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            adfLogger.info("DEBUG >> All entries are Valid. Proceed");
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> All entries are Valid. Proceed");
             // 20120419-01 printLog("All entries are Valid. Proceed");
 
             if (currentPageMode.isAddMode()) {
@@ -265,29 +265,29 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ADD Mode
-                adfLogger.info("DEBUG >> ADD Mode");
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD Mode");
                 // 20120419-01 printLog("ADD Mode");
 
                 RateChangeHeaderDTO currentDTO = getRateChangeHeaderDTO();
-                adfLogger.info("DEBUG >> RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
                 // 20120419-01 printLog("RateChangePropertiesBean - created currentDTO and ref id: " + currentDTO.getRateChangeReferenceID());
 
                 OperationStatus addOperation =
                     DMLOperationsProvider.INSTANCE.addRateChangeHeader(currentDTO);
-                adfLogger.info("DEBUG >> RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
                 // 20120419-01 printLog("RateChangePropertiesBean - currentDTO after addRateChangeHeader  ref id: " + currentDTO.getRateChangeReferenceID());
 
                 if (addOperation.isSuccess()) {
-                    adfLogger.info("DEBUG >> addOperation is successful");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> addOperation is successful");
                     // 20120419-01 printLog("addOperation is successful");
 
                     RateChangeHeaderDTO newRateChangeHeaderDTO =
                         RateChangeHeaderProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference()).getDTO();
 
-                    adfLogger.info("DEBUG >> RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
                     // 20120419-01 printLog("RateChangePropertiesBean - newRateChangeHeaderDTO ref id: " + newRateChangeHeaderDTO.getRateChangeReferenceID());
                     String referenceIdForStoredProcedureCall = newRateChangeHeaderDTO.getRateChangeReferenceID();
-                    adfLogger.info("DEBUG >> referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
                     // 20120419-01 printLog("referenceIdForStoredProcedureCall: " + referenceIdForStoredProcedureCall);
                     // 20111109-01
                     newRateChangeHeaderDTO.setStatus(RateChangeStatus.WORKING);
@@ -314,16 +314,16 @@ public class RateChangePropertiesBean extends BaseBean implements PropertiesBean
                     // display the message
                     setInlineMessageText(messageFromGenerateRates);
                     
-                    adfLogger.info("DEBUG >> testing success of operation - " + generateOperation.isSuccess());
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> testing success of operation - " + generateOperation.isSuccess());
                     // 20120419-01 printLog("testing success of operation - " + generateOperation.isSuccess());
                     if (!generateOperation.isSuccess()) {
-                        adfLogger.info("DEBUG >> Generate operation failed - reason should be given by Stored Procedure message");
+                        adfLogger.log(adfLogger.TRACE,"DEBUG >> Generate operation failed - reason should be given by Stored Procedure message");
                         // 20120419-01 printLog("Generate operation failed - reason should be given by Stored Procedure message");
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
 
                 } else {
-                    adfLogger.info("DEBUG >> ADD operation failed");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD operation failed");
                     // 20120419-01 printLog("ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);

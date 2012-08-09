@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/RateChangeManager/public_html/View/jsffFiles/threshold
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/RateChangeManager/public_html/View/jsffFiles/threshold
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 helper
 dir
@@ -35,10 +35,10 @@ file
 
 
 
-2011-11-04T14:58:33.218000Z
+2012-08-07T15:04:21.000000Z
 5a1bf52ea0957a687e1498e51ee61309
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -69,10 +69,10 @@ file
 
 
 
-2011-11-04T14:58:33.234000Z
+2012-08-07T15:04:21.046000Z
 5decf55621880cf0ecc3515539f80461
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

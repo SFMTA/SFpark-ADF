@@ -56,5 +56,15 @@
                        value="#{row.smartMeterFlag.stringForDisplay}"/>
       </af:column>
     </af:table>
+    <af:popup id="warnChangeMS2SS_popup"
+              binding="#{meterModelsBean.warningMs2SsPopup}">
+      <af:dialog id="warnChangeMS2SS_dialog"
+                 title="Change Multi Space to Single Space Warning"
+                 type="yesNo" binding="#{meterModelsBean.warningMs2SsDialog}"
+                 dialogListener="#{meterModelsBean.warningMs2SsDialogListenerHandler}"
+                 inlineStyle="width:285.0px;">
+        <af:outputFormatted value="&lt;b>Warning:&lt;/b> removing MSID &amp;amp; Space Number may require global update to add POST_ID to meter event history in order to maintain link to Parking Space ID.  Please contact technical support accordingly.&lt;br>&lt;br>&lt;br>&lt;i>Do you want to continue with this change?&lt;/i>&lt;br>&lt;br>Click &lt;b>yes&lt;/b> to change Multi Space Meter to Single Space Meter.&lt;br>&lt;br>Click &lt;b>no&lt;/b> to return to Pick a Meter Model." id="warnChangeMS2SS_of"/>
+      </af:dialog>
+    </af:popup>
   </af:panelGroupLayout>
 </jsp:root>

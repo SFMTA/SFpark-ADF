@@ -1,22 +1,22 @@
 package sfpark.rateChange.manager.view.helper;
 
-import com.sfmta.websvcs.applyratexml.OdiInvoke;
+import com.sfmta.websvcs.odi11gws.OdiInvoke;
 
-import com.sfmta.websvcs.applyratexml.OdiInvokePortType;
+import com.sfmta.websvcs.odi11gws.RequestPortType;
 
-import com.sfmta.websvcs.applyratexml.types.AgentType;
-import com.sfmta.websvcs.applyratexml.types.CommandResultType;
-import com.sfmta.websvcs.applyratexml.types.InvokeScenarioRequest;
-import com.sfmta.websvcs.applyratexml.types.RepositoryConnectionType;
+import com.sfmta.websvcs.odi11gws.types.OdiCredentialType;
 
-import com.sfmta.websvcs.applyratexml.types.ScenarioCommandType;
-import com.sfmta.websvcs.applyratexml.types.VariableType;
+import com.sfmta.websvcs.odi11gws.types.OdiStartScenRequest;
+import com.sfmta.websvcs.odi11gws.types.OdiStartType;
+import com.sfmta.websvcs.odi11gws.types.ScenarioRequestType;
+import com.sfmta.websvcs.odi11gws.types.VariableType;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
+
+import oracle.adf.share.logging.ADFLogger;
 
 import sfpark.adf.tools.helper.DeveloperMode;
 import sfpark.adf.tools.helper.Logger;
@@ -31,11 +31,14 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
  * ----------- -------------------------------- --------------------------------------------------------
  * 20111123-01 Mark Piller - Oracle Consulting  Created this Class
  * 20111129-01 Mark Piller - Oracle Consulting  Added logic to different ODI web services
+ * 20120320-01 Mark Piller - Oracle Consulting  Change logger debug level to info level
+ * 20120604-01 Mark Piller - Oracle Consulting  Change logger to ADF Logger for consistency
  */
 public final class ODIWebServiceHelper {
 
     private static final String CLASSNAME = ODIWebServiceHelper.class.getName();
-    private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+    // 20120604-01  private static final Logger LOGGER = Logger.getLogger(CLASSNAME);
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(CLASSNAME); // 20120531-02
 
     private static final String WEB_SERVICE_URL = "http://lnxappdev1:9704/axis2/services/OdiInvoke.OdiInvokeSOAP11port0";
     private static final String WEB_SERVICE_URL_PROPERTY_KEY = "SFPARK.ADF.TOOLS.ODI.WEBSERVICE.URL";
@@ -83,13 +86,13 @@ public final class ODIWebServiceHelper {
     private static final String SCENARIO_VERSION = "001";
     private static final String SCENARIO_VERSION_KEY = "SFPARK.ADF.TOOLS.ODI.SCENARIO.VERSION";
 
-    private static final String SCENARIO_CONTEXT = "Development";
+    private static final String SCENARIO_CONTEXT = "DEVELOPMENT";
     private static final String SCENARIO_CONTEXT_KEY = "SFPARK.ADF.TOOLS.ODI.SCENARIO.CONTEXT";
 
     private static final Integer SCENARIO_LOG_LEVEL = 5;
     private static final String SCENARIO_LOG_LEVEL_KEY = "SFPARK.ADF.TOOLS.ODI.SCENARIO.LOG.LEVEL";
 
-    private static final Integer SCENARIO_SYNC_MODE = 1;
+    private static final boolean SCENARIO_SYNC_MODE = true;
     private static final String SCENARIO_SYNC_MODE_KEY = "SFPARK.ADF.TOOLS.ODI.SCENARIO.SYNC.MODE";
 
     // Agent values
@@ -108,16 +111,15 @@ public final class ODIWebServiceHelper {
     }
 
     public static OperationStatus callODIWebService(String processID, String webServiceName) {
-        LOGGER.entering(CLASSNAME, "callODIWebService");
+        adfLogger.entering(CLASSNAME, "DEBUG >> callODIWebService");
 
         if (!StringUtil.isDigitsONLY(processID)) {
-            LOGGER.debug("processID is not only digits");
+            adfLogger.info("DEBUG >> processID is not only digits");
             return OperationStatus.failure(new IllegalArgumentException("Process ID should be valid. "));
         }
 
         String webServiceURL = getWebServiceURL();
-        LOGGER.debug("Process ID is: " + processID);
-        LOGGER.debug("Web Service URL used is: " + webServiceURL);
+        adfLogger.info("DEBUG >> Web Service URL used is: " + webServiceURL); // 20120320-01
 
         if (StringUtil.isBlank(webServiceURL)) {
             return OperationStatus.failure(new NoSuchFieldException("Web Service URL was not found. "));
@@ -130,85 +132,66 @@ public final class ODIWebServiceHelper {
         } catch (MalformedURLException e) {
             // end
         }
-        OdiInvoke odiInvoke =
-            new OdiInvoke(webServiceUrl, new QName("xmlns.oracle.com/odi/OdiInvoke/",
-                                                   "OdiInvoke"));
-        OdiInvokePortType webServiceSOAP = odiInvoke.getOdiInvokeSOAP11Port0();
 
-        //LOGGER.debug("Supposed to be setting URL context for this Web Service");
-        //((BindingProvider)webServiceSOAP).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, webServiceURL);
-        //LOGGER.debug("((BindingProvider)webServiceSOAP).getRequestContext().toString()  " + ((BindingProvider)webServiceSOAP).getRequestContext().toString());
+      OdiInvoke odiInvoke = new OdiInvoke(webServiceUrl, new QName("xmlns.oracle.com/odi/OdiInvoke/","OdiInvoke"));
+      RequestPortType requestPortType = odiInvoke.getOdiInvokeRequestSOAP11Port0();
 
-        RepositoryConnectionType repConnType = new RepositoryConnectionType();
-        repConnType.setJdbcDriver(getJdbcDriver());
-        repConnType.setJdbcUrl(getJdbcUrl());
-        repConnType.setJdbcUser(getJdbcUser());
-        repConnType.setJdbcPassword(getJdbcPassword());
-        repConnType.setOdiUser(getOdiUser());
-        repConnType.setOdiPassword(getOdiPassword());
-        repConnType.setWorkRepository(getWorkRepository());
+      OdiCredentialType credentialType = new OdiCredentialType();
+      credentialType.setOdiUser(getOdiUser());
+      credentialType.setOdiPassword(getOdiPassword());
+      credentialType.setWorkRepository(getWorkRepository());
+      
+      VariableType varType = new VariableType();
+      if (webServiceName.equals(APPLY_RATE)) {
+          varType.setName(getApplyRateVarName());
+      } else if (webServiceName.equals(RECONCILE)) {
+          varType.setName(getReconcileVarName());
+      } else if (webServiceName.equals(UPDT_EFF_DT)) {
+          varType.setName(getUpdtEffDtVarName());
+      }
+      varType.setValue(processID);
+      
+      ScenarioRequestType scenRequestType = new ScenarioRequestType();
+      if (webServiceName.equals(APPLY_RATE)) {
+          scenRequestType.setScenarioName(getApplyRateScenarioName());
+      } else if (webServiceName.equals(RECONCILE)) {
+          scenRequestType.setScenarioName(getReconcileScenarioName());
+      } else if (webServiceName.equals(UPDT_EFF_DT)) {
+          scenRequestType.setScenarioName(getUpdtEffDtScenarioName());
+      }
+      
+      scenRequestType.setScenarioVersion(getScenarioVersion());
+      scenRequestType.setContext(getScenarioContext());
+      scenRequestType.setSynchronous(getScenarioSyncMode());
+      scenRequestType.setLogLevel(getScenarioLogLevel());
+      scenRequestType.getVariables().add(varType);
+      
+      OdiStartScenRequest request = new OdiStartScenRequest();
+      request.setCredentials(credentialType);
+      request.setRequest(scenRequestType);
 
-        VariableType varType = new VariableType();
-        if (webServiceName.equals(APPLY_RATE)) {
-            varType.setName(getApplyRateVarName());
-        } else if (webServiceName.equals(RECONCILE)) {
-            varType.setName(getReconcileVarName());
-        } else if (webServiceName.equals(UPDT_EFF_DT)) {
-            varType.setName(getUpdtEffDtVarName());
-        }
-        varType.setValue(processID);
+      OdiStartType invokeStartScen = null;
+      try {
+          adfLogger.info("DEBUG >> Executing WS invokeScenario(request)"); // 20120320-01
+          invokeStartScen = requestPortType.invokeStartScen(request);
+      } catch (Exception e) {
+          adfLogger.log(adfLogger.ERROR,"Web Service URL is invalid and/or not working. ", e);
 
-        ScenarioCommandType scenarioCmdType = new ScenarioCommandType();
-        if (webServiceName.equals(APPLY_RATE)) {
-            scenarioCmdType.setScenName(getApplyRateScenarioName());
-        } else if (webServiceName.equals(RECONCILE)) {
-            scenarioCmdType.setScenName(getReconcileScenarioName());
-        } else if (webServiceName.equals(UPDT_EFF_DT)) {
-            scenarioCmdType.setScenName(getUpdtEffDtScenarioName());
-        }
+          return OperationStatus.failure(new Exception("Web Service Error. Contact System Administrator. "));
+      }
 
-        scenarioCmdType.setScenVersion(getScenarioVersion());
-        scenarioCmdType.setContext(getScenarioContext());
-        scenarioCmdType.setLogLevel(getScenarioLogLevel());
-        scenarioCmdType.setSyncMode(getScenarioSyncMode());
-        scenarioCmdType.getVariables().add(varType);
+      long sessionResult = invokeStartScen.getSession();
+      adfLogger.info("DEBUG >> Result of calling ODI Web Service: " + sessionResult); // 20120320-01
+      if (sessionResult > 0) {
+        adfLogger.info("DEBUG >> Returning Call to ODI Web Service success to calling logic"); // 20120320-01
+        adfLogger.exiting(CLASSNAME, "callODIWebService");
+        return OperationStatus.success();
+      } else {
 
-        AgentType agentType = new AgentType();
-        agentType.setHost(getAgentHost());
-        agentType.setPort(getAgentPort());
-
-        InvokeScenarioRequest request = new InvokeScenarioRequest();
-        request.setAgent(agentType);
-        request.setCommand(scenarioCmdType);
-        request.setRepositoryConnection(repConnType);
-
-        CommandResultType commandResultType;
-
-        try {
-            LOGGER.debug("Executing WS invokeScenario(request)");
-            commandResultType = webServiceSOAP.invokeScenario(request);
-        } catch (Exception e) {
-            LOGGER.error("Web Service URL is invalid and/or not working. ", e);
-
-            return OperationStatus.failure(new Exception("Web Service Error. Contact System Administrator. "));
-        }
-
-        boolean response = commandResultType.isOk();
-        LOGGER.debug("Result of calling ODI Web Service: " + response);
-        String sMessage = commandResultType.getErrorMessage();
-        LOGGER.debug("Message from call to ODI Web Service: " + sMessage);
-
-        if (response == true) {
-            LOGGER.debug("Returning Call to ODI Web Service success to calling logic");
-            LOGGER.exiting(CLASSNAME, "callODIWebService");
-            return OperationStatus.success();
-        } else {
-            LOGGER.debug("Returning Call to ODI Web Service failure to calling logic");
-            LOGGER.exiting(CLASSNAME, "callODIWebService");
-            return OperationStatus.failure(new Exception("Web Service Error: " + sMessage +
-                                                         " Contact System Administrator. "));
-        }
-
+        adfLogger.info("DEBUG >> Returning Call to ODI Web Service failure to calling logic"); // 20120320-01
+        adfLogger.exiting(CLASSNAME, "callODIWebService");
+        return OperationStatus.failure(new Exception("Web Service Error: Contact System Administrator. "));
+      }
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -307,9 +290,9 @@ public final class ODIWebServiceHelper {
                SCENARIO_LOG_LEVEL;
     }
 
-    private static Integer getScenarioSyncMode() {
+    private static boolean getScenarioSyncMode() {
         return (DeveloperMode.DEPLOYED_ON_SERVER) ?
-               Integer.getInteger(PropertyFileProvider.getPropertyValue(SCENARIO_SYNC_MODE_KEY)) :
+               Boolean.parseBoolean(PropertyFileProvider.getPropertyValue(SCENARIO_SYNC_MODE_KEY)) :
                SCENARIO_SYNC_MODE;
     }
 

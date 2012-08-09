@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic
+END
+FloatUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/FloatUtil.java
+END
+SQLDateUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/SQLDateUtil.java
+END
+TimeDisplayUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/TimeDisplayUtil.java
+END
+GeoSpaceUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/GeoSpaceUtil.java
+END
+StringUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/StringUtil.java
+END
+CurrencyUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/CurrencyUtil.java
+END
+ObjectUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/utilities/generic/ObjectUtil.java
+END

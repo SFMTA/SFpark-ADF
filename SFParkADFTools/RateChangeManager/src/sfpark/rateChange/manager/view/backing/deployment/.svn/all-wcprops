@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment
+END
+DeploymentDeleteBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment/DeploymentDeleteBean.java
+END
+DeploymentEditBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment/DeploymentEditBean.java
+END
+DeploymentResetBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment/DeploymentResetBean.java
+END
+DeploymentPropertiesBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/deployment/DeploymentPropertiesBean.java
+END

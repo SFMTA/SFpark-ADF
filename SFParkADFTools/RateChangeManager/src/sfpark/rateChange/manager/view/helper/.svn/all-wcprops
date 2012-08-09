@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/helper
+END
+BlockTimeBandsWrapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/helper/BlockTimeBandsWrapper.java
+END
+WebServiceHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/helper/WebServiceHelper.java
+END
+ADFUIHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/helper/ADFUIHelper.java
+END
+ODIWebServiceHelper.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/helper/ODIWebServiceHelper.java
+END

@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
 import sfpark.adf.tools.constants.ErrorMessage;
 import sfpark.adf.tools.helper.Logger;
 import sfpark.adf.tools.helper.OracleDBConnection;
@@ -15,6 +19,18 @@ import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.helper.dto.RateChangeHeaderDTOStatus;
 import sfpark.adf.tools.utilities.generic.StringUtil;
 
+/**
+ * Description:
+ * This class provides methods to make connections to the database and generate SQL statements.
+ *
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120221-01 Mark Piller - Oracle Consulting  Added for Bypass Rate change for a Block Time Band or set of Block Time Bands
+ * 20120315-01 Mark Piller - Oracle Consulting  Correction - Added for Bypass Rate change for a Block Time Band or set of Block Time Bands
+ *
+ */
 public class RateChangeHeaderProvider {
 
     private static final String CLASSNAME =
@@ -96,6 +112,10 @@ public class RateChangeHeaderProvider {
         preparedStatement.setString(getInsertIndexOf(RateChangeHeaderDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
 
+        // 20120221-01 Added for Bypass Rate change for a Block Time Band or set of Block Time Bands
+        preparedStatement.setString(getInsertIndexOf(RateChangeHeaderDTO.SENSOR_COVERAGE_MIN_PCT),
+                                    DTO.getSensorCoverageMinPct());
+
         return preparedStatement;
     }
 
@@ -122,6 +142,11 @@ public class RateChangeHeaderProvider {
                                     lastUpdatedProgram);
         preparedStatement.setString(getUpdateIndexOf(RateChangeHeaderDTO.LAST_UPD_USER),
                                     lastUpdatedUser);
+
+        // 20120315-01 This should have been Added for Bypass Rate change for a Block Time Band or set of Block Time Band
+        // for 20120221-01 but was missing as an addition
+        preparedStatement.setString(getUpdateIndexOf(RateChangeHeaderDTO.SENSOR_COVERAGE_MIN_PCT),
+                                    DTO.getSensorCoverageMinPct());
 
         return preparedStatement;
     }

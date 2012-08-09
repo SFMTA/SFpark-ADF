@@ -123,9 +123,9 @@ public class CalendarHeaderProvider {
     public List<CalendarHeaderDTO> getCalendarHeaderDTOs(String searchString,
                                                          String searchType) {
         // 20120419-01                                                 Date searchDate) {
-        adfLogger.info("DEBUG  >> Parameter > searchString = " + searchString);
-        adfLogger.info("DEBUG  >> Parameter >   searchType = " + searchType);
-        // 20120419-01 adfLogger.info("DEBUG  >> Parameter >   searchDate = " + searchDate);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> Parameter > searchString = " + searchString);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> Parameter >   searchType = " + searchType);
+        // 20120419-01 adfLogger.log(adfLogger.TRACE,"DEBUG  >> Parameter >   searchDate = " + searchDate);
 
         List<CalendarHeaderDTO> calendarHeaderDTOs =
             new ArrayList<CalendarHeaderDTO>();
@@ -151,14 +151,14 @@ public class CalendarHeaderProvider {
             // preparedStatement.setDate(3, searchDate);
 
             resultSet = preparedStatement.executeQuery();
-            adfLogger.info("DEBUG  >> resultSet Statement = " + resultSet.getStatement());
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> resultSet Statement = " + resultSet.getStatement());
             int iRowCount = 0;            
             while (resultSet.next()) {
                 CalendarHeaderDTO DTO = CalendarHeaderDTO.extract(resultSet);
-                // adfLogger.info("DEBUG  >> Calendar row count: " + (++iRowCount));
+                // adfLogger.log(adfLogger.TRACE,"DEBUG  >> Calendar row count: " + (++iRowCount));
 
                 calendarHeaderDTOs.add(DTO);
-                // adfLogger.info("DEBUG  >> calendarHeaderDTOs size = " + calendarHeaderDTOs.size());
+                // adfLogger.log(adfLogger.TRACE,"DEBUG  >> calendarHeaderDTOs size = " + calendarHeaderDTOs.size());
             }
 
         } catch (SQLException e) {
@@ -251,7 +251,7 @@ public class CalendarHeaderProvider {
         String Where =
             StatementGenerator.equalToOperator(CalendarHeaderDTO.CALENDAR_ID);
 
-        adfLogger.info("DEBUG  >> selectStmt = " + selectStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> selectStmt = " + selectStmt);
         selectStmt = StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where);
@@ -279,7 +279,7 @@ public class CalendarHeaderProvider {
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where);
 
-        adfLogger.info("DEBUG  >> selectStmt = " + selectStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> selectStmt = " + selectStmt);
         // 20120418-01 replace the following with selectStmt
 //        return StatementGenerator.selectStatement(Attributes,
 //                                                  CalendarHeaderDTO.getDatabaseTableName(),
@@ -313,8 +313,8 @@ public class CalendarHeaderProvider {
         selectStmt = StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
-        adfLogger.info("DEBUG  >> selectStmt = " + selectStmt);
-        adfLogger.info("DEBUG  >> The 3 parameters are (in order):  searchString, searchType, searchDate found in getCalendarHeaderDTOs()");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> selectStmt = " + selectStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> The 3 parameters are (in order):  searchString, searchType, searchDate found in getCalendarHeaderDTOs()");
         // 20120418-01 replace the following with selectStmt
 //        return StatementGenerator.selectStatement(Attributes,
 //                                                  CalendarHeaderDTO.getDatabaseTableName(),
@@ -349,8 +349,8 @@ public class CalendarHeaderProvider {
         selectStmt = StatementGenerator.selectStatement(Attributes,
                                                   CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where, OrderBy);
-        adfLogger.info("DEBUG  >> selectStmt = " + selectStmt);
-        adfLogger.info("DEBUG  >> The 2 parameters are (in order):  searchString, searchType found in getCalendarHeaderDTOs()");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> selectStmt = " + selectStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> The 2 parameters are (in order):  searchString, searchType found in getCalendarHeaderDTOs()");
         return selectStmt;
     }
 
@@ -370,7 +370,7 @@ public class CalendarHeaderProvider {
 
         insertStmt = StatementGenerator.insertStatement(CalendarHeaderDTO.getDatabaseTableName(),
                                                   Columns, Values);
-        adfLogger.info("DEBUG  >> insertStmt = " + insertStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> insertStmt = " + insertStmt);
 //        return StatementGenerator.insertStatement(CalendarHeaderDTO.getDatabaseTableName(),
 //                                                  Columns, Values);
         return insertStmt;
@@ -401,7 +401,7 @@ public class CalendarHeaderProvider {
 
         updateStmt = StatementGenerator.updateStatement(CalendarHeaderDTO.getDatabaseTableName(),
                                                   SetColumnValues, Where);
-        adfLogger.info("DEBUG  >> updateStmt = " + updateStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> updateStmt = " + updateStmt);
 //        return StatementGenerator.updateStatement(CalendarHeaderDTO.getDatabaseTableName(),
 //                                                  SetColumnValues, Where);
         return updateStmt;
@@ -425,7 +425,7 @@ public class CalendarHeaderProvider {
 
         deleteStmt = StatementGenerator.deleteStatement(CalendarHeaderDTO.getDatabaseTableName(),
                                                   Where);
-        adfLogger.info("DEBUG  >> deleteStmt = " + deleteStmt);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> deleteStmt = " + deleteStmt);
 //        return StatementGenerator.deleteStatement(CalendarHeaderDTO.getDatabaseTableName(),
 //                                                  Where);
         return deleteStmt;

@@ -8,6 +8,8 @@ import javax.faces.event.ActionEvent;
 
 import javax.faces.model.SelectItem;
 
+import oracle.adf.view.rich.component.rich.output.RichOutputText;
+
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.exception.DTOUpdateException;
 import sfpark.adf.tools.model.exception.ExceptionType;
@@ -44,6 +46,9 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // CONSTRUCTORS
+
+    private RichOutputText inLineTextMessage;
+    private RichOutputText myTest;
 
     public RateChangeUpdateBean() {
         super();
@@ -218,6 +223,7 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
                 } else {
                     if (operationStatus.isSuccess()) {
                         printLog("UPDATE operation was successful");
+                        // System.out.println("message to be displayed: " + TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_save));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
 
@@ -279,4 +285,5 @@ public class RateChangeUpdateBean extends BaseBean implements PropertiesBeanInte
     public void cancelButtonHandler(ActionEvent event) {
         // Do nothing
     }
+
 }

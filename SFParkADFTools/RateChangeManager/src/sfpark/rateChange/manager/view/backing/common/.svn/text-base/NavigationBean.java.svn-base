@@ -29,6 +29,11 @@ import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 
 /**
+ * Description:
+ * This class reads the HTTP request and identifies parameters and controls the
+ * ADF page navigation according to the URLs
+ * 
+ * 
  * Change History:
  * Change ID format is YYYYMMDD-## where you can identify multiple changes
  * Change ID   Developer Name                   Description

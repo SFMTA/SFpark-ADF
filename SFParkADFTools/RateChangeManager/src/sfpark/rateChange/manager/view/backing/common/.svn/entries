@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/RateChangeManager/src/sfpark/rateChange/manager/view/backing/common
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/RateChangeManager/src/sfpark/rateChange/manager/view/backing/common
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 BlockTimebandBean.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:36.578000Z
+2012-08-07T15:04:26.343000Z
 e43964d86e6393e69e3961a8d13ede9b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:36.765000Z
-1e2df5c5a0d459137dce05c9526b1559
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:04:26.453000Z
+2764bcd23e399c4785b52ad8304bdb41
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -92,7 +92,7 @@ mpiller
 
 
 
-15414
+18157
 
 ErrorsBean.java
 file
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:36.671000Z
+2012-08-07T15:04:26.250000Z
 686f0468a287e2b3eb7ced4bd57d420c
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -134,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:36.843000Z
+2012-08-07T15:04:26.515000Z
 8f5ce7457c29372598d96878f56e7880
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -168,10 +168,10 @@ file
 
 
 
-2011-11-04T14:58:36.640000Z
+2012-08-07T15:04:26.562000Z
 edd9405dbd3bc8a15bebf2f6c1d28d5c
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -198,14 +198,14 @@ mpiller
 
 NavigationBean.java
 file
-6
 
 
 
-2011-11-30T02:25:01.134000Z
-b7123829a6725bf47fa402901627639f
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:26.406000Z
+5322f767682a6482b60d598cba0a330b
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -228,7 +228,7 @@ mpiller
 
 
 
-20226
+20375
 
 ThresholdBean.java
 file
@@ -236,10 +236,10 @@ file
 
 
 
-2011-11-04T14:58:36.703000Z
+2012-08-07T15:04:26.296000Z
 cf977dcffd9af0065a51fce9e77964ce
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

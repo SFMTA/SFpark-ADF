@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.List;
 
 import sfpark.adf.tools.helper.Logger;
@@ -79,7 +82,6 @@ public final class ProviderWrapper {
                                 prepareInsertStatement(connection, DTO,
                                                        lastUpdatedUser,
                                                        lastUpdatedProgram);
-
                         int executeResult = preparedStatement.executeUpdate();
 
                         if (executeResult == 0) {

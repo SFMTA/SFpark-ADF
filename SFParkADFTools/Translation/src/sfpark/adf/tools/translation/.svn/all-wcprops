@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation
+END
+CalendarManagerBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/CalendarManagerBundle.properties
+END
+AssetManagerBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/AssetManagerBundle.properties
+END
+RateChangeManagerBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/RateChangeManagerBundle.properties
+END
+CommonBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/CommonBundle.properties
+END
+AdminConsoleBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/AdminConsoleBundle.properties
+END
+ErrorBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/ErrorBundle.properties
+END
+ColumnBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/ColumnBundle.properties
+END
+LabelBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/LabelBundle.properties
+END
+ErrorBundleKey.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/ErrorBundleKey.java
+END
+ButtonBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/ButtonBundle.properties
+END
+TranslationUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/TranslationUtil.java
+END
+OSPManagerBundle.properties
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/OSPManagerBundle.properties
+END
+CommonBundleKey.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Translation/src/sfpark/adf/tools/translation/CommonBundleKey.java
+END

@@ -93,6 +93,8 @@ button_delete_rate_change_process=Proceed to delete the Rate Change Process Cont
 
 button_finalize_rate_change= Proceed to finalize the Rate Change Reference. It is irreversible
 
+button_reset_rate_change= Proceed to reset the Rate Change Reference. It is irreversible
+
 button_next_process_step=Proceed to Next Step
 button_prev_process_step=Return to Previous Step
 

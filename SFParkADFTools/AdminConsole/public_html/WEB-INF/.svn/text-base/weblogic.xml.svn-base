@@ -14,4 +14,5 @@
     <role-name>valid-users</role-name>
     <principal-name>SFParkADFAdminGroup</principal-name>
   </security-role-assignment>
+
 </weblogic-web-app>

@@ -34,6 +34,7 @@
       <f:facet name="separator">
         <af:spacer id="parkingSpaceInventoryPanelSpacer" width="50"/>
       </f:facet>
+      
       <af:panelFormLayout id="lhsPSIFormPanel">
         <af:panelLabelAndMessage id="postIDPLM" for="postIDIT"
                                  label="#{labelBundle.label_post_id}">
@@ -91,24 +92,26 @@
         </af:selectOneChoice>
         <af:spacer id="sensorStatusSOCSpacer" height="10"/>
         <af:selectOneChoice id="capColorSOC"
-                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton"
+                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton warningDeleteMultiSpaceMeter_popup"
                             disabled="#{meterSpaceManagementBean.disableCapColorSOC}"
                             readOnly="#{meterSpaceManagementBean.readOnly}"
                             label="#{labelBundle.label_cap_color}"
                             value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.capColor}"
-                            autoSubmit="true">
+                            autoSubmit="true"
+                            binding="#{meterSpaceManagementBean.capColorSOC}">
           <f:selectItems id="capColorSOCSI"
                          value="#{meterSpaceManagementBean.listCapColorSOC}"/>
         </af:selectOneChoice>
         <af:spacer id="capColorSOCSpacer" height="10"/>
         <af:selectOneChoice id="activeMeterStatusSOC"
-                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton"
+                            partialTriggers="deleteParkingSpaceButton undeleteParkingSpaceButton warningDeleteMultiSpaceMeter_popup"
                             disabled="#{meterSpaceManagementBean.disableActiveMeterStatusSOC}"
                             readOnly="#{meterSpaceManagementBean.readOnly}"
                             label="#{labelBundle.label_active_meter_status}"
                             value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.activeMeterFlag}"
                             autoSubmit="true"
-                            valueChangeListener="#{meterSpaceManagementBean.activeMeterStatusValueChangeHandler}">
+                            valueChangeListener="#{meterSpaceManagementBean.activeMeterStatusValueChangeHandler}"
+                            binding="#{meterSpaceManagementBean.meterStatusSOC}">
           <f:selectItems id="activeMeterStatusSOCSI"
                          value="#{meterSpaceManagementBean.listActiveMeterStatus}"/>
         </af:selectOneChoice>
@@ -151,7 +154,8 @@
                           text="#{buttonBundle.button_change_meter_model}"
                           actionListener="#{meterSpaceManagementBean.editButtonHandler}"
                           partialTriggers="activeMeterStatusSOC"
-                          immediate="true"/>
+                          immediate="true"
+                          binding="#{meterSpaceManagementBean.changeMeterModelButton}"/>
         <af:inputText id="meterVendorIT" readOnly="true"
                       label="#{labelBundle.label_meter_vendor}"
                       value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.meterDetails.meterVendor}"
@@ -195,7 +199,8 @@
                           text="#{buttonBundle.button_change_cnn_id}"
                           actionListener="#{meterSpaceManagementBean.editButtonHandler}"
                           partialTriggers="activeMeterStatusSOC streetTypeSOR"
-                          immediate="true"/>
+                          immediate="true"
+                          binding="#{meterSpaceManagementBean.changeCNNIdButton}"/>
         <af:inputText id="cnnIDIT" required="true" readOnly="true"
                       label="#{labelBundle.label_cnn_id}"
                       value="#{meterSpaceManagementBean.currentParkingSpaceInventoryDTO.CNNID}"
@@ -311,7 +316,8 @@
                             text="#{buttonBundle.button_delete_parking_space}"
                             actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
                             partialTriggers="undeleteParkingSpaceButton"
-                            shortDesc="#{assetManagerBundle.info_delete_parking_space}"/>
+                            shortDesc="#{assetManagerBundle.info_delete_parking_space}"
+                            binding="#{meterSpaceManagementBean.deleteParkingSpaceButton}"/>
           <af:commandButton id="undeleteParkingSpaceButton"
                             rendered="#{meterSpaceManagementBean.renderButtons}"
                             visible="#{meterSpaceManagementBean.visibleUndeleteParkingSpaceButton}"
@@ -319,9 +325,21 @@
                             text="#{buttonBundle.button_undelete_parking_space}"
                             actionListener="#{meterSpaceManagementBean.deleteUndeleteParkingSpaceButtonHandler}"
                             partialTriggers="deleteParkingSpaceButton"
-                            shortDesc="#{assetManagerBundle.info_undelete_parking_space}"/>
+                            shortDesc="#{assetManagerBundle.info_undelete_parking_space}"
+                            binding="#{meterSpaceManagementBean.undeleteParkingSpaceButton}"/>
         </af:panelLabelAndMessage>
       </af:panelFormLayout>
+      <af:popup id="warningDeleteMultiSpaceMeter_popup"
+                binding="#{meterSpaceManagementBean.warningDeleteMultiSpaceMeterPopup}">
+        <af:dialog id="warningDeleteMultiSpaceMeter_dialog"
+                   title="Delete Multi Space Meter Warning"
+                   inlineStyle="width:280.0px;"
+                   dialogListener="#{meterSpaceManagementBean.warningDeleteMultiSpaceMeterDialogListenerHandler}"
+                   type="yesNo">
+          <af:outputFormatted value="&lt;b>Warning:&lt;/b> removing MSID &amp;amp; Space Number may require global update to add POST_ID to meter event history in order to maintain link to Parking Space ID.  Please contact technical support accordingly.&lt;br>&lt;br>&lt;br>&lt;i>Do you want continue to delete?&lt;/i>&lt;br>&lt;br>Click &lt;b>yes&lt;/b> to delete Multi Space Meter.&lt;br>&lt;br>Click &lt;b>no&lt;/b> to return to Parking Space Management."
+                              id="warningDeleteMultiSpaceMeter_of"/>
+        </af:dialog>
+      </af:popup>
     </af:panelGroupLayout>
     <af:spacer id="psiANDschedSpacer" height="30"/>
     <af:panelGroupLayout id="meterSchedPanel" layout="vertical"
@@ -480,7 +498,8 @@
           <af:commandToolbarButton id="addSchedButton"
                                    inlineStyle="width: 130px;"
                                    actionDelivery="none"
-                                   text="#{buttonBundle.button_add_schedule}">
+                                   text="#{buttonBundle.button_add_schedule}"
+                                   binding="#{meterSpaceManagementBean.addNewScheduleButton}">
             <f:facet name="popup">
               <af:menu id="addSchedButtonMenu">
                 <af:commandMenuItem id="addOPSched" text="OP Schedule"
@@ -517,7 +536,8 @@
                    headerText="#{columnBundle.column_override}">
           <af:selectBooleanCheckbox id="MSTableRowOverride" simple="true"
                                     disabled="#{row.newRecord}"
-                                    value="#{row.override}"/>
+                                    value="#{row.override}"
+                                    valueChangeListener="#{meterSpaceManagementBean.editExistingScheduleRecordValueChangeHandler}" autoSubmit="true"/>
         </af:column>
         <af:column id="MSTableColSchedType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="scheduleType"
@@ -539,11 +559,13 @@
         <af:column id="MSTableColEffToDate" align="center" width="100px"
                    showRequired="true" sortable="false"
                    sortProperty="effectiveToDate"
-                   headerText="#{columnBundle.column_effective_to_date}">
+                   headerText="#{columnBundle.column_effective_to_date}"
+                   binding="#{meterSpaceManagementBean.meterOpScheduleEffToDateColumn}">
           <af:inputDate id="MSTableRowEffToDate" required="true" simple="true"
                         columns="10"
                         readOnly="#{meterSpaceManagementBean.readOnly}"
-                        value="#{row.effectiveToDate}">
+                        value="#{row.effectiveToDate}"
+                        binding="#{meterSpaceManagementBean.meterOpSchedEffToDateInputText}">
             <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
           </af:inputDate>
         </af:column>
@@ -574,7 +596,9 @@
                               rendered="#{row.editableFromTime}"
                               readOnly="#{meterSpaceManagementBean.readOnly}"
                               value="#{row.fromTime}"
-                              contentStyle="width: 60px;">
+                              contentStyle="width: 60px;"
+                              valueChangeListener="#{meterSpaceManagementBean.opSchedFromTimeValueChangeHandler}"
+                              autoSubmit="true">
             <f:selectItems id="MSTableRowFromTimeSI"
                            value="#{meterSpaceManagementBean.listFromTime}"/>
           </af:selectOneChoice>
@@ -780,7 +804,8 @@
           <af:commandToolbarButton id="addRateButton"
                                    inlineStyle="width: 110px;"
                                    actionDelivery="none"
-                                   text="#{buttonBundle.button_add_rate}">
+                                   text="#{buttonBundle.button_add_rate}"
+                                   binding="#{meterSpaceManagementBean.addNewRateButton}">
             <f:facet name="popup">
               <af:menu id="addRateButtonMenu">
                 <af:commandMenuItem id="addBaseRate" text="Base Rate"
@@ -817,7 +842,9 @@
                    headerText="#{columnBundle.column_override}">
           <af:selectBooleanCheckbox id="MRTableRowOverride" simple="true"
                                     disabled="#{row.newRecord}"
-                                    value="#{row.override}"/>
+                                    value="#{row.override}"
+                                    valueChangeListener="#{meterSpaceManagementBean.editExistingRateRecordValueChangeHandler}"
+                                    autoSubmit="true"/>
         </af:column>
         <af:column id="MRTableColRateType" rowHeader="unstyled" align="center"
                    width="80px" sortable="false" sortProperty="rateType"
@@ -839,7 +866,8 @@
         <af:column id="MRTableColEffToDate" align="center" width="100px"
                    showRequired="true" sortable="false"
                    sortProperty="effectiveToDate"
-                   headerText="#{columnBundle.column_effective_to_date}">
+                   headerText="#{columnBundle.column_effective_to_date}"
+                   binding="#{meterSpaceManagementBean.meterRateScheduleEffToDateColumn}">
           <af:inputDate id="MRTableRowEffToDate" required="true" simple="true"
                         columns="10"
                         readOnly="#{meterSpaceManagementBean.readOnly}"

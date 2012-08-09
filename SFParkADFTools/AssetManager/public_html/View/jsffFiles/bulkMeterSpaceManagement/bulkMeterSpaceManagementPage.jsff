@@ -194,11 +194,7 @@
       <af:outputText id="OT1" inlineStyle="font-size: 14px;"
                      value="#{assetManagerBundle.string_meter_operating_schedules}"/>
       <af:panelFormLayout id="MOSFormPanel">
-        <af:selectBooleanCheckbox id="deleteAllOPSBCB"
-                                  disabled="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.disableDeleteAllOPSchedules}"
-                                  text="#{assetManagerBundle.string_delete_all_op_schedules}"
-                                  value="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.deleteAllOPSchedules}"
-                                  partialTriggers="MSTable addOPSched addALTSched addTOWSched"/>
+         
         <af:selectBooleanCheckbox id="deleteAllALTSBCB"
                                   disabled="#{bulkMeterSpaceManagementBean.meterOPScheduleBulkTO.disableDeleteAllALTSchedules}"
                                   text="#{assetManagerBundle.string_delete_all_alt_schedules}"

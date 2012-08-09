@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/AssetManager/src/sfpark/asset/manager/view/backing/meterSpaceManagement
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/AssetManager/src/sfpark/asset/manager/view/backing/meterSpaceManagement
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 ChangeCNNIDBean.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:29.937000Z
+2012-08-07T15:04:02.625000Z
 051aba0d146ffcc79e9c3da4b60f8e10
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -62,14 +62,14 @@ mpiller
 
 MeterSpaceManagementBean.java
 file
-7
 
 
 
-2011-12-08T19:08:07.656000Z
-2561d5fa2491b93154382b6dbf04029b
-2011-12-08T20:48:23.765000Z
-7
+
+2012-08-07T15:04:02.671000Z
+dd387cbf8f6de706b8e2e6bba98e1be4
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -92,5 +92,5 @@ mpiller
 
 
 
-72291
+105640
 

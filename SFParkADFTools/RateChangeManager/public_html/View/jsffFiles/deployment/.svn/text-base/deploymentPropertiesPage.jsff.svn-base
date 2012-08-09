@@ -13,7 +13,7 @@
                 partialTriggers="validateAndSaveButton">
       <af:group id="mainToolbarValidateAndSave">
         <af:spacer id="spaceBeforeSaveButton" width="10"/>
-        <af:commandButton id="validateAndSaveButton" blocking="true"
+        <af:commandButton id="validateAndSaveButton"
                           disabled="#{deploymentPropertiesBean.disableValidateAndSaveButton}"
                           inlineStyle="font-weight: bold;"
                           text="#{buttonBundle.button_validate_and_save}"
@@ -58,7 +58,7 @@
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.effectiveFromDate}"
                       validator="#{deploymentPropertiesBean.effectiveDateValidator}"
                       autoSubmit="true"
-                      minValue="#{deploymentPropertiesBean.minimumEffectiveDate}">
+                      minValue="#{deploymentPropertiesBean.minimumEffectiveDate.date}">
           <af:convertDateTime type="date" timeZone="America/Los_Angeles"/>
         </af:inputDate>
         <af:spacer id="effDateSpacer" height="10"/>
@@ -170,7 +170,7 @@
         <af:inputText id="lastUpdatedOnIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_on}"
                       value="#{deploymentPropertiesBean.rateChangeProcessControlDTO.lastUpdatedDate}">
-          <af:convertDateTime type="both" timeZone="America/Los_Angeles"/>
+          <!-- af:convertDateTime type="both" timeZone="America/Los_Angeles"/ -->
         </af:inputText>
         <af:inputText id="lastUpdatedByIT" readOnly="true"
                       label="#{labelBundle.label_last_updated_by}"

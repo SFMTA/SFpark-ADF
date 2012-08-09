@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper
+END
+CalendarStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/CalendarStatus.java
+END
+GarageRatesTimeBand.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/GarageRatesTimeBand.java
+END
+MeterSmartFlag.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/MeterSmartFlag.java
+END
+OSPFacilityType.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/OSPFacilityType.java
+END
+GarageRatesDisplayGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/GarageRatesDisplayGroup.java
+END
+RateChangeProcessTimeLimitOption.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/RateChangeProcessTimeLimitOption.java
+END
+RateChangeProcessStepStartFlag.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/RateChangeProcessStepStartFlag.java
+END
+GarageRatesDisplayCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/GarageRatesDisplayCode.java
+END
+MeterType.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/MeterType.java
+END
+RateChangeStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/RateChangeStatus.java
+END
+OSPDataFeedFlag.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/OSPDataFeedFlag.java
+END
+GarageRatesQualifier.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/GarageRatesQualifier.java
+END
+MeterOPScheduleType.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/MeterOPScheduleType.java
+END
+MeterRateScheduleType.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/MeterRateScheduleType.java
+END
+EffectiveDateCalculator.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/EffectiveDateCalculator.java
+END
+AllowedValuesDeletableFlag.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/AllowedValuesDeletableFlag.java
+END
+PMDistrictAreaType.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/SFParkADFTools/!svn/ver/2/trunk/Model/src/sfpark/adf/tools/model/data/helper/PMDistrictAreaType.java
+END

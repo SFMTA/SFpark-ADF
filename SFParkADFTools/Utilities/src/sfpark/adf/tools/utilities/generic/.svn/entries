@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/Utilities/src/sfpark/adf/tools/utilities/generic
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/Utilities/src/sfpark/adf/tools/utilities/generic
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 CurrencyUtil.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:26.296000Z
+2012-08-07T15:04:12.953000Z
 c4d64e220dd0181b379d99117d60fc14
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:26.140000Z
+2012-08-07T15:04:12.734000Z
 f20e0fc0b665c32e66652fc702f218e8
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:26.234000Z
+2012-08-07T15:04:12.781000Z
 5e0dd46093c1ddd2674693f3fc9cda72
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -134,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:26.375000Z
+2012-08-07T15:04:12.828000Z
 f6c592ebdd66deac3fb7617327f9370b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -168,10 +168,10 @@ file
 
 
 
-2011-11-04T14:58:26.187000Z
+2012-08-07T15:04:13.000000Z
 e851d48a4f56b240eab465a0b8fe9b9d
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -202,10 +202,10 @@ file
 
 
 
-2011-11-04T14:58:26.328000Z
+2012-08-07T15:04:12.875000Z
 14c93358176ee79013de9ff5266f887a
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -236,10 +236,10 @@ file
 
 
 
-2011-11-04T14:58:26.265000Z
+2012-08-07T15:04:12.687000Z
 c51b05ad312a18e70b97b4a9424a9e96
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

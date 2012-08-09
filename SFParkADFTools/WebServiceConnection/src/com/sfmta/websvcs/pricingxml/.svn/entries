@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/WebServiceConnection/src/com/sfmta/websvcs/pricingxml
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/WebServiceConnection/src/com/sfmta/websvcs/pricingxml
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 MeterPricingWebService.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:43.265000Z
+2012-08-07T15:04:35.250000Z
 b377b35d25e2d46d58e192972c889fc2
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:43.250000Z
+2012-08-07T15:04:35.328000Z
 b74fd8b13d87acf8932ae691157e2b8f
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:43.281000Z
+2012-08-07T15:04:35.375000Z
 2aaf7c63d66cd285d4e423dd79b1c982
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -134,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:43.312000Z
+2012-08-07T15:04:35.296000Z
 80091af950612174c4d4acccbc83f3f5
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -168,10 +168,10 @@ file
 
 
 
-2011-11-04T14:58:43.328000Z
+2012-08-07T15:04:35.203000Z
 852fca342de670681451ebb8152abcec
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

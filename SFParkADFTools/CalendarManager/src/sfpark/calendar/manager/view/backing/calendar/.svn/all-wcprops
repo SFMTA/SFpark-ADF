@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/SFParkADFTools/!svn/ver/2/trunk/CalendarManager/src/sfpark/calendar/manager/view/backing/calendar
+END
+CalendarDeleteBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/SFParkADFTools/!svn/ver/2/trunk/CalendarManager/src/sfpark/calendar/manager/view/backing/calendar/CalendarDeleteBean.java
+END
+PickCalendarDatesBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/SFParkADFTools/!svn/ver/2/trunk/CalendarManager/src/sfpark/calendar/manager/view/backing/calendar/PickCalendarDatesBean.java
+END
+CalendarPropertiesBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/SFParkADFTools/!svn/ver/2/trunk/CalendarManager/src/sfpark/calendar/manager/view/backing/calendar/CalendarPropertiesBean.java
+END

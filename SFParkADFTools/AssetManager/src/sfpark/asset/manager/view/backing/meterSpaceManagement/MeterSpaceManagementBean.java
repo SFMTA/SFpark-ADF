@@ -13,15 +13,20 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import oracle.adf.share.logging.ADFLogger;
+import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.data.RichColumn;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.component.rich.input.RichInputDate;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
+import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneRadio;
 import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
 import oracle.adf.view.rich.component.rich.nav.RichCommandToolbarButton;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
+import oracle.adf.view.rich.event.DialogEvent;
+
+import org.apache.myfaces.trinidad.event.ReturnEvent;
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 
@@ -84,6 +89,11 @@ import sfpark.adf.tools.utilities.ui.ADFUtils;
  * 20120521-01 Mark Piller - Oracle Consulting  Add logic to display warning when changing OP Schedule Start Time
  * 20120522-01 Mark Piller - Oracle Consulting  Add logic to support when and which warning messages are displayed for OP Schedule Start Time changes
  * 20120522-02 Mark Piller - Oracle Consulting  Add logic to preserve Multi Space Pay Station ID and Multi Space Number
+ * 20120523-01 Mark Piller - Oracle Consulting  Add logic to handle Multi Space to Single Space changes
+ * 20120524-01 Mark Piller - Oracle Consulting  Add logic to refresh components on page via deleteSchedOrRate()
+ * 20120524-02 Mark Piller - Oracle Consulting  Add logic to created warningDeleteMultiSpaceMeterDialogListenerHandler()
+ * 20120524-03 Mark Piller - Oracle Consulting  Created components to support delete or change Multi Space Meter
+ * 20120529-01 Mark Piller - Oracle Consulting  Add logic to pass smart meter flag to selection of vendors / meter types
  */
 public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBeanInterface,
                                                                   ListBeanInterface,
@@ -115,8 +125,14 @@ public class MeterSpaceManagementBean extends BaseBean implements RequestScopeBe
     private RichColumn meterOpScheduleEffToDateColumn;
     private RichColumn meterRateScheduleEffToDateColumn;
     private RichInputDate meterOpSchedEffToDateInputText;
-    
-    
+    private RichPopup warningDeleteMultiSpaceMeterPopup;
+    private RichCommandButton deleteParkingSpaceButton;
+    private RichSelectOneChoice capColorSOC;
+    private RichSelectOneChoice meterStatusSOC;
+    private RichCommandButton changeCNNIdButton;
+    private RichCommandButton undeleteParkingSpaceButton;
+    private RichCommandButton changeMeterModelButton;
+
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -629,8 +645,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
             FacesMessage fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN,"Summary", warningMessage);
             String clientId = meterOpScheduleEffToDateColumn.getClientId(fctx);
             fctx.addMessage(clientId, fmsg);
-//          String id = meterOpScheduleEffToDateColumn.getId();
-//          fctx.addMessage(meterOpScheduleEffToDateColumn.getClientId(fctx), fmsg);
         }
 
         updateAllMeterDetails();
@@ -718,18 +732,22 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         if (ID.equalsIgnoreCase("meterModelsButton")) {
             // 20120522-02
-            // save the action to view scope memory - 20120522-02
-            setViewScopeValue(ViewScopeKey.ACTION.getKey(),"ChangeMeterModel");
-
             // get the Meter Type (Multi Space or Single Space) - 20120522-02
             String meterTypeValue = meterTypeIT.getValue().toString();
             setViewScopeValue(ViewScopeKey.METER_TYPE.getKey(),meterTypeValue);
             
-            // get the Multi Space Pay Station ID and Multi Space Number - 20120522-02
+            // 20120529-01
+            // add to be more specific about when to present a warning
+            String smartMeterValue = smartMeterIT.getValue().toString();
+            setViewScopeValue(ViewScopeKey.SMART_METER_FLAG.getKey(),smartMeterValue);
+            
+            // get the Multi Space Pay Station ID, Multi Space Number, and Blockface ID - 20120522-02
             String msPayStationIdValue = msPayStationIDIT.getValue().toString();
             int msNumberValue = (Integer)msNumberIT.getValue();
+            String blockfaceIdValue = getBlockfaceIDITLabel(); // 20120523-01
             setViewScopeValue(ViewScopeKey.MS_PAY_STATION_ID.getKey(),msPayStationIdValue);
             setViewScopeValue(ViewScopeKey.MS_NUMBER.getKey(), msNumberValue);
+            setViewScopeValue(ViewScopeKey.BLOCKFACE_ID.getKey(), blockfaceIdValue); // 20120523-01
             
             setSessionScopeValue(SessionScopeKey.NAVIGATION_INFO.getKey(),
                                  NavigationFlow.MeterModelsPage.name());
@@ -739,8 +757,12 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
         }
     }
 
+    /**
+     * This button is for the End Schedule or End Rate Events
+     * 
+     * @param event
+     */
     public void deleteButtonHandler(ActionEvent event) {
-
         String ID = event.getComponent().getId();
 
         if (ID.contains("Sched")) {
@@ -771,9 +793,9 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
                             dto.setEffectiveToDate(newToDate);
 
-                        }
-                    }
-                }
+                        } // if (dto.isNewRecord())
+                    } // if (dto != null)
+                } // for (Object rowKey : rowKeySet)
 
                 List<MeterOPScheduleDTO> meterSchedules =
                     (List<MeterOPScheduleDTO>)table.getValue();
@@ -787,7 +809,7 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 resetAllMeterScheduleTableButtons();
                 table.setValue(null);
                 addPartialTarget(table);
-            }
+            } // if (selectedNumOfRows > 0)
 
         } else if (ID.contains("Rate")) {
 
@@ -817,9 +839,9 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
                             dto.setEffectiveToDate(newToDate);
 
-                        }
-                    }
-                }
+                        } // if (dto.isNewRecord())
+                    } // if (dto != null)
+                } // for (Object rowKey : rowKeySet)
 
                 List<MeterRateScheduleDTO> meterRates =
                     (List<MeterRateScheduleDTO>)table.getValue();
@@ -833,10 +855,11 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
                 resetAllMeterRateTableButtons();
                 table.setValue(null);
                 addPartialTarget(table);
-            }
+            } // if (selectedNumOfRows > 0)
 
-        }
-    }
+        } // if (ID.contains("Sched"))
+       
+    } // deleteButtonHandler
 
     /**
      *  20120501-01 completely revised
@@ -945,6 +968,9 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
      * @param event
      */
     public void saveButtonHandler(ActionEvent event) {
+        // TODO: Warning - did not enter last 3 digits of ms Pay Station ID
+        // TODO: Warning - did not enter a ms number > 0 for ms meter
+        
         boolean allValid = true;
         NavigationMode currentPageMode = getCurrentPageMode();
 
@@ -1360,20 +1386,21 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         String ID = event.getComponent().getId();
 
-        if (ID.equals("deleteParkingSpaceButton")) {
-            getCurrentParkingSpaceInventoryDTO().setCapColor("-");
-            getCurrentParkingSpaceInventoryDTO().setActiveMeterFlag("U");
-            getCurrentParkingSpaceInventoryDTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
-
-            endDateAllSchedules();
-            endDateAllRates();
-
-        } else if (ID.equals("undeleteParkingSpaceButton")) {
-            getCurrentParkingSpaceInventoryDTO().setCapColor(AllowedValuesRetriever.getCapColorDefaultValue());
-
+        // get the meter type and smart meter flag
+        String meterType = meterTypeIT.getValue().toString();
+        String smartMeter = smartMeterIT.getValue().toString();
+        
+        if( (meterType.equals("Multi Space")) && (smartMeter.equals("Yes")) ){
+            // issue a warning to the user
+            // allow the user to back out
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            warningDeleteMultiSpaceMeterPopup.show(hints);
+        } else {
+            // single space meter...
+            deleteSchedOrRate(ID);
         }
 
-    }
+    } // deleteUndeleteParkingSpaceButtonHandler
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1702,7 +1729,6 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
     }
 
     private void preserveTableData() {
-        // TODO: Figure out the best way
 
         List<MeterOPScheduleDTO> meterSchedules =
             (List<MeterOPScheduleDTO>)getActiveMeterScheduleTable().getValue();
@@ -2431,4 +2457,113 @@ DMLOperationsProvider.INSTANCE.getNewParkingSpaceInventoryDTO(blockfaceDO,
 
         return addedTWOSchedule;
     }
-}
+
+    // 20120524-03
+    public void setWarningDeleteMultiSpaceMeterPopup(RichPopup warningDeleteMultiSpaceMeterPopup) {
+        this.warningDeleteMultiSpaceMeterPopup = warningDeleteMultiSpaceMeterPopup;
+    }
+
+    // 20120524-03
+    public RichPopup getWarningDeleteMultiSpaceMeterPopup() {
+        return warningDeleteMultiSpaceMeterPopup;
+    }
+
+    // 20120524-02 created
+        public void warningDeleteMultiSpaceMeterDialogListenerHandler(DialogEvent dialogEvent) {
+        String userResponse = dialogEvent.getOutcome().toString();
+        if(userResponse.equals("yes")){
+            deleteSchedOrRate("deleteParkingSpaceButton");
+        }
+    }
+
+    // 20120524-01
+    // added the addPartialTarget() calls
+    public void deleteSchedOrRate(String action){
+        if (action.equals("deleteParkingSpaceButton")) {
+            getCurrentParkingSpaceInventoryDTO().setCapColor("-");
+            getCurrentParkingSpaceInventoryDTO().setActiveMeterFlag("U");
+            getCurrentParkingSpaceInventoryDTO().setDisplayMeterDetails(DataRepositoryUtil.getMeterModelsDONULLValue());
+
+            endDateAllSchedules();
+            endDateAllRates();
+
+            // refresh the UI to reflect the updates
+            // 20120524-01 - added "addPartialTarget()" calls
+            addPartialTarget(capColorSOC);
+            addPartialTarget(meterStatusSOC);
+            addPartialTarget(meterVendorIT);
+            addPartialTarget(meterModelIT);
+            addPartialTarget(meterTypeIT);
+            addPartialTarget(msPayStationIDIT);
+            addPartialTarget(msNumberIT);
+            addPartialTarget(changeCNNIdButton);
+            addPartialTarget(changeMeterModelButton);
+            addPartialTarget(deleteParkingSpaceButton);
+            addPartialTarget(undeleteParkingSpaceButton);
+
+        } else if (action.equals("undeleteParkingSpaceButton")) {
+            getCurrentParkingSpaceInventoryDTO().setCapColor(AllowedValuesRetriever.getCapColorDefaultValue());
+        } // if (action.equals("deleteParkingSpaceButton"))
+    } // deleteUndeleteParkingSpaceButtonHandler
+
+    // 20120524-03
+    public void setDeleteParkingSpaceButton(RichCommandButton deleteParkingSpaceButton) {
+        this.deleteParkingSpaceButton = deleteParkingSpaceButton;
+    }
+
+    // 20120524-03
+    public RichCommandButton getDeleteParkingSpaceButton() {
+        return deleteParkingSpaceButton;
+    }
+
+    // 20120524-03
+    public void setCapColorSOC(RichSelectOneChoice capColorIT) {
+        this.capColorSOC = capColorIT;
+    }
+
+    // 20120524-03
+    public RichSelectOneChoice getCapColorSOC() {
+        return capColorSOC;
+    }
+
+    // 20120524-03
+    public void setMeterStatusSOC(RichSelectOneChoice meterStatusSOC) {
+        this.meterStatusSOC = meterStatusSOC;
+    }
+
+    // 20120524-03
+    public RichSelectOneChoice getMeterStatusSOC() {
+        return meterStatusSOC;
+    }
+
+    // 20120524-03
+    public void setChangeCNNIdButton(RichCommandButton changeCNNIdButton) {
+        this.changeCNNIdButton = changeCNNIdButton;
+    }
+
+    // 20120524-03
+    public RichCommandButton getChangeCNNIdButton() {
+        return changeCNNIdButton;
+    }
+
+    // 20120524-03
+    public void setUndeleteParkingSpaceButton(RichCommandButton undeleteParkingSpaceButton) {
+        this.undeleteParkingSpaceButton = undeleteParkingSpaceButton;
+    }
+
+    // 20120524-03
+    public RichCommandButton getUndeleteParkingSpaceButton() {
+        return undeleteParkingSpaceButton;
+    }
+
+    // 20120524-03
+    public void setChangeMeterModelButton(RichCommandButton changeMeterModelButton) {
+        this.changeMeterModelButton = changeMeterModelButton;
+    }
+
+    // 20120524-03
+    public RichCommandButton getChangeMeterModelButton() {
+        return changeMeterModelButton;
+    }
+
+}  // MeterSpaceManagementBean

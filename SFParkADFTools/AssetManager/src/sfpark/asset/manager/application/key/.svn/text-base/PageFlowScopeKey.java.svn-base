@@ -2,6 +2,14 @@ package sfpark.asset.manager.application.key;
 
 import java.util.Locale;
 
+
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120502-01 Mark Piller - Oracle Consulting  Add METER_SCHEDULE_EDIT_EXISTING_RECORDS_SELECTED, METER_RATE_EDIT_EXISTING_RECORDS_SELECTED
+ */
 public enum PageFlowScopeKey {
 
     ERROR_TITLE,
@@ -43,7 +51,9 @@ public enum PageFlowScopeKey {
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    METER_SCHEDULE_TEMPLATE_TYPE;
+    METER_SCHEDULE_TEMPLATE_TYPE,
+    METER_SCHEDULE_EDIT_EXISTING_RECORDS_SELECTED,
+    METER_RATE_EDIT_EXISTING_RECORDS_SELECTED;
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

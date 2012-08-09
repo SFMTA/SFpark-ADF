@@ -2,6 +2,8 @@ package sfpark.rateChange.manager.view.backing.rateChange;
 
 import javax.faces.event.ActionEvent;
 
+import oracle.adf.share.logging.ADFLogger;
+
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeHeaderDTO;
 import sfpark.adf.tools.model.data.dto.rateChange.RateChangeProcessControlDTO;
 import sfpark.adf.tools.model.helper.OperationStatus;
@@ -23,8 +25,20 @@ import sfpark.rateChange.manager.view.flow.NavigationFlow;
 import sfpark.rateChange.manager.view.flow.NavigationMode;
 import sfpark.rateChange.manager.view.provider.DMLOperationsProvider;
 
+/**
+ * Change History:
+ * Change ID format is YYYYMMDD-## where you can identify multiple changes
+ * Change ID   Developer Name                   Description
+ * ----------- -------------------------------- ------------------------------------------
+ * 20120531-01 Mark Piller - Oracle Consulting  Add logic for special handling of Pay By Phone
+ * 20120531-02 Mark Piller - Oracle Consulting  replace printLog with ADF Logger
+ * 
+ */
 public class RateChangeDeployBean extends BaseBean implements PropertiesBeanInterface,
                                                               RequestScopeBeanInterface {
+
+    // 20120531-02
+    private static ADFLogger adfLogger = ADFLogger.createADFLogger(RateChangeDeployBean.class);
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -167,7 +181,9 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
             checkForRateChgRefUniqueness = true;
         }
 
-        printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        // 20120531-02
+        // printLog("Check for RateChgRef = " + checkForRateChgRefUniqueness);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> Check for RateChgRef = \" + checkForRateChgRefUniqueness");
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -182,7 +198,9 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
             }
         }
 
-        printLog("After Meter Vendor = " + allValid);
+        // 20120531-02
+        // printLog("After Meter Vendor = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Meter Vendor = \" + allValid");
 
         if (allValid && checkForRateChgRefUniqueness) {
             RateChangeProcessControlDTOStatus rateChangeProcessControlStatus =
@@ -194,7 +212,9 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
             }
         }
 
-        printLog("After Rate Chg Ref check = " + allValid);
+        // 20120531-02
+        // printLog("After Rate Chg Ref check = " + allValid);
+        adfLogger.log(adfLogger.TRACE,"DEBUG >> After Rate Chg Ref check = \" + allValid");
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -211,17 +231,33 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         if (allValid) {
-            printLog("All entries are Valid. Proceed");
+            // 20120531-02
+            // printLog("All entries are Valid. Proceed");
+            adfLogger.log(adfLogger.TRACE,"DEBUG >> All entries are Valid. Proceed");
 
             if (currentPageMode.isDeployMode()) {
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // ++++++++++++++++++++++++++++++++++
                 // DEPLOY Mode
-                printLog("DEPLOY Mode");
+
+                // 20120531-02
+                // printLog("DEPLOY Mode");
+                adfLogger.log(adfLogger.TRACE,"DEBUG >> DEPLOY Mode");
 
                 RateChangeProcessControlDTO currentDTO =
                     getRateChangeProcessControlDTO();
+                
+                // 20120531-01
+                // Pay By Phone Logic
+                // If the Process Step is 10 AND the Meter Vendor is 'PBP' 
+                // then change the process step to 20
+                String meterVendor = currentDTO.getMeterVendor();
+                String processStep = currentDTO.getProcessStep();
+                if( (processStep.equals("10")) && (meterVendor.equals("PBP")) ){
+                    currentDTO.setProcessStep("20");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> Pay By Phone... change process step from 10 to 20");
+                }
 
                 OperationStatus operationStatus =
                     DMLOperationsProvider.INSTANCE.addRateChangeProcessControl(currentDTO);
@@ -231,7 +267,9 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                         RateChangeProcessControlProvider.INSTANCE.checkForRateChangeReference(currentDTO.getRateChangeReference());
 
                     if (rateChangeProcessControlStatus.existsDTO()) {
-                        printLog("ADD operation was successful");
+                        // 20120531-02
+                        // printLog("ADD operation was successful");
+                        adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD operation was successful");
 
                         setInlineMessageText(TranslationUtil.getCommonBundleString(CommonBundleKey.info_success_create));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_SUCCESS);
@@ -242,13 +280,17 @@ DMLOperationsProvider.INSTANCE.getNewRateChangeProcessControlDTO(getRateChangeHe
                                               rateChangeProcessControlStatus.getDTO());
 
                     } else {
-                        printLog("ADD operation failed");
+                        // 20120531-02
+                        // printLog("ADD operation failed");
+                        adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD operation failed");
                         setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
                         setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                     }
 
                 } else {
-                    printLog("ADD operation failed");
+                    // 20120531-02
+                    // printLog("ADD operation failed");
+                    adfLogger.log(adfLogger.TRACE,"DEBUG >> ADD operation failed");
                     setInlineMessageText(TranslationUtil.getErrorBundleString(ErrorBundleKey.error_create_rate_change_reference_failure));
                     setInlineMessageClass(CSSClasses.INLINE_MESSAGE_FAILURE);
                 }

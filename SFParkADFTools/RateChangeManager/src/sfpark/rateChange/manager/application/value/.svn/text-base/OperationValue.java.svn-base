@@ -10,7 +10,8 @@ import sfpark.adf.tools.utilities.generic.StringUtil;
  * Change ID format is YYYYMMDD-## where you can identify multiple changes
  * Change ID   Developer Name                   Description
  * ----------- -------------------------------- ------------------------------------------
- * 20111129-01 Mark Piller - Oracle Consulting  add FINALIZE
+ * 20111129-01 Mark Piller - Oracle Consulting  add FINALIZE, isFinalize()
+ * 20111130-01 Mark Piller - Oracle Consulting  add RESET, isReset()
  */
 public enum OperationValue {
 
@@ -21,6 +22,7 @@ public enum OperationValue {
     DELETE,
     DEPLOY,
     FINALIZE,
+    RESET,
 
     // Used for RATE_CHG_PROCESS_CONTROL
     EDIT,
@@ -87,4 +89,10 @@ public enum OperationValue {
     public boolean isFinalize() {
         return (this == FINALIZE);
     }
+
+    // 20111130-01    
+    public boolean isReset() {
+        return (this == RESET);
+    }
+
 }

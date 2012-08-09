@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/RateChangeManager/public_html
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/RateChangeManager/public_html
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 Resources
 dir
@@ -41,10 +41,10 @@ file
 
 
 
-2011-11-04T14:58:31.906000Z
+2012-08-07T15:04:18.453000Z
 3d95c64363015b836c51f283ad83a96b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -75,10 +75,10 @@ file
 
 
 
-2011-11-04T14:58:34.406000Z
+2012-08-07T15:04:18.468000Z
 4b413991ae11ff6d96b6a20085a6c5ad
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -109,10 +109,10 @@ file
 
 
 
-2011-11-04T14:58:34.140000Z
+2012-08-07T15:04:18.875000Z
 eb16908e1c1874de2d627e123cf87b44
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -143,10 +143,10 @@ file
 
 
 
-2011-11-04T14:58:31.921000Z
+2012-08-07T15:04:18.890000Z
 a0bd2c6b36c2ff826c9ffec91d496093
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -177,10 +177,10 @@ file
 
 
 
-2011-11-04T14:58:31.921000Z
+2012-08-07T15:04:18.421000Z
 003cdb3e23ca75b602804cd79a2aa408
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

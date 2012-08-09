@@ -53,7 +53,7 @@ public final class StoredProcedureProvider {
     // PUBLIC METHODS
 
     public OperationStatus isCalendarDeletable(String calendarID) {
-        adfLogger.info("DEBUG  >> isCalendarDeletable");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> isCalendarDeletable");
 
         return callStoredProcedure(StoredProcedure.IS_CALENDAR_DELETABLE,
                                    calendarID);
@@ -61,9 +61,9 @@ public final class StoredProcedureProvider {
 
     public OperationStatus generateRateChange(String rateChgRefID,
                                               String lastUpdatedUser) {
-        adfLogger.info("DEBUG  >> generateRateChange");
-        adfLogger.info("DEBUG  >> rateChgRefID = " + rateChgRefID);
-        adfLogger.info("DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> generateRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> rateChgRefID = " + rateChgRefID);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
 
         return callStoredProcedure(StoredProcedure.GENERATE_RATE_CHG,
                                    rateChgRefID, lastUpdatedUser);
@@ -72,9 +72,9 @@ public final class StoredProcedureProvider {
     // 20111129-01 added
     public OperationStatus finalizeRateChange(String rateChgRefID,
                                               String lastUpdatedUser) {
-        adfLogger.info("DEBUG  >> finalizeRateChange");
-        adfLogger.info("DEBUG  >> rateChgRefID = " + rateChgRefID);
-        adfLogger.info("DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> finalizeRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> rateChgRefID = " + rateChgRefID);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
   
         return callStoredProcedure(StoredProcedure.FINALIZE_RATE_CHG,
                                    rateChgRefID, lastUpdatedUser);
@@ -83,9 +83,9 @@ public final class StoredProcedureProvider {
     // 20111130-01 added
     public OperationStatus resetRateChange(String rateChgRefID,
                                               String lastUpdatedUser) {
-        adfLogger.info("DEBUG  >> resetRateChange");
-        adfLogger.info("DEBUG  >> rateChgRefId = " + rateChgRefID);
-        adfLogger.info("DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> resetRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> rateChgRefId = " + rateChgRefID);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
     
         return callStoredProcedure(StoredProcedure.RESET_RATE_CHG_PROCESS,
                                    rateChgRefID, lastUpdatedUser);
@@ -96,10 +96,10 @@ public final class StoredProcedureProvider {
     public OperationStatus deleteRateChange(String rateChgRefID,
                                             String lastUpdatedUser,
                                             String lastUpdatedProgram) {
-        adfLogger.info("DEBUG  >> deleteRateChange");
-        adfLogger.info("DEBUG  >> rateChgRefID = " + rateChgRefID);
-        adfLogger.info("DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
-        adfLogger.info("DEBUG  >> lastUpdatedProgram = " + lastUpdatedProgram);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> deleteRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> rateChgRefID = " + rateChgRefID);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> lastUpdatedUser = " + lastUpdatedUser);
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> lastUpdatedProgram = " + lastUpdatedProgram);
 
         // 20120419-02
         //return callStoredProcedure(StoredProcedure.DELETE_RATE_CHG,
@@ -155,29 +155,29 @@ public final class StoredProcedureProvider {
 
         try {
             connection = OracleDBConnection.getConnection();
-            adfLogger.info("DEBUG  >> Calling getPreparedStatement()");
-            adfLogger.info("DEBUG  >> connection: " + connection.toString());
-            adfLogger.info("DEBUG  >> procedure: " + procedure.toString());
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> Calling getPreparedStatement()");
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> connection: " + connection.toString());
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> procedure: " + procedure.toString());
             preparedStatement = getPreparedStatement(connection, procedure, args);
 
-            adfLogger.info("DEBUG  >> Executing executeQuery()");
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> Executing executeQuery()");
             resultSet = preparedStatement.executeQuery();
 
-            adfLogger.info("DEBUG  >> Begin to pass through resultSet");
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> Begin to pass through resultSet");
             while (resultSet.next()) {
-                adfLogger.info("DEBUG  >> Fetching resultSet from stored procedure");
+                adfLogger.log(adfLogger.TRACE,"DEBUG  >> Fetching resultSet from stored procedure");
                 // 20111109-02
                 // Get the message returned from the stored procedure.
                 Object colObject = resultSet.getObject(1);
                 messageFromODIFunction = colObject.toString();
-                adfLogger.info("DEBUG  >> Results from stored procedure: " + messageFromODIFunction);
+                adfLogger.log(adfLogger.TRACE,"DEBUG  >> Results from stored procedure: " + messageFromODIFunction);
             }
 
             // 20111109-03
             // evaluate the returned message from the stored procedure
             // determine if it is a success or failure
             // If the string "FAIL" is not found then there is success
-            adfLogger.info("DEBUG  >> Setting operation status to success");
+            adfLogger.log(adfLogger.TRACE,"DEBUG  >> Setting operation status to success");
             // 20111115-01 added test for "0"
             if (messageFromODIFunction.equals("0")) {
                 // FAILURE REPORTED BY FUNCTION
@@ -187,7 +187,7 @@ public final class StoredProcedureProvider {
             // this test is for a special failure message from the Finalize Rate ODI function
             else if (messageFromODIFunction.toUpperCase().indexOf("CANNOT BE FINALIZED") > 0) {
                 // FAILURE REPORTED BY FUNCTION
-                adfLogger.info("DEBUG  >> Finalize Rate - ERROR");
+                adfLogger.log(adfLogger.TRACE,"DEBUG  >> Finalize Rate - ERROR");
                 operationStatus = OperationStatus.failure(messageFromODIFunction);
             }
             else if (messageFromODIFunction.toUpperCase().indexOf("FAIL") == -1) {
@@ -207,7 +207,7 @@ public final class StoredProcedureProvider {
             OracleDBConnection.closeAll(resultSet, preparedStatement, connection);
         }
 
-        adfLogger.info("DEBUG  >> Exiting callStoredProcedure");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> Exiting callStoredProcedure");
 
         return operationStatus;
     }

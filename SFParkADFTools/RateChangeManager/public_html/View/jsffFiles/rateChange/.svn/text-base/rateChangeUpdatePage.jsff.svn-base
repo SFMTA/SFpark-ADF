@@ -20,13 +20,6 @@
                           actionListener="#{rateChangeUpdateBean.saveButtonHandler}"/>
         <af:spacer id="spaceAfterButton" width="10"/>
       </af:group>
-      <af:group id="mainToolbarInlineMessage">
-        <af:spacer id="spaceBeforeInlineMessage" width="10"/>
-        <af:outputText id="inlineMessage" noWrap="true"
-                       value="#{rateChangeUpdateBean.inlineMessageText}"
-                       styleClass="#{rateChangeUpdateBean.inlineMessageClass}"
-                       partialTriggers="validateAndSaveButton"/>
-      </af:group>
     </af:toolbar>
     <af:separator id="Separator1"/>
     <af:panelGroupLayout id="rateChangeHeaderPanel" layout="horizontal"
@@ -48,7 +41,8 @@
         <af:spacer id="plannedEffDateSpacer" height="20"/>
         <af:selectOneChoice label="Submitted By:"
                             value="#{rateChangeUpdateBean.rateChangeHeaderDTO.submittedBy}"
-                            id="SubmittedBySOC" required="true">
+                            id="SubmittedBySOC" required="true"
+                            readOnly="#{rateChangeUpdateBean.readOnlySubmittedInfo}">
           <f:selectItems value="#{rateChangeUpdateBean.listSubmittedBy}"
                          id="SubmittedBySI"/>
         </af:selectOneChoice>
@@ -63,7 +57,9 @@
         <af:spacer id="submittedSpacer" height="20"/>
         <af:selectOneChoice label="Approved By:"
                             value="#{rateChangeUpdateBean.rateChangeHeaderDTO.approvedBy}"
-                            id="soc1" required="true">
+                            id="ApprovedBySOC" required="true"
+                            readOnly="#{rateChangeUpdateBean.readOnly}"
+                            rendered="#{rateChangeUpdateBean.renderApprovedInfo}">
           <f:selectItems value="#{rateChangeUpdateBean.listApprovedBy}"
                          id="si1"/>
         </af:selectOneChoice>
@@ -107,4 +103,17 @@
       </af:panelFormLayout>
     </af:panelGroupLayout>
   </af:panelGroupLayout>
+  <!-- 
+  20120316 Mark Piller Oracle Consulting - moved inlineMessageText from toolbar at top
+  of page so that the messages would be rendered on the page.  With the text message
+  within the root > panelGroupLayout > toolbar... the messages never displayed.
+  Moving the inlineMessageText to this position allowed messages to display to the user.
+  -->
+  <af:group id="mainToolbarInlineMessage">
+    <af:spacer id="spaceBeforeInlineMessage" width="10"/>
+    <af:outputText id="inlineMessage" noWrap="true"
+                   value="#{rateChangeUpdateBean.inlineMessageText}"
+                   styleClass="#{rateChangeUpdateBean.inlineMessageClass}"
+                   partialTriggers="validateAndSaveButton"/>
+  </af:group>
 </jsp:root>

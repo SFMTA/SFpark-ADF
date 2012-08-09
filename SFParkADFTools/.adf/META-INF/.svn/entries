@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/.adf/META-INF
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/.adf/META-INF
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 adf-config.xml
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:07.375000Z
-98f847e7bc107f4c0047688177c89236
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:58.390000Z
+5c4af1b9e7278a695bab8949e2baf1c6
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -58,18 +58,18 @@ mpiller
 
 
 
-719
+1094
 
 connections.xml
 file
-6
 
 
 
-2011-11-15T18:58:57.064000Z
-a003edbb5dc51e2351e37b392cb1edb3
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:03:58.359000Z
+5a21907c180472dd8af9e02f13025bf8
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -92,5 +92,5 @@ mpiller
 
 
 
-959
+98
 

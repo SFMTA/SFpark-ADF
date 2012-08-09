@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/view/backing/helper
+END
+ListBeanInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/view/backing/helper/ListBeanInterface.java
+END
+PropertiesBeanInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/view/backing/helper/PropertiesBeanInterface.java
+END
+RequestScopeBeanInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/SFParkADFTools/!svn/ver/2/trunk/Utilities/src/sfpark/adf/tools/view/backing/helper/RequestScopeBeanInterface.java
+END

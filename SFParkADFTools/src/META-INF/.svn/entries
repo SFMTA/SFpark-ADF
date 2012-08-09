@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/src/META-INF
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/src/META-INF
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,18 +24,18 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 cwallet.sso
 file
-6
 
 
 
-2011-11-15T18:58:57.033000Z
-e6501d0d04218c795fabd6fa0c5664a8
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:03:58.000000Z
+c24191ee7d97b9b41cacb1aad309c3f3
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 has-props
 
@@ -58,18 +58,52 @@ has-props
 
 
 
-3309
+2933
+
+jazn-data.xml
+file
+
+
+
+
+2012-08-07T15:03:57.937000Z
+adbc86e7f19bc02c5a26e25588a79271
+2012-08-07T15:03:36.734375Z
+2
+mpiller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+245
 
 jps-config.xml
 file
-6
 
 
 
-2012-01-04T20:28:43.390000Z
+
+2012-08-07T15:03:58.031000Z
 876844283ef8bcd91f455797b7808043
-2011-11-30T20:30:56.609000Z
-6
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:07.156000Z
+2012-08-07T15:03:57.953000Z
 06edd70727682862bbcbe900222fe48f
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

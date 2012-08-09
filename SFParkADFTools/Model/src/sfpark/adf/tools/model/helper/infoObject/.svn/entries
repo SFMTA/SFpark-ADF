@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/Model/src/sfpark/adf/tools/model/helper/infoObject
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/Model/src/sfpark/adf/tools/model/helper/infoObject
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 ColumnInfoObjectStatus.java
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:23.187000Z
+2012-08-07T15:03:40.343000Z
 6d00f5ce422f4df407d0bf5db0e6871c
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:23.125000Z
+2012-08-07T15:03:40.406000Z
 476f95c3cf87945a00a1a683b08d84ff
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -100,10 +100,10 @@ file
 
 
 
-2011-11-04T14:58:23.093000Z
+2012-08-07T15:03:40.468000Z
 416dc72a397f3f601eefcfefb8ede752
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

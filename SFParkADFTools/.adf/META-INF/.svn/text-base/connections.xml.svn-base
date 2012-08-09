@@ -1,21 +1,2 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<References xmlns="http://xmlns.oracle.com/adf/jndi">
-   <Reference name="SF Park ADF Data Source" className="oracle.jdeveloper.db.adapter.DatabaseProvider" credentialStoreKey="SF Park ADF Data Source" xmlns="">
-      <Factory className="oracle.jdeveloper.db.adapter.DatabaseProviderFactory"/>
-      <RefAddresses>
-         <StringRefAddr addrType="subtype">
-            <Contents>oraJDBC</Contents>
-         </StringRefAddr>
-         <StringRefAddr addrType="user">
-            <Contents>SFPARK_ODS</Contents>
-         </StringRefAddr>
-         <SecureRefAddr addrType="password"/>
-         <StringRefAddr addrType="DeployPassword">
-            <Contents>true</Contents>
-         </StringRefAddr>
-         <StringRefAddr addrType="customUrl">
-            <Contents>jdbc:oracle:thin:@lnxoradev1:1521/sfpark1</Contents>
-         </StringRefAddr>
-      </RefAddresses>
-   </Reference>
-</References>
+<References xmlns="http://xmlns.oracle.com/adf/jndi"/>

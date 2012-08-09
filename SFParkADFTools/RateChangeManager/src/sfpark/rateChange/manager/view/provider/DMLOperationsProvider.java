@@ -77,7 +77,7 @@ public class DMLOperationsProvider {
     // Methods to create new DTOs
 
     public BlockTimeBandsWrapper getNewBlockTimeBandsWrapper(String blockID) {
-        adfLogger.info("DEBUG  >> entering getNewBlockTimeBandsWrapper");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering getNewBlockTimeBandsWrapper");
 
         BlockTimeBandsWrapper wrapper = new BlockTimeBandsWrapper(blockID);
 
@@ -86,7 +86,7 @@ public class DMLOperationsProvider {
         wrapper.setOpenTime(TimeDisplayUtil.extractAnyTimeForDisplay(0));
         wrapper.setCloseTime(TimeDisplayUtil.extractAnyTimeForDisplay(2400));
 
-        adfLogger.info("DEBUG  >> exiting getNewBlockTimeBandsWrapper");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting getNewBlockTimeBandsWrapper");
 
         return wrapper;
     }
@@ -97,7 +97,7 @@ public class DMLOperationsProvider {
      * @return
      */
     public RateChangeHeaderDTO getNewRateChangeHeaderDTO() {
-        adfLogger.info("DEBUG  >> entering getNewRateChangeHeaderDTO");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering getNewRateChangeHeaderDTO");
 
         RateChangeHeaderDTO DTO = new RateChangeHeaderDTO();
 
@@ -111,13 +111,13 @@ public class DMLOperationsProvider {
 
         DTO.setStatus(RateChangeStatus.WORKING);
 
-        adfLogger.info("DEBUG  >> exiting getNewRateChangeHeaderDTO");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting getNewRateChangeHeaderDTO");
 
         return DTO;
     }
 
     public RateChangeProcessControlDTO getNewRateChangeProcessControlDTO(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering getNewRateChangeProcessControlDTO");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering getNewRateChangeProcessControlDTO");
 
         RateChangeProcessControlDTO DTO = new RateChangeProcessControlDTO();
 
@@ -129,7 +129,7 @@ public class DMLOperationsProvider {
         DTO.setStepStartFlag(RateChangeProcessStepStartFlag.HOLD);
         DTO.setStepExecStatus(AllowedValuesRetriever.getProcessStepExecStatusDefaultValue());
 
-        adfLogger.info("DEBUG  >> exiting getNewRateChangeProcessControlDTO");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting getNewRateChangeProcessControlDTO");
 
         return DTO;
     }
@@ -143,7 +143,7 @@ public class DMLOperationsProvider {
                                                Date effectiveFromDate,
                                                List<RateChangeRulesDTO> applyList,
                                                List<RateChangeRulesDTO> replaceList) {
-        adfLogger.info("DEBUG  >> entering editRateChangeRules");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering editRateChangeRules");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -168,14 +168,14 @@ public class DMLOperationsProvider {
             }
         }
 
-        adfLogger.info("DEBUG  >> exiting editRateChangeRules");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting editRateChangeRules");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus addBlockTimeBands(List<BlockTimeBandsDTO> toBeAddedBlockTimeBandsDTOs,
                                              List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
-        adfLogger.info("DEBUG  >> entering addBlockTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering addBlockTimeBands");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -208,13 +208,13 @@ public class DMLOperationsProvider {
             }
         }
 
-        adfLogger.info("DEBUG  >> exiting addBlockTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting addBlockTimeBands");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus editBlockTimeBands(List<BlockTimeBandsDTO> toBeEditedBlockTimeBandsDTOs) {
-        adfLogger.info("DEBUG  >> entering editBlockTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering editBlockTimeBands");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -233,13 +233,13 @@ public class DMLOperationsProvider {
             }
         }
 
-        adfLogger.info("DEBUG  >> exiting editBlockTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting editBlockTimeBands");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus deleteTimeBands(List<BlockTimeBandsDTO> toBeDeletedBlockTimeBandsDTOs) {
-        adfLogger.info("DEBUG  >> entering deleteTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering deleteTimeBands");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -252,7 +252,7 @@ public class DMLOperationsProvider {
             }
         }
 
-        adfLogger.info("DEBUG  >> exiting deleteTimeBands");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting deleteTimeBands");
 
         return performOperation(tableRecords);
     }
@@ -264,22 +264,22 @@ public class DMLOperationsProvider {
      * @return
      */
     public OperationStatus addRateChangeHeader(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering addRateChangeHeader");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering addRateChangeHeader");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
         tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
                                          rateChangeHeaderDTO));
 
-        adfLogger.info("DEBUG  >> exiting addRateChangeHeader");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting addRateChangeHeader");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus generateRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering generateRateChange");
-        adfLogger.info("DEBUG  >> generateRateChange() calling StoredProcedureProvider");
-        adfLogger.info("DEBUG  >> generateRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeHeaderDTO.getRateChangeReferenceID());
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering generateRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> generateRateChange() calling StoredProcedureProvider");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> generateRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeHeaderDTO.getRateChangeReferenceID());
 
         return StoredProcedureProvider.INSTANCE.generateRateChange(rateChangeHeaderDTO.getRateChangeReferenceID(),
                                                                    getLoggedInUsername());
@@ -288,9 +288,9 @@ public class DMLOperationsProvider {
 
     // 20111129-01
     public OperationStatus finalizeRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering finalizeRateChange");
-        adfLogger.info("DEBUG  >> finalizeRateChange() calling StoredProcedureProvider");
-        adfLogger.info("DEBUG  >> finalizeRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeHeaderDTO.getRateChangeReferenceID());
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering finalizeRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> finalizeRateChange() calling StoredProcedureProvider");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> finalizeRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeHeaderDTO.getRateChangeReferenceID());
   
         return StoredProcedureProvider.INSTANCE.finalizeRateChange(rateChangeHeaderDTO.getRateChangeReferenceID(),
                                                                    getLoggedInUsername());
@@ -298,12 +298,12 @@ public class DMLOperationsProvider {
 
     // 20111130-01
     public OperationStatus resetRateChange(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
-        adfLogger.info("DEBUG  >> entering resetRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering resetRateChange");
 
         // 20120316-01 Corrected bug - was using Reference ID but should have been Procss ID
-        adfLogger.info("DEBUG  >> resetRateChange() calling StoredProcedureProvider with Process ID");
-        // adfLogger.info("DEBUG  >> resetRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeProcessControlDTO.getRateChangeReferenceID());
-        adfLogger.info("DEBUG  >> resetRateChange() rateChangeProcessControlDTO.getProcessID() is " + rateChangeProcessControlDTO.getProcessID());
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> resetRateChange() calling StoredProcedureProvider with Process ID");
+        // adfLogger.log(adfLogger.TRACE,"DEBUG  >> resetRateChange() rateChangeHeaderDTO.getRateChangeReferenceID() is " + rateChangeProcessControlDTO.getRateChangeReferenceID());
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> resetRateChange() rateChangeProcessControlDTO.getProcessID() is " + rateChangeProcessControlDTO.getProcessID());
 
         // 20120316-01 Corrected bug - was using Reference ID but should have been Procss ID
 //        return StoredProcedureProvider.INSTANCE.resetRateChange(rateChangeProcessControlDTO.getRateChangeReferenceID(),
@@ -313,7 +313,7 @@ public class DMLOperationsProvider {
 
 
     public OperationStatus deleteRateChange(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering deleteRateChange");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering deleteRateChange");
 
         // 20120419-02
         // return StoredProcedureProvider.INSTANCE.deleteRateChange(rateChangeHeaderDTO.getRateChangeReferenceID());
@@ -321,7 +321,7 @@ public class DMLOperationsProvider {
     }
 
     public OperationStatus updateRateChangeHeader(RateChangeHeaderDTO rateChangeHeaderDTO) {
-        adfLogger.info("DEBUG  >> entering editRateChangeHeader");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering editRateChangeHeader");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -366,20 +366,20 @@ public class DMLOperationsProvider {
 
         }
 
-        adfLogger.info("DEBUG  >> exiting editRateChangeHeader");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting editRateChangeHeader");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus modifyBlockRateSchedule(BlockRateScheduleDTO blockRateScheduleDTO) {
-        adfLogger.info("DEBUG  >> entering modifyBlockRateSchedule");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering modifyBlockRateSchedule");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
         tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                          blockRateScheduleDTO));
 
-        adfLogger.info("DEBUG  >> exiting modifyBlockRateSchedule");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting modifyBlockRateSchedule");
 
         return performOperation(tableRecords);
     }
@@ -391,14 +391,14 @@ public class DMLOperationsProvider {
      * @return
      */
     public OperationStatus addRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
-        adfLogger.info("DEBUG  >> entering addRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering addRateChangeProcessControl");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
         tableRecords.add(new TableRecord(TableRecord.SQLOperation.INSERT,
                                          rateChangeProcessControlDTO));
 
-        adfLogger.info("DEBUG  >> exiting addRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting addRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }
@@ -410,7 +410,7 @@ public class DMLOperationsProvider {
      * @return
      */
     public OperationStatus editRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
-        adfLogger.info("DEBUG  >> entering editRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering editRateChangeProcessControl");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -422,19 +422,21 @@ public class DMLOperationsProvider {
                                              rateChangeProcessControlDTO));
         }
 
-        adfLogger.info("DEBUG  >> exiting editRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting editRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }
 
     /**
      * Executes the Rate Change Process Control
+     * 
+     * Sets STEP_START_FLAG = Y
      *
      * @param rateChangeProcessControlDTO
      * @return
      */
     public OperationStatus executeRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
-        adfLogger.info("DEBUG  >> entering executeRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering executeRateChangeProcessControl");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
@@ -443,20 +445,20 @@ public class DMLOperationsProvider {
         tableRecords.add(new TableRecord(TableRecord.SQLOperation.UPDATE,
                                          rateChangeProcessControlDTO));
 
-        adfLogger.info("DEBUG  >> exiting executeRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting executeRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }
 
     public OperationStatus deleteRateChangeProcessControl(RateChangeProcessControlDTO rateChangeProcessControlDTO) {
-        adfLogger.info("DEBUG  >> entering deleteRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> entering deleteRateChangeProcessControl");
 
         List<TableRecord> tableRecords = new ArrayList<TableRecord>();
 
         tableRecords.add(new TableRecord(TableRecord.SQLOperation.DELETE,
                                          rateChangeProcessControlDTO));
 
-        adfLogger.info("DEBUG  >> exiting deleteRateChangeProcessControl");
+        adfLogger.log(adfLogger.TRACE,"DEBUG  >> exiting deleteRateChangeProcessControl");
 
         return performOperation(tableRecords);
     }

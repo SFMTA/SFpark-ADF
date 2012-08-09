@@ -1,14 +1,14 @@
 10
 
 dir
-1
-file:///D:/Oracle/!Projects/SFPark/Repositories/Translation/src/sfpark/adf/tools/translation
-file:///D:/Oracle/!Projects/SFPark/Repositories
+2
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools/trunk/Translation/src/sfpark/adf/tools/translation
+https://mpiller-e6400.us.oracle.com/svn/SFParkADFTools
 
 
 
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -24,7 +24,7 @@ svn:special svn:externals svn:needs-lock
 
 
 
-3b9f106f-3301-0010-898d-859f85c9185b
+172ae918-ba2f-624b-9bae-099f5b428324
 
 AdminConsoleBundle.properties
 file
@@ -32,10 +32,10 @@ file
 
 
 
-2011-11-04T14:58:06.531000Z
+2012-08-07T15:04:33.234000Z
 2dd2d87bfa49dcd54d85b40988d69c5b
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2011-11-04T14:58:06.468000Z
+2012-08-07T15:04:33.156000Z
 4d90ed8c423801d69bda896644d750f8
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -96,14 +96,14 @@ mpiller
 
 ButtonBundle.properties
 file
-6
 
 
 
-2011-11-30T17:28:55.296000Z
-77f8b917c23893321612594eeeeeba88
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.312000Z
+e1f2f8efaa972a24427ec59290de18aa
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -126,7 +126,7 @@ mpiller
 
 
 
-3865
+3955
 
 CalendarManagerBundle.properties
 file
@@ -134,10 +134,10 @@ file
 
 
 
-2011-11-04T14:58:06.453000Z
+2012-08-07T15:04:33.656000Z
 32d4f83a4621d9db25a92fa1b7c60a49
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -168,10 +168,10 @@ file
 
 
 
-2011-11-04T14:58:06.578000Z
+2012-08-07T15:04:33.515000Z
 f8de65872145d87b7acd2c154fcc5125
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -198,14 +198,14 @@ mpiller
 
 CommonBundle.properties
 file
-6
 
 
 
-2011-11-30T18:03:19.515000Z
-80221171fd69f8545d9f7be6ba323825
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.906000Z
+a6ab89905b3be9b8f174eed2abd24dfe
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -228,18 +228,18 @@ mpiller
 
 
 
-4116
+4476
 
 CommonBundleKey.java
 file
-6
 
 
 
-2011-11-30T18:01:28.375000Z
-1475323e9812bf91de06f8023b322527
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.734000Z
+18603d20c3d0905a1ed2763f1985ad0a
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -262,18 +262,18 @@ mpiller
 
 
 
-3075
+3389
 
 ErrorBundle.properties
 file
-6
 
 
 
-2011-11-30T18:09:18.687000Z
-a29dd897c47432bcd96142b0f41b1f8d
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.968000Z
+827bf750e21ffdd3e8e3f64ce247fd76
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -296,18 +296,18 @@ mpiller
 
 
 
-13013
+13362
 
 ErrorBundleKey.java
 file
-6
 
 
 
-2011-11-30T18:10:24.718000Z
-ddb3db66ccf1149545808dbe8d93060e
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.796000Z
+b4924bcc675a9e28aabdb95cef07c854
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -330,18 +330,18 @@ mpiller
 
 
 
-7237
+7530
 
 LabelBundle.properties
 file
-19
 
 
 
-2011-12-14T03:57:16.059000Z
-26a12446f6b3c1fa976cfcbbaf981493
-2011-12-14T20:13:32.375000Z
-19
+
+2012-08-07T15:04:33.578000Z
+c463e42321181d9f5eea7e4e9f03ba29
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -364,7 +364,7 @@ mpiller
 
 
 
-6520
+6955
 
 OSPManagerBundle.properties
 file
@@ -372,10 +372,10 @@ file
 
 
 
-2011-11-04T14:58:06.718000Z
+2012-08-07T15:04:33.375000Z
 0873cdae3ee88954e9dbee5a69e137cb
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -402,14 +402,14 @@ mpiller
 
 RateChangeManagerBundle.properties
 file
-6
 
 
 
-2011-11-30T17:25:17.937000Z
-a2fa8255d5615eb917250e4ba39cb241
-2011-11-30T20:30:56.609000Z
-6
+
+2012-08-07T15:04:33.453000Z
+3205da87bb13c307d8c487404d369e59
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 
@@ -432,7 +432,7 @@ mpiller
 
 
 
-3212
+3430
 
 TranslationUtil.java
 file
@@ -440,10 +440,10 @@ file
 
 
 
-2011-11-04T14:58:06.656000Z
+2012-08-07T15:04:33.859000Z
 d21ce32a73b24b41383964a47f42107c
-2011-11-04T14:58:01.640000Z
-1
+2012-08-07T15:03:36.734375Z
+2
 mpiller
 
 

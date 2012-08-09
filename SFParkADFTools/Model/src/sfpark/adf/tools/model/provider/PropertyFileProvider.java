@@ -43,7 +43,7 @@ public final class PropertyFileProvider {
      * @throws IllegalArgumentException
      */
     public static String getPropertyValue(String key) {
-        // LOGGER.entering(CLASSNAME, "getPropertyValue");
+        LOGGER.entering(CLASSNAME, "getPropertyValue");
 
         if (StringUtil.isBlank(key)) {
             throw new IllegalArgumentException("Key should not be NULL or empty. ");
@@ -55,15 +55,15 @@ public final class PropertyFileProvider {
             propertyValue =
                     (new PropertiesConfiguration(PROPERTY_FILE)).getString(key);
             // 20111121-01 added debug
-            // LOGGER.debug("PropertyFileProvider > key: " + key.toString());
-            // LOGGER.debug("PropertyFileProvider > PROPERTY_FILE: " + PROPERTY_FILE);
+            LOGGER.debug("DEBUG >> PropertyFileProvider > key: " + key.toString());
+            LOGGER.debug("DEBUG >> PropertyFileProvider > PROPERTY_FILE: " + PROPERTY_FILE);
 
             if (StringUtil.isBlank(propertyValue)) {
                 LOGGER.info(PROPERTY_FILE + " file does not contain the " +
                             key + " key. ");
             } else {
               // 20111121-01 added debug
-              // LOGGER.debug("PropertyFileProvider > propertyValue: " + propertyValue);
+              LOGGER.debug("PropertyFileProvider > propertyValue: " + propertyValue);
             }
 
         } catch (ConfigurationException e) {
@@ -72,7 +72,7 @@ public final class PropertyFileProvider {
                         e);
         }
 
-        // LOGGER.exiting(CLASSNAME, "getPropertyValue");
+        LOGGER.exiting(CLASSNAME, "getPropertyValue");
 
         return propertyValue;
     }

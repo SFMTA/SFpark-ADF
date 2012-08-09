@@ -1,2 +1,2 @@
-Weblogic-Application-Version: V2.0
+Weblogic-Application-Version: V2.00
 

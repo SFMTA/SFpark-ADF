@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/public_html/View/jsffFiles/deployment
+END
+deploymentPropertiesPage.jsff
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/public_html/View/jsffFiles/deployment/deploymentPropertiesPage.jsff
+END
+deploymentDeletePage.jsff
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/public_html/View/jsffFiles/deployment/deploymentDeletePage.jsff
+END
+deploymentEditPage.jsff
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/public_html/View/jsffFiles/deployment/deploymentEditPage.jsff
+END
+deploymentResetPage.jsff
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/SFParkADFTools/!svn/ver/2/trunk/RateChangeManager/public_html/View/jsffFiles/deployment/deploymentResetPage.jsff
+END

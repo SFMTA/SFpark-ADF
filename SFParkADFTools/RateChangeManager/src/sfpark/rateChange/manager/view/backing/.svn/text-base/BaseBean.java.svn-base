@@ -35,13 +35,15 @@ public abstract class BaseBean {
     protected void printLog(String message) {
         // these log entries will appear in bi_server1.out
         // During development phase, uncomment to make logging easy
-        // Date today;
-        // String output;
-        // SimpleDateFormat formatter;
-        // formatter = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
-        // today = new Date();
-        // output = formatter.format(today);
-        // System.out.println(output + "  DEBUG: " + message);
+        /**
+        Date today;
+        String output;
+        SimpleDateFormat formatter;
+        formatter = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+        today = new Date();
+        output = formatter.format(today);
+        System.out.println(output + "  DEBUG: " + message);
+        **/
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

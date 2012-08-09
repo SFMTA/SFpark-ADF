@@ -182,4 +182,9 @@
     <managed-bean-class>sfpark.rateChange.manager.view.backing.rateChange.RateChangeFinalizeBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
+  <managed-bean>
+    <managed-bean-name>deploymentResetBean</managed-bean-name>
+    <managed-bean-class>sfpark.rateChange.manager.view.backing.deployment.DeploymentResetBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
 </faces-config>

@@ -10,6 +10,10 @@ import sfpark.adf.tools.model.data.helper.GarageRatesQualifier;
 import sfpark.adf.tools.model.data.helper.GarageRatesTimeBand;
 import sfpark.adf.tools.utilities.generic.TimeDisplayUtil;
 
+/**
+ * This ADFUIDisplayUtil is ONLY for the OSPManager Project
+ * 
+ */
 public final class ADFUIDisplayUtil {
 
     /**
